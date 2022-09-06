@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import { resolveHypothesisPrompts } from "../util/resolveHypothesisPrompts";
-import PrototypeUI from "./PrototypeUI";
+import PrototypeUI from "../components/PrototypeUI";
 
 export function useStore() {
   // TODO: generalize paths here beyond Shape Up

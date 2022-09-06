@@ -1,7 +1,7 @@
 import React, { useCallback, useState } from "react";
 import { useResizeHandler } from "../hooks/useResizeHandler";
 import App from "./App";
-import "./ShapeUp.css";
+import "../static/styles/ShapeUp.css";
 
 // TODO: Insert prompt list module with these prompts at the bottom of the chapter.
 /*const selectedPrompts = {
@@ -22,7 +22,7 @@ import "./ShapeUp.css";
   ],
 };*/
 
-export default function ShapeUp() {
+export default function ShapeUpApp() {
   const [markerX, setMarkerX] = useState(1120);
   useResizeHandler(
     useCallback(() => {
