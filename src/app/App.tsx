@@ -1,51 +1,35 @@
-import React, { useEffect } from "react";
-import { resolveHypothesisPrompts } from "../util/resolveHypothesisPrompts";
+import React, { useCallback, useEffect, useState } from "react";
 import PrototypeUI from "../components/PrototypeUI";
+import { useAsyncLayoutDependentValue } from "../hooks/useLayoutDependentValue";
+import { readPromptsFromHypothesisJSON } from "../util/readPromptsFromHypothesisJSON";
+import { resolvePromptLocations } from "../util/resolvePromptLocations";
+import { Store } from "./store";
 
 export function useStore() {
+  // TODO: move to redux, etc...
+  const [store, setStore] = useState<Store | null>();
+
   // TODO: generalize paths here beyond Shape Up
   useEffect(() => {
-    const chapterName = window.location.pathname.match(
-      /\/shape-up\/shapeup\/(.+?)(\/.*)?$/,
-    )![1];
-
     async function loadInitialData() {
-      // const data = await import(`../promptData/shapeup/${chapterName}.json`);
-      // const prompts = await resolvePrompts(data);
-      // TODO: load data into store
+      const chapterName = window.location.pathname.match(
+        /\/shape-up\/shapeup\/(.+?)(\/.*)?$/,
+      )![1];
+      const json = await import(
+        `../static/promptData/shapeup/${chapterName}.json`
+      );
+      const prompts = readPromptsFromHypothesisJSON(json);
+      setStore({ prompts });
+
       // TODO: load/merge saved store state
       // TODO: set up prompt list modules
       // TODO: set up inline review modules
     }
 
     loadInitialData();
-
-    let sequenceCounter = 0;
-
-    async function updateLayout() {
-      sequenceCounter++;
-      const eventSequence = sequenceCounter;
-      const data = await import(
-        `../static/promptData/shapeup/${chapterName}.json`
-      );
-      // eslint-disable-next-line @typescript-eslint/no-unused-vars
-      const prompts = await resolveHypothesisPrompts(data);
-      if (sequenceCounter === eventSequence) {
-        // TODO: update store with new prompt layouts
-      }
-    }
-
-    window.addEventListener("resize", updateLayout);
-    return () => window.removeEventListener("resize", updateLayout);
   }, []);
 
-  // TODO: return store
-  return [
-    {},
-    () => {
-      return;
-    },
-  ];
+  return store;
 }
 
 export interface AppProps {
@@ -53,10 +37,28 @@ export interface AppProps {
 }
 
 export default function App({ marginX }: AppProps) {
-  const [store] = useStore();
+  const store = useStore();
 
-  if (store) {
-    return <PrototypeUI marginX={marginX} />;
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const promptLocations = useAsyncLayoutDependentValue(
+    null,
+    useCallback(async () => {
+      if (!store) return null;
+      return await resolvePromptLocations(store.prompts);
+      // TODO: We don't really want to rerun this every time `store` changes. Think more carefully about this...
+    }, [store]),
+  );
+
+  console.log(promptLocations);
+
+  if (store && promptLocations) {
+    return (
+      <PrototypeUI
+        marginX={marginX}
+        store={store /* TODO: use context provider, etc */}
+        promptLocations={promptLocations}
+      />
+    );
   } else {
     return null;
   }

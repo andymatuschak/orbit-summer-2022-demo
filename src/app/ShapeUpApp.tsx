@@ -1,7 +1,7 @@
-import React, { useCallback, useState } from "react";
-import { useResizeHandler } from "../hooks/useResizeHandler";
-import App from "./App";
+import React, { useCallback } from "react";
+import { useLayoutDependentValue } from "../hooks/useLayoutDependentValue";
 import "../static/styles/ShapeUp.css";
+import App from "./App";
 
 // TODO: Insert prompt list module with these prompts at the bottom of the chapter.
 /*const selectedPrompts = {
@@ -23,12 +23,11 @@ import "../static/styles/ShapeUp.css";
 };*/
 
 export default function ShapeUpApp() {
-  const [markerX, setMarkerX] = useState(1120);
-  useResizeHandler(
+  const markerX = useLayoutDependentValue(
     useCallback(() => {
       const main = document.getElementById("main")!;
       const rect = main.children.item(3)!.getBoundingClientRect();
-      setMarkerX(rect.right - 25);
+      return rect.right - 25;
     }, []),
   );
 

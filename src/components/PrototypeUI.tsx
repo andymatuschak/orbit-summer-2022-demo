@@ -1,13 +1,21 @@
 import React from "react";
+import { Store } from "../app/store";
+import { PromptLocation } from "../util/resolvePromptLocations";
 import ContextualMenu from "./ContextualMenu";
 import { usePageHeight } from "../hooks/usePageHeight";
 import { useSelectionBounds } from "../hooks/useSelectionBounds";
 
 export interface DemoPageProps {
   marginX: number;
+  store: Store;
+  promptLocations: { [id: string]: PromptLocation };
 }
 
-export default function PrototypeUI({ marginX }: DemoPageProps) {
+export default function PrototypeUI({
+  marginX,
+  store,
+  promptLocations,
+}: DemoPageProps) {
   const height = usePageHeight();
   const { selectionPosition, clearSelectionPosition } = useSelectionBounds();
 
@@ -42,12 +50,27 @@ export default function PrototypeUI({ marginX }: DemoPageProps) {
               title: "New prompt",
               onClick: () => {
                 clearSelectionPosition();
-                // TODO: add new prompt
+                // TODO: implement adding new prompt
               },
             },
           ]}
         />
       </div>
+      <>
+        {Object.entries(store.prompts).map(([id, prompt]) => (
+          <div
+            key={id}
+            css={{
+              position: "absolute",
+              left: marginX,
+              top: promptLocations[id].top,
+              width: 200,
+            }}
+          >
+            {prompt.content.front}
+          </div>
+        ))}
+      </>
     </div>
   );
 }
