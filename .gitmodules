@@ -1,0 +1,3 @@
+[submodule "public/shape-up"]
+	path = public/shape-up
+	url = git@github.com:andymatuschak/orbit-summer-2022-demo-data-shape-up.git
