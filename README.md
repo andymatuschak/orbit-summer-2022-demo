@@ -19,6 +19,7 @@ This repo expects you to have [the main Orbit repo](https://github.com/andymatus
 cd ..
 git clone https://github.com/andymatuschak/orbit
 cd orbit
+yarn install
 yarn build
 # web-component requires a separate build step; this is an oversight.
 cd packages/web-component
