@@ -1,5 +1,5 @@
 import "./storybook.css";
-import "../src/styles/index.css";
+import "../src/static/styles/index.css";
 
 export const parameters = {
   actions: { argTypesRegex: "^on[A-Z].*" },

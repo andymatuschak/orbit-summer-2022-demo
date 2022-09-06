@@ -9,7 +9,7 @@ This repository leaves out two important pieces which I do not have the rights t
 
 I have separated Shape Up's content into a [private submodule](https://github.com/andymatuschak/orbit-summer-2022-demo-data-shape-up) available to me and my collaborators. If you have access, you should `git clone --recurse-submodules` or `git submodule init && git submodule update` to put a local copy of Shape Up in the right place.
 
-For your private testing and development purposes, you can [acquire an evaluation copy of the Dr font](https://www.productiontype.com/family/dr) and place it in `src/fonts` at the paths specified by `src/styles/fonts.css`.
+For your private testing and development purposes, you can [acquire an evaluation copy of the Dr font](https://www.productiontype.com/family/dr) and place it in `src/static/fonts` at the paths specified by `src/static/styles/fonts.css`.
 
 ### Preparing your local copy
 

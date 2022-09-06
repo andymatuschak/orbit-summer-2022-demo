@@ -1,4 +1,4 @@
-@import "katex/dist/katex.css";
+@import "../../../node_modules/katex/dist/katex.css";
 @import "fonts.css";
 
 html {

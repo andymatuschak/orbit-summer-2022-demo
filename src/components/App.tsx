@@ -10,7 +10,7 @@ export function useStore() {
     )![1];
 
     async function loadInitialData() {
-      // const data = await import(`../prompts/shapeup/${chapterName}.json`);
+      // const data = await import(`../promptData/shapeup/${chapterName}.json`);
       // const prompts = await resolvePrompts(data);
       // TODO: load data into store
       // TODO: load/merge saved store state
@@ -25,7 +25,9 @@ export function useStore() {
     async function updateLayout() {
       sequenceCounter++;
       const eventSequence = sequenceCounter;
-      const data = await import(`../prompts/shapeup/${chapterName}.json`);
+      const data = await import(
+        `../static/promptData/shapeup/${chapterName}.json`
+      );
       // eslint-disable-next-line @typescript-eslint/no-unused-vars
       const prompts = await resolveHypothesisPrompts(data);
       if (sequenceCounter === eventSequence) {
