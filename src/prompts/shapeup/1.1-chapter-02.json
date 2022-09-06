@@ -1,0 +1,797 @@
+[[
+  {
+    "id": "2oVUxualEeyCjGfY1UymCw",
+    "authority": "hypothes.is",
+    "url": "https://basecamp.com/shapeup/1.1-chapter-02",
+    "created": "2022-06-07T21:07:35",
+    "updated": "2022-06-08T16:56:29",
+    "title": "Shape Up",
+    "refs": [],
+    "isReply": false,
+    "isPagenote": false,
+    "user": "andymatuschak",
+    "displayName": null,
+    "text": "Q. What are the two \"tracks\" Basecamp team members work on?\nA. One track builds shaped work; another track shapes work for potential future cycles.\n\nQ. Why separate shaping out onto its own track?\nA. It's hard to schedule shaping because it's risky and unknown.\n\nQ. When is shaping work communicated to the wider team?\nA. Only once it's been committed to.\n\nQ. Why is shaping work kept private until the commitment is made to bet on it?\nA. Makes it easier for shapers to pause or drop ideas which aren't working.",
+    "prefix": "of private, rough, early work.\n\n",
+    "exact": "Two tracks",
+    "suffix": "\n       \n     \n\nYou can’t really",
+    "start": 8686,
+    "end": 8696,
+    "tags": [
+      "sr"
+    ],
+    "group": "VdL8yv9V",
+    "target": [
+      {
+        "source": "https://basecamp.com/shapeup/1.1-chapter-02",
+        "selector": [
+          {
+            "type": "RangeSelector",
+            "endOffset": 0,
+            "startOffset": 0,
+            "endContainer": "/main[1]/div[2]/h2[8]/a[1]",
+            "startContainer": "/main[1]/div[2]/h2[8]"
+          },
+          {
+            "end": 8696,
+            "type": "TextPositionSelector",
+            "start": 8686
+          },
+          {
+            "type": "TextQuoteSelector",
+            "exact": "Two tracks",
+            "prefix": "of private, rough, early work.\n\n",
+            "suffix": "\n       \n     \n\nYou can’t really"
+          }
+        ]
+      }
+    ],
+    "document": {
+      "title": [
+        "Shape Up"
+      ]
+    }
+  },
+  {
+    "id": "lVJFJOaiEeylSG82CP570A",
+    "authority": "hypothes.is",
+    "url": "https://basecamp.com/shapeup/1.1-chapter-02",
+    "created": "2022-06-07T20:44:10",
+    "updated": "2022-06-08T16:46:31",
+    "title": "Shape Up",
+    "refs": [],
+    "isReply": false,
+    "isPagenote": false,
+    "user": "andymatuschak",
+    "displayName": null,
+    "text": "Q. Three key properties of shaped work introduced in this chapter? (one word each)\nA. rough, solved, bounded",
+    "prefix": "he Dot Grid when it launched\n\n\n\n",
+    "exact": "This small example highlights a few properties of shaped work.\n\n",
+    "suffix": "Property 1: It’s rough\n       \n ",
+    "start": 5665,
+    "end": 5729,
+    "tags": [
+      "sr"
+    ],
+    "group": "VdL8yv9V",
+    "target": [
+      {
+        "source": "https://basecamp.com/shapeup/1.1-chapter-02",
+        "selector": [
+          {
+            "type": "RangeSelector",
+            "endOffset": 0,
+            "startOffset": 0,
+            "endContainer": "/main[1]/div[2]/h2[4]",
+            "startContainer": "/main[1]/div[2]/p[19]"
+          },
+          {
+            "end": 5729,
+            "type": "TextPositionSelector",
+            "start": 5665
+          },
+          {
+            "type": "TextQuoteSelector",
+            "exact": "This small example highlights a few properties of shaped work.\n\n",
+            "prefix": "he Dot Grid when it launched\n\n\n\n",
+            "suffix": "Property 1: It’s rough\n       \n "
+          }
+        ]
+      }
+    ],
+    "document": {
+      "title": [
+        "Shape Up"
+      ]
+    }
+  },
+  {
+    "id": "1rJNUuaiEeyeP9efPKKGaw",
+    "authority": "hypothes.is",
+    "url": "https://basecamp.com/shapeup/1.1-chapter-02",
+    "created": "2022-06-07T20:46:00",
+    "updated": "2022-06-08T16:25:16",
+    "title": "Shape Up",
+    "refs": [],
+    "isReply": false,
+    "isPagenote": false,
+    "user": "andymatuschak",
+    "displayName": null,
+    "text": "Q. Why keep shaped work rough?\nA. Avoid committing the team to unimportant or untested details; leave room for judgment as they build.",
+    "prefix": " everyone to the wrong details. ",
+    "exact": "Designers and programmers need room to apply their own judgement and expertise when they roll up their sleeves and discover all the real trade-offs that emerge.",
+    "suffix": "\n\nProperty 2: It’s solved\n      ",
+    "start": 5995,
+    "end": 6155,
+    "tags": [
+      "sr"
+    ],
+    "group": "VdL8yv9V",
+    "target": [
+      {
+        "source": "https://basecamp.com/shapeup/1.1-chapter-02",
+        "selector": [
+          {
+            "type": "RangeSelector",
+            "endOffset": 388,
+            "startOffset": 228,
+            "endContainer": "/main[1]/div[2]/p[20]",
+            "startContainer": "/main[1]/div[2]/p[20]"
+          },
+          {
+            "end": 6155,
+            "type": "TextPositionSelector",
+            "start": 5995
+          },
+          {
+            "type": "TextQuoteSelector",
+            "exact": "Designers and programmers need room to apply their own judgement and expertise when they roll up their sleeves and discover all the real trade-offs that emerge.",
+            "prefix": " everyone to the wrong details. ",
+            "suffix": "\n\nProperty 2: It’s solved\n      "
+          }
+        ]
+      }
+    ],
+    "document": {
+      "title": [
+        "Shape Up"
+      ]
+    }
+  },
+  {
+    "id": "evuXeudHEeyDOj8N0TbYCw",
+    "authority": "hypothes.is",
+    "url": "https://basecamp.com/shapeup/1.1-chapter-02",
+    "created": "2022-06-08T16:24:33",
+    "updated": "2022-06-08T16:24:33",
+    "title": "Shape Up",
+    "refs": [],
+    "isReply": false,
+    "isPagenote": false,
+    "user": "andymatuschak",
+    "displayName": null,
+    "text": "Q. What key constraint defined how Basecamp approached adding a calendar?\nA. They only wanted to spend six weeks on a solution (calendars are complex, and most past customers didn't use them).",
+    "prefix": "e, we were open to doing that.\n\n",
+    "exact": "With only six weeks to work with, we could only build about a tenth of what people think of when they say “calendar.” The question became: which tenth?",
+    "suffix": "\n\nWe did some research (discusse",
+    "start": 4178,
+    "end": 4329,
+    "tags": [
+      "sr"
+    ],
+    "group": "VdL8yv9V",
+    "target": [
+      {
+        "source": "https://basecamp.com/shapeup/1.1-chapter-02",
+        "selector": [
+          {
+            "type": "RangeSelector",
+            "endOffset": 151,
+            "startOffset": 0,
+            "endContainer": "/main[1]/div[2]/p[12]",
+            "startContainer": "/main[1]/div[2]/p[12]"
+          },
+          {
+            "end": 4329,
+            "type": "TextPositionSelector",
+            "start": 4178
+          },
+          {
+            "type": "TextQuoteSelector",
+            "exact": "With only six weeks to work with, we could only build about a tenth of what people think of when they say “calendar.” The question became: which tenth?",
+            "prefix": "e, we were open to doing that.\n\n",
+            "suffix": "\n\nWe did some research (discusse"
+          }
+        ]
+      }
+    ],
+    "document": {
+      "title": [
+        "Shape Up"
+      ]
+    }
+  },
+  {
+    "id": "h1a1zOaiEeyozsOydLCs2A",
+    "authority": "hypothes.is",
+    "url": "https://basecamp.com/shapeup/1.1-chapter-02",
+    "created": "2022-06-07T20:43:47",
+    "updated": "2022-06-08T16:21:29",
+    "title": "Shape Up",
+    "refs": [],
+    "isReply": false,
+    "isPagenote": false,
+    "user": "andymatuschak",
+    "displayName": null,
+    "text": "Q. Visualize the level of fidelity used to define the \"dot grid\" solution to Basecamp's calendar project.\nA. <img src=\"../../assets/books/shapeup/1.1/calendar_sketch-355ff96889735772138625e1d56acdbc8740186af109b5383cc5954939349cb4.png\" />",
+    "prefix": "understanding of the use case.\n\n",
+    "exact": "This is the level of fidelity we used to define the solution:",
+    "suffix": "\n\n\n  \n    \n  \n  Rough sketch of ",
+    "start": 5110,
+    "end": 5171,
+    "tags": [
+      "sr"
+    ],
+    "group": "VdL8yv9V",
+    "target": [
+      {
+        "source": "https://basecamp.com/shapeup/1.1-chapter-02",
+        "selector": [
+          {
+            "type": "RangeSelector",
+            "endOffset": 61,
+            "startOffset": 0,
+            "endContainer": "/main[1]/div[2]/p[15]",
+            "startContainer": "/main[1]/div[2]/p[15]"
+          },
+          {
+            "end": 5171,
+            "type": "TextPositionSelector",
+            "start": 5110
+          },
+          {
+            "type": "TextQuoteSelector",
+            "exact": "This is the level of fidelity we used to define the solution:",
+            "prefix": "understanding of the use case.\n\n",
+            "suffix": "\n\n\n  \n    \n  \n  Rough sketch of "
+          }
+        ]
+      }
+    ],
+    "document": {
+      "title": [
+        "Shape Up"
+      ]
+    }
+  },
+  {
+    "id": "u7Js9OahEey8ovucoYyJXg",
+    "authority": "hypothes.is",
+    "url": "https://basecamp.com/shapeup/1.1-chapter-02",
+    "created": "2022-06-07T20:38:05",
+    "updated": "2022-06-08T16:19:29",
+    "title": "Shape Up",
+    "refs": [],
+    "isReply": false,
+    "isPagenote": false,
+    "user": "andymatuschak",
+    "displayName": null,
+    "text": "Q. Why do under-specified projects naturally grow out of control?\nA. There's no boundary defining what's in/out of scope.",
+    "prefix": "e’ll know it when we see it.”\n\n\n",
+    "exact": "Concerning estimation, under-specified projects naturally grow out of control because there’s no boundary to define what’s out of scope.\n\n",
+    "suffix": "Case study: The Dot Grid Calenda",
+    "start": 2787,
+    "end": 2925,
+    "tags": [
+      "sr"
+    ],
+    "group": "VdL8yv9V",
+    "target": [
+      {
+        "source": "https://basecamp.com/shapeup/1.1-chapter-02",
+        "selector": [
+          {
+            "type": "RangeSelector",
+            "endOffset": 0,
+            "startOffset": 0,
+            "endContainer": "/main[1]/div[2]/h2[3]",
+            "startContainer": "/main[1]/div[2]/p[6]"
+          },
+          {
+            "end": 2925,
+            "type": "TextPositionSelector",
+            "start": 2787
+          },
+          {
+            "type": "TextQuoteSelector",
+            "exact": "Concerning estimation, under-specified projects naturally grow out of control because there’s no boundary to define what’s out of scope.\n\n",
+            "prefix": "e’ll know it when we see it.”\n\n\n",
+            "suffix": "Case study: The Dot Grid Calenda"
+          }
+        ]
+      }
+    ],
+    "document": {
+      "title": [
+        "Shape Up"
+      ]
+    }
+  },
+  {
+    "id": "hmDJEuafEeyI789zxHZomA",
+    "authority": "hypothes.is",
+    "url": "https://basecamp.com/shapeup/1.1-chapter-02",
+    "created": "2022-06-07T20:22:17",
+    "updated": "2022-06-08T16:16:40",
+    "title": "Shape Up",
+    "refs": [],
+    "isReply": false,
+    "isPagenote": false,
+    "user": "andymatuschak",
+    "displayName": null,
+    "text": "Q. What's wrong with product managers defining work using wireframes or high-fidelity mockups?\nA. They constrain designers' solutions too much, too early.",
+    "prefix": "are too concrete\n       \n     \n\n",
+    "exact": "When design leaders go straight to wireframes or high-fidelity mockups, they define too much detail too early. This leaves designers no room for creativity.",
+    "suffix": " One friend put it this way:\n\n\n ",
+    "start": 1362,
+    "end": 1518,
+    "tags": [
+      "sr"
+    ],
+    "group": "VdL8yv9V",
+    "target": [
+      {
+        "source": "https://basecamp.com/shapeup/1.1-chapter-02",
+        "selector": [
+          {
+            "type": "RangeSelector",
+            "endOffset": 156,
+            "startOffset": 0,
+            "endContainer": "/main[1]/div[2]/p[3]",
+            "startContainer": "/main[1]/div[2]/p[3]"
+          },
+          {
+            "end": 1518,
+            "type": "TextPositionSelector",
+            "start": 1362
+          },
+          {
+            "type": "TextQuoteSelector",
+            "exact": "When design leaders go straight to wireframes or high-fidelity mockups, they define too much detail too early. This leaves designers no room for creativity.",
+            "prefix": "are too concrete\n       \n     \n\n",
+            "suffix": " One friend put it this way:\n\n\n "
+          }
+        ]
+      }
+    ],
+    "document": {
+      "title": [
+        "Shape Up"
+      ]
+    }
+  },
+  {
+    "id": "7AdyyuafEeyMoAfhQMEfFw",
+    "authority": "hypothes.is",
+    "url": "https://basecamp.com/shapeup/1.1-chapter-02",
+    "created": "2022-06-07T20:25:07",
+    "updated": "2022-06-08T16:16:01",
+    "title": "Shape Up",
+    "refs": [],
+    "isReply": false,
+    "isPagenote": false,
+    "user": "andymatuschak",
+    "displayName": null,
+    "text": "Q. Why might over-specifying a design make it harder to estimate?\nA. Non-essential constraints make it harder to renegotiate scope when unexpected complexities emerge.",
+    "prefix": "ing them this concrete thing.\n\n\n",
+    "exact": "Over-specifying the design also leads to estimation errors. Counterintuitive as it may seem, the more specific the work is, the harder it can be to estimate. That’s because making the interface just so can require solving hidden complexities and implementation details that weren’t visible in the mockup. When the scope isn’t variable, the team can’t reconsider a design decision that is turning out to cost more than it’s worth.",
+    "suffix": "\n\nWords are too abstract\n       ",
+    "start": 1787,
+    "end": 2216,
+    "tags": [
+      "sr"
+    ],
+    "group": "VdL8yv9V",
+    "target": [
+      {
+        "source": "https://basecamp.com/shapeup/1.1-chapter-02",
+        "selector": [
+          {
+            "type": "RangeSelector",
+            "endOffset": 429,
+            "startOffset": 0,
+            "endContainer": "/main[1]/div[2]/p[4]",
+            "startContainer": "/main[1]/div[2]/p[4]"
+          },
+          {
+            "end": 2216,
+            "type": "TextPositionSelector",
+            "start": 1787
+          },
+          {
+            "type": "TextQuoteSelector",
+            "exact": "Over-specifying the design also leads to estimation errors. Counterintuitive as it may seem, the more specific the work is, the harder it can be to estimate. That’s because making the interface just so can require solving hidden complexities and implementation details that weren’t visible in the mockup. When the scope isn’t variable, the team can’t reconsider a design decision that is turning out to cost more than it’s worth.",
+            "prefix": "ing them this concrete thing.\n\n\n",
+            "suffix": "\n\nWords are too abstract\n       "
+          }
+        ]
+      }
+    ],
+    "document": {
+      "title": [
+        "Shape Up"
+      ]
+    }
+  },
+  {
+    "id": "ZujH0ualEeylrDuRlP0wVg",
+    "authority": "hypothes.is",
+    "url": "https://basecamp.com/shapeup/1.1-chapter-02",
+    "created": "2022-06-07T21:04:21",
+    "updated": "2022-06-07T21:04:21",
+    "title": "Shape Up",
+    "refs": [],
+    "isReply": false,
+    "isPagenote": false,
+    "user": "andymatuschak",
+    "displayName": null,
+    "text": "Q. Why is shaping a closed-door process?\nA. You're noodling: rapidly making and discarding sketches which won't make sense to anyone else yet.",
+    "prefix": "his instead of something else?\n\n",
+    "exact": "Shaping is a closed-door, creative process. You might be alone sketching on paper or in front of a whiteboard with a close collaborator. There’ll be rough diagrams in front of you that nobody outside the room would be able to interpret. When working with a collaborator, you move fast, speak frankly and jump from one promising position to another. It’s that kind of private, rough, early work.",
+    "suffix": "\n\nTwo tracks\n       \n     \n\nYou ",
+    "start": 8290,
+    "end": 8684,
+    "tags": [
+      "sr"
+    ],
+    "group": "VdL8yv9V",
+    "target": [
+      {
+        "source": "https://basecamp.com/shapeup/1.1-chapter-02",
+        "selector": [
+          {
+            "type": "RangeSelector",
+            "endOffset": 394,
+            "startOffset": 0,
+            "endContainer": "/main[1]/div[2]/p[28]",
+            "startContainer": "/main[1]/div[2]/p[28]"
+          },
+          {
+            "end": 8684,
+            "type": "TextPositionSelector",
+            "start": 8290
+          },
+          {
+            "type": "TextQuoteSelector",
+            "exact": "Shaping is a closed-door, creative process. You might be alone sketching on paper or in front of a whiteboard with a close collaborator. There’ll be rough diagrams in front of you that nobody outside the room would be able to interpret. When working with a collaborator, you move fast, speak frankly and jump from one promising position to another. It’s that kind of private, rough, early work.",
+            "prefix": "his instead of something else?\n\n",
+            "suffix": "\n\nTwo tracks\n       \n     \n\nYou "
+          }
+        ]
+      }
+    ],
+    "document": {
+      "title": [
+        "Shape Up"
+      ]
+    }
+  },
+  {
+    "id": "D2-KpOalEeyJBDN-AVPV8Q",
+    "authority": "hypothes.is",
+    "url": "https://basecamp.com/shapeup/1.1-chapter-02",
+    "created": "2022-06-07T21:01:54",
+    "updated": "2022-06-07T21:01:54",
+    "title": "Shape Up",
+    "refs": [],
+    "isReply": false,
+    "isPagenote": false,
+    "user": "andymatuschak",
+    "displayName": null,
+    "text": "Q. What skills are necessary for shaping?\nA. Design (primarily), technical literacy, strategy",
+    "prefix": ", wander around, or get stuck.\n\n",
+    "exact": "Who shapes\n       \n     \n\n",
+    "suffix": "Shaping is creative and integrat",
+    "start": 7261,
+    "end": 7287,
+    "tags": [
+      "sr"
+    ],
+    "group": "VdL8yv9V",
+    "target": [
+      {
+        "source": "https://basecamp.com/shapeup/1.1-chapter-02",
+        "selector": [
+          {
+            "type": "RangeSelector",
+            "endOffset": 0,
+            "startOffset": 0,
+            "endContainer": "/main[1]/div[2]/p[24]",
+            "startContainer": "/main[1]/div[2]/h2[7]"
+          },
+          {
+            "end": 7287,
+            "type": "TextPositionSelector",
+            "start": 7261
+          },
+          {
+            "type": "TextQuoteSelector",
+            "exact": "Who shapes\n       \n     \n\n",
+            "prefix": ", wander around, or get stuck.\n\n",
+            "suffix": "Shaping is creative and integrat"
+          }
+        ]
+      }
+    ],
+    "document": {
+      "title": [
+        "Shape Up"
+      ]
+    }
+  },
+  {
+    "id": "DCKLROalEeyCiHM52u9xyA",
+    "authority": "hypothes.is",
+    "url": "https://basecamp.com/shapeup/1.1-chapter-02",
+    "created": "2022-06-07T21:01:48",
+    "updated": "2022-06-07T21:01:48",
+    "title": "Shape Up",
+    "refs": [],
+    "isReply": false,
+    "isPagenote": false,
+    "user": "andymatuschak",
+    "displayName": null,
+    "text": "Q. In what sense is shaping strategic work?\nA. You need to weigh trade-offs in terms of the effects on your business and your customers.",
+    "prefix": "es for implementing your idea.\n\n",
+    "exact": "It’s also strategic work. Setting the appetite and coming up with a solution requires you to be critical about the problem. What are we trying to solve? Why does it matter? What counts as success? Which customers are affected? What is the cost of doing this instead of something else?",
+    "suffix": "\n\nShaping is a closed-door, crea",
+    "start": 8004,
+    "end": 8288,
+    "tags": [
+      "sr"
+    ],
+    "group": "VdL8yv9V",
+    "target": [
+      {
+        "source": "https://basecamp.com/shapeup/1.1-chapter-02",
+        "selector": [
+          {
+            "type": "RangeSelector",
+            "endOffset": 284,
+            "startOffset": 0,
+            "endContainer": "/main[1]/div[2]/p[27]",
+            "startContainer": "/main[1]/div[2]/p[27]"
+          },
+          {
+            "end": 8288,
+            "type": "TextPositionSelector",
+            "start": 8004
+          },
+          {
+            "type": "TextQuoteSelector",
+            "exact": "It’s also strategic work. Setting the appetite and coming up with a solution requires you to be critical about the problem. What are we trying to solve? Why does it matter? What counts as success? Which customers are affected? What is the cost of doing this instead of something else?",
+            "prefix": "es for implementing your idea.\n\n",
+            "suffix": "\n\nShaping is a closed-door, crea"
+          }
+        ]
+      }
+    ],
+    "document": {
+      "title": [
+        "Shape Up"
+      ]
+    }
+  },
+  {
+    "id": "mwiSPOakEey7bnfQDC1F5Q",
+    "authority": "hypothes.is",
+    "url": "https://basecamp.com/shapeup/1.1-chapter-02",
+    "created": "2022-06-07T20:58:39",
+    "updated": "2022-06-07T20:58:57",
+    "title": "Shape Up",
+    "refs": [],
+    "isReply": false,
+    "isPagenote": false,
+    "user": "andymatuschak",
+    "displayName": null,
+    "text": "Q. Why does shaping require technical literacy?\nA. You need some sense of what's possible, easy, hard, etc to set scope and make trade-offs.",
+    "prefix": "e it fits into existing flows.\n\n",
+    "exact": "You don’t need to be a programmer to shape, but you need to be technically literate. You should be able to judge what’s possible, what’s easy and what’s hard. Knowledge about how the system works will help you see opportunities or obstacles for implementing your idea.",
+    "suffix": "\n\nIt’s also strategic work. Sett",
+    "start": 7734,
+    "end": 8002,
+    "tags": [
+      "sr"
+    ],
+    "group": "VdL8yv9V",
+    "target": [
+      {
+        "source": "https://basecamp.com/shapeup/1.1-chapter-02",
+        "selector": [
+          {
+            "type": "RangeSelector",
+            "endOffset": 268,
+            "startOffset": 0,
+            "endContainer": "/main[1]/div[2]/p[26]",
+            "startContainer": "/main[1]/div[2]/p[26]"
+          },
+          {
+            "end": 8002,
+            "type": "TextPositionSelector",
+            "start": 7734
+          },
+          {
+            "type": "TextQuoteSelector",
+            "exact": "You don’t need to be a programmer to shape, but you need to be technically literate. You should be able to judge what’s possible, what’s easy and what’s hard. Knowledge about how the system works will help you see opportunities or obstacles for implementing your idea.",
+            "prefix": "e it fits into existing flows.\n\n",
+            "suffix": "\n\nIt’s also strategic work. Sett"
+          }
+        ]
+      }
+    ],
+    "document": {
+      "title": [
+        "Shape Up"
+      ]
+    }
+  },
+  {
+    "id": "aRwfCuakEeyFDXOJ5NCKIg",
+    "authority": "hypothes.is",
+    "url": "https://basecamp.com/shapeup/1.1-chapter-02",
+    "created": "2022-06-07T20:57:15",
+    "updated": "2022-06-07T20:57:15",
+    "title": "Shape Up",
+    "refs": [],
+    "isReply": false,
+    "isPagenote": false,
+    "user": "andymatuschak",
+    "displayName": null,
+    "text": "Q. In what sense is shaping primarily design work?\nA. Solving the problem requires specifying how a feature works and how it fits into the existing flows.",
+    "prefix": " with one or two other people.\n\n",
+    "exact": "Shaping is primarily design work. The shaped concept is an interaction design viewed from the user’s perspective. It defines what the feature does, how it works, and where it fits into existing flows.\n\n",
+    "suffix": "You don’t need to be a programme",
+    "start": 7532,
+    "end": 7734,
+    "tags": [
+      "sr"
+    ],
+    "group": "VdL8yv9V",
+    "target": [
+      {
+        "source": "https://basecamp.com/shapeup/1.1-chapter-02",
+        "selector": [
+          {
+            "type": "RangeSelector",
+            "endOffset": 0,
+            "startOffset": 0,
+            "endContainer": "/main[1]/div[2]/p[26]",
+            "startContainer": "/main[1]/div[2]/p[25]"
+          },
+          {
+            "end": 7734,
+            "type": "TextPositionSelector",
+            "start": 7532
+          },
+          {
+            "type": "TextQuoteSelector",
+            "exact": "Shaping is primarily design work. The shaped concept is an interaction design viewed from the user’s perspective. It defines what the feature does, how it works, and where it fits into existing flows.\n\n",
+            "prefix": " with one or two other people.\n\n",
+            "suffix": "You don’t need to be a programme"
+          }
+        ]
+      }
+    ],
+    "document": {
+      "title": [
+        "Shape Up"
+      ]
+    }
+  },
+  {
+    "id": "2AUHcOajEeypvRuHpzei3A",
+    "authority": "hypothes.is",
+    "url": "https://basecamp.com/shapeup/1.1-chapter-02",
+    "created": "2022-06-07T20:53:11",
+    "updated": "2022-06-07T20:53:11",
+    "title": "Shape Up",
+    "refs": [],
+    "isReply": false,
+    "isPagenote": false,
+    "user": "andymatuschak",
+    "displayName": null,
+    "text": "Q. What does it mean that shaped work is \"bounded\"?\nA. It says what _not_ to do, tells the team where to stop.",
+    "prefix": " 3: It’s bounded\n       \n     \n\n",
+    "exact": "Lastly, shaped work indicates what not to do.",
+    "suffix": " It tells the team where to stop",
+    "start": 6715,
+    "end": 6760,
+    "tags": [
+      "sr"
+    ],
+    "group": "VdL8yv9V",
+    "target": [
+      {
+        "source": "https://basecamp.com/shapeup/1.1-chapter-02",
+        "selector": [
+          {
+            "type": "RangeSelector",
+            "endOffset": 45,
+            "startOffset": 0,
+            "endContainer": "/main[1]/div[2]/p[22]",
+            "startContainer": "/main[1]/div[2]/p[22]"
+          },
+          {
+            "end": 6760,
+            "type": "TextPositionSelector",
+            "start": 6715
+          },
+          {
+            "type": "TextQuoteSelector",
+            "exact": "Lastly, shaped work indicates what not to do.",
+            "prefix": " 3: It’s bounded\n       \n     \n\n",
+            "suffix": " It tells the team where to stop"
+          }
+        ]
+      }
+    ],
+    "document": {
+      "title": [
+        "Shape Up"
+      ]
+    }
+  },
+  {
+    "id": "iz7k4uajEeyfK9NylY1n5Q",
+    "authority": "hypothes.is",
+    "url": "https://basecamp.com/shapeup/1.1-chapter-02",
+    "created": "2022-06-07T20:51:03",
+    "updated": "2022-06-07T20:52:50",
+    "title": "Shape Up",
+    "refs": [],
+    "isReply": false,
+    "isPagenote": false,
+    "user": "andymatuschak",
+    "displayName": null,
+    "text": "Q. What does it mean that shaped work is \"solved\"?\nA. The main elements are present (if rough), and obvious risks have been mitigated.",
+    "prefix": "y 2: It’s solved\n       \n     \n\n",
+    "exact": "Despite being rough and unfinished, shaped work has been thought through. All the main elements of the solution are there at the macro level and they connect together. The work isn’t specified down to individual tasks, but the overall solution is spelled out. While surprises might still happen and icebergs could still emerge, there is clear direction showing what to do. Any open questions or rabbit holes we could see up front have been removed to reduce the project’s risk.",
+    "suffix": "\n\nProperty 3: It’s bounded\n     ",
+    "start": 6196,
+    "end": 6673,
+    "tags": [
+      "sr"
+    ],
+    "group": "VdL8yv9V",
+    "target": [
+      {
+        "source": "https://basecamp.com/shapeup/1.1-chapter-02",
+        "selector": [
+          {
+            "type": "RangeSelector",
+            "endOffset": 477,
+            "startOffset": 0,
+            "endContainer": "/main[1]/div[2]/p[21]",
+            "startContainer": "/main[1]/div[2]/p[21]"
+          },
+          {
+            "end": 6673,
+            "type": "TextPositionSelector",
+            "start": 6196
+          },
+          {
+            "type": "TextQuoteSelector",
+            "exact": "Despite being rough and unfinished, shaped work has been thought through. All the main elements of the solution are there at the macro level and they connect together. The work isn’t specified down to individual tasks, but the overall solution is spelled out. While surprises might still happen and icebergs could still emerge, there is clear direction showing what to do. Any open questions or rabbit holes we could see up front have been removed to reduce the project’s risk.",
+            "prefix": "y 2: It’s solved\n       \n     \n\n",
+            "suffix": "\n\nProperty 3: It’s bounded\n     "
+          }
+        ]
+      }
+    ],
+    "document": {
+      "title": [
+        "Shape Up"
+      ]
+    }
+  }
+]]

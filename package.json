@@ -1,0 +1,79 @@
+{
+  "name": "orbit-summer-2022-demo",
+  "version": "0.1.0",
+  "license": "MIT",
+  "dependencies": {
+    "@emotion/babel-preset-css-prop": "^11.10.0",
+    "@emotion/react": "^11.10.4",
+    "@steve2955/anki-apkg-export": "^5.0.0",
+    "approx-string-match": "^2.0.0",
+    "customize-cra": "^1.0.0",
+    "file-saver": "^2.0.5",
+    "katex": "^0.16.2",
+    "node-fetch": "^3.2.6",
+    "react": "^18.1.0",
+    "react-app-rewire-multiple-entry": "^2.2.2",
+    "react-app-rewired": "^2.2.1",
+    "react-dom": "^18.1.0",
+    "react-scripts": "5.0.1",
+    "typescript": "^4.7.3"
+  },
+  "scripts": {
+    "start": "rm -f public/orbit-web-component.js*; ln -s ../../orbit/packages/web-component/build/orbit-web-component.js ./public/orbit-web-component.js; ln -s ../../orbit/packages/web-component/build/orbit-web-component.js.map ./public/orbit-web-component.js.map; react-app-rewired start",
+    "build": "react-app-rewired build",
+    "test": "react-app-rewired test",
+    "deploy": "rm -f public/orbit-web-component.js*; cp ../orbit/packages/web-component/build/orbit-web-component.js* ./public/; yarn run build; vercel",
+    "storybook": "start-storybook -p 6006 -s public"
+  },
+  "engines": {
+    "node": "^14.20.0"
+  },
+  "eslintConfig": {
+    "extends": [
+      "react-app"
+    ],
+    "overrides": [
+      {
+        "files": [
+          "**/*.stories.*"
+        ],
+        "rules": {
+          "import/no-anonymous-default-export": "off"
+        }
+      }
+    ],
+    "ignorePatterns": [
+      "src/vendor/**"
+    ]
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  },
+  "devDependencies": {
+    "@storybook/addon-actions": "^6.4.22",
+    "@storybook/addon-essentials": "^6.4.22",
+    "@storybook/addon-interactions": "^6.4.22",
+    "@storybook/addon-links": "^6.4.22",
+    "@storybook/builder-webpack5": "^6.4.22",
+    "@storybook/manager-webpack5": "^6.4.22",
+    "@storybook/node-logger": "^6.4.22",
+    "@storybook/preset-create-react-app": "^4.1.0",
+    "@storybook/react": "^6.4.22",
+    "@storybook/testing-library": "0.0.13",
+    "@types/file-saver": "^2.0.5",
+    "@types/node": "~14",
+    "@types/react": "^18.0.12",
+    "@types/react-dom": "^18.0.5",
+    "prettier": "^2.7.1",
+    "webpack": "^5.72.0"
+  }
+}

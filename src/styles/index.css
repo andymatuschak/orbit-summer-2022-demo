@@ -1,0 +1,39 @@
+@import "katex/dist/katex.css";
+@import "fonts.css";
+
+html {
+  /* TODO: necessary? */
+  width: 100vw;
+}
+
+body {
+  /* TODO: necessary? */
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  -ms-overflow-style: scrollbar;
+
+  --accent: #D60909;
+  --fg0: rgba(0,0,0,0.8);
+  --fg1: #938976;
+  --fg2: #e3dcd2;
+  --bg1: #F9F6F1;
+  --bg2: #eeeae2;
+  --bg-content: #fdfcfb;
+
+  --fade-transition: opacity 0.1s linear;
+  --expo-timing: cubic-bezier(0.16, 1, 0.3, 1);
+
+  /* TODO: necessary? */
+  width: 100vw;
+  overflow-x: hidden;
+}
+
+#demo-root * {
+  /* The article page can use whatever it wants, but we'll lay out UI with border-box metrics. */
+  box-sizing: border-box;
+}
+
+.katex {
+  /* Shrink math rendering slightly to better visually align with our type styles. */
+  font-size: 1.1em;
+}

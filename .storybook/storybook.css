@@ -1,0 +1,4 @@
+/* Strip away some external Storybook padding that makes it difficult to measure metrics. */
+.sb-main-padded {
+    padding: 0 !important;
+}

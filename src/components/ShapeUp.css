@@ -1,0 +1,8 @@
+orbit-reviewarea {
+    margin-top: 64px;
+}
+
+main .menu {
+    /* Put Shape Up's menu below ours */
+    z-index: 10000;
+}

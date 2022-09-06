@@ -1,0 +1,6 @@
+{
+  "presets": [
+    ["@babel/preset-react", { "runtime": "classic" }],
+    "@emotion/babel-preset-css-prop"
+  ]
+}

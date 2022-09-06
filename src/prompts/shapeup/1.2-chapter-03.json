@@ -1,0 +1,1060 @@
+[[
+  {
+    "id": "azb-ZOdhEey_P9uWZSedDQ",
+    "authority": "hypothes.is",
+    "url": "https://basecamp.com/shapeup/1.2-chapter-03",
+    "created": "2022-06-08T19:30:13",
+    "updated": "2022-06-17T17:13:52",
+    "title": "Shape Up",
+    "refs": [],
+    "isReply": false,
+    "isPagenote": false,
+    "user": "andymatuschak",
+    "displayName": null,
+    "text": "Q. What's wrong with \"redesign\" or \"refactoring\" projects?\nA. Their scope and purpose are usually unclear.",
+    "prefix": "hat’s a grab-bag, not a project.",
+    "exact": " It’s going to be very hard to figure out what it means, where it starts, and where it ends.",
+    "suffix": " Here’s a more productive starti",
+    "start": 10098,
+    "end": 10190,
+    "tags": [
+      "sr"
+    ],
+    "group": "VdL8yv9V",
+    "target": [
+      {
+        "source": "https://basecamp.com/shapeup/1.2-chapter-03",
+        "selector": [
+          {
+            "type": "RangeSelector",
+            "endOffset": 331,
+            "startOffset": 239,
+            "endContainer": "/main[1]/div[2]/p[27]",
+            "startContainer": "/main[1]/div[2]/p[27]"
+          },
+          {
+            "end": 10190,
+            "type": "TextPositionSelector",
+            "start": 10098
+          },
+          {
+            "type": "TextQuoteSelector",
+            "exact": " It’s going to be very hard to figure out what it means, where it starts, and where it ends.",
+            "prefix": "hat’s a grab-bag, not a project.",
+            "suffix": " Here’s a more productive starti"
+          }
+        ]
+      }
+    ],
+    "document": {
+      "title": [
+        "Shape Up"
+      ]
+    }
+  },
+  {
+    "id": "8BYE6OdeEeyZ0H8EKQ5w0w",
+    "authority": "hypothes.is",
+    "url": "https://basecamp.com/shapeup/1.2-chapter-03",
+    "created": "2022-06-08T19:12:28",
+    "updated": "2022-06-17T17:13:38",
+    "title": "Shape Up",
+    "refs": [],
+    "isReply": false,
+    "isPagenote": false,
+    "user": "andymatuschak",
+    "displayName": null,
+    "text": "Q. When appetite demands that a request be solved in tighter scope, what should you ask about the workflow?\nA. Where, specifically, is the current workflow really breaking down?",
+    "prefix": "dar, how do we narrow it down?\n\n",
+    "exact": "In that case we flip from asking “What could we build?” to “What’s really going wrong?”",
+    "suffix": " Sure, a calendar sounds nice. B",
+    "start": 7496,
+    "end": 7583,
+    "tags": [
+      "sr"
+    ],
+    "group": "VdL8yv9V",
+    "target": [
+      {
+        "source": "https://basecamp.com/shapeup/1.2-chapter-03",
+        "selector": [
+          {
+            "type": "RangeSelector",
+            "endOffset": 87,
+            "startOffset": 0,
+            "endContainer": "/main[1]/div[2]/p[20]",
+            "startContainer": "/main[1]/div[2]/p[20]"
+          },
+          {
+            "end": 7583,
+            "type": "TextPositionSelector",
+            "start": 7496
+          },
+          {
+            "type": "TextQuoteSelector",
+            "exact": "In that case we flip from asking “What could we build?” to “What’s really going wrong?”",
+            "prefix": "dar, how do we narrow it down?\n\n",
+            "suffix": " Sure, a calendar sounds nice. B"
+          }
+        ]
+      }
+    ],
+    "document": {
+      "title": [
+        "Shape Up"
+      ]
+    }
+  },
+  {
+    "id": "QUE36uddEeyB9J_inb-CeA",
+    "authority": "hypothes.is",
+    "url": "https://basecamp.com/shapeup/1.2-chapter-03",
+    "created": "2022-06-08T19:00:25",
+    "updated": "2022-06-09T15:14:46",
+    "title": "Shape Up",
+    "refs": [],
+    "isReply": false,
+    "isPagenote": false,
+    "user": "andymatuschak",
+    "displayName": null,
+    "text": "Q. How does appetite affect how shaped ideas are built?\nA. It forces the team to make trade-offs.",
+    "prefix": "ing the shaping process. Later, ",
+    "exact": "when we hand the work to a team, the fixed time box pushes them to make decisions about what is core to the project and what is peripheral or unnecessary.",
+    "suffix": "\n\n“Good” is relative\n       \n   ",
+    "start": 4535,
+    "end": 4689,
+    "tags": [
+      "sr"
+    ],
+    "group": "VdL8yv9V",
+    "target": [
+      {
+        "source": "https://basecamp.com/shapeup/1.2-chapter-03",
+        "selector": [
+          {
+            "type": "RangeSelector",
+            "endOffset": 371,
+            "startOffset": 217,
+            "endContainer": "/main[1]/div[2]/p[11]",
+            "startContainer": "/main[1]/div[2]/p[11]"
+          },
+          {
+            "end": 4689,
+            "type": "TextPositionSelector",
+            "start": 4535
+          },
+          {
+            "type": "TextQuoteSelector",
+            "exact": "when we hand the work to a team, the fixed time box pushes them to make decisions about what is core to the project and what is peripheral or unnecessary.",
+            "prefix": "ing the shaping process. Later, ",
+            "suffix": "\n\n“Good” is relative\n       \n   "
+          }
+        ]
+      }
+    ],
+    "document": {
+      "title": [
+        "Shape Up"
+      ]
+    }
+  },
+  {
+    "id": "3GryzOdfEeyoyGtGigousQ",
+    "authority": "hypothes.is",
+    "url": "https://basecamp.com/shapeup/1.2-chapter-03",
+    "created": "2022-06-08T19:19:04",
+    "updated": "2022-06-09T15:13:20",
+    "title": "Shape Up",
+    "refs": [],
+    "isReply": false,
+    "isPagenote": false,
+    "user": "andymatuschak",
+    "displayName": null,
+    "text": "Q. To narrow down a user's request for a calendar, what did the Basecamp team ask them?\nA. _When_ did she want it? What was she doing then? (Not why she wanted it, or what it should look like…)",
+    "prefix": "mer who asked for this feature. ",
+    "exact": "Instead of asking her why she wants a calendar and what it should look like, we asked her when she wanted a calendar.",
+    "suffix": " What was she doing when the tho",
+    "start": 7890,
+    "end": 8007,
+    "tags": [
+      "sr"
+    ],
+    "group": "VdL8yv9V",
+    "target": [
+      {
+        "source": "https://basecamp.com/shapeup/1.2-chapter-03",
+        "selector": [
+          {
+            "type": "RangeSelector",
+            "endOffset": 203,
+            "startOffset": 86,
+            "endContainer": "/main[1]/div[2]/p[21]",
+            "startContainer": "/main[1]/div[2]/p[21]"
+          },
+          {
+            "end": 8007,
+            "type": "TextPositionSelector",
+            "start": 7890
+          },
+          {
+            "type": "TextQuoteSelector",
+            "exact": "Instead of asking her why she wants a calendar and what it should look like, we asked her when she wanted a calendar.",
+            "prefix": "mer who asked for this feature. ",
+            "suffix": " What was she doing when the tho"
+          }
+        ]
+      }
+    ],
+    "document": {
+      "title": [
+        "Shape Up"
+      ]
+    }
+  },
+  {
+    "id": "NzXUsOdgEeyaVFstTYU2qg",
+    "authority": "hypothes.is",
+    "url": "https://basecamp.com/shapeup/1.2-chapter-03",
+    "created": "2022-06-08T19:21:37",
+    "updated": "2022-06-09T15:12:12",
+    "title": "Shape Up",
+    "refs": [],
+    "isReply": false,
+    "isPagenote": false,
+    "user": "andymatuschak",
+    "displayName": null,
+    "text": "Q. What key insight did the Basecamp team discover when they interviewed the user who requested a calendar?\nA. Her real need was \"find free spaces for appointments\" (not \"create a complete digital calendar\")",
+    "prefix": "dar from her computer at home.\n\n",
+    "exact": "The insight wasn’t “computerize the calendar”—that’s obvious. What we learned was that “see free spaces” was the important thing for this use case, not “do everything a calendar does.”",
+    "suffix": "\n\nThis story, and others like it",
+    "start": 8664,
+    "end": 8848,
+    "tags": [
+      "sr"
+    ],
+    "group": "VdL8yv9V",
+    "target": [
+      {
+        "source": "https://basecamp.com/shapeup/1.2-chapter-03",
+        "selector": [
+          {
+            "type": "RangeSelector",
+            "endOffset": 184,
+            "startOffset": 0,
+            "endContainer": "/main[1]/div[2]/p[23]",
+            "startContainer": "/main[1]/div[2]/p[23]"
+          },
+          {
+            "end": 8848,
+            "type": "TextPositionSelector",
+            "start": 8664
+          },
+          {
+            "type": "TextQuoteSelector",
+            "exact": "The insight wasn’t “computerize the calendar”—that’s obvious. What we learned was that “see free spaces” was the important thing for this use case, not “do everything a calendar does.”",
+            "prefix": "dar from her computer at home.\n\n",
+            "suffix": "\n\nThis story, and others like it"
+          }
+        ]
+      }
+    ],
+    "document": {
+      "title": [
+        "Shape Up"
+      ]
+    }
+  },
+  {
+    "id": "amZNGudgEeyZsIPWI0fEhg",
+    "authority": "hypothes.is",
+    "url": "https://basecamp.com/shapeup/1.2-chapter-03",
+    "created": "2022-06-08T19:23:02",
+    "updated": "2022-06-09T15:11:04",
+    "title": "Shape Up",
+    "refs": [],
+    "isReply": false,
+    "isPagenote": false,
+    "user": "andymatuschak",
+    "displayName": null,
+    "text": "Q. What to do if your appetite is small and you can't distill a clear use case for a product request?\nA. Just work on something else. Maybe future interactions will inspire new ideas.",
+    "prefix": "concept from the last chapter.\n\n",
+    "exact": "What if we can’t figure out a specific pain point or use case? Our appetite can also tell us how much research is worthwhile. If it’s not critical now and we can’t get our hands around the problem, we’ll walk away from it and work on something else. Maybe in the future a new request or story will pop up that gives us better insight into the problem.",
+    "suffix": "\n\nWatch out for grab-bags\n      ",
+    "start": 9467,
+    "end": 9818,
+    "tags": [
+      "sr"
+    ],
+    "group": "VdL8yv9V",
+    "target": [
+      {
+        "source": "https://basecamp.com/shapeup/1.2-chapter-03",
+        "selector": [
+          {
+            "type": "RangeSelector",
+            "endOffset": 351,
+            "startOffset": 0,
+            "endContainer": "/main[1]/div[2]/p[26]",
+            "startContainer": "/main[1]/div[2]/p[26]"
+          },
+          {
+            "end": 9818,
+            "type": "TextPositionSelector",
+            "start": 9467
+          },
+          {
+            "type": "TextQuoteSelector",
+            "exact": "What if we can’t figure out a specific pain point or use case? Our appetite can also tell us how much research is worthwhile. If it’s not critical now and we can’t get our hands around the problem, we’ll walk away from it and work on something else. Maybe in the future a new request or story will pop up that gives us better insight into the problem.",
+            "prefix": "concept from the last chapter.\n\n",
+            "suffix": "\n\nWatch out for grab-bags\n      "
+          }
+        ]
+      }
+    ],
+    "document": {
+      "title": [
+        "Shape Up"
+      ]
+    }
+  },
+  {
+    "id": "09lvnOdhEeyGf6NyuP0ppA",
+    "authority": "hypothes.is",
+    "url": "https://basecamp.com/shapeup/1.2-chapter-03",
+    "created": "2022-06-08T19:33:09",
+    "updated": "2022-06-09T15:08:58",
+    "title": "Shape Up",
+    "refs": [],
+    "isReply": false,
+    "isPagenote": false,
+    "user": "andymatuschak",
+    "displayName": null,
+    "text": "Q. Give an example of a more viable way to frame a project to \"redesign the Files section\".\nA. e.g. \"Make it easier to share multiple files\"",
+    "prefix": "more productive starting point: ",
+    "exact": "“We need to rethink the Files section because sharing multiple files takes too many steps.”",
+    "suffix": " Now we can start asking: What’s",
+    "start": 10232,
+    "end": 10323,
+    "tags": [
+      "sr"
+    ],
+    "group": "VdL8yv9V",
+    "target": [
+      {
+        "source": "https://basecamp.com/shapeup/1.2-chapter-03",
+        "selector": [
+          {
+            "type": "RangeSelector",
+            "endOffset": 464,
+            "startOffset": 373,
+            "endContainer": "/main[1]/div[2]/p[27]",
+            "startContainer": "/main[1]/div[2]/p[27]"
+          },
+          {
+            "end": 10323,
+            "type": "TextPositionSelector",
+            "start": 10232
+          },
+          {
+            "type": "TextQuoteSelector",
+            "exact": "“We need to rethink the Files section because sharing multiple files takes too many steps.”",
+            "prefix": "more productive starting point: ",
+            "suffix": " Now we can start asking: What’s"
+          }
+        ]
+      }
+    ],
+    "document": {
+      "title": [
+        "Shape Up"
+      ]
+    }
+  },
+  {
+    "id": "GTdg-OddEeyGjxdcmw-p4Q",
+    "authority": "hypothes.is",
+    "url": "https://basecamp.com/shapeup/1.2-chapter-03",
+    "created": "2022-06-08T18:59:18",
+    "updated": "2022-06-09T15:01:15",
+    "title": "Shape Up",
+    "refs": [],
+    "isReply": false,
+    "isPagenote": false,
+    "user": "andymatuschak",
+    "displayName": null,
+    "text": "Q. How does appetite affect the shaping process?\nA. It constrains the design of solutions.",
+    "prefix": " to building and shipping them. ",
+    "exact": "First, the appetite constrains what kind of a solution we design during the shaping process.",
+    "suffix": " Later, when we hand the work to",
+    "start": 4435,
+    "end": 4527,
+    "tags": [
+      "sr"
+    ],
+    "group": "VdL8yv9V",
+    "target": [
+      {
+        "source": "https://basecamp.com/shapeup/1.2-chapter-03",
+        "selector": [
+          {
+            "type": "RangeSelector",
+            "endOffset": 209,
+            "startOffset": 117,
+            "endContainer": "/main[1]/div[2]/p[11]",
+            "startContainer": "/main[1]/div[2]/p[11]"
+          },
+          {
+            "end": 4527,
+            "type": "TextPositionSelector",
+            "start": 4435
+          },
+          {
+            "type": "TextQuoteSelector",
+            "exact": "First, the appetite constrains what kind of a solution we design during the shaping process.",
+            "prefix": " to building and shipping them. ",
+            "suffix": " Later, when we hand the work to"
+          }
+        ]
+      }
+    ],
+    "document": {
+      "title": [
+        "Shape Up"
+      ]
+    }
+  },
+  {
+    "id": "2j6P8udcEeyzZOMN1L95rQ",
+    "authority": "hypothes.is",
+    "url": "https://basecamp.com/shapeup/1.2-chapter-03",
+    "created": "2022-06-08T18:57:32",
+    "updated": "2022-06-09T15:00:47",
+    "title": "Shape Up",
+    "refs": [],
+    "isReply": false,
+    "isPagenote": false,
+    "user": "andymatuschak",
+    "displayName": null,
+    "text": "Q. To plan based on appetite, we use this principle: \"??? time, ??? scope\".\nA. fixed, variable",
+    "prefix": "straint on the design process.\n\n",
+    "exact": "This principle, called “fixed time, variable scope,” ",
+    "suffix": "is key to successfully defining ",
+    "start": 3541,
+    "end": 3594,
+    "tags": [
+      "sr"
+    ],
+    "group": "VdL8yv9V",
+    "target": [
+      {
+        "source": "https://basecamp.com/shapeup/1.2-chapter-03",
+        "selector": [
+          {
+            "type": "RangeSelector",
+            "endOffset": 53,
+            "startOffset": 0,
+            "endContainer": "/main[1]/div[2]/p[10]",
+            "startContainer": "/main[1]/div[2]/p[10]"
+          },
+          {
+            "end": 3594,
+            "type": "TextPositionSelector",
+            "start": 3541
+          },
+          {
+            "type": "TextQuoteSelector",
+            "exact": "This principle, called “fixed time, variable scope,” ",
+            "prefix": "straint on the design process.\n\n",
+            "suffix": "is key to successfully defining "
+          }
+        ]
+      }
+    ],
+    "document": {
+      "title": [
+        "Shape Up"
+      ]
+    }
+  },
+  {
+    "id": "qUf4rOdcEeyDezet54iFsA",
+    "authority": "hypothes.is",
+    "url": "https://basecamp.com/shapeup/1.2-chapter-03",
+    "created": "2022-06-08T18:56:10",
+    "updated": "2022-06-09T14:59:29",
+    "title": "Shape Up",
+    "refs": [],
+    "isReply": false,
+    "isPagenote": false,
+    "user": "andymatuschak",
+    "displayName": null,
+    "text": "Q. \"Estimates start with a ??? and end with a ???. Appetites start with a ??? and end with a ???.\"\nA. design, number; number, design",
+    "prefix": ", variable scope\n       \n     \n\n",
+    "exact": "An appetite is completely different from an estimate. Estimates start with a design and end with a number. Appetites start with a number and end with a design. We use the appetite as a creative constraint on the design process.\n\n",
+    "suffix": "This principle, called “fixed ti",
+    "start": 3312,
+    "end": 3541,
+    "tags": [
+      "sr"
+    ],
+    "group": "VdL8yv9V",
+    "target": [
+      {
+        "source": "https://basecamp.com/shapeup/1.2-chapter-03",
+        "selector": [
+          {
+            "type": "RangeSelector",
+            "endOffset": 0,
+            "startOffset": 0,
+            "endContainer": "/main[1]/div[2]/p[10]",
+            "startContainer": "/main[1]/div[2]/p[9]"
+          },
+          {
+            "end": 3541,
+            "type": "TextPositionSelector",
+            "start": 3312
+          },
+          {
+            "type": "TextQuoteSelector",
+            "exact": "An appetite is completely different from an estimate. Estimates start with a design and end with a number. Appetites start with a number and end with a design. We use the appetite as a creative constraint on the design process.\n\n",
+            "prefix": ", variable scope\n       \n     \n\n",
+            "suffix": "This principle, called “fixed ti"
+          }
+        ]
+      }
+    ],
+    "document": {
+      "title": [
+        "Shape Up"
+      ]
+    }
+  },
+  {
+    "id": "khH1SugEEeyLso91dxO9RQ",
+    "authority": "hypothes.is",
+    "url": "https://basecamp.com/shapeup/1.2-chapter-03",
+    "created": "2022-06-09T14:58:06",
+    "updated": "2022-06-09T14:58:26",
+    "title": "Shape Up",
+    "refs": [],
+    "isReply": false,
+    "isPagenote": false,
+    "user": "andymatuschak",
+    "displayName": null,
+    "text": "Q. What if a project's scope doesn't fit in a six-week cycle?\nA. Hammer it down, or break off a meaningful piece that can fit.",
+    "prefix": "e-size team a full six-weeks.\n\n\n",
+    "exact": "In rare cases where the scope is so big that a six-week project isn’t conceivable, we’ll try to hammer it down by narrowing the problem definition. If we still can’t shrink the scope, we’ll break off a meaningful part of the project that we can shape to a six-week appetite.",
+    "suffix": "\n\nFixed time, variable scope\n   ",
+    "start": 2994,
+    "end": 3268,
+    "tags": [
+      "sr"
+    ],
+    "group": "VdL8yv9V",
+    "target": [
+      {
+        "source": "https://basecamp.com/shapeup/1.2-chapter-03",
+        "selector": [
+          {
+            "type": "RangeSelector",
+            "endOffset": 274,
+            "startOffset": 0,
+            "endContainer": "/main[1]/div[2]/p[8]",
+            "startContainer": "/main[1]/div[2]/p[8]"
+          },
+          {
+            "end": 3268,
+            "type": "TextPositionSelector",
+            "start": 2994
+          },
+          {
+            "type": "TextQuoteSelector",
+            "exact": "In rare cases where the scope is so big that a six-week project isn’t conceivable, we’ll try to hammer it down by narrowing the problem definition. If we still can’t shrink the scope, we’ll break off a meaningful part of the project that we can shape to a six-week appetite.",
+            "prefix": "e-size team a full six-weeks.\n\n\n",
+            "suffix": "\n\nFixed time, variable scope\n   "
+          }
+        ]
+      }
+    ],
+    "document": {
+      "title": [
+        "Shape Up"
+      ]
+    }
+  },
+  {
+    "id": "W_WJ4OgEEeyAZofnJBlK-Q",
+    "authority": "hypothes.is",
+    "url": "https://basecamp.com/shapeup/1.2-chapter-03",
+    "created": "2022-06-09T14:56:36",
+    "updated": "2022-06-09T14:56:36",
+    "title": "Shape Up",
+    "refs": [],
+    "isReply": false,
+    "isPagenote": false,
+    "user": "andymatuschak",
+    "displayName": null,
+    "text": "Q. What's the first step of shaping?\nA. Setting boundaries.",
+    "prefix": "  \n\n    \n      \n      \n\n      \n\n",
+    "exact": "The first step of shaping is setting boundaries on what we’re trying to do.",
+    "suffix": " The conversations we have are g",
+    "start": 1116,
+    "end": 1191,
+    "tags": [
+      "sr"
+    ],
+    "group": "VdL8yv9V",
+    "target": [
+      {
+        "source": "https://basecamp.com/shapeup/1.2-chapter-03",
+        "selector": [
+          {
+            "type": "RangeSelector",
+            "endOffset": 75,
+            "startOffset": 0,
+            "endContainer": "/main[1]/div[2]/p[2]",
+            "startContainer": "/main[1]/div[2]/p[2]"
+          },
+          {
+            "end": 1191,
+            "type": "TextPositionSelector",
+            "start": 1116
+          },
+          {
+            "type": "TextQuoteSelector",
+            "exact": "The first step of shaping is setting boundaries on what we’re trying to do.",
+            "prefix": "  \n\n    \n      \n      \n\n      \n\n",
+            "suffix": " The conversations we have are g"
+          }
+        ]
+      }
+    ],
+    "document": {
+      "title": [
+        "Shape Up"
+      ]
+    }
+  },
+  {
+    "id": "Nma10OdhEey4B59l2pwW5w",
+    "authority": "hypothes.is",
+    "url": "https://basecamp.com/shapeup/1.2-chapter-03",
+    "created": "2022-06-08T19:28:45",
+    "updated": "2022-06-08T19:28:45",
+    "title": "Shape Up",
+    "refs": [],
+    "isReply": false,
+    "isPagenote": false,
+    "user": "andymatuschak",
+    "displayName": null,
+    "text": "Q. Give an example of a \"grab-bag\" project definition.\nA. e.g. \"Redesign the Files section\", \"Files 2.0\"",
+    "prefix": "ut for grab-bags\n       \n     \n\n",
+    "exact": "When it comes to unclear ideas, the worst offenders are “redesigns” or “refactorings” that aren’t driven by a single problem or use case.  When someone proposes something like “redesign the Files section,",
+    "suffix": "” that’s a grab-bag, not a proje",
+    "start": 9859,
+    "end": 10063,
+    "tags": [
+      "sr"
+    ],
+    "group": "VdL8yv9V",
+    "target": [
+      {
+        "source": "https://basecamp.com/shapeup/1.2-chapter-03",
+        "selector": [
+          {
+            "type": "RangeSelector",
+            "endOffset": 204,
+            "startOffset": 0,
+            "endContainer": "/main[1]/div[2]/p[27]",
+            "startContainer": "/main[1]/div[2]/p[27]"
+          },
+          {
+            "end": 10063,
+            "type": "TextPositionSelector",
+            "start": 9859
+          },
+          {
+            "type": "TextQuoteSelector",
+            "exact": "When it comes to unclear ideas, the worst offenders are “redesigns” or “refactorings” that aren’t driven by a single problem or use case.  When someone proposes something like “redesign the Files section,",
+            "prefix": "ut for grab-bags\n       \n     \n\n",
+            "suffix": "” that’s a grab-bag, not a proje"
+          }
+        ]
+      }
+    ],
+    "document": {
+      "title": [
+        "Shape Up"
+      ]
+    }
+  },
+  {
+    "id": "h_wYaudfEeypyYsH3tO5kA",
+    "authority": "hypothes.is",
+    "url": "https://basecamp.com/shapeup/1.2-chapter-03",
+    "created": "2022-06-08T19:16:43",
+    "updated": "2022-06-08T19:16:43",
+    "title": "Shape Up",
+    "refs": [],
+    "isReply": false,
+    "isPagenote": false,
+    "user": "andymatuschak",
+    "displayName": null,
+    "text": "Q. In the example of a customer requesting more complex permission rules, what did Basecamp discover was really going on, and how did that affect the solution?\nA. Someone had accidentally archived a file; instead of creating a complex permission system, they added a simple warning.",
+    "prefix": " understanding of the problem.\n\n",
+    "exact": "We once had a customer ask us for more complex permission rules. It could easily have taken six weeks to build the change she wanted. Instead of taking the request at face value, we dug deeper. It turned out that someone had archived a file without knowing the file would disappear for everyone else using the system. Instead of creating a rule to prevent some people from archiving, we realized we could put a warning on the archive action itself that explains the impact. That’s a one-day change instead of a six-week project.\n\n",
+    "suffix": "Another example is the “calendar",
+    "start": 6652,
+    "end": 7182,
+    "tags": [
+      "sr"
+    ],
+    "group": "VdL8yv9V",
+    "target": [
+      {
+        "source": "https://basecamp.com/shapeup/1.2-chapter-03",
+        "selector": [
+          {
+            "type": "RangeSelector",
+            "endOffset": 0,
+            "startOffset": 0,
+            "endContainer": "/main[1]/div[2]/p[19]",
+            "startContainer": "/main[1]/div[2]/p[18]"
+          },
+          {
+            "end": 7182,
+            "type": "TextPositionSelector",
+            "start": 6652
+          },
+          {
+            "type": "TextQuoteSelector",
+            "exact": "We once had a customer ask us for more complex permission rules. It could easily have taken six weeks to build the change she wanted. Instead of taking the request at face value, we dug deeper. It turned out that someone had archived a file without knowing the file would disappear for everyone else using the system. Instead of creating a rule to prevent some people from archiving, we realized we could put a warning on the archive action itself that explains the impact. That’s a one-day change instead of a six-week project.\n\n",
+            "prefix": " understanding of the problem.\n\n",
+            "suffix": "Another example is the “calendar"
+          }
+        ]
+      }
+    ],
+    "document": {
+      "title": [
+        "Shape Up"
+      ]
+    }
+  },
+  {
+    "id": "QD9ySOdeEeyZpRfNZND4NQ",
+    "authority": "hypothes.is",
+    "url": "https://basecamp.com/shapeup/1.2-chapter-03",
+    "created": "2022-06-08T19:07:33",
+    "updated": "2022-06-08T19:08:45",
+    "title": "Shape Up",
+    "refs": [],
+    "isReply": false,
+    "isPagenote": false,
+    "user": "andymatuschak",
+    "displayName": null,
+    "text": "Q. What's the default reaction to raw product ideas at Basecamp?\nA. A soft \"no\"—\"maybe someday,\" until someone's inspired to work on the idea enough to bet resources on.",
+    "prefix": "ding to raw ideas\n       \n     \n",
+    "exact": "Our default response to any idea that comes up should be: “Interesting. Maybe some day.” In other words, a very soft “no” that leaves all our options open. We don’t put it in a backlog. We give it space so we can learn whether it’s really important and what it might entail.\n\n",
+    "suffix": "It’s too early to say “yes” or “",
+    "start": 5492,
+    "end": 5768,
+    "tags": [
+      "sr"
+    ],
+    "group": "VdL8yv9V",
+    "target": [
+      {
+        "source": "https://basecamp.com/shapeup/1.2-chapter-03",
+        "selector": [
+          {
+            "type": "RangeSelector",
+            "endOffset": 0,
+            "startOffset": 0,
+            "endContainer": "/main[1]/div[2]/p[15]",
+            "startContainer": "/main[1]/div[2]/p[14]"
+          },
+          {
+            "end": 5768,
+            "type": "TextPositionSelector",
+            "start": 5492
+          },
+          {
+            "type": "TextQuoteSelector",
+            "exact": "Our default response to any idea that comes up should be: “Interesting. Maybe some day.” In other words, a very soft “no” that leaves all our options open. We don’t put it in a backlog. We give it space so we can learn whether it’s really important and what it might entail.\n\n",
+            "prefix": "ding to raw ideas\n       \n     \n",
+            "suffix": "It’s too early to say “yes” or “"
+          }
+        ]
+      }
+    ],
+    "document": {
+      "title": [
+        "Shape Up"
+      ]
+    }
+  },
+  {
+    "id": "ZMpH3OdeEeyaTadxI5yLgg",
+    "authority": "hypothes.is",
+    "url": "https://basecamp.com/shapeup/1.2-chapter-03",
+    "created": "2022-06-08T19:08:34",
+    "updated": "2022-06-08T19:08:34",
+    "title": "Shape Up",
+    "refs": [],
+    "isReply": false,
+    "isPagenote": false,
+    "user": "andymatuschak",
+    "displayName": null,
+    "text": "Q. What's the default place raw product ideas are stored at Basecamp?\nA. Nowhere: they don't use a backlog because they don't want to end up with an ever-growing pile of underspecified work.",
+    "prefix": "ding to raw ideas\n       \n     \n",
+    "exact": "Our default response to any idea that comes up should be: “Interesting. Maybe some day.” In other words, a very soft “no” that leaves all our options open. We don’t put it in a backlog. We give it space so we can learn whether it’s really important and what it might entail.",
+    "suffix": "\n\nIt’s too early to say “yes” or",
+    "start": 5492,
+    "end": 5766,
+    "tags": [
+      "sr"
+    ],
+    "group": "VdL8yv9V",
+    "target": [
+      {
+        "source": "https://basecamp.com/shapeup/1.2-chapter-03",
+        "selector": [
+          {
+            "type": "RangeSelector",
+            "endOffset": 274,
+            "startOffset": 0,
+            "endContainer": "/main[1]/div[2]/p[14]/hypothesis-highlight[1]",
+            "startContainer": "/main[1]/div[2]/p[14]/hypothesis-highlight[1]"
+          },
+          {
+            "end": 5766,
+            "type": "TextPositionSelector",
+            "start": 5492
+          },
+          {
+            "type": "TextQuoteSelector",
+            "exact": "Our default response to any idea that comes up should be: “Interesting. Maybe some day.” In other words, a very soft “no” that leaves all our options open. We don’t put it in a backlog. We give it space so we can learn whether it’s really important and what it might entail.",
+            "prefix": "ding to raw ideas\n       \n     \n",
+            "suffix": "\n\nIt’s too early to say “yes” or"
+          }
+        ]
+      }
+    ],
+    "document": {
+      "title": [
+        "Shape Up"
+      ]
+    }
+  },
+  {
+    "id": "aVtrJOddEeyGbVfPajWNPg",
+    "authority": "hypothes.is",
+    "url": "https://basecamp.com/shapeup/1.2-chapter-03",
+    "created": "2022-06-08T19:01:32",
+    "updated": "2022-06-08T19:01:32",
+    "title": "Shape Up",
+    "refs": [],
+    "isReply": false,
+    "isPagenote": false,
+    "user": "andymatuschak",
+    "displayName": null,
+    "text": "Q. We can only judge if a solution is \"good\" in the context of…?\nA. …how much time we want to spend on it.",
+    "prefix": "a hurry, a hot dog is perfect.\n\n",
+    "exact": "The amount of time we set for our appetite is going to lead us to different solutions. We could model a whole set of database columns in the fancy version, or just provide a flat textarea in the simple version. We could redesign the main landing page to accommodate a new feature, or we could push it back to a screen with fewer design constraints. We can only judge what is a “good” solution in the context of how much time we want to spend and how important it is.\n\n",
+    "suffix": "Responding to raw ideas\n       \n",
+    "start": 4986,
+    "end": 5454,
+    "tags": [
+      "sr"
+    ],
+    "group": "VdL8yv9V",
+    "target": [
+      {
+        "source": "https://basecamp.com/shapeup/1.2-chapter-03",
+        "selector": [
+          {
+            "type": "RangeSelector",
+            "endOffset": 0,
+            "startOffset": 0,
+            "endContainer": "/main[1]/div[2]/h2[4]",
+            "startContainer": "/main[1]/div[2]/p[13]"
+          },
+          {
+            "end": 5454,
+            "type": "TextPositionSelector",
+            "start": 4986
+          },
+          {
+            "type": "TextQuoteSelector",
+            "exact": "The amount of time we set for our appetite is going to lead us to different solutions. We could model a whole set of database columns in the fancy version, or just provide a flat textarea in the simple version. We could redesign the main landing page to accommodate a new feature, or we could push it back to a screen with fewer design constraints. We can only judge what is a “good” solution in the context of how much time we want to spend and how important it is.\n\n",
+            "prefix": "a hurry, a hot dog is perfect.\n\n",
+            "suffix": "Responding to raw ideas\n       \n"
+          }
+        ]
+      }
+    ],
+    "document": {
+      "title": [
+        "Shape Up"
+      ]
+    }
+  },
+  {
+    "id": "jGIlJOdbEey7PzPCVCzVJQ",
+    "authority": "hypothes.is",
+    "url": "https://basecamp.com/shapeup/1.2-chapter-03",
+    "created": "2022-06-08T18:48:12",
+    "updated": "2022-06-08T18:48:12",
+    "title": "Shape Up",
+    "refs": [],
+    "isReply": false,
+    "isPagenote": false,
+    "user": "andymatuschak",
+    "displayName": null,
+    "text": "Q. How are \"small batch\" projects handled in the six week cycles?\nA. Several are combined in a single six-week cycle.",
+    "prefix": " the appetite in two sizes:\n\n\n  ",
+    "exact": "Small Batch: This is a project that a team of one designer and one or two programmers can build in one or two weeks. We batch these together into a six week cycle (more on that later).\n  Big Batch: This project takes the same-size team a full six-weeks.\n\n\n",
+    "suffix": "In rare cases where the scope is",
+    "start": 2738,
+    "end": 2994,
+    "tags": [
+      "sr"
+    ],
+    "group": "VdL8yv9V",
+    "target": [
+      {
+        "source": "https://basecamp.com/shapeup/1.2-chapter-03",
+        "selector": [
+          {
+            "type": "RangeSelector",
+            "endOffset": 0,
+            "startOffset": 0,
+            "endContainer": "/main[1]/div[2]/p[8]",
+            "startContainer": "/main[1]/div[2]/ul[1]/li[1]/code[1]/hypothesis-highlight[1]"
+          },
+          {
+            "end": 2994,
+            "type": "TextPositionSelector",
+            "start": 2738
+          },
+          {
+            "type": "TextQuoteSelector",
+            "exact": "Small Batch: This is a project that a team of one designer and one or two programmers can build in one or two weeks. We batch these together into a six week cycle (more on that later).\n  Big Batch: This project takes the same-size team a full six-weeks.\n\n\n",
+            "prefix": " the appetite in two sizes:\n\n\n  ",
+            "suffix": "In rare cases where the scope is"
+          }
+        ]
+      }
+    ],
+    "document": {
+      "title": [
+        "Shape Up"
+      ]
+    }
+  },
+  {
+    "id": "fLcRPudbEeyGhG9BfGbL8Q",
+    "authority": "hypothes.is",
+    "url": "https://basecamp.com/shapeup/1.2-chapter-03",
+    "created": "2022-06-08T18:47:46",
+    "updated": "2022-06-08T18:47:46",
+    "title": "Shape Up",
+    "refs": [],
+    "isReply": false,
+    "isPagenote": false,
+    "user": "andymatuschak",
+    "displayName": null,
+    "text": "Q. What standard sizes does Basecamp usually use for appetite?\nA. Small batch (takes a team 1-2 weeks); big batch (same team, 6 weeks)",
+    "prefix": " the appetite in two sizes:\n\n\n  ",
+    "exact": "Small Batch: This is a project that a team of one designer and one or two programmers can build in one or two weeks. We batch these together into a six week cycle (more on that later).\n  Big Batch: This project takes the same-size team a full six-weeks.\n\n\n",
+    "suffix": "In rare cases where the scope is",
+    "start": 2738,
+    "end": 2994,
+    "tags": [
+      "sr"
+    ],
+    "group": "VdL8yv9V",
+    "target": [
+      {
+        "source": "https://basecamp.com/shapeup/1.2-chapter-03",
+        "selector": [
+          {
+            "type": "RangeSelector",
+            "endOffset": 0,
+            "startOffset": 0,
+            "endContainer": "/main[1]/div[2]/p[8]",
+            "startContainer": "/main[1]/div[2]/ul[1]/li[1]/code[1]"
+          },
+          {
+            "end": 2994,
+            "type": "TextPositionSelector",
+            "start": 2738
+          },
+          {
+            "type": "TextQuoteSelector",
+            "exact": "Small Batch: This is a project that a team of one designer and one or two programmers can build in one or two weeks. We batch these together into a six week cycle (more on that later).\n  Big Batch: This project takes the same-size team a full six-weeks.\n\n\n",
+            "prefix": " the appetite in two sizes:\n\n\n  ",
+            "suffix": "In rare cases where the scope is"
+          }
+        ]
+      }
+    ],
+    "document": {
+      "title": [
+        "Shape Up"
+      ]
+    }
+  },
+  {
+    "id": "WqFkMudbEeyosk_MeaMpFQ",
+    "authority": "hypothes.is",
+    "url": "https://basecamp.com/shapeup/1.2-chapter-03",
+    "created": "2022-06-08T18:46:48",
+    "updated": "2022-06-08T18:46:48",
+    "title": "Shape Up",
+    "refs": [],
+    "isReply": false,
+    "isPagenote": false,
+    "user": "andymatuschak",
+    "displayName": null,
+    "text": "Q. What's meant by \"appetite\"?\nA. A time budget (assuming a standard team size)",
+    "prefix": "implement it as a minor tweak?\n\n",
+    "exact": "We call this the appetite. You can think of the appetite as a time budget for a standard team size. We usually set the appetite in two sizes:\n\n\n  ",
+    "suffix": "Small Batch: This is a project t",
+    "start": 2592,
+    "end": 2738,
+    "tags": [],
+    "group": "VdL8yv9V",
+    "target": [
+      {
+        "source": "https://basecamp.com/shapeup/1.2-chapter-03",
+        "selector": [
+          {
+            "type": "RangeSelector",
+            "endOffset": 0,
+            "startOffset": 0,
+            "endContainer": "/main[1]/div[2]/ul[1]/li[1]/code[1]",
+            "startContainer": "/main[1]/div[2]/p[7]"
+          },
+          {
+            "end": 2738,
+            "type": "TextPositionSelector",
+            "start": 2592
+          },
+          {
+            "type": "TextQuoteSelector",
+            "exact": "We call this the appetite. You can think of the appetite as a time budget for a standard team size. We usually set the appetite in two sizes:\n\n\n  ",
+            "prefix": "implement it as a minor tweak?\n\n",
+            "suffix": "Small Batch: This is a project t"
+          }
+        ]
+      }
+    ],
+    "document": {
+      "title": [
+        "Shape Up"
+      ]
+    }
+  }
+]]
