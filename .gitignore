@@ -23,3 +23,6 @@ yarn-debug.log*
 yarn-error.log*
 .vercel
 public/orbit-web-component.js*
+
+# non open source
+src/static/fonts/drweb-*
