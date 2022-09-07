@@ -15,7 +15,7 @@ function ContextualMenuItem({ title, onClick }: ContextualMenuItemProps) {
       css={css`
         width: 100%;
         text-align: left;
-        background-color: var(--bg2);
+        background-color: var(--bgSecondary);
         font-family: "Dr-ExtraBold";
         font-size: 16px;
         line-height: 20px;
@@ -23,11 +23,11 @@ function ContextualMenuItem({ title, onClick }: ContextualMenuItemProps) {
         border: none;
         padding: 8px 12px 8px 12px;
         margin: 0;
-        color: var(--accent);
+        color: var(--accentPrimary);
         white-space: nowrap;
 
         &:hover {
-          background-color: var(--bg1);
+          background-color: var(--bgPrimary);
         }
 
         & span {

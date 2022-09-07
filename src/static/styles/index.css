@@ -12,16 +12,21 @@ body {
   -moz-osx-font-smoothing: grayscale;
   -ms-overflow-style: scrollbar;
 
-  --accent: #D60909;
-  --fg0: rgba(0,0,0,0.8);
-  --fg1: #938976;
-  --fg2: #e3dcd2;
-  --bg1: #F9F6F1;
-  --bg2: #eeeae2;
-  --bg-content: #fdfcfb;
+  --accentPrimary: #D60909;
+  --accentSecondary: #A06813;
+  --fgPrimary: rgba(0,0,0,0.8);
+  --fgSecondaryLarge: #908672;
+  --fgSecondarySmall: #826D4E;
+  --fgTertiary: #E2DCD2;
+  --fgDisabled: #A0A0A0;
+  --bgPrimary: #F9F6F1;
+  --bgSecondary: #eeeae2;
+  --bgContent: #fdfcfb;
+  --hoverLayer: rgba(92, 56, 0, 0.04);
+  --pressedLayer: rgba(92, 56, 0, 0.14);
 
-  --fade-transition: opacity 0.1s linear;
-  --expo-timing: cubic-bezier(0.16, 1, 0.3, 1);
+  --fadeTransition: opacity 0.1s linear;
+  --expoTiming: cubic-bezier(0.16, 1, 0.3, 1); /* or, rather, a simulation of it */
 
   /* TODO: necessary? */
   width: 100vw;
