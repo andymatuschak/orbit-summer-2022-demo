@@ -1,6 +1,6 @@
 import { css } from "@emotion/react";
 import React from "react";
-import zIndices from "../app/zIndices";
+import zIndices from "./common/zIndices";
 
 interface ContextualMenuItemProps {
   title: string;

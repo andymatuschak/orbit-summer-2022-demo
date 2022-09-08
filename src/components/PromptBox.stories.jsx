@@ -20,5 +20,6 @@ const samplePrompt = {
 
 export const Primary = Template.bind({});
 Primary.args = {
-    prompt: samplePrompt
+    prompt: samplePrompt,
+    savePrompt: () => null
 };
