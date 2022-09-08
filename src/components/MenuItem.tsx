@@ -1,6 +1,6 @@
 import React from "react";
 import { hoverAndActiveStyles } from "./common/hoverAndActiveStyles";
-import { Label, LabelColor } from "./Type";
+import { Label, LabelColor, LabelSmall } from "./Type";
 
 export interface MenuItemProps {
   title: string;
@@ -24,7 +24,16 @@ export default function MenuItem(props: MenuItemProps) {
         },
       ]}
     >
-      <Label text={props.title} color={LabelColor.AccentPrimary}></Label>
+      <Label text={props.title} color={LabelColor.AccentPrimary} />
+      {props.subtitle && (
+        <>
+          <div css={{ height: 8 }} />
+          <LabelSmall
+            text={props.subtitle}
+            color={LabelColor.FGSecondaryLarge}
+          />
+        </>
+      )}
     </button>
   );
 }
