@@ -5,6 +5,7 @@
   "dependencies": {
     "@emotion/babel-preset-css-prop": "^11.10.0",
     "@emotion/react": "^11.10.4",
+    "@emotion/styled": "^11.10.4",
     "@steve2955/anki-apkg-export": "^5.0.0",
     "approx-string-match": "^2.0.0",
     "customize-cra": "^1.0.0",

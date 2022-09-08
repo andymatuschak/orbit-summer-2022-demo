@@ -1,5 +1,6 @@
 import { css } from "@emotion/react";
 import React from "react";
+import zIndices from "./common/zIndices";
 
 interface ContextualMenuItemProps {
   title: string;
@@ -39,6 +40,8 @@ function ContextualMenuItem({ title, onClick }: ContextualMenuItemProps) {
         &:active span {
           opacity: 0.2;
         }
+
+        z-index: ${zIndices.displayOverContent};
       `}
     >
       <span>{title}</span>
