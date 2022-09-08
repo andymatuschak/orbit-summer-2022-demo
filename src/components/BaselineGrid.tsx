@@ -20,6 +20,8 @@ export default function WithBaselineGrid({
           backgroundImage: `url(${BaselineGrid})`,
           backgroundSize: "4px 4px",
           opacity: 0.5,
+          zIndex: 9999,
+          pointerEvents: "none",
         }}
       ></div>
       {children}
