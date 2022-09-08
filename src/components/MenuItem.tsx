@@ -5,6 +5,7 @@ import { Label, LabelColor, LabelSmall } from "./Type";
 export interface MenuItemProps {
   title: string;
   subtitle?: string;
+  onClick: () => void;
   // TODO: shortcut key for highlight menu
 }
 
@@ -23,6 +24,7 @@ export default function MenuItem(props: MenuItemProps) {
           cursor: "pointer",
         },
       ]}
+      onClick={props.onClick}
     >
       <Label text={props.title} color={LabelColor.AccentPrimary} />
       {props.subtitle && (

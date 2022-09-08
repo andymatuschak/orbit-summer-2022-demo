@@ -9,14 +9,18 @@ export default {
 const Template: ComponentStory<typeof MenuItem> = (args) => (
   <MenuItem {...args} />
 );
+Template.args = {
+  title: "Menu item",
+  onClick: () => alert("Clicked"),
+};
 
 export const Primary = Template.bind({});
 Primary.args = {
-  title: "Menu item",
+  ...Template.args,
 };
 
 export const WithSubtitle = Template.bind({});
 WithSubtitle.args = {
-  title: "Menu item",
+  ...Template.args,
   subtitle: "This is a subtitle",
 };

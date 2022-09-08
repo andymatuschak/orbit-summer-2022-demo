@@ -33,7 +33,7 @@ body {
   overflow-x: hidden;
 }
 
-#demo-root * {
+#demo-root *, .sb-show-main #root * {
   /* The article page can use whatever it wants, but we'll lay out UI with border-box metrics. */
   box-sizing: border-box;
 }

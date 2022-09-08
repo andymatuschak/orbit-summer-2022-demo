@@ -1,7 +1,9 @@
-import React, { useState } from "react";
+import React, { useCallback, useState } from "react";
 import X from "../static/images/Icons/X.png";
+import Logo from "../static/images/Logo.png";
 import Starburst from "../static/images/Starburst-48.png";
 import { hoverAndActiveStyles } from "./common/hoverAndActiveStyles";
+import MenuItem from "./MenuItem";
 
 function OrbitMenuButton({
   onClick,
@@ -16,6 +18,9 @@ function OrbitMenuButton({
       css={[
         hoverAndActiveStyles,
         {
+          position: "absolute",
+          bottom: 0,
+          right: 0,
           width: 48,
           height: 48,
           background: "none",
@@ -25,7 +30,7 @@ function OrbitMenuButton({
 
           "&::before": {
             borderRadius: menuIsOpen ? "0 0 50% 0" : "50%",
-            transition: "border-radius 0.25s var(--expoTiming)",
+            transition: "border-radius 1s var(--expoTiming)",
           },
         },
       ]}
@@ -71,7 +76,13 @@ function OrbitMenuButton({
   );
 }
 
-function OrbitMenuBackground({ menuIsOpen }: { menuIsOpen: boolean }) {
+function OrbitMenuBackground({
+  menuIsOpen,
+  contentsSize,
+}: {
+  menuIsOpen: boolean;
+  contentsSize: [number, number];
+}) {
   return (
     <div
       css={{
@@ -79,9 +90,8 @@ function OrbitMenuBackground({ menuIsOpen }: { menuIsOpen: boolean }) {
         // Position as an "outer" border.
         bottom: -3,
         right: -3,
-        // TODO get open metrics from laid-out menu container
-        width: menuIsOpen ? 300 : 48,
-        height: menuIsOpen ? 400 : 48,
+        width: (menuIsOpen ? contentsSize[0] : 48) + 3 * 2,
+        height: (menuIsOpen ? contentsSize[1] : 48) + 3 * 2,
         backgroundColor: "var(--bgSecondary)",
         borderColor: "var(--fgTertiary)",
         borderWidth: 3,
@@ -96,8 +106,40 @@ function OrbitMenuBackground({ menuIsOpen }: { menuIsOpen: boolean }) {
   );
 }
 
+function OrbitMenuLogo() {
+  return (
+    <div
+      css={{
+        backgroundColor: "var(--fgSecondaryLarge)",
+        maskPosition: "center",
+        maskRepeat: "no-repeat",
+        maskImage: `url(${Logo})`,
+        maskSize: "61px 32px",
+        width: 61,
+        height: 32,
+      }}
+    ></div>
+  );
+}
+
+// TODO implement all callers
+function unimplemented() {
+  alert("UNIMPLEMENTED");
+}
+
 export function OrbitMenu() {
   const [isOpen, setOpen] = useState(false);
+
+  const [contentsSize, setContentsSize] = useState<[number, number]>([0, 0]);
+  const calculateLayout = useCallback((node: HTMLDivElement | null) => {
+    // NOTE: this strategy assumes the menu contents do not change size after initial layout
+    if (node) {
+      const rect = node.getBoundingClientRect();
+      setContentsSize([rect.width, rect.height]);
+    } else {
+      setContentsSize([0, 0]);
+    }
+  }, []);
 
   return (
     <div
@@ -107,7 +149,46 @@ export function OrbitMenu() {
         bottom: 40,
       }}
     >
-      <OrbitMenuBackground menuIsOpen={isOpen} />
+      <OrbitMenuBackground menuIsOpen={isOpen} contentsSize={contentsSize} />
+      <div
+        ref={calculateLayout}
+        css={{
+          display: "flex",
+          flexDirection: "column",
+          backgroundColor: "var(--bgPrimary)",
+          padding: 4,
+          clipPath: isOpen
+            ? "inset(0 0 0 0 round 0 0 24px 0)"
+            : `inset(${contentsSize[1] - 48}px 0 0 ${
+                contentsSize[0] - 48
+              }px round 24px)`,
+          pointerEvents: isOpen ? "all" : "none",
+          transition: "clip-path 0.3s var(--expoTiming)",
+        }}
+      >
+        <MenuItem title="Export as Anki Deck" onClick={unimplemented} />
+        {/* TODO add pending review prompt count */}
+        <MenuItem title="Start Review" onClick={unimplemented} />
+
+        {/* Bottom bar */}
+        <div
+          css={{
+            backgroundColor: "var(--bgSecondary)",
+            borderTopWidth: 3,
+            borderTopColor: "var(--fgTertiary)",
+            borderTopStyle: "solid",
+            height: 48,
+            margin: -4,
+            marginTop: 4,
+            opacity: isOpen ? 1 : 0,
+            transition: "var(--fadeTransition)",
+            padding: 8,
+            paddingTop: 8 - 3,
+          }}
+        >
+          <OrbitMenuLogo />
+        </div>
+      </div>
       <OrbitMenuButton onClick={() => setOpen((o) => !o)} menuIsOpen={isOpen} />
     </div>
   );
