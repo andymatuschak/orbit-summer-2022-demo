@@ -42,3 +42,7 @@ body {
   /* Shrink math rendering slightly to better visually align with our type styles. */
   font-size: 1.1em;
 }
+
+.baselineGrid {
+  background-image: url(./../images/BaselineGrid.svg);
+}
