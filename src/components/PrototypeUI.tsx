@@ -4,6 +4,7 @@ import { PromptLocation } from "../util/resolvePromptLocations";
 import ContextualMenu from "./ContextualMenu";
 import { usePageHeight } from "../hooks/usePageHeight";
 import { useSelectionBounds } from "../hooks/useSelectionBounds";
+import PromptBox from "./PromptBox";
 
 export interface DemoPageProps {
   marginX: number;
@@ -28,8 +29,8 @@ export default function PrototypeUI({
         bottom: 0,
         left: 0,
         height,
-        zIndex: 10000,
-        pointerEvents: "none",
+        // zIndex: 10000,
+        // pointerEvents: "none",
       }}
     >
       <div
@@ -59,16 +60,17 @@ export default function PrototypeUI({
       <>
         {Object.entries(store.prompts).map(([id, prompt]) => (
           <div
-            key={id}
-            css={{
-              position: "absolute",
-              left: marginX,
-              top: promptLocations[id].top,
-              width: 200,
-            }}
-          >
-            {prompt.content.front}
-          </div>
+          key={id}
+          css={{
+            position: "absolute",
+            left: marginX,
+            top: promptLocations[id].top,
+          }}
+        >
+          <PromptBox 
+              prompt={prompt}
+          />
+        </div>
         ))}
       </>
     </div>
