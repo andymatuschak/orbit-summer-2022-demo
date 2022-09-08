@@ -5,17 +5,17 @@ export function useLayoutDependentValue<T>(f: () => T): T {
   const [state, setState] = useState<T>(f());
 
   useEffect(() => {
-    function onResize() {
+    function computeValue() {
       setState(f());
     }
-    window.addEventListener("resize", onResize);
-    return () => window.removeEventListener("resize", onResize);
+    window.addEventListener("resize", computeValue);
+    return () => window.removeEventListener("resize", computeValue);
   }, [f]);
 
   return state;
 }
 
-// Returns the result of f, computed on the first call and recomputed whenever the window changes size.
+// Returns the result of f, computed on the first call, recomputed whenever the window changes size or the value callback changes
 export function useAsyncLayoutDependentValue<T>(
   initialValue: T,
   f: () => Promise<T>,
@@ -24,7 +24,7 @@ export function useAsyncLayoutDependentValue<T>(
   const sequenceCounter = useRef(0);
 
   useEffect(() => {
-    async function onResize() {
+    async function computeValue() {
       sequenceCounter.current++;
       const thisSequence = sequenceCounter.current;
       const result = await f();
@@ -32,8 +32,10 @@ export function useAsyncLayoutDependentValue<T>(
         setState(result);
       }
     }
-    window.addEventListener("resize", onResize);
-    return () => window.removeEventListener("resize", onResize);
+    // Compute the value the first time, or when effect triggers
+    computeValue();
+    window.addEventListener("resize", computeValue);
+    return () => window.removeEventListener("resize", computeValue);
   }, [f]);
 
   return state;
