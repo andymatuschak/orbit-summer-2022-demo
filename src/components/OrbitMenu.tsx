@@ -4,6 +4,11 @@ import Logo from "../static/images/Logo.png";
 import Starburst from "../static/images/Starburst-48.png";
 import { hoverAndActiveStyles } from "./common/hoverAndActiveStyles";
 import MenuItem from "./MenuItem";
+import {
+  OrbitMenuPromptVisibilityControl,
+  PromptVisibilitySetting,
+} from "./OrbitMenuPromptVisibilityControl";
+import { Label, LabelColor } from "./Type";
 
 function OrbitMenuButton({
   onClick,
@@ -35,6 +40,7 @@ function OrbitMenuButton({
         },
       ]}
     >
+      {/* Logo glyph */}
       <div
         css={[
           {
@@ -54,6 +60,7 @@ function OrbitMenuButton({
         ]}
       ></div>
 
+      {/* Close button */}
       <div
         css={[
           {
@@ -122,6 +129,26 @@ function OrbitMenuLogo() {
   );
 }
 
+function PromptVisibilityMenuItem() {
+  // TODO: Move to store
+  const [value, setValue] = useState<PromptVisibilitySetting>(
+    PromptVisibilitySetting.All,
+  );
+  return (
+    <div
+      css={{
+        display: "flex",
+        flexDirection: "column",
+        padding: "12px 12px 8px 12px",
+      }}
+    >
+      <Label text="Show floating prompts:" color={LabelColor.FGPrimary} />
+      <div css={{ height: 8 }} />
+      <OrbitMenuPromptVisibilityControl value={value} onChange={setValue} />
+    </div>
+  );
+}
+
 // TODO implement all callers
 function unimplemented() {
   alert("UNIMPLEMENTED");
@@ -142,13 +169,7 @@ export function OrbitMenu() {
   }, []);
 
   return (
-    <div
-      css={{
-        position: "fixed",
-        right: 48,
-        bottom: 40,
-      }}
-    >
+    <div>
       <OrbitMenuBackground menuIsOpen={isOpen} contentsSize={contentsSize} />
       <div
         ref={calculateLayout}
@@ -166,6 +187,7 @@ export function OrbitMenu() {
           transition: "clip-path 0.3s var(--expoTiming)",
         }}
       >
+        <PromptVisibilityMenuItem />
         <MenuItem title="Export as Anki Deck" onClick={unimplemented} />
         {/* TODO add pending review prompt count */}
         <MenuItem title="Start Review" onClick={unimplemented} />

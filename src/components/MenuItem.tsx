@@ -16,6 +16,7 @@ export default function MenuItem(props: MenuItemProps) {
         hoverAndActiveStyles,
         {
           padding: 12,
+          margin: 0,
           backgroundColor: "var(--bgPrimary)",
           border: "none",
           display: "flex",
