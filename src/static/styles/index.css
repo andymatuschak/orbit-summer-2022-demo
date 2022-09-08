@@ -22,7 +22,7 @@ body {
   --bgPrimary: #F9F6F1;
   --bgSecondary: #eeeae2;
   --bgContent: #fdfcfb;
-  --hoverLayer: rgba(92, 56, 0, 0.04);
+  --hoverLayer: rgba(92, 56, 0, 0.05);
   --pressedLayer: rgba(92, 56, 0, 0.14);
 
   --fadeTransition: opacity 0.1s linear;
