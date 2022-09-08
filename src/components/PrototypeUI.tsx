@@ -29,8 +29,6 @@ export default function PrototypeUI({
         bottom: 0,
         left: 0,
         height,
-        // zIndex: 10000,
-        // pointerEvents: "none",
       }}
     >
       <div

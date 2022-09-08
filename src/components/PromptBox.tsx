@@ -19,6 +19,10 @@ const Icon = styled.div<HoverProps>`
   background-repeat: no-repeat;
   background-size: contain;
   flex: 0 0 auto;
+
+  &:hover {
+    background-image: url(${Plus})
+  }
 `;
 
 const PromptText = styled.div<HoverProps>`
@@ -47,14 +51,24 @@ const Container = styled.div<HoverProps>`
   flex-direction: row;
   align-items: flex-start;
   width: 332px;
-  padding: 8px 8px 4px 12px;
+  padding: ${props => (props.isHovered ? '8px 8px 10px 9px' : '8px 8px 4px 12px')};
   gap: 8px;
   cursor: pointer;
 
+  &:active::before {
+    position: absolute;
+    content: '';
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: var(--pressedLayer);
+  };
+
   ${props =>  (props.isHovered ? {
     'background': ' var(--bgContent);',
-    'border-left': '3px solid var(--accentPrimary)',
-    'box-shadow': '0px 1px 3px rgba(0, 0, 0, 0.07), 0px 5px 10px rgba(0, 0, 0, 0.08)'} : null
+    'borderLeft': '3px solid var(--accentPrimary)',
+    'boxShadow': '0px 1px 3px rgba(0, 0, 0, 0.07), 0px 5px 10px rgba(0, 0, 0, 0.08)'} : null
   )};
 `;
 
