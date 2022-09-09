@@ -12,10 +12,13 @@ export function useSelectionBounds(): {
 } {
   const [selectionPosition, setSelectionPosition] =
     useState<SelectionBounds | null>(null);
+
   useEffect(() => {
     const onEnd = (e: MouseEvent) => {
       const selection = document.getSelection();
-      if (selection && !selection.isCollapsed) {
+      if (e.target instanceof Node && document.getElementById("demo-root")!.contains(e.target)){
+        setSelectionPosition(null);
+      } else if (selection && !selection.isCollapsed) {
         const range = selection.getRangeAt(0);
         const rect = range.getBoundingClientRect();
         setSelectionPosition({
@@ -53,6 +56,7 @@ export function useSelectionBounds(): {
       document.removeEventListener("selectionchange", onChange);
     };
   }, []);
+  
   return {
     selectionPosition,
     clearSelectionPosition: () => setSelectionPosition(null),
