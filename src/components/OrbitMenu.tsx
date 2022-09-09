@@ -9,7 +9,7 @@ import {
   OrbitMenuPromptVisibilityControl,
   PromptVisibilitySetting,
 } from "./OrbitMenuPromptVisibilityControl";
-import { Label, LabelColor } from "./Type";
+import { Label, LabelColor, LabelSmall, labelSmallStyle } from "./Type";
 
 function OrbitMenuButton({
   onClick,
@@ -242,6 +242,52 @@ export function OrbitMenu(props: OrbitMenuProps) {
         </div>
       </div>
       <OrbitMenuButton onClick={() => setOpen((o) => !o)} menuIsOpen={isOpen} />
+      {duePromptCount > 0 && (
+        <DueCount count={duePromptCount} menuIsOpen={isOpen} />
+      )}
+    </div>
+  );
+}
+
+function DueCount({
+  count,
+  menuIsOpen,
+}: {
+  count: number;
+  menuIsOpen: boolean;
+}) {
+  return (
+    <div
+      css={{
+        position: "absolute",
+        width: 20,
+        height: 20,
+        bottom: 30,
+        right: -10,
+        borderRadius: "50%",
+        display: "flex",
+        alignItems: "center",
+        paddingBottom: 3,
+        backgroundColor: "var(--accentPrimary)",
+        filter:
+          "drop-shadow(0px 3px 5px rgba(0, 0, 0, 0.15)) drop-shadow(0px 1px 3px rgba(77, 51, 8, 0.4))",
+        opacity: menuIsOpen ? 0 : 1,
+        transition: "var(--fadeTransition)",
+        transitionDuration: "83ms",
+      }}
+    >
+      <div
+        css={[
+          labelSmallStyle,
+          {
+            color: "white",
+            textAlign: "center",
+            flexGrow: 1,
+          },
+        ]}
+      >
+        {count}
+      </div>
     </div>
   );
 }
