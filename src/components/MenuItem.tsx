@@ -7,6 +7,7 @@ import { Label, LabelColor, LabelSmall } from "./Type";
 export interface MenuItemPropsSubtitle {
   title: string;
   subtitle?: string;
+  disabled?: boolean;
   onClick: () => void;
 }
 
@@ -19,45 +20,52 @@ export interface MenuItemPropsShortcutKey {
 // A MenuItem can either have a shortcut key or a subtitle, not both
 type MenuItemProps = XOR<MenuItemPropsShortcutKey, MenuItemPropsSubtitle>;
 
-export default function MenuItem(props: MenuItemProps) {
+export default function MenuItem({
+  disabled,
+  onClick,
+  shortcutKey,
+  subtitle,
+  title,
+}: MenuItemProps) {
   const [isHovered, setIsHovered] = useState<boolean>(false);
-  
+
   return (
     <button
       css={[
-        hoverAndActiveStyles,
+        !disabled && hoverAndActiveStyles,
         {
           padding: 12,
           margin: 0,
           backgroundColor: "var(--bgPrimary)",
           border: "none",
           display: "flex",
-          flexDirection: props.subtitle ? "column" : "row",
+          flexDirection: subtitle ? "column" : "row",
           lineHeight: 0,
-          cursor: "pointer",
+          cursor: disabled ? "not-allowed" : "pointer",
         },
-        props.shortcutKey && {
+        shortcutKey && {
           alignItems: "center",
           width: "100%",
           justifyContent: "space-between",
         },
       ]}
-      onClick={props.onClick}
-      onMouseEnter={() => setIsHovered(true)} 
+      disabled={disabled}
+      onClick={disabled ? undefined : onClick}
+      onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
     >
-      <Label text={props.title} color={LabelColor.AccentPrimary} />
-      {props.subtitle && (
+      <Label
+        text={title}
+        color={disabled ? LabelColor.FGDisabled : LabelColor.AccentPrimary}
+      />
+      {subtitle && (
         <>
           <div css={{ height: 8 }} />
-          <LabelSmall
-            text={props.subtitle}
-            color={LabelColor.FGSecondaryLarge}
-          />
+          <LabelSmall text={subtitle} color={LabelColor.FGSecondaryLarge} />
         </>
       )}
-      {props.shortcutKey && (
-        <ShortcutKey shortcutKey={props.shortcutKey} hover={isHovered}/>
+      {shortcutKey && (
+        <ShortcutKey shortcutKey={shortcutKey} hover={isHovered} />
       )}
     </button>
   );

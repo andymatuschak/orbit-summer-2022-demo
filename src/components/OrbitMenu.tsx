@@ -1,4 +1,5 @@
 import React, { useCallback, useState } from "react";
+import { useAppSelector } from "../app/store";
 import X from "../static/images/Icons/X.png";
 import Logo from "../static/images/Logo.png";
 import Starburst from "../static/images/Starburst-48.png";
@@ -32,6 +33,9 @@ function OrbitMenuButton({
           border: "none",
           padding: 0,
           cursor: "pointer",
+
+          // Dodge the bottom chrome border when the menu is open.
+          clipPath: menuIsOpen ? "inset(3px 0 0 0)" : undefined,
 
           "&::before": {
             borderRadius: menuIsOpen ? "0 0 50% 0" : "50%",
@@ -159,6 +163,10 @@ export interface OrbitMenuProps {
 }
 export function OrbitMenu(props: OrbitMenuProps) {
   const [isOpen, setOpen] = useState(false);
+  const duePromptCount = useAppSelector(
+    ({ prompts }) =>
+      Object.keys(prompts).filter((id) => prompts[id].isDue).length,
+  );
 
   const [contentsSize, setContentsSize] = useState<[number, number] | null>(
     null,
@@ -199,7 +207,11 @@ export function OrbitMenu(props: OrbitMenuProps) {
         }}
       >
         <PromptVisibilityMenuItem />
-        <MenuItem title="Export as Anki Deck" onClick={unimplemented} />
+        <MenuItem
+          title="Export as Anki Deck"
+          onClick={unimplemented}
+          disabled={duePromptCount === 0}
+        />
         {/* TODO add pending review prompt count */}
         <MenuItem
           title="Start Review"
@@ -207,6 +219,7 @@ export function OrbitMenu(props: OrbitMenuProps) {
             props.onStartReview();
             setOpen(false);
           }}
+          disabled={duePromptCount === 0}
         />
 
         {/* Bottom bar */}

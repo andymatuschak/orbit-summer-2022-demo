@@ -6,12 +6,14 @@ export enum LabelColor {
   FGPrimary = "FGPrimary",
   FGSecondaryLarge = "FGSecondaryLarge",
   FGSecondarySmall = "FGSecondarySmall",
+  FGDisabled = "FGDisabled",
 }
 const colorVarsByEnumValue = {
   [LabelColor.AccentPrimary]: "--accentPrimary",
   [LabelColor.FGPrimary]: "--fgPrimary",
   [LabelColor.FGSecondaryLarge]: "--fgSecondaryLarge",
   [LabelColor.FGSecondarySmall]: "--fgSecondarySmall",
+  [LabelColor.FGDisabled]: "--fgDisabled",
 };
 
 interface TypeProps {
