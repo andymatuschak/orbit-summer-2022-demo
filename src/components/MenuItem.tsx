@@ -35,6 +35,7 @@ export default function MenuItem({
         !disabled && hoverAndActiveStyles,
         {
           padding: 12,
+          height: 36,
           margin: 0,
           backgroundColor: "var(--bgPrimary)",
           border: "none",
