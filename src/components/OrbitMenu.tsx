@@ -154,23 +154,30 @@ function unimplemented() {
   alert("UNIMPLEMENTED");
 }
 
-export function OrbitMenu() {
+export interface OrbitMenuProps {
+  onStartReview: () => void;
+}
+export function OrbitMenu(props: OrbitMenuProps) {
   const [isOpen, setOpen] = useState(false);
 
-  const [contentsSize, setContentsSize] = useState<[number, number]>([0, 0]);
+  const [contentsSize, setContentsSize] = useState<[number, number] | null>(
+    null,
+  );
   const calculateLayout = useCallback((node: HTMLDivElement | null) => {
     // NOTE: this strategy assumes the menu contents do not change size after initial layout
     if (node) {
       const rect = node.getBoundingClientRect();
       setContentsSize([rect.width, rect.height]);
     } else {
-      setContentsSize([0, 0]);
+      setContentsSize(null);
     }
   }, []);
 
   return (
     <div>
-      <OrbitMenuBackground menuIsOpen={isOpen} contentsSize={contentsSize} />
+      {contentsSize && (
+        <OrbitMenuBackground menuIsOpen={isOpen} contentsSize={contentsSize} />
+      )}
       <div
         ref={calculateLayout}
         css={{
@@ -178,19 +185,29 @@ export function OrbitMenu() {
           flexDirection: "column",
           backgroundColor: "var(--bgPrimary)",
           padding: 4,
-          clipPath: isOpen
-            ? "inset(0 0 0 0 round 0 0 24px 0)"
-            : `inset(${contentsSize[1] - 48}px 0 0 ${
-                contentsSize[0] - 48
-              }px round 24px)`,
+          clipPath:
+            isOpen || !contentsSize
+              ? "inset(0 0 0 0 round 0 0 24px 0)"
+              : `inset(${contentsSize[1] - 48}px 0 0 ${
+                  contentsSize[0] - 48
+                }px round 24px)`,
           pointerEvents: isOpen ? "all" : "none",
-          transition: "clip-path 0.3s var(--expoTiming)",
+          // Bit of a hack: while we're still sizing the contents, make them invisible. And use a transition to make their transition back to visibility occur after the clip animation would complete.
+          opacity: contentsSize ? 1 : 0,
+          transition:
+            "clip-path 0.3s var(--expoTiming), opacity 0s 0.3s linear",
         }}
       >
         <PromptVisibilityMenuItem />
         <MenuItem title="Export as Anki Deck" onClick={unimplemented} />
         {/* TODO add pending review prompt count */}
-        <MenuItem title="Start Review" onClick={unimplemented} />
+        <MenuItem
+          title="Start Review"
+          onClick={() => {
+            props.onStartReview();
+            setOpen(false);
+          }}
+        />
 
         {/* Bottom bar */}
         <div

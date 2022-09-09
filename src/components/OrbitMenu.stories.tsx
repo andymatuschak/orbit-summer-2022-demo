@@ -16,7 +16,11 @@ export const Primary: ComponentStory<typeof OrbitMenu> = (_, { globals }) => (
     }}
   >
     <WithBaselineGrid enabled={globals.showBaselineGrid}>
-      <OrbitMenu />
+      <OrbitMenu
+        onStartReview={() => {
+          return;
+        }}
+      />
     </WithBaselineGrid>
   </div>
 );
