@@ -1,37 +1,30 @@
-import React, { useCallback} from "react";
+import React, { useCallback } from "react";
 import PrototypeUI from "../components/PrototypeUI";
 import { useAsyncLayoutDependentValue } from "../hooks/useLayoutDependentValue";
-import { useStore } from "../hooks/useStore";
 import { resolvePromptLocations } from "../util/resolvePromptLocations";
+import { useAppSelector } from "./store";
 
 export interface AppProps {
   marginX: number;
 }
 
 export default function App({ marginX }: AppProps) {
-  const [store, setStore] = useStore();
+  const prompts = useAppSelector((state) => state.prompts);
 
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const promptLocations = useAsyncLayoutDependentValue(
     null,
     useCallback(async () => {
-      if (!store) return null;
-      return await resolvePromptLocations(store.prompts);
-      // TODO: We don't really want to rerun this every time `store` changes. Think more carefully about this...
-    }, [store]),
+      if (Object.keys(prompts).length > 0) {
+        return await resolvePromptLocations(prompts);
+      } else {
+        return null;
+      }
+      // TODO: We don't really want to rerun this every time `prompts` changes. Think more carefully about this...
+    }, [prompts]),
   );
 
-  console.log(promptLocations);
-
-  if (store && promptLocations) {
-    return (
-      <PrototypeUI
-        marginX={marginX}
-        store={store /* TODO: use context provider, etc */}
-        setStore={setStore}
-        promptLocations={promptLocations}
-      />
-    );
+  if (promptLocations) {
+    return <PrototypeUI marginX={marginX} promptLocations={promptLocations} />;
   } else {
     return null;
   }

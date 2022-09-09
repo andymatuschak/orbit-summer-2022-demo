@@ -1,3 +1,6 @@
+import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { readPromptsFromHypothesisJSON } from "../util/readPromptsFromHypothesisJSON";
+
 export interface Prompt {
   content: {
     front: string;
@@ -42,3 +45,37 @@ export interface TextQuoteSelector {
   prefix: string;
   suffix: string;
 }
+
+//---
+
+interface PromptsState {
+  [id: string]: Prompt;
+}
+
+const initialState: PromptsState = {};
+
+const promptsSlice = createSlice({
+  name: "prompts",
+  initialState,
+  reducers: {
+    savePrompt(state, action: PayloadAction<string>) {
+      state[action.payload].isSaved = true;
+    },
+  },
+  extraReducers(builder) {
+    builder.addCase(loadPrompts.fulfilled, (_state, action) => {
+      return action.payload;
+    });
+  },
+});
+
+export const loadPrompts = createAsyncThunk(
+  "prompts/loadPrompts",
+  async (promptDataSubpath: string): Promise<PromptsState> => {
+    const json = await import(`../static/promptData/${promptDataSubpath}.json`);
+    return readPromptsFromHypothesisJSON(json);
+  },
+);
+
+export const { savePrompt } = promptsSlice.actions;
+export const promptsReducer = promptsSlice.reducer;

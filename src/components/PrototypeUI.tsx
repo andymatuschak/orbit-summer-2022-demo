@@ -1,40 +1,25 @@
-import React, { useCallback } from "react";
-import { Store } from "../app/store";
-import { PromptLocation } from "../util/resolvePromptLocations";
-import ContextualMenu from "./ContextualMenu";
+import React from "react";
+import { savePrompt } from "../app/promptSlice";
+import { useAppDispatch, useAppSelector } from "../app/store";
 import { usePageHeight } from "../hooks/usePageHeight";
 import { useSelectionBounds } from "../hooks/useSelectionBounds";
+import { PromptLocation } from "../util/resolvePromptLocations";
+import ContextualMenu from "./ContextualMenu";
 import PromptBox from "./PromptBox";
-import { Prompt } from "../app/promptSlice";
 
 export interface DemoPageProps {
   marginX: number;
-  store: Store;
-  setStore: React.Dispatch<React.SetStateAction<Store | null | undefined>>
   promptLocations: { [id: string]: PromptLocation };
 }
 
 export default function PrototypeUI({
   marginX,
-  store,
-  setStore,
   promptLocations,
 }: DemoPageProps) {
+  const prompts = useAppSelector((state) => state.prompts);
+  const dispatch = useAppDispatch();
   const height = usePageHeight();
   const { selectionPosition, clearSelectionPosition } = useSelectionBounds();
-
-  const savePrompt = useCallback((updatedPrompt: Prompt) => {
-    updatedPrompt.isSaved = true;
-    // Rebuild store for react. TODO: Do this properly using state management libs
-    const newStore: Store = {
-      prompts: {}
-    };
-    Object.keys(store.prompts).forEach((id) => {
-      newStore.prompts[id] = store.prompts[id];
-      return;
-    });
-    setStore(newStore);
-  }, [setStore, store]);
 
   return (
     <div
@@ -72,20 +57,20 @@ export default function PrototypeUI({
         />
       </div>
       <>
-        {Object.entries(store.prompts).map(([id, prompt]) => (
+        {Object.entries(prompts).map(([id, prompt]) => (
           <div
-          key={id}
-          css={{
-            position: "absolute",
-            left: marginX,
-            top: promptLocations[id].top,
-          }}
-        >
-          <PromptBox 
+            key={id}
+            css={{
+              position: "absolute",
+              left: marginX,
+              top: promptLocations[id].top,
+            }}
+          >
+            <PromptBox
               prompt={prompt}
-              savePrompt={() => savePrompt(prompt)}
-          />
-        </div>
+              savePrompt={() => dispatch(savePrompt(id))}
+            />
+          </div>
         ))}
       </>
     </div>
