@@ -5,9 +5,9 @@ This repository contains the implementation of the prototype [mnemonic medium](h
 ## Setup
 
 ### Installing the non-free components of this repo
-This repository leaves out two important pieces which I do not have the rights to redistribute: the actual content of Shape Up (one of the texts demonstrated in the prototype), and the [Dr font](https://www.productiontype.com/family/dr) used in Orbit.
+This repository leaves out two important pieces which I do not have the rights to redistribute: the actual content of the books used in the prototype, and the [Dr font](https://www.productiontype.com/family/dr) used in Orbit.
 
-I have separated Shape Up's content into a [private submodule](https://github.com/andymatuschak/orbit-summer-2022-demo-data-shape-up) available to me and my collaborators. If you have access, you should `git clone --recurse-submodules` or `git submodule init && git submodule update` to put a local copy of Shape Up in the right place.
+I have separated the test books' content into [private](https://github.com/andymatuschak/orbit-summer-2022-demo-data-shape-up) [submodules](https://github.com/andymatuschak/orbit-summer-2022-demo-data-ims) available to me and my collaborators. If you have access, you should `git clone --recurse-submodules` or `git submodule init && git submodule update` to put a local copies in the right place.
 
 For your private testing and development purposes, you can [acquire an evaluation copy of the Dr font](https://www.productiontype.com/family/dr) and place it in `src/static/fonts` at the paths specified by `src/static/styles/fonts.css`.
 
@@ -35,5 +35,5 @@ yarn install
 ## Development
 
 * To run a local development server: `yarn start`
-  * Then visit e.g. http://localhost:3000/shape-up/shapeup/1.1-chapter-02/index.html 
+  * Then visit e.g. http://localhost:3000/shape-up/shapeup/1.1-chapter-02/index.html or http://localhost:3000/ims/foundations-randomization.html
 * To run the Storybook UI: `yarn storybook`
