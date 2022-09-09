@@ -131,7 +131,6 @@ export default function PromptBox({
 }: PromptProps) {
     const [isHovered, setIsHovered] = useState<boolean>(false);
     const [isEditing, setIsEditing] = useState<boolean>(false);
-    const [isEditingFront, setIsEditingFront] = useState<boolean>(false);
     const hidePromptBackTimeout = useRef<number | undefined>();
     const [showPromptBack, setShowPromptBack] = useState<boolean>(false);
     const isSaved = prompt.isSaved;
@@ -154,7 +153,6 @@ export default function PromptBox({
 
     const startEditing = function(editingFront: boolean){
       setIsEditing(true);
-      setIsEditingFront(editingFront);
 
       // Select all text in prompt
       const el = editingFront ? promptFrontRef.current : promptBackRef.current;
