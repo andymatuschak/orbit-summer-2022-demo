@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { hoverAndActiveStyles } from "./common/hoverAndActiveStyles";
 import { XOR } from "./common/typeOperations";
 import ShortcutKey from "./ShortcutKey";
@@ -20,6 +20,8 @@ export interface MenuItemPropsShortcutKey {
 type MenuItemProps = XOR<MenuItemPropsShortcutKey, MenuItemPropsSubtitle>;
 
 export default function MenuItem(props: MenuItemProps) {
+  const [isHovered, setIsHovered] = useState<boolean>(false);
+  
   return (
     <button
       css={[
@@ -41,6 +43,8 @@ export default function MenuItem(props: MenuItemProps) {
         },
       ]}
       onClick={props.onClick}
+      onMouseEnter={() => setIsHovered(true)} 
+      onMouseLeave={() => setIsHovered(false)}
     >
       <Label text={props.title} color={LabelColor.AccentPrimary} />
       {props.subtitle && (
@@ -53,7 +57,7 @@ export default function MenuItem(props: MenuItemProps) {
         </>
       )}
       {props.shortcutKey && (
-        <ShortcutKey shortcutKey={props.shortcutKey}/>
+        <ShortcutKey shortcutKey={props.shortcutKey} hover={isHovered}/>
       )}
     </button>
   );
