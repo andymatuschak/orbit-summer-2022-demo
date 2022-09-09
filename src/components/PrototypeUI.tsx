@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { useStore } from "react-redux";
 import { savePrompt } from "../app/promptSlice";
 import { useAppDispatch, useAppSelector } from "../app/store";
 import { usePageHeight } from "../hooks/usePageHeight";

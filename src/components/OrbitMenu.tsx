@@ -1,4 +1,5 @@
 import React, { useCallback, useState } from "react";
+import { useAppSelector } from "../app/store";
 import X from "../static/images/Icons/X.png";
 import Logo from "../static/images/Logo.png";
 import Starburst from "../static/images/Starburst-48.png";
@@ -8,7 +9,7 @@ import {
   OrbitMenuPromptVisibilityControl,
   PromptVisibilitySetting,
 } from "./OrbitMenuPromptVisibilityControl";
-import { Label, LabelColor } from "./Type";
+import { Label, LabelColor, LabelSmall, labelSmallStyle } from "./Type";
 
 function OrbitMenuButton({
   onClick,
@@ -32,6 +33,9 @@ function OrbitMenuButton({
           border: "none",
           padding: 0,
           cursor: "pointer",
+
+          // Dodge the bottom chrome border when the menu is open.
+          clipPath: menuIsOpen ? "inset(3px 0 0 0)" : undefined,
 
           "&::before": {
             borderRadius: menuIsOpen ? "0 0 50% 0" : "50%",
@@ -159,6 +163,10 @@ export interface OrbitMenuProps {
 }
 export function OrbitMenu(props: OrbitMenuProps) {
   const [isOpen, setOpen] = useState(false);
+  const duePromptCount = useAppSelector(
+    ({ prompts }) =>
+      Object.keys(prompts).filter((id) => prompts[id].isDue).length,
+  );
 
   const [contentsSize, setContentsSize] = useState<[number, number] | null>(
     null,
@@ -199,7 +207,11 @@ export function OrbitMenu(props: OrbitMenuProps) {
         }}
       >
         <PromptVisibilityMenuItem />
-        <MenuItem title="Export as Anki Deck" onClick={unimplemented} />
+        <MenuItem
+          title="Export as Anki Deck"
+          onClick={unimplemented}
+          disabled={duePromptCount === 0}
+        />
         {/* TODO add pending review prompt count */}
         <MenuItem
           title="Start Review"
@@ -207,6 +219,7 @@ export function OrbitMenu(props: OrbitMenuProps) {
             props.onStartReview();
             setOpen(false);
           }}
+          disabled={duePromptCount === 0}
         />
 
         {/* Bottom bar */}
@@ -229,6 +242,52 @@ export function OrbitMenu(props: OrbitMenuProps) {
         </div>
       </div>
       <OrbitMenuButton onClick={() => setOpen((o) => !o)} menuIsOpen={isOpen} />
+      {duePromptCount > 0 && (
+        <DueCount count={duePromptCount} menuIsOpen={isOpen} />
+      )}
+    </div>
+  );
+}
+
+function DueCount({
+  count,
+  menuIsOpen,
+}: {
+  count: number;
+  menuIsOpen: boolean;
+}) {
+  return (
+    <div
+      css={{
+        position: "absolute",
+        width: 20,
+        height: 20,
+        bottom: 30,
+        right: -10,
+        borderRadius: "50%",
+        display: "flex",
+        alignItems: "center",
+        paddingBottom: 3,
+        backgroundColor: "var(--accentPrimary)",
+        filter:
+          "drop-shadow(0px 3px 5px rgba(0, 0, 0, 0.15)) drop-shadow(0px 1px 3px rgba(77, 51, 8, 0.4))",
+        opacity: menuIsOpen ? 0 : 1,
+        transition: "var(--fadeTransition)",
+        transitionDuration: "83ms",
+      }}
+    >
+      <div
+        css={[
+          labelSmallStyle,
+          {
+            color: "white",
+            textAlign: "center",
+            flexGrow: 1,
+          },
+        ]}
+      >
+        {count}
+      </div>
     </div>
   );
 }
