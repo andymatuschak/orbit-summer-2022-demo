@@ -9,18 +9,25 @@ export default {
 const Template: ComponentStory<typeof MenuItem> = (args) => (
   <MenuItem {...args} />
 );
-Template.args = {
+
+const args = {
   title: "Menu item",
   onClick: () => alert("Clicked"),
 };
 
 export const Primary = Template.bind({});
 Primary.args = {
-  ...Template.args,
+  ...args,
 };
 
 export const WithSubtitle = Template.bind({});
 WithSubtitle.args = {
-  ...Template.args,
+  ...args,
   subtitle: "This is a subtitle",
+};
+
+export const WithKey = Template.bind({});
+WithKey.args = {
+  ...args,
+  shortcutKey: "N"
 };

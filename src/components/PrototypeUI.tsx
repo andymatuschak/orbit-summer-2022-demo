@@ -6,6 +6,7 @@ import { useSelectionBounds } from "../hooks/useSelectionBounds";
 import { PromptLocation } from "../util/resolvePromptLocations";
 import ContextualMenu from "./ContextualMenu";
 import PromptBox from "./PromptBox";
+import zIndices from "./common/zIndices";
 
 export interface DemoPageProps {
   marginX: number;
@@ -41,10 +42,10 @@ export default function PrototypeUI({
           height: 0,
           pointerEvents: selectionPosition ? "auto" : "none",
           opacity: selectionPosition ? 1 : 0,
+          zIndex: zIndices.displayOverContent,
         }}
       >
         <ContextualMenu
-          position="center"
           items={[
             {
               title: "New prompt",
@@ -52,6 +53,7 @@ export default function PrototypeUI({
                 clearSelectionPosition();
                 // TODO: implement adding new prompt
               },
+              shortcutKey: "N"
             },
           ]}
         />
