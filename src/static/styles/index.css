@@ -25,6 +25,8 @@ body {
   --hoverLayer: rgba(92, 56, 0, 0.05);
   --pressedLayer: rgba(92, 56, 0, 0.14);
 
+  --editSelection: #76a7e8;
+
   --fadeTransition: opacity 0.1s linear;
   --expoTiming: cubic-bezier(0.16, 1, 0.3, 1); /* or, rather, a simulation of it */
 

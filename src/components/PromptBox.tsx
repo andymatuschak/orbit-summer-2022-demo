@@ -3,6 +3,7 @@ import styled from '@emotion/styled'
 import { Prompt } from "../app/promptSlice";
 import startburst_null from '../static/images/Icons/Starburst-Null.png';
 import starburst_active from '../static/images/Icons/Starburst-Active.png'
+import starburst_editing from '../static/images/Icons/Starburst-Edit.png';
 import plus from '../static/images/Icons/Plus.png';
 
 const ANIMATION_TIME_MSEC = 48.0;
@@ -19,12 +20,17 @@ interface HoverProps {
 interface SavedProps {
   isSaved: boolean
 }
+interface EditingProps {
+  isEditing: boolean;
+}
 
-const Icon = styled.div<HoverProps & SavedProps>`
+const Icon = styled.div<HoverProps & SavedProps & EditingProps>`
   width: 24px;
   height: 24px;
   background-image: ${props => {
-    if (props.isSaved) {
+    if (props.isEditing) {
+      return `url(${starburst_editing})`;
+    } else if (props.isSaved) {
       return `url(${starburst_active})`;
     } else if (props.isHovered) {
       return `url(${plus})`;
@@ -44,6 +50,13 @@ const PromptText = styled.div<HoverProps & SavedProps>`
   letter-spacing: 0.04em;
   color: var(--fgPrimary);
   opacity: ${props => ((props.isHovered || props.isSaved) ? 1.0 : 0.87)};
+  outline: none;
+
+  ::selection {
+    background: var(--editSelection);
+  }
+
+  caret-color: var(--accentPrimary);
 `;
 
 const PromptBack = styled(PromptText)`
@@ -74,7 +87,7 @@ const PromptContainer = styled.div`
   gap: 8px;
 `;
 
-const Container = styled.div<HoverProps & SavedProps>`
+const Container = styled.div<HoverProps & SavedProps & EditingProps>`
   display: flex;
   flex-direction: row;
   align-items: flex-start;
@@ -85,17 +98,19 @@ const Container = styled.div<HoverProps & SavedProps>`
   position: relative;
   border-left: 3px solid transparent;
 
-  :active::before {
-    position: absolute;
-    content: '';
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background-color: var(--pressedLayer);
-  };
+  ${props => !props.isSaved ? `
+    :active::before {
+      position: absolute;
+      content: '';
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background-color: var(--pressedLayer);
+    };` : null
+  }
 
-  ${props =>  (props.isHovered ? {
+  ${props => (props.isHovered ? {
     'background': 'var(--bgContent);',
     'borderLeft': '3px solid var(--accentPrimary);',
     'boxShadow': '0px 1px 3px rgba(0, 0, 0, 0.07), 0px 5px 10px rgba(0, 0, 0, 0.08)'} : null
@@ -103,7 +118,7 @@ const Container = styled.div<HoverProps & SavedProps>`
 
   ${props =>  (props.isSaved ? {
     'background': 'var(--bgPrimary);',
-    'borderLeft': '3px solid var(--accentSecondary);',
+    'borderLeft': `3px solid var(${props.isEditing ? "--accentPrimary" : "--accentSecondary"});`,
     'boxShadow': '0px 1px 3px rgba(0, 0, 0, 0.07), 0px 5px 10px rgba(0, 0, 0, 0.08)'} : null
   )};
 
@@ -115,6 +130,7 @@ export default function PromptBox({
     savePrompt,
 }: PromptProps) {
     const [isHovered, setIsHovered] = useState<boolean>(false);
+    const [isEditing, setIsEditing] = useState<boolean>(false);
     const hidePromptBackTimeout = useRef<number | undefined>();
     const [showPromptBack, setShowPromptBack] = useState<boolean>(false);
     const isSaved = prompt.isSaved;
@@ -132,15 +148,41 @@ export default function PromptBox({
       }
     }, [isHovered, isSaved, setShowPromptBack]);
 
+    const endEditing = function(){
+      setIsEditing(false);
+      savePrompt();
+    };
+
     return (
-      <Container isHovered={isHovered} isSaved={isSaved} onMouseEnter={() => setIsHovered(true)} onMouseLeave={() => setIsHovered(false)} onClick={() => savePrompt()}>
-        <Icon isHovered={isHovered} isSaved={isSaved}/>
+      <Container 
+        isHovered={isHovered} 
+        isSaved={isSaved} 
+        isEditing={isEditing}
+        onMouseEnter={() => setIsHovered(true)}
+        onMouseLeave={() => setIsHovered(false)} 
+        onClick={() => savePrompt()}
+      >
+        <Icon isHovered={isHovered} isSaved={isSaved} isEditing={isEditing}/>
         <PromptContainer>
-          <PromptText isHovered={isHovered} isSaved={isSaved}>
+          <PromptText 
+            isHovered={isHovered} 
+            isSaved={isSaved}
+            contentEditable={isSaved} 
+            onFocus={() => setIsEditing(true)}
+            onBlur={() => endEditing()}
+            suppressContentEditableWarning
+          >
             {prompt.content.front}
           </PromptText>
           {showPromptBack && 
-            <PromptBack isHovered={isHovered} isSaved={isSaved}>
+            <PromptBack 
+              isHovered={isHovered} 
+              isSaved={isSaved}
+              contentEditable={isSaved} 
+              onFocus={() => setIsEditing(true)}
+              onBlur={() => endEditing()}
+              suppressContentEditableWarning
+            >
               {prompt.content.back}
             </PromptBack>
           }
