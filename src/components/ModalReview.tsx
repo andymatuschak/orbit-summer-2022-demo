@@ -1,5 +1,6 @@
-import React, { DOMAttributes } from "react";
+import React, { DOMAttributes, useState } from "react";
 import ScrollLock from "react-scrolllock";
+import { useAppSelector } from "../app/store";
 import zIndices from "./common/zIndices";
 
 type CustomElement<T> = Partial<T & DOMAttributes<T> & { children: any }>;
@@ -8,6 +9,11 @@ declare global {
   namespace JSX {
     interface IntrinsicElements {
       ["orbit-reviewarea"]: CustomElement<HTMLElement>;
+      ["orbit-prompt"]: CustomElement<{
+        question: string;
+        answer: string;
+        id: string;
+      }>;
     }
   }
 }
@@ -17,6 +23,15 @@ export interface ModalReviewProps {
 }
 
 export function ModalReview(props: ModalReviewProps) {
+  const prompts = useAppSelector((state) => state.prompts);
+
+  // A bit of a hack: we tee up the review queue when this component is mounted.
+  const [queuedPromptIDs] = useState<string[]>(() => {
+    const duePromptIDs = Object.keys(prompts).filter((id) => prompts[id].isDue);
+    // TODO shuffle
+    return duePromptIDs;
+  });
+
   return (
     <ScrollLock>
       <div
@@ -31,7 +46,15 @@ export function ModalReview(props: ModalReviewProps) {
           zIndex: zIndices.modalReview,
         }}
       >
-        <orbit-reviewarea></orbit-reviewarea>
+        <orbit-reviewarea>
+          {queuedPromptIDs.map((id) => (
+            <orbit-prompt
+              question={prompts[id].content.front}
+              answer={prompts[id].content.back}
+              id={id}
+            ></orbit-prompt>
+          ))}
+        </orbit-reviewarea>
       </div>
     </ScrollLock>
   );

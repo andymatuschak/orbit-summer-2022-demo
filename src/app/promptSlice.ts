@@ -7,8 +7,10 @@ export interface Prompt {
     back: string;
   };
   selectors: PromptSelector[];
+
   isByAuthor: boolean;
   isSaved: boolean;
+  isDue: boolean;
 }
 
 // i.e. following Hypothes.is's selector format, as specified in src/vendor/hypothesis-annotator
@@ -48,7 +50,7 @@ export interface TextQuoteSelector {
 
 //---
 
-interface PromptsState {
+export interface PromptsState {
   [id: string]: Prompt;
 }
 
@@ -59,7 +61,9 @@ const promptsSlice = createSlice({
   initialState,
   reducers: {
     savePrompt(state, action: PayloadAction<string>) {
-      state[action.payload].isSaved = true;
+      const prompt = state[action.payload];
+      prompt.isSaved = true;
+      prompt.isDue = true;
     },
   },
   extraReducers(builder) {
