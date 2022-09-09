@@ -131,9 +131,13 @@ export default function PromptBox({
 }: PromptProps) {
     const [isHovered, setIsHovered] = useState<boolean>(false);
     const [isEditing, setIsEditing] = useState<boolean>(false);
+    const [isEditingFront, setIsEditingFront] = useState<boolean>(false);
     const hidePromptBackTimeout = useRef<number | undefined>();
     const [showPromptBack, setShowPromptBack] = useState<boolean>(false);
     const isSaved = prompt.isSaved;
+
+    const promptFrontRef = useRef<HTMLDivElement | null>(null);
+    const promptBackRef = useRef<HTMLDivElement | null>(null);
 
     // We hide the prompt back only after the animation for unhover'ing is done. This way the container doesn't instantly resize and cause animation to glitch
     useEffect(() => {
@@ -147,6 +151,21 @@ export default function PromptBox({
         setShowPromptBack(true);
       }
     }, [isHovered, isSaved, setShowPromptBack]);
+
+    const startEditing = function(editingFront: boolean){
+      setIsEditing(true);
+      setIsEditingFront(editingFront);
+
+      // Select all text in prompt
+      const el = editingFront ? promptFrontRef.current : promptBackRef.current;
+      const sel = window.getSelection();
+      const range = document.createRange();
+      if (el && sel && range) {
+        range.selectNodeContents(el);
+        sel.removeAllRanges();
+        sel.addRange(range);
+      }
+    }
 
     const endEditing = function(){
       setIsEditing(false);
@@ -168,9 +187,10 @@ export default function PromptBox({
             isHovered={isHovered} 
             isSaved={isSaved}
             contentEditable={isSaved} 
-            onFocus={() => setIsEditing(true)}
+            onFocus={() => startEditing(true)}
             onBlur={() => endEditing()}
             suppressContentEditableWarning
+            ref={promptFrontRef}
           >
             {prompt.content.front}
           </PromptText>
@@ -179,9 +199,10 @@ export default function PromptBox({
               isHovered={isHovered} 
               isSaved={isSaved}
               contentEditable={isSaved} 
-              onFocus={() => setIsEditing(true)}
+              onFocus={() => startEditing(false)}
               onBlur={() => endEditing()}
               suppressContentEditableWarning
+              ref={promptBackRef}
             >
               {prompt.content.back}
             </PromptBack>
