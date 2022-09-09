@@ -2,14 +2,24 @@ import styled from "@emotion/styled";
 
 export interface ShortcutKeyProps {
   shortcutKey: string;
+  hover: boolean;
 }
 
-const Container = styled.div`
+export interface HoverProps {
+  hover: boolean;
+}
+
+const Container = styled.div<HoverProps>`
   position: relative;
   width: 20px;
   height: 20px;
   background: var(--bgSecondary);
   border-radius: 2px;
+  ${props => (
+    props.hover ? {
+      border: "2px solid var(--fgTertiary)"
+    } : null
+  )};
 `;
 
 const Key = styled.span`
@@ -29,9 +39,10 @@ const Key = styled.span`
   color: var(--fgSecondarySmall);
 `
 
-export default function ShortcutKey({ shortcutKey }: ShortcutKeyProps){
+export default function ShortcutKey({ shortcutKey, hover}: ShortcutKeyProps){
   return (
     <Container
+      hover={hover}
     >
       <Key>
         {shortcutKey}
