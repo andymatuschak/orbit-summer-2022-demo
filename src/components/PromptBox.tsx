@@ -1,9 +1,11 @@
-import React, { useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import styled from '@emotion/styled'
 import { Prompt } from "../app/promptSlice";
 import startburst_null from '../static/images/Icons/Starburst-Null.png';
 import starburst_active from '../static/images/Icons/Starburst-Active.png'
 import plus from '../static/images/Icons/Plus.png';
+
+const ANIMATION_TIME_MSEC = 48.0;
 
 export interface PromptProps {
     prompt: Prompt
@@ -45,13 +47,23 @@ const PromptText = styled.div<HoverProps & SavedProps>`
 `;
 
 const PromptBack = styled(PromptText)`
-  opacity: ${props=> (props.isSaved ? 1.0 : 0.7)};
+  opacity: ${props=> {
+    if(props.isSaved){
+      return 1.0;
+    } else if(props.isHovered) {
+      return 0.7;
+    } else {
+      return 0.0;
+    }
+  }};
   ${props => (props.isSaved ? 
     {
       'color': 'var(--fgSecondarySmall);'
     } 
     : null
   )};
+
+  transition: ${ANIMATION_TIME_MSEC / 1000}s ease-out;
 `;
 
 const PromptContainer = styled.div`
@@ -67,10 +79,11 @@ const Container = styled.div<HoverProps & SavedProps>`
   flex-direction: row;
   align-items: flex-start;
   width: 332px;
-  padding: ${props => ((props.isHovered || props.isSaved) ? '8px 8px 10px 9px' : '8px 8px 4px 12px')};
+  padding: 8px 8px 10px 9px;
   gap: 8px;
   cursor: pointer;
   position: relative;
+  border-left: 3px solid transparent;
 
   :active::before {
     position: absolute;
@@ -83,16 +96,18 @@ const Container = styled.div<HoverProps & SavedProps>`
   };
 
   ${props =>  (props.isHovered ? {
-    'background': ' var(--bgContent);',
-    'borderLeft': '3px solid var(--accentPrimary)',
+    'background': 'var(--bgContent);',
+    'borderLeft': '3px solid var(--accentPrimary);',
     'boxShadow': '0px 1px 3px rgba(0, 0, 0, 0.07), 0px 5px 10px rgba(0, 0, 0, 0.08)'} : null
   )};
 
   ${props =>  (props.isSaved ? {
-    'background': ' var(--bgPrimary);',
-    'borderLeft': '3px solid var(--accentSecondary)',
+    'background': 'var(--bgPrimary);',
+    'borderLeft': '3px solid var(--accentSecondary);',
     'boxShadow': '0px 1px 3px rgba(0, 0, 0, 0.07), 0px 5px 10px rgba(0, 0, 0, 0.08)'} : null
   )};
+
+  transition: ${ANIMATION_TIME_MSEC / 1000}s ease-out;
 `;
 
 export default function PromptBox({
@@ -100,7 +115,22 @@ export default function PromptBox({
     savePrompt,
 }: PromptProps) {
     const [isHovered, setIsHovered] = useState<boolean>(false);
+    const hidePromptBackTimeout = useRef<number | undefined>();
+    const [showPromptBack, setShowPromptBack] = useState<boolean>(false);
     const isSaved = prompt.isSaved;
+
+    // We hide the prompt back only after the animation for unhover'ing is done. This way the container doesn't instantly resize and cause animation to glitch
+    useEffect(() => {
+      if(!isHovered && !isSaved){
+        hidePromptBackTimeout.current = window.setTimeout(() => {
+          setShowPromptBack(false);
+        }, ANIMATION_TIME_MSEC);
+      } else if(isHovered || isSaved){
+        clearTimeout(hidePromptBackTimeout.current);
+        hidePromptBackTimeout.current = undefined;
+        setShowPromptBack(true);
+      }
+    }, [isHovered, isSaved, setShowPromptBack]);
 
     return (
       <Container isHovered={isHovered} isSaved={isSaved} onMouseEnter={() => setIsHovered(true)} onMouseLeave={() => setIsHovered(false)} onClick={() => savePrompt()}>
@@ -109,7 +139,7 @@ export default function PromptBox({
           <PromptText isHovered={isHovered} isSaved={isSaved}>
             {prompt.content.front}
           </PromptText>
-          {(isHovered || isSaved) && 
+          {showPromptBack && 
             <PromptBack isHovered={isHovered} isSaved={isSaved}>
               {prompt.content.back}
             </PromptBack>

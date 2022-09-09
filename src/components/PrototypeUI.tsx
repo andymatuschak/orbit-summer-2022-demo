@@ -5,7 +5,6 @@ import ContextualMenu from "./ContextualMenu";
 import { usePageHeight } from "../hooks/usePageHeight";
 import { useSelectionBounds } from "../hooks/useSelectionBounds";
 import PromptBox from "./PromptBox";
-import { useStore } from "../hooks/useStore";
 import { Prompt } from "../app/promptSlice";
 
 export interface DemoPageProps {
@@ -30,11 +29,12 @@ export default function PrototypeUI({
     const newStore: Store = {
       prompts: {}
     };
-    Object.entries(store.prompts).map(([id, p]) => {
-      newStore.prompts[id] = p;
+    Object.keys(store.prompts).forEach((id) => {
+      newStore.prompts[id] = store.prompts[id];
+      return;
     });
     setStore(newStore);
-  }, []);
+  }, [setStore, store]);
 
   return (
     <div
