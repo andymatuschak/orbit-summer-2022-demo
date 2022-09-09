@@ -12,10 +12,13 @@ Primary.args = {
   items: [
     {
       title: "Add 2 prompts",
-      onClick: () => alert("click"),
+      onClick: () => alert("click option 1"),
+      shortcutKey: "N",
     },
     {
       title: "Test 2",
+      onClick: () => alert("click option 2"),
+      shortcutKey: "T",
     },
   ],
 };

@@ -1,75 +1,41 @@
-import { css } from "@emotion/react";
 import React from "react";
-import zIndices from "./common/zIndices";
-
+import styled from '@emotion/styled'
+import MenuItem from './MenuItem';
 interface ContextualMenuItemProps {
   title: string;
   onClick: () => void;
+  shortcutKey: string;
 }
-function ContextualMenuItem({ title, onClick }: ContextualMenuItemProps) {
+
+function ContextualMenuItem({ title, onClick, shortcutKey }: ContextualMenuItemProps) {
   return (
-    <button
-      onClick={(e) => {
-        onClick?.();
-        e.stopPropagation();
-      }}
-      css={css`
-        width: 100%;
-        text-align: left;
-        background-color: var(--bgSecondary);
-        font-family: "Dr-ExtraBold";
-        font-size: 16px;
-        line-height: 20px;
-        letter-spacing: 0.03em;
-        border: none;
-        padding: 8px 12px 8px 12px;
-        margin: 0;
-        color: var(--accentPrimary);
-        white-space: nowrap;
-
-        &:hover {
-          background-color: var(--bgPrimary);
-        }
-
-        & span {
-          display: inline-block;
-          position: relative;
-          top: -1px;
-        }
-
-        &:active span {
-          opacity: 0.2;
-        }
-
-        z-index: ${zIndices.displayOverContent};
-      `}
-    >
-      <span>{title}</span>
-    </button>
+    <MenuItem title={title} onClick={onClick} shortcutKey={shortcutKey}/>
   );
 }
 
+const ContextMenuContainer = styled.div`
+  width: 254px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  padding: 4px;
+  background: var(--bgPrimary);
+  border: 3px solid var(--fgTertiary);
+  box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.1), 0px 1px 2px rgba(0, 0, 0, 0.07);
+`;
+
 export interface ContextualMenuProps {
-  position: "left" | "right" | "center";
-  items: { title: string; onClick: () => void }[];
+  items: ContextualMenuItemProps[];
 }
+
 export default function ContextualMenu({
-  position,
   items,
 }: ContextualMenuProps) {
   return (
-    <div
-      className={position}
-      css={css`
-        padding-top: 8px;
-        display: flex;
-        flex-direction: column;
-        align-items: flex-start;
-      `}
-    >
+    <ContextMenuContainer>
       {items.map((item, i) => (
         <ContextualMenuItem {...item} key={i} />
       ))}
-    </div>
+    </ContextMenuContainer>
   );
 }
