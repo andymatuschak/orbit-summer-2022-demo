@@ -15,7 +15,7 @@ const unsavedPrompt = {
     },
   selectors: [{type: PromptSelectorType.TextPositionSelector, start:0, end: 100}],
   isByAuthor: true,
-  isSaved: false
+  isSaved: false,
 };
 
 const savedPrompt = { 
@@ -25,7 +25,7 @@ const savedPrompt = {
     },
   selectors: [{type: PromptSelectorType.TextPositionSelector, start:0, end: 100}],
   isByAuthor: true,
-  isSaved: true
+  isSaved: true,
 };
 
 export const Unsaved = Template.bind({});
@@ -38,5 +38,7 @@ Unsaved.args = {
 export const Saved = Template.bind({});
 Saved.args = {
     prompt: savedPrompt,
-    savePrompt: () => null
+    savePrompt: () => null,
+    updatePromptFront: (s) => null,
+    updatePromptBack: (s) => null,
 };
