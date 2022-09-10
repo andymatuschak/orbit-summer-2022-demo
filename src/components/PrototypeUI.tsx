@@ -1,6 +1,5 @@
 import React, { useState } from "react";
-import { useStore } from "react-redux";
-import { savePrompt } from "../app/promptSlice";
+import { savePrompt, updatePromptFront, updatePromptBack } from "../app/promptSlice";
 import { useAppDispatch, useAppSelector } from "../app/store";
 import { usePageHeight } from "../hooks/usePageHeight";
 import { useSelectionBounds } from "../hooks/useSelectionBounds";
@@ -77,6 +76,8 @@ export default function PrototypeUI({
               <PromptBox
                 prompt={prompt}
                 savePrompt={() => dispatch(savePrompt(id))}
+                updatePromptFront={(newPrompt) => dispatch(updatePromptFront([id, newPrompt]))}
+                updatePromptBack={(newPrompt) => dispatch(updatePromptBack([id, newPrompt]))}
               />
             </div>
           ))}

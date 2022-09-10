@@ -11,6 +11,8 @@ const ANIMATION_TIME_MSEC = 48.0;
 export interface PromptProps {
     prompt: Prompt
     savePrompt: () => any;
+    updatePromptFront: (newPrompt: string) => any;
+    updatePromptBack: (newPrompt: string) => any;
 }
 
 interface HoverProps {
@@ -57,10 +59,11 @@ const PromptText = styled.div<HoverProps & SavedProps>`
   }
 
   caret-color: var(--accentPrimary);
+  ${props => props.isSaved ? `cursor: text` : null};
 `;
 
 const PromptBack = styled(PromptText)`
-  opacity: ${props=> {
+  opacity: ${props => {
     if(props.isSaved){
       return 1.0;
     } else if(props.isHovered) {
@@ -128,6 +131,8 @@ const Container = styled.div<HoverProps & SavedProps & EditingProps>`
 export default function PromptBox({
     prompt, 
     savePrompt,
+    updatePromptFront,
+    updatePromptBack,
 }: PromptProps) {
     const [isHovered, setIsHovered] = useState<boolean>(false);
     const [isEditing, setIsEditing] = useState<boolean>(false);
@@ -166,6 +171,12 @@ export default function PromptBox({
     }
 
     const endEditing = function(){
+      if(promptFrontRef.current?.innerText) {
+        updatePromptFront(promptFrontRef.current.innerText);
+      }
+      if(promptBackRef.current?.innerText) {
+        updatePromptBack(promptBackRef.current.innerText);
+      }
       setIsEditing(false);
       savePrompt();
     };
