@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from "react";
+import React, { useCallback, useEffect, useRef, useState } from "react";
 import { useAppSelector } from "../app/store";
 import X from "../static/images/Icons/X.png";
 import Logo from "../static/images/Logo.png";
@@ -167,6 +167,7 @@ export function OrbitMenu(props: OrbitMenuProps) {
     ({ prompts }) =>
       Object.keys(prompts).filter((id) => prompts[id].isDue).length,
   );
+  const containerRef = useRef<HTMLDivElement | null>(null);
 
   const [contentsSize, setContentsSize] = useState<[number, number] | null>(
     null,
@@ -181,8 +182,25 @@ export function OrbitMenu(props: OrbitMenuProps) {
     }
   }, []);
 
+  useEffect(() => {
+    if (isOpen) {
+      function onClick(event: MouseEvent) {
+        if (
+          event.target instanceof Element &&
+          !containerRef.current!.contains(event.target)
+        ) {
+          setOpen(false);
+          document.removeEventListener("click", onClick);
+        }
+      }
+
+      document.addEventListener("click", onClick);
+      return () => document.removeEventListener("click", onClick);
+    }
+  }, [isOpen]);
+
   return (
-    <div>
+    <div ref={containerRef}>
       {contentsSize && (
         <OrbitMenuBackground menuIsOpen={isOpen} contentsSize={contentsSize} />
       )}
