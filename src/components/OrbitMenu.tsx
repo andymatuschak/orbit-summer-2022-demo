@@ -190,8 +190,6 @@ export function OrbitMenu(props: OrbitMenuProps) {
           !containerRef.current!.contains(event.target)
         ) {
           setOpen(false);
-          event.stopPropagation();
-          event.preventDefault();
           document.removeEventListener("click", onClick);
         }
       }
