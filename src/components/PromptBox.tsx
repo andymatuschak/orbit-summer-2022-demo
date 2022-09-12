@@ -116,7 +116,7 @@ const Container = styled.div<HoverProps & SavedProps & EditingProps>`
   width: 332px;
   padding: 8px 8px 10px 9px;
   gap: 8px;
-  cursor: pointer;
+  cursor: ${props => !props.isSaved ? 'pointer' : 'auto'};
   position: relative;
   border-left: 3px solid transparent;
 
@@ -132,7 +132,7 @@ const Container = styled.div<HoverProps & SavedProps & EditingProps>`
     };` : null
   }
 
-  ${props => (props.isHovered ? {
+  ${props => ((props.isHovered && !props.isSaved) ? {
     'background': 'var(--bgContent);',
     'borderLeft': '3px solid var(--accentPrimary);',
     'boxShadow': '0px 1px 3px rgba(0, 0, 0, 0.07), 0px 5px 10px rgba(0, 0, 0, 0.08)'} : null
@@ -140,8 +140,7 @@ const Container = styled.div<HoverProps & SavedProps & EditingProps>`
 
   ${props =>  (props.isSaved ? {
     'background': 'var(--bgPrimary);',
-    'borderLeft': `3px solid var(${props.isEditing ? "--accentPrimary" : "--accentSecondary"});`,
-    'boxShadow': '0px 1px 3px rgba(0, 0, 0, 0.07), 0px 5px 10px rgba(0, 0, 0, 0.08)'} : null
+    'borderLeft': `3px solid var(${props.isEditing ? "--accentPrimary" : "--accentSecondary"})`} : null
   )};
 
   transition: ${ANIMATION_TIME_MSEC / 1000}s ease-out;
