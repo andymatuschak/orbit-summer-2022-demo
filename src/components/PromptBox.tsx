@@ -7,6 +7,15 @@ import starburst_editing from '../static/images/Icons/Starburst-Edit.png';
 import plus from '../static/images/Icons/Plus.png';
 
 const ANIMATION_TIME_MSEC = 48.0;
+// HACKy regex for seeing if prompt is image
+const IMAGE_REGEX = /<img.+src="(.+)".+>/;
+
+function getPromptImageSrc(promptContent: string): string | undefined  {
+  const res = promptContent.match(IMAGE_REGEX);
+  if (res && res.length > 0){
+    return res[1];
+  } 
+}
 
 export interface PromptProps {
     prompt: Prompt
@@ -87,6 +96,11 @@ const PromptBack = styled(PromptText)`
   transition: ${ANIMATION_TIME_MSEC / 1000}s ease-out;
 `;
 
+const PromptImage = styled.img`
+    width: 50%;
+    border-radius: 0px;
+`;
+
 const PromptContainer = styled.div`
   display: flex;
   flex-direction: column;
@@ -143,6 +157,7 @@ export default function PromptBox({
     const [isEditing, setIsEditing] = useState<boolean>(prompt.isNew ?? false);
     const hidePromptBackTimeout = useRef<number | undefined>();
     const [showPromptBack, setShowPromptBack] = useState<boolean>(false);
+    const [imageSrc, setImageSrc] = useState<string | undefined>();
     const isSaved = prompt.isSaved;
 
     const promptFrontRef = useRef<HTMLDivElement | null>(null);
@@ -186,11 +201,17 @@ export default function PromptBox({
       savePrompt();
     };
 
+    // Focus if new
     useEffect(() => {
       if (prompt.isNew && promptFrontRef.current) {
         promptFrontRef.current.focus({preventScroll: true});
       }
     }, [prompt, promptFrontRef]);
+
+    // Check if image
+    useEffect(() => {
+      setImageSrc(getPromptImageSrc(prompt.content.back));
+    }, [prompt]);
 
     return (
       <Container 
@@ -216,18 +237,21 @@ export default function PromptBox({
             {prompt.content.front}
           </PromptText>
           {showPromptBack && 
-            <PromptBack 
-              isHovered={isHovered} 
-              isSaved={isSaved}
-              contentEditable={isSaved} 
-              onFocus={() => startEditing(false)}
-              onBlur={() => endEditing()}
-              suppressContentEditableWarning
-              ref={promptBackRef}
-              placeholder="Type a response here."
-            >
-              {prompt.content.back}
-            </PromptBack>
+            (imageSrc ?
+              <PromptImage src={imageSrc} />
+              : <PromptBack 
+                isHovered={isHovered} 
+                isSaved={isSaved}
+                contentEditable={isSaved} 
+                onFocus={() => startEditing(false)}
+                onBlur={() => endEditing()}
+                suppressContentEditableWarning
+                ref={promptBackRef}
+                placeholder="Type a response here."
+              >
+                {prompt.content.back}
+              </PromptBack>
+            ) 
           }
         </PromptContainer>
       </Container>
