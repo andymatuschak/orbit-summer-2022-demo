@@ -60,7 +60,7 @@ const PromptText = styled.div<HoverProps & SavedProps>`
   line-height: 17px;
   letter-spacing: 0.04em;
   color: var(--fgPrimary);
-  opacity: ${props => ((props.isHovered || props.isSaved) ? 1.0 : 0.87)};
+  opacity: ${props => ((props.isHovered || props.isSaved) ? 1.0 : 0.696)};
   outline: none;
 
   ::selection {
