@@ -11,6 +11,7 @@ export interface Prompt {
   isByAuthor: boolean;
   isSaved: boolean;
   isDue: boolean;
+  isNew?: boolean; // TODO: for when we serialize to local storage - don't persist this 
 }
 
 // i.e. following Hypothes.is's selector format, as specified in src/vendor/hypothesis-annotator
@@ -54,25 +55,36 @@ export interface PromptsState {
   [id: string]: Prompt;
 }
 
+export type IdAction = PayloadAction<string>
+export type UpdatePromptText = PayloadAction<[id: string, promptText: string]>;
+export type CreateNewPrompt = PayloadAction<{id: string, prompt: Prompt}>;
+
 const initialState: PromptsState = {};
 
 const promptsSlice = createSlice({
   name: "prompts",
   initialState,
   reducers: {
-    savePrompt(state, action: PayloadAction<string>) {
+    savePrompt(state, action: IdAction) {
       const prompt = state[action.payload];
       prompt.isSaved = true;
       prompt.isDue = true;
     },
-    updatePromptFront(state, action: PayloadAction<[id: string, prompt: string]>) {
+    updatePromptFront(state, action: UpdatePromptText) {
       const prompt = state[action.payload[0]];
       prompt.content.front = action.payload[1]
     },
-    updatePromptBack(state, action: PayloadAction<[id: string, prompt: string]>) {
+    updatePromptBack(state, action: UpdatePromptText) {
       const prompt = state[action.payload[0]];
       prompt.content.back = action.payload[1]
     },
+    createNewPrompt(state, action: CreateNewPrompt) {
+      state[action.payload.id] = action.payload.prompt;
+    },
+    markAsNotNew(state, action: IdAction) {
+      const prompt = state[action.payload];
+      prompt.isNew = false;
+    }
   },
   extraReducers(builder) {
     builder.addCase(loadPrompts.fulfilled, (_state, action) => {
@@ -89,5 +101,5 @@ export const loadPrompts = createAsyncThunk(
   },
 );
 
-export const { savePrompt, updatePromptFront, updatePromptBack } = promptsSlice.actions;
+export const { savePrompt, updatePromptFront, updatePromptBack, createNewPrompt, markAsNotNew } = promptsSlice.actions;
 export const promptsReducer = promptsSlice.reducer;

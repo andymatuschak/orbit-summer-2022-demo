@@ -60,6 +60,11 @@ const PromptText = styled.div<HoverProps & SavedProps>`
 
   caret-color: var(--accentPrimary);
   ${props => props.isSaved ? `cursor: text` : null};
+
+  :empty::before {
+    content: attr(placeholder);
+    color: var(--fgDisabled);
+  }
 `;
 
 const PromptBack = styled(PromptText)`
@@ -135,7 +140,7 @@ export default function PromptBox({
     updatePromptBack,
 }: PromptProps) {
     const [isHovered, setIsHovered] = useState<boolean>(false);
-    const [isEditing, setIsEditing] = useState<boolean>(false);
+    const [isEditing, setIsEditing] = useState<boolean>(prompt.isNew ?? false);
     const hidePromptBackTimeout = useRef<number | undefined>();
     const [showPromptBack, setShowPromptBack] = useState<boolean>(false);
     const isSaved = prompt.isSaved;
@@ -181,6 +186,12 @@ export default function PromptBox({
       savePrompt();
     };
 
+    useEffect(() => {
+      if (prompt.isNew && promptFrontRef.current) {
+        promptFrontRef.current.focus({preventScroll: true});
+      }
+    }, [prompt, promptFrontRef]);
+
     return (
       <Container 
         isHovered={isHovered} 
@@ -200,6 +211,7 @@ export default function PromptBox({
             onBlur={() => endEditing()}
             suppressContentEditableWarning
             ref={promptFrontRef}
+            placeholder="Type a prompt here."
           >
             {prompt.content.front}
           </PromptText>
@@ -212,6 +224,7 @@ export default function PromptBox({
               onBlur={() => endEditing()}
               suppressContentEditableWarning
               ref={promptBackRef}
+              placeholder="Type a response here."
             >
               {prompt.content.back}
             </PromptBack>

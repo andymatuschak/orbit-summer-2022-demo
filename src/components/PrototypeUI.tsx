@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { savePrompt, updatePromptFront, updatePromptBack } from "../app/promptSlice";
+import { savePrompt, updatePromptFront, updatePromptBack, Prompt, createNewPrompt, PromptsState, markAsNotNew } from "../app/promptSlice";
 import { useAppDispatch, useAppSelector } from "../app/store";
 import { usePageHeight } from "../hooks/usePageHeight";
 import { useSelectionBounds } from "../hooks/useSelectionBounds";
@@ -9,21 +9,26 @@ import { ModalReview } from "./ModalReview";
 import { OrbitMenu } from "./OrbitMenu";
 import PromptBox from "./PromptBox";
 import zIndices from "./common/zIndices";
+import { describe } from "../vendor/hypothesis-annotator/html";
+import uuidBase64 from "./common/uuid";
 
 export interface DemoPageProps {
   marginX: number;
   promptLocations: { [id: string]: PromptLocation };
+  prompts: PromptsState;
+  textRoot: Element;
 }
 
 export default function PrototypeUI({
   marginX,
   promptLocations,
+  prompts,
+  textRoot,
 }: DemoPageProps) {
-  const prompts = useAppSelector((state) => state.prompts);
   const dispatch = useAppDispatch();
   const height = usePageHeight();
 
-  const { selectionPosition, clearSelectionPosition } = useSelectionBounds();
+  const { selectionPosition, selectionRange, clearSelectionPosition } = useSelectionBounds();
   const [isModalReviewActive, setModalReviewActive] = useState(false);
 
   return (
@@ -56,7 +61,20 @@ export default function PrototypeUI({
                 title: "New prompt",
                 onClick: () => {
                   clearSelectionPosition();
-                  // TODO: implement adding new prompt
+                  if (selectionRange){
+                    const newPrompt: Prompt = {
+                      content: {
+                        front: "",
+                        back: "",
+                      },
+                      selectors: describe(textRoot, selectionRange),
+                      isByAuthor: false,
+                      isSaved: true,
+                      isDue: true,
+                      isNew: true,
+                    }
+                    dispatch(createNewPrompt({id: uuidBase64(), prompt: newPrompt}));
+                  }
                 },
                 shortcutKey: "N",
               },
@@ -64,23 +82,31 @@ export default function PrototypeUI({
           />
         </div>
         <>
-          {Object.entries(prompts).map(([id, prompt]) => (
-            <div
-              key={id}
-              css={{
-                position: "absolute",
-                left: marginX,
-                top: promptLocations[id].top,
-              }}
-            >
-              <PromptBox
-                prompt={prompt}
-                savePrompt={() => dispatch(savePrompt(id))}
-                updatePromptFront={(newPrompt) => dispatch(updatePromptFront([id, newPrompt]))}
-                updatePromptBack={(newPrompt) => dispatch(updatePromptBack([id, newPrompt]))}
-              />
-            </div>
-          ))}
+          {Object.entries(prompts).map(([id, prompt]) => {
+
+            // Mark as not new if it is, prompts are only new once :) 
+            if (prompt.isNew) {
+              dispatch(markAsNotNew(id));
+            }
+
+            return (
+              <div
+                key={id}
+                css={{
+                  position: "absolute",
+                  left: marginX,
+                  top: promptLocations[id]?.top,
+                }}
+              >
+                <PromptBox
+                  prompt={prompt}
+                  savePrompt={() => dispatch(savePrompt(id))}
+                  updatePromptFront={(newPrompt) => dispatch(updatePromptFront([id, newPrompt]))}
+                  updatePromptBack={(newPrompt) => dispatch(updatePromptBack([id, newPrompt]))}
+                />
+              </div>
+            );
+          })}
         </>
       </div>
       <div
