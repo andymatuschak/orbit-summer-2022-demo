@@ -1,6 +1,7 @@
 import React, { useCallback } from "react";
 import PrototypeUI from "../components/PrototypeUI";
 import { useAsyncLayoutDependentValue } from "../hooks/useLayoutDependentValue";
+import { useReviewAreaIntegration } from "../hooks/useReviewAreaIntegration";
 import { resolvePromptLocations } from "../util/resolvePromptLocations";
 import { useAppSelector } from "./store";
 
@@ -11,6 +12,7 @@ export interface AppProps {
 
 export default function App({ marginX, textRoot }: AppProps) {
   const prompts = useAppSelector((state) => state.prompts);
+  useReviewAreaIntegration();
 
   const promptLocations = useAsyncLayoutDependentValue(
     null,
@@ -25,7 +27,14 @@ export default function App({ marginX, textRoot }: AppProps) {
   );
 
   if (promptLocations) {
-    return <PrototypeUI marginX={marginX} promptLocations={promptLocations} prompts={prompts} textRoot={textRoot}/>;
+    return (
+      <PrototypeUI
+        marginX={marginX}
+        promptLocations={promptLocations}
+        prompts={prompts}
+        textRoot={textRoot}
+      />
+    );
   } else {
     return null;
   }

@@ -11,7 +11,7 @@ export interface Prompt {
   isByAuthor: boolean;
   isSaved: boolean;
   isDue: boolean;
-  isNew?: boolean; // TODO: for when we serialize to local storage - don't persist this 
+  isNew?: boolean; // TODO: for when we serialize to local storage - don't persist this
 }
 
 // i.e. following Hypothes.is's selector format, as specified in src/vendor/hypothesis-annotator
@@ -55,9 +55,14 @@ export interface PromptsState {
   [id: string]: Prompt;
 }
 
-export type IdAction = PayloadAction<string>
+export type IdAction = PayloadAction<string>;
 export type UpdatePromptText = PayloadAction<[id: string, promptText: string]>;
-export type CreateNewPrompt = PayloadAction<{id: string, prompt: Prompt}>;
+export type CreateNewPrompt = PayloadAction<{ id: string; prompt: Prompt }>;
+export type SyncPromptFromReview = PayloadAction<{
+  id: string;
+  wasSkipped: boolean;
+  newInterval: number;
+}>;
 
 const initialState: PromptsState = {};
 
@@ -72,11 +77,11 @@ const promptsSlice = createSlice({
     },
     updatePromptFront(state, action: UpdatePromptText) {
       const prompt = state[action.payload[0]];
-      prompt.content.front = action.payload[1]
+      prompt.content.front = action.payload[1];
     },
     updatePromptBack(state, action: UpdatePromptText) {
       const prompt = state[action.payload[0]];
-      prompt.content.back = action.payload[1]
+      prompt.content.back = action.payload[1];
     },
     createNewPrompt(state, action: CreateNewPrompt) {
       state[action.payload.id] = action.payload.prompt;
@@ -84,7 +89,17 @@ const promptsSlice = createSlice({
     markAsNotNew(state, action: IdAction) {
       const prompt = state[action.payload];
       prompt.isNew = false;
-    }
+    },
+    syncPromptFromReview(state, action: SyncPromptFromReview) {
+      const { id, wasSkipped, newInterval } = action.payload;
+      const prompt = state[id];
+      if (!prompt.isSaved && !wasSkipped) {
+        prompt.isSaved = true;
+      }
+
+      // This hacky predicate corresponds to the data we'll see if they marked the prompt as forgotten (i.e. so it's still due).
+      prompt.isDue = newInterval === 0 && !wasSkipped;
+    },
   },
   extraReducers(builder) {
     builder.addCase(loadPrompts.fulfilled, (_state, action) => {
@@ -101,5 +116,12 @@ export const loadPrompts = createAsyncThunk(
   },
 );
 
-export const { savePrompt, updatePromptFront, updatePromptBack, createNewPrompt, markAsNotNew } = promptsSlice.actions;
+export const {
+  savePrompt,
+  updatePromptFront,
+  updatePromptBack,
+  createNewPrompt,
+  markAsNotNew,
+  syncPromptFromReview,
+} = promptsSlice.actions;
 export const promptsReducer = promptsSlice.reducer;
