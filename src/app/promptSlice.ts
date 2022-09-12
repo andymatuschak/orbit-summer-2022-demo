@@ -54,6 +54,9 @@ export interface PromptsState {
   [id: string]: Prompt;
 }
 
+export type UpdatePromptText = PayloadAction<[id: string, promptText: string]>;
+export type CreateNewPrompt = PayloadAction<{id: string, prompt: Prompt}>;
+
 const initialState: PromptsState = {};
 
 const promptsSlice = createSlice({
@@ -65,14 +68,17 @@ const promptsSlice = createSlice({
       prompt.isSaved = true;
       prompt.isDue = true;
     },
-    updatePromptFront(state, action: PayloadAction<[id: string, prompt: string]>) {
+    updatePromptFront(state, action: UpdatePromptText) {
       const prompt = state[action.payload[0]];
       prompt.content.front = action.payload[1]
     },
-    updatePromptBack(state, action: PayloadAction<[id: string, prompt: string]>) {
+    updatePromptBack(state, action: UpdatePromptText) {
       const prompt = state[action.payload[0]];
       prompt.content.back = action.payload[1]
     },
+    createNewPrompt(state, action: CreateNewPrompt){
+      state[action.payload.id] = action.payload.prompt;
+    }
   },
   extraReducers(builder) {
     builder.addCase(loadPrompts.fulfilled, (_state, action) => {
@@ -89,5 +95,5 @@ export const loadPrompts = createAsyncThunk(
   },
 );
 
-export const { savePrompt, updatePromptFront, updatePromptBack } = promptsSlice.actions;
+export const { savePrompt, updatePromptFront, updatePromptBack, createNewPrompt } = promptsSlice.actions;
 export const promptsReducer = promptsSlice.reducer;

@@ -9,11 +9,15 @@ export interface SelectionBounds {
 export function useSelectionBounds(): {
   selectionPosition: SelectionBounds | null;
   clearSelectionPosition: () => void;
+  selectionRange: Range | null;
+
 } {
   const [selectionPosition, setSelectionPosition] =
     useState<SelectionBounds | null>(null);
+  const [selectionRange, setSelectionRange] = useState<Range | null>(null);
 
   useEffect(() => {
+
     const onEnd = (e: MouseEvent) => {
       const selection = document.getSelection();
       if (e.target instanceof Node && document.getElementById("demo-root")!.contains(e.target)){
@@ -31,14 +35,18 @@ export function useSelectionBounds(): {
           top: window.scrollY + rect.top,
           bottom: window.scrollY + rect.bottom,
         });
+       setSelectionRange(range);
       }
     };
+
     const onChange = () => {
       const selection = document.getSelection();
       if (!selection || selection.isCollapsed) {
         setSelectionPosition(null);
+        setSelectionRange(null);
       }
     };
+
     const onSelectStart = (e: Event) => {
       if (
         e.target instanceof Node &&
@@ -59,6 +67,7 @@ export function useSelectionBounds(): {
   
   return {
     selectionPosition,
+    selectionRange,
     clearSelectionPosition: () => setSelectionPosition(null),
   };
 }

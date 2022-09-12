@@ -6,9 +6,10 @@ import { useAppSelector } from "./store";
 
 export interface AppProps {
   marginX: number;
+  textRoot: Element;
 }
 
-export default function App({ marginX }: AppProps) {
+export default function App({ marginX, textRoot }: AppProps) {
   const prompts = useAppSelector((state) => state.prompts);
 
   const promptLocations = useAsyncLayoutDependentValue(
@@ -24,7 +25,7 @@ export default function App({ marginX }: AppProps) {
   );
 
   if (promptLocations) {
-    return <PrototypeUI marginX={marginX} promptLocations={promptLocations} />;
+    return <PrototypeUI marginX={marginX} promptLocations={promptLocations} prompts={prompts} textRoot={textRoot}/>;
   } else {
     return null;
   }

@@ -31,5 +31,5 @@ export default function ShapeUpApp() {
     }, []),
   );
 
-  return <App marginX={markerX} />;
+  return <App marginX={markerX} textRoot={document.getElementById("main")!.parentElement!}/>;
 }
