@@ -8,7 +8,7 @@ type CustomElement<T> = Partial<T & DOMAttributes<T> & { children: any }>;
 declare global {
   namespace JSX {
     interface IntrinsicElements {
-      ["orbit-reviewarea"]: CustomElement<HTMLElement>;
+      ["orbit-reviewarea"]: CustomElement<HTMLElement & { height?: string }>;
       ["orbit-prompt"]: CustomElement<{
         question: string;
         answer: string;
@@ -42,11 +42,11 @@ export function ModalReview(props: ModalReviewProps) {
           left: 0,
           bottom: 0,
           right: 0,
-          backgroundColor: "red",
+          backgroundColor: "#ff5252",
           zIndex: zIndices.modalReview,
         }}
       >
-        <orbit-reviewarea>
+        <orbit-reviewarea height="100vh">
           {queuedPromptIDs.map((id) => (
             <orbit-prompt
               question={prompts[id].content.front}
