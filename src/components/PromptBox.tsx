@@ -60,6 +60,11 @@ const PromptText = styled.div<HoverProps & SavedProps>`
 
   caret-color: var(--accentPrimary);
   ${props => props.isSaved ? `cursor: text` : null};
+
+  :empty::before {
+    content: attr(placeholder);
+    color: var(--fgDisabled);
+  }
 `;
 
 const PromptBack = styled(PromptText)`
@@ -200,6 +205,7 @@ export default function PromptBox({
             onBlur={() => endEditing()}
             suppressContentEditableWarning
             ref={promptFrontRef}
+            placeholder="Type a prompt here."
           >
             {prompt.content.front}
           </PromptText>
@@ -212,6 +218,7 @@ export default function PromptBox({
               onBlur={() => endEditing()}
               suppressContentEditableWarning
               ref={promptBackRef}
+              placeholder="Type a response here."
             >
               {prompt.content.back}
             </PromptBack>
