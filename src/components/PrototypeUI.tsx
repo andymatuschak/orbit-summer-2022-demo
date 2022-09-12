@@ -77,6 +77,7 @@ export default function PrototypeUI({
                   }
                 },
                 shortcutKey: "N",
+                isEnabled: selectionPosition ? true : false,
               },
             ]}
           />
