@@ -33,8 +33,8 @@ export default function MenuItem({
 
   useEffect(() => {
     const onShortcutKey = function(e: KeyboardEvent){
-      console.log(isEnabled);
       if (shortcutKey && e.key === shortcutKey.toLowerCase() && isEnabled) {
+        e.preventDefault();
         onClick();
       }
     }

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { savePrompt, updatePromptFront, updatePromptBack, Prompt, createNewPrompt, PromptsState, markAsNotNew } from "../app/promptSlice";
 import { useAppDispatch, useAppSelector } from "../app/store";
 import { usePageHeight } from "../hooks/usePageHeight";
@@ -30,6 +30,16 @@ export default function PrototypeUI({
 
   const { selectionPosition, selectionRange, clearSelectionPosition } = useSelectionBounds();
   const [isModalReviewActive, setModalReviewActive] = useState(false);
+
+  useEffect(() => {
+    Object.keys(prompts).forEach((id) => {
+      const prompt = prompts[id];
+      // Mark as not new if it is, prompts are only new once :) 
+      if (prompt.isNew) {
+        dispatch(markAsNotNew(id));
+      }
+    });
+  }, [prompts]);
 
   return (
     <>
@@ -83,14 +93,7 @@ export default function PrototypeUI({
           />
         </div>
         <>
-          {Object.entries(prompts).map(([id, prompt]) => {
-
-            // Mark as not new if it is, prompts are only new once :) 
-            if (prompt.isNew) {
-              dispatch(markAsNotNew(id));
-            }
-
-            return (
+          {Object.entries(prompts).map(([id, prompt]) => (
               <div
                 key={id}
                 css={{
@@ -106,8 +109,8 @@ export default function PrototypeUI({
                   updatePromptBack={(newPrompt) => dispatch(updatePromptBack([id, newPrompt]))}
                 />
               </div>
-            );
-          })}
+            )
+          )}
         </>
       </div>
       <div
