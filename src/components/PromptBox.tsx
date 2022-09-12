@@ -8,7 +8,7 @@ import plus from '../static/images/Icons/Plus.png';
 
 const ANIMATION_TIME_MSEC = 48.0;
 // HACKy regex for seeing if prompt is image
-const IMAGE_REGEX = /<img.+src=\"(.+)\".+>/;
+const IMAGE_REGEX = /<img.+src="(.+)".+>/;
 
 function getPromptImageSrc(promptContent: string): string | undefined  {
   const res = promptContent.match(IMAGE_REGEX);
@@ -153,7 +153,7 @@ export default function PromptBox({
     updatePromptFront,
     updatePromptBack,
 }: PromptProps) {
-    const [isHovered, setIsHovered] = useState<boolean>(true);
+    const [isHovered, setIsHovered] = useState<boolean>(false);
     const [isEditing, setIsEditing] = useState<boolean>(prompt.isNew ?? false);
     const hidePromptBackTimeout = useRef<number | undefined>();
     const [showPromptBack, setShowPromptBack] = useState<boolean>(false);
