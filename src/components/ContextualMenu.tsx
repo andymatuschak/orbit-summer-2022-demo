@@ -5,11 +5,12 @@ interface ContextualMenuItemProps {
   title: string;
   onClick: () => void;
   shortcutKey: string;
+  isEnabled: boolean;
 }
 
-function ContextualMenuItem({ title, onClick, shortcutKey }: ContextualMenuItemProps) {
+function ContextualMenuItem({ title, onClick, shortcutKey, isEnabled }: ContextualMenuItemProps) {
   return (
-    <MenuItem title={title} onClick={onClick} shortcutKey={shortcutKey}/>
+    <MenuItem title={title} onClick={onClick} shortcutKey={shortcutKey} isEnabled={isEnabled}/>
   );
 }
 

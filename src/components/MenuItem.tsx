@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { hoverAndActiveStyles } from "./common/hoverAndActiveStyles";
 import { XOR } from "./common/typeOperations";
 import ShortcutKey from "./ShortcutKey";
@@ -15,6 +15,7 @@ export interface MenuItemPropsShortcutKey {
   title: string;
   onClick: () => void;
   shortcutKey?: string;
+  isEnabled: boolean;
 }
 
 // A MenuItem can either have a shortcut key or a subtitle, not both
@@ -24,10 +25,23 @@ export default function MenuItem({
   disabled,
   onClick,
   shortcutKey,
+  isEnabled,
   subtitle,
   title,
 }: MenuItemProps) {
   const [isHovered, setIsHovered] = useState<boolean>(false);
+
+  useEffect(() => {
+    const onShortcutKey = function(e: KeyboardEvent){
+      if (shortcutKey && e.key === shortcutKey.toLowerCase() && isEnabled) {
+        e.preventDefault();
+        onClick();
+      }
+    }
+    
+    document.addEventListener("keydown", onShortcutKey);
+    return () => document.removeEventListener("keydown", onShortcutKey);
+  }, [shortcutKey, isEnabled]);
 
   return (
     <button
