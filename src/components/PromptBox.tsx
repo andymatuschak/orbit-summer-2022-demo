@@ -140,7 +140,7 @@ export default function PromptBox({
     updatePromptBack,
 }: PromptProps) {
     const [isHovered, setIsHovered] = useState<boolean>(false);
-    const [isEditing, setIsEditing] = useState<boolean>(false);
+    const [isEditing, setIsEditing] = useState<boolean>(prompt.isNew ?? false);
     const hidePromptBackTimeout = useRef<number | undefined>();
     const [showPromptBack, setShowPromptBack] = useState<boolean>(false);
     const isSaved = prompt.isSaved;
@@ -185,6 +185,12 @@ export default function PromptBox({
       setIsEditing(false);
       savePrompt();
     };
+
+    useEffect(() => {
+      if (prompt.isNew && promptFrontRef.current) {
+        promptFrontRef.current.focus({preventScroll: true});
+      }
+    }, [prompt, promptFrontRef]);
 
     return (
       <Container 
