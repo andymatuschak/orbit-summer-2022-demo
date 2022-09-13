@@ -1,5 +1,5 @@
 import React from "react";
-import { PromptSelectorType } from "../app/promptSlice";
+import { PromptSelectorType } from "../../app/promptSlice";
 import PromptBox from "./PromptBox";
 
 export default {
