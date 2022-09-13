@@ -51,7 +51,15 @@ export default function BulkPromptBox({prompts, ids, saveAll}: BulkPromptBoxProp
 
   return (
     <>
-     {isHovered() &&
+      <ButtonContainer 
+        onMouseEnter={() => setIsButtonHovered(true)}
+        onMouseLeave={() => setIsButtonHovered(false)} 
+        onClick={() => saveAll()}
+      >
+          <Icon isHovered={isHovered()} isSaved={false} isEditing={false}/>
+          <ButtonText>{isHovered() ? `Save ${prompts.length} prompts` : `${prompts.length} prompts available`}</ButtonText>
+      </ButtonContainer>
+      {isHovered() &&
           <PromptsContainer
             onMouseEnter={() => setIsBulkPromptHovered(true)}
             onMouseLeave={() => setIsBulkPromptHovered(false)} 
@@ -72,14 +80,6 @@ export default function BulkPromptBox({prompts, ids, saveAll}: BulkPromptBoxProp
             })}
           </PromptsContainer>
       }
-      <ButtonContainer 
-        onMouseEnter={() => setIsButtonHovered(true)}
-        onMouseLeave={() => setIsButtonHovered(false)} 
-        onClick={() => saveAll()}
-      >
-          <Icon isHovered={isHovered()} isSaved={false} isEditing={false}/>
-          <ButtonText>{isHovered() ? `Save ${prompts.length} prompts` : `${prompts.length} prompts available`}</ButtonText>
-      </ButtonContainer>
     </>
   
   )
