@@ -33,11 +33,11 @@ export function InlineReviewOverlay({
         context="inline"
         isReviewComplete={isReviewComplete}
         onClose={() => {
-          // TODO
+          // TODO - remove review area and replace with prompt list module
           alert("UNIMPLEMENTED");
         }}
         onContinueReview={() => {
-          // TODO
+          // TODO - place another review area on top containing the relevant prompts
           alert("UNIMPLEMENTED");
         }}
       />
