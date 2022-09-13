@@ -52,5 +52,9 @@ Primary.args = {
         prompt1,
         prompt2,
   ],
+  ids: [
+    "1",
+    "1",
+  ],
   saveAll: () => null,
 };

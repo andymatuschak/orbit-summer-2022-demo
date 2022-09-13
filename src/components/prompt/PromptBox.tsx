@@ -18,7 +18,8 @@ export interface PromptProps {
     isNew: boolean;
     isBulk?: boolean;
     // Informs the parent of bounding box of the fully expanded state on mount
-    setFullBoundingBox?: (box: DOMRect | undefined) => any;
+    setFullBoundingBox?: (box: DOMRect) => any;
+    computeFullBoundingBox?: boolean;
     savePrompt: () => any;
     updatePromptFront: (newPrompt: string) => any;
     updatePromptBack: (newPrompt: string) => any;
@@ -107,6 +108,7 @@ export default function PromptBox({
     isNew,
     isBulk,
     setFullBoundingBox,
+    computeFullBoundingBox,
     savePrompt,
     updatePromptFront,
     updatePromptBack,
@@ -115,7 +117,6 @@ export default function PromptBox({
     const [isEditing, setIsEditing] = useState<boolean>(isNew);
     const hidePromptBackTimeout = useRef<number | undefined>();
     const [showPromptBack, setShowPromptBack] = useState<boolean>(false);
-    const [onMountHide, setonMountHide] = useState<boolean>(true);
     const [imageSrc, setImageSrc] = useState<string | undefined>();
     const isSaved = prompt.isSaved;
 
@@ -175,11 +176,10 @@ export default function PromptBox({
 
     // Get full bounding rect
     useEffect(() => {
-      if (setFullBoundingBox && containerRef){
-        const rect = containerRef.current?.getBoundingClientRect();
+      if (setFullBoundingBox && containerRef.current && computeFullBoundingBox){
+        const rect = containerRef.current.getBoundingClientRect();
         setFullBoundingBox(rect);
       }
-      setonMountHide(false);
     }, [setFullBoundingBox, containerRef]);
 
     return (
@@ -187,7 +187,7 @@ export default function PromptBox({
         isHovered={isHovered} 
         isSaved={isSaved} 
         isEditing={isEditing}
-        isHidden={onMountHide}
+        isHidden={computeFullBoundingBox ?? false}
         isBulk={isBulk ?? false}
         onMouseEnter={() => setIsHovered(true)}
         onMouseLeave={() => setIsHovered(false)} 
@@ -206,10 +206,11 @@ export default function PromptBox({
             suppressContentEditableWarning
             ref={promptFrontRef}
             placeholder="Type a prompt here."
+            spellCheck={isEditing}
           >
             {prompt.content.front}
           </PromptText>
-          {(showPromptBack || isBulk || onMountHide) && 
+          {(showPromptBack || isBulk || computeFullBoundingBox) && 
             (imageSrc ?
               <PromptImage src={imageSrc} />
               : <PromptBack 
@@ -222,6 +223,7 @@ export default function PromptBox({
                 suppressContentEditableWarning
                 ref={promptBackRef}
                 placeholder="Type a response here."
+                spellCheck={isEditing}
               >
                 {prompt.content.back}
               </PromptBack>

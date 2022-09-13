@@ -1,11 +1,13 @@
 import React, { useEffect, useState } from "react";
 import styled from '@emotion/styled'
-import { Prompt, savePrompt } from "../../app/promptSlice";
+import { Prompt, PromptsState, savePrompt } from "../../app/promptSlice";
 import { ANIMATION_TIME_MSEC, Icon } from "./PromptComponents";
 import PromptBox from "./PromptBox";
 
 export interface BulkPromptBoxProps {
-    prompts: Prompt[]
+    // Prompts and ids must be same order
+    prompts: Prompt[];
+    ids: string[];
     saveAll: () => any;
 }
 
@@ -39,7 +41,7 @@ const ButtonText = styled.div`
   opacity: 0.696;
 `;
 
-export default function BulkPromptBox({prompts, saveAll}: BulkPromptBoxProps){
+export default function BulkPromptBox({prompts, ids, saveAll}: BulkPromptBoxProps){
   const [isButtonHovered, setIsButtonHovered] = useState<boolean>(false);
   const [isBulkPromptHovered, setIsBulkPromptHovered] = useState<boolean>(false);
 
@@ -54,10 +56,11 @@ export default function BulkPromptBox({prompts, saveAll}: BulkPromptBoxProps){
             onMouseEnter={() => setIsBulkPromptHovered(true)}
             onMouseLeave={() => setIsBulkPromptHovered(false)} 
           >
-            {prompts.map((prompt) => {
+            {prompts.map((prompt, idx) => {
               return (
                 <PromptBox 
                   prompt={prompt}
+                  key={ids[idx]}
                   isNew={false}
                   isBulk={true}
                   //TODO: pass in appropriate handlers

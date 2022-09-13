@@ -3,9 +3,6 @@ import {
   createNewPrompt,
   Prompt,
   PromptsState,
-  savePrompt,
-  updatePromptBack,
-  updatePromptFront,
 } from "../app/promptSlice";
 import { useAppDispatch } from "../app/store";
 import { usePageHeight } from "../hooks/usePageHeight";
@@ -14,10 +11,10 @@ import { PromptLocation } from "../util/resolvePromptLocations";
 import ContextualMenu from "./ContextualMenu";
 import { ModalReview, ModalReviewState } from "./ModalReview";
 import { OrbitMenu } from "./OrbitMenu";
-import PromptBox from "./prompt/PromptBox";
 import zIndices from "./common/zIndices";
 import { describe } from "../vendor/hypothesis-annotator/html";
 import uuidBase64 from "./common/uuid";
+import { PromptLayoutManager } from "./prompt/PromptLayoutManager";
 
 export interface DemoPageProps {
   marginX: number;
@@ -100,7 +97,7 @@ export default function PrototypeUI({
             ]}
           />
         </div>
-        <>
+        {/* <>
           {Object.entries(prompts).map(([id, prompt]) => (
             <div
               key={id}
@@ -123,7 +120,13 @@ export default function PrototypeUI({
               />
             </div>
           ))}
-        </>
+        </> */}
+        <PromptLayoutManager
+          prompts={prompts}
+          promptLocations={promptLocations}
+          marginX={marginX}
+          newPromptId={newPromptId}
+        />
       </div>
       <div
         css={{
