@@ -23,34 +23,47 @@ declare global {
   }
 }
 
-export interface ModalReviewProps {
+export type ModalReviewState =
+  | {
+      // i.e. we're reviewing a list of prompts specified by the author
+      mode: "list";
+      promptIDs: string[];
+    }
+  | {
+      // i.e. we're reviewing all the due prompts the user has saved
+      mode: "user";
+    };
+
+export type ModalReviewProps = {
   onClose: () => void;
-}
+  onContinueReview: () => void; // i.e. when the user is successfully upsold from author list to review their due prompts
+} & ModalReviewState;
 
 export function ModalReview(props: ModalReviewProps) {
   const prompts = useAppSelector((state) => state.prompts);
+  const duePromptIDs = useAppSelector((state) =>
+    Object.keys(state.prompts).filter((id) => prompts[id].isDue),
+  );
+
   const [isReviewComplete, setReviewComplete] = useState(false);
+  const shouldShowContinueUpsell =
+    props.mode === "list" && duePromptIDs.length > 0;
 
   // A bit of a hack: we tee up the review queue when this component is mounted.
-  const [queuedPromptIDs] = useState<string[]>(() => {
-    // TODO shuffle
-    return Object.keys(prompts).filter((id) => prompts[id].isDue);
-  });
-
-  function onReviewComplete() {
-    setReviewComplete(true);
-  }
+  const [queuedPromptIDs] = useState<string[]>(() =>
+    props.mode === "list" ? props.promptIDs : duePromptIDs,
+  ); // TODO shuffle
 
   return (
     <ScrollLock>
       <div
-        onClick={props.onClose}
         css={{
           position: "fixed",
           top: 0,
           left: 0,
           bottom: 0,
           right: 0,
+          // TODO abstract palette for inline review
           backgroundColor: "#ff5252",
           zIndex: zIndices.modalReview,
         }}
@@ -67,7 +80,9 @@ export function ModalReview(props: ModalReviewProps) {
                 props.onClose();
               };
 
-              element.onReviewComplete = onReviewComplete;
+              element.onReviewComplete = function () {
+                setReviewComplete(true);
+              };
             }
           }}
           height="100vh"
@@ -80,17 +95,19 @@ export function ModalReview(props: ModalReviewProps) {
             ></orbit-prompt>
           ))}
         </orbit-reviewarea>
+
+        {/* Completed review overlay */}
         {
           <div
             css={{
               position: "absolute",
-              top: 128,
+              top: shouldShowContinueUpsell ? 128 : 100,
               left: 0,
               bottom: 0,
               right: 0,
               opacity: isReviewComplete ? 1 : 0,
               pointerEvents: isReviewComplete ? "all" : "none",
-              transition: "opacity 0.25s 650ms linear",
+              transition: "opacity 0.25s 600ms linear",
               display: "flex",
               flexDirection: "column",
               justifyContent: "center",
@@ -104,21 +121,63 @@ export function ModalReview(props: ModalReviewProps) {
                 fontSize: 48,
                 lineHeight: "40px",
                 letterSpacing: "-0.01em",
-                color: "var(--fgPrimary)",
+                color: "var(--fgPrimary)", // TODO palette
                 marginBottom: 156,
               }}
             >
               Review complete
             </div>
+            {shouldShowContinueUpsell && (
+              <div
+                css={{
+                  fontFamily: "Dr-Medium",
+                  fontSize: 24,
+                  lineHeight: "26px",
+                  textAlign: "center",
+                  letterSpacing: "0.02em",
+                  width: 330,
+                  marginBottom: 40,
+                }}
+              >{`${duePromptIDs.length} other ${
+                duePromptIDs.length > 1 ? "prompts" : "prompt"
+              } you saved on this page ${
+                duePromptIDs.length > 1 ? "are" : "is"
+              } ready for review.`}</div>
+            )}
             {/* TODO: vary colors by context (modal vs inline) */}
-            <Button
-              size="large"
-              onClick={props.onClose}
-              color={LabelColor.White}
-              backgroundColor="#F73B3B"
+            <div
+              css={{
+                display: "flex",
+                flexDirection: "row",
+              }}
             >
-              Return to Book
-            </Button>
+              <Button
+                size="large"
+                onClick={props.onClose}
+                color={LabelColor.White}
+                backgroundColor={
+                  shouldShowContinueUpsell ? undefined : "#F73B3B"
+                }
+              >
+                Return to Book
+              </Button>
+              {shouldShowContinueUpsell && (
+                <div
+                  css={{
+                    marginLeft: 16,
+                  }}
+                >
+                  <Button
+                    size="large"
+                    onClick={props.onContinueReview}
+                    color={LabelColor.White}
+                    backgroundColor="#F73B3B"
+                  >
+                    Review Now
+                  </Button>
+                </div>
+              )}
+            </div>
           </div>
         }
       </div>
