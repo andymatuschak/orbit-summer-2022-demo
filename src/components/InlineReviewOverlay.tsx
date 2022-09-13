@@ -30,6 +30,7 @@ export function InlineReviewOverlay({
     >
       <CompletedReviewOverlay
         mode="list"
+        context="inline"
         isReviewComplete={isReviewComplete}
         onClose={() => {
           // TODO

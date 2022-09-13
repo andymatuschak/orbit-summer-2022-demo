@@ -5,11 +5,13 @@ import { LabelColor } from "./Type";
 
 export function CompletedReviewOverlay({
   mode,
+  context,
   isReviewComplete,
   onClose,
   onContinueReview,
 }: {
   mode: "list" | "user";
+  context: "inline" | "modal";
   isReviewComplete: boolean;
   onClose: () => void;
   onContinueReview: () => void;
@@ -21,6 +23,10 @@ export function CompletedReviewOverlay({
 
   const shouldShowContinueUpsell = mode === "list" && duePromptCount > 0;
 
+  // We don't show this completed overlay for inline review modules when no extra prompts are due.
+  const shouldShowOverlay =
+    isReviewComplete && (context === "modal" || duePromptCount > 0);
+
   return (
     <div
       css={{
@@ -29,8 +35,8 @@ export function CompletedReviewOverlay({
         left: 0,
         bottom: 0,
         right: 0,
-        opacity: isReviewComplete ? 1 : 0,
-        pointerEvents: isReviewComplete ? "all" : "none",
+        opacity: shouldShowOverlay ? 1 : 0,
+        pointerEvents: shouldShowOverlay ? "all" : "none",
         transition: "opacity 0.25s 600ms linear",
         display: "flex",
         flexDirection: "column",
@@ -45,7 +51,7 @@ export function CompletedReviewOverlay({
           fontSize: 48,
           lineHeight: "40px",
           letterSpacing: "-0.01em",
-          color: "var(--fgPrimary)", // TODO palette
+          color: "var(--fgPrimary)",
           marginBottom: 156,
         }}
       >
@@ -68,7 +74,6 @@ export function CompletedReviewOverlay({
           duePromptCount > 1 ? "are" : "is"
         } ready for review.`}</div>
       )}
-      {/* TODO: vary colors by context (modal vs inline) */}
       <div
         css={{
           display: "flex",
@@ -78,10 +83,18 @@ export function CompletedReviewOverlay({
         <Button
           size="large"
           onClick={onClose}
-          color={LabelColor.White}
-          backgroundColor={shouldShowContinueUpsell ? undefined : "#F73B3B"}
+          color={
+            context === "modal" ? LabelColor.White : LabelColor.AccentPrimary
+          }
+          backgroundColor={
+            shouldShowContinueUpsell
+              ? undefined
+              : context === "modal"
+              ? "#F73B3B"
+              : "var(--bgSecondary)"
+          }
         >
-          Return to Book
+          {context === "modal" ? "Return to Book" : "Review Later"}
         </Button>
         {shouldShowContinueUpsell && (
           <div
@@ -92,8 +105,14 @@ export function CompletedReviewOverlay({
             <Button
               size="large"
               onClick={onContinueReview}
-              color={LabelColor.White}
-              backgroundColor="#F73B3B"
+              color={
+                context === "modal"
+                  ? LabelColor.White
+                  : LabelColor.AccentPrimary
+              }
+              backgroundColor={
+                context === "modal" ? "#F73B3B" : "var(--bgSecondary)"
+              }
             >
               Review Now
             </Button>

@@ -95,6 +95,7 @@ export function ModalReview(props: ModalReviewProps) {
 
         <CompletedReviewOverlay
           mode={props.mode}
+          context="modal"
           isReviewComplete={isReviewComplete}
           onClose={props.onClose}
           onContinueReview={props.onContinueReview}
