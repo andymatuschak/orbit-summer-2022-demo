@@ -19,19 +19,27 @@ const initialState: InlineReviewModuleState = {};
 const inlineReviewModuleSlice = createSlice({
   name: "inlineReviewModules",
   initialState,
-  reducers: {},
-  // TODO: implement extra reducers to update inline review module state when prompt contents are edited
+  reducers: {
+    updateReviewModuleFrames(state) {
+      for (const id of Object.keys(state)) {
+        const element = document.getElementById(id)!;
+        state[id].frame = getFrame(element);
+      }
+    },
+  },
   extraReducers(builder) {
     // We scan the page for review modules once we've loaded the prompt data for the page.
     builder.addCase(loadPrompts.fulfilled, (_state, action) => {
       return indexReviewModules(action.payload);
     });
+    // TODO: implement extra reducers to update inline review module state when prompt contents are edited
   },
 });
 
+export const { updateReviewModuleFrames } = inlineReviewModuleSlice.actions;
 export const inlineReviewModuleReducer = inlineReviewModuleSlice.reducer;
 
-interface ReviewArea extends Element {
+interface ReviewArea extends HTMLElement {
   iframe: HTMLIFrameElement;
   getConfiguration(): {
     reviewItems: {
@@ -63,19 +71,23 @@ function indexReviewModules(prompts: PromptsState): InlineReviewModuleState {
         return id;
       });
 
-      const rect = reviewArea.iframe.getBoundingClientRect();
       return [
         reviewArea.id,
         {
-          frame: {
-            left: rect.left + window.scrollX,
-            top: rect.top + window.scrollY,
-            width: rect.width,
-            height: rect.height,
-          },
+          frame: getFrame(reviewArea),
           promptIDs,
         },
       ];
     }),
   );
+}
+
+function getFrame(element: HTMLElement): Rect {
+  const { left, top, width, height } = element.getBoundingClientRect();
+  return {
+    left: left + window.scrollX,
+    top: top + window.scrollY,
+    width,
+    height,
+  };
 }
