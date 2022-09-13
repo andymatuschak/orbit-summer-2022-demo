@@ -7,7 +7,7 @@ import { PromptLocation } from "../util/resolvePromptLocations";
 import ContextualMenu from "./ContextualMenu";
 import { ModalReview } from "./ModalReview";
 import { OrbitMenu } from "./OrbitMenu";
-import PromptBox from "./PromptBox";
+import PromptBox from "./prompt/PromptBox";
 import zIndices from "./common/zIndices";
 import { describe } from "../vendor/hypothesis-annotator/html";
 import uuidBase64 from "./common/uuid";
