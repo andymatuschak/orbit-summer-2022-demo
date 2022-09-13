@@ -65,7 +65,7 @@ export type SyncPromptFromReview = PayloadAction<{
 
 const initialState: PromptsState = {};
 
-const promptsSlice = createSlice({
+const promptSlice = createSlice({
   name: "prompts",
   initialState,
   reducers: {
@@ -117,5 +117,5 @@ export const {
   updatePromptBack,
   createNewPrompt,
   syncPromptFromReview,
-} = promptsSlice.actions;
-export const promptsReducer = promptsSlice.reducer;
+} = promptSlice.actions;
+export const promptsReducer = promptSlice.reducer;

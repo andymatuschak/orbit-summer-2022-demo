@@ -1,4 +1,5 @@
 import { useEffect } from "react";
+import { updateReviewModuleFrames } from "../app/inlineReviewModuleSlice";
 import { syncPromptFromReview } from "../app/promptSlice";
 import { useAppDispatch } from "../app/store";
 
@@ -23,7 +24,16 @@ export function useReviewAreaIntegration() {
       }
     }
 
+    function onResize() {
+      dispatch(updateReviewModuleFrames());
+    }
+
     window.addEventListener("message", onMessage);
-    return () => window.removeEventListener("message", onMessage);
+    window.addEventListener("resize", onResize);
+
+    return () => {
+      window.removeEventListener("message", onMessage);
+      window.removeEventListener("resize", onResize);
+    };
   }, [dispatch]);
 }
