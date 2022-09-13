@@ -11,13 +11,13 @@ import { useAppDispatch } from "../app/store";
 import { usePageHeight } from "../hooks/usePageHeight";
 import { useSelectionBounds } from "../hooks/useSelectionBounds";
 import { PromptLocation } from "../util/resolvePromptLocations";
-import { describe } from "../vendor/hypothesis-annotator/html";
-import uuidBase64 from "./common/uuid";
-import zIndices from "./common/zIndices";
 import ContextualMenu from "./ContextualMenu";
 import { ModalReview, ModalReviewState } from "./ModalReview";
 import { OrbitMenu } from "./OrbitMenu";
-import PromptBox from "./PromptBox";
+import PromptBox from "./prompt/PromptBox";
+import zIndices from "./common/zIndices";
+import { describe } from "../vendor/hypothesis-annotator/html";
+import uuidBase64 from "./common/uuid";
 
 export interface DemoPageProps {
   marginX: number;
