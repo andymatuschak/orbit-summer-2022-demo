@@ -1,11 +1,18 @@
 import React, { useEffect, useState } from "react";
-import { savePrompt, updatePromptFront, updatePromptBack, Prompt, createNewPrompt, PromptsState } from "../app/promptSlice";
-import { useAppDispatch, useAppSelector } from "../app/store";
+import {
+  createNewPrompt,
+  Prompt,
+  PromptsState,
+  savePrompt,
+  updatePromptBack,
+  updatePromptFront,
+} from "../app/promptSlice";
+import { useAppDispatch } from "../app/store";
 import { usePageHeight } from "../hooks/usePageHeight";
 import { useSelectionBounds } from "../hooks/useSelectionBounds";
 import { PromptLocation } from "../util/resolvePromptLocations";
 import ContextualMenu from "./ContextualMenu";
-import { ModalReview } from "./ModalReview";
+import { ModalReview, ModalReviewState } from "./ModalReview";
 import { OrbitMenu } from "./OrbitMenu";
 import PromptBox from "./prompt/PromptBox";
 import zIndices from "./common/zIndices";
@@ -28,8 +35,11 @@ export default function PrototypeUI({
   const dispatch = useAppDispatch();
   const height = usePageHeight();
 
-  const { selectionPosition, selectionRange, clearSelectionPosition } = useSelectionBounds();
-  const [isModalReviewActive, setModalReviewActive] = useState(false);
+  const { selectionPosition, selectionRange, clearSelectionPosition } =
+    useSelectionBounds();
+  const [modalReviewState, setModalReviewState] =
+    useState<ModalReviewState | null>(null);
+
   const [newPromptId, setNewPromptId] = useState<string | undefined>();
 
   useEffect(() => {
@@ -68,7 +78,7 @@ export default function PrototypeUI({
                 title: "New prompt",
                 onClick: () => {
                   clearSelectionPosition();
-                  if (selectionRange){
+                  if (selectionRange) {
                     const newPrompt: Prompt = {
                       content: {
                         front: "",
@@ -78,38 +88,41 @@ export default function PrototypeUI({
                       isByAuthor: false,
                       isSaved: true,
                       isDue: true,
-                    }
+                    };
                     const newId = uuidBase64();
-                    dispatch(createNewPrompt({id: newId, prompt: newPrompt}));
+                    dispatch(createNewPrompt({ id: newId, prompt: newPrompt }));
                     setNewPromptId(newId);
                   }
                 },
                 shortcutKey: "N",
-                isEnabled: selectionPosition ? true : false,
+                isEnabled: !!selectionPosition,
               },
             ]}
           />
         </div>
         <>
           {Object.entries(prompts).map(([id, prompt]) => (
-              <div
-                key={id}
-                css={{
-                  position: "absolute",
-                  left: marginX,
-                  top: promptLocations[id]?.top,
-                }}
-              >
-                <PromptBox
-                  prompt={prompt}
-                  isNew={id === newPromptId}
-                  savePrompt={() => dispatch(savePrompt(id))}
-                  updatePromptFront={(newPrompt) => dispatch(updatePromptFront([id, newPrompt]))}
-                  updatePromptBack={(newPrompt) => dispatch(updatePromptBack([id, newPrompt]))}
-                />
-              </div>
-            )
-          )}
+            <div
+              key={id}
+              css={{
+                position: "absolute",
+                left: marginX,
+                top: promptLocations[id]?.top,
+              }}
+            >
+              <PromptBox
+                prompt={prompt}
+                isNew={id === newPromptId}
+                savePrompt={() => dispatch(savePrompt(id))}
+                updatePromptFront={(newPrompt) =>
+                  dispatch(updatePromptFront([id, newPrompt]))
+                }
+                updatePromptBack={(newPrompt) =>
+                  dispatch(updatePromptBack([id, newPrompt]))
+                }
+              />
+            </div>
+          ))}
         </>
       </div>
       <div
@@ -120,10 +133,28 @@ export default function PrototypeUI({
           zIndex: zIndices.orbitMenu,
         }}
       >
-        <OrbitMenu onStartReview={() => setModalReviewActive(true)} />
+        <OrbitMenu
+          onStartReview={() =>
+            setModalReviewState(
+              { mode: "user" },
+              // To test the list mode upsell behavior:
+              /*{
+              mode: "list",
+              promptIDs: ["Why keep shaped work rough?"],
+            }*/
+            )
+          }
+        />
       </div>
-      {isModalReviewActive && (
-        <ModalReview onClose={() => setModalReviewActive(false)} />
+      {modalReviewState && (
+        <ModalReview
+          key={modalReviewState.mode} /* remount when mode changes */
+          onClose={() => setModalReviewState(null)}
+          onContinueReview={function () {
+            setModalReviewState({ mode: "user" });
+          }}
+          {...modalReviewState}
+        />
       )}
     </>
   );

@@ -46,9 +46,11 @@ export default function Button({
   size = "regular",
   backgroundColor = "clear",
   color = LabelColor.AccentPrimary,
+  onClick,
 }: ButtonProps) {
   return (
     <button
+      onClick={onClick}
       css={[
         hoverAndActiveStyles,
         {
