@@ -6,6 +6,7 @@ import { InlineReviewOverlay } from "../components/InlineReviewOverlay";
 import { ModalReview, ModalReviewState } from "../components/ModalReview";
 import { OrbitMenu } from "../components/OrbitMenu";
 import PromptBox from "../components/prompt/PromptBox";
+import { PromptLayoutManager } from "../components/prompt/PromptLayoutManager";
 import { useAsyncLayoutDependentValue } from "../hooks/useLayoutDependentValue";
 import { usePageHeight } from "../hooks/usePageHeight";
 import { useReviewAreaIntegration } from "../hooks/useReviewAreaIntegration";
@@ -114,30 +115,12 @@ export default function App({ marginX, textRoot }: AppProps) {
             ]}
           />
         </div>
-        <>
-          {Object.entries(prompts).map(([id, prompt]) => (
-            <div
-              key={id}
-              css={{
-                position: "absolute",
-                left: marginX,
-                top: promptLocations[id]?.top,
-              }}
-            >
-              <PromptBox
-                prompt={prompt}
-                isNew={id === newPromptId}
-                savePrompt={() => dispatch(savePrompt(id))}
-                updatePromptFront={(newPrompt) =>
-                  dispatch(updatePromptFront([id, newPrompt]))
-                }
-                updatePromptBack={(newPrompt) =>
-                  dispatch(updatePromptBack([id, newPrompt]))
-                }
-              />
-            </div>
-          ))}
-        </>
+        <PromptLayoutManager
+          prompts={prompts}
+          promptLocations={promptLocations}
+          marginX={marginX}
+          newPromptId={newPromptId}
+        />
         <>
           {Object.entries(inlineReviewModules).map(([id, reviewModule]) => (
             <div
