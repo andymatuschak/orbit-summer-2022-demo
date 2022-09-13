@@ -3,6 +3,7 @@ import { CompletedReviewOverlay } from "./CompletedReviewOverlay";
 
 export interface InlineReviewOverlayProps {
   reviewModuleID: string;
+  onContinueReview: () => void;
 }
 
 interface ReviewArea extends HTMLElement {
@@ -12,6 +13,7 @@ interface ReviewArea extends HTMLElement {
 
 export function InlineReviewOverlay({
   reviewModuleID,
+  onContinueReview,
 }: InlineReviewOverlayProps) {
   const [isReviewComplete, setReviewComplete] = useState(false);
 
@@ -37,8 +39,8 @@ export function InlineReviewOverlay({
           alert("UNIMPLEMENTED");
         }}
         onContinueReview={() => {
-          // TODO - place another review area on top containing the relevant prompts
-          alert("UNIMPLEMENTED");
+          // TODO - underneath modal, remove review area and replace with prompt list module
+          onContinueReview();
         }}
       />
     </div>

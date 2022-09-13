@@ -132,7 +132,10 @@ export default function App({ marginX, textRoot }: AppProps) {
                 ...reviewModule.frame,
               }}
             >
-              <InlineReviewOverlay reviewModuleID={id} />
+              <InlineReviewOverlay
+                reviewModuleID={id}
+                onContinueReview={() => setModalReviewState({ mode: "user" })}
+              />
             </div>
           ))}
         </>
