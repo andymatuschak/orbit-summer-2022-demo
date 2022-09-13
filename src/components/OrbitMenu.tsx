@@ -9,7 +9,7 @@ import {
   OrbitMenuPromptVisibilityControl,
   PromptVisibilitySetting,
 } from "./OrbitMenuPromptVisibilityControl";
-import { Label, LabelColor, LabelSmall, labelSmallStyle } from "./Type";
+import { Label, LabelColor, labelSmallStyle } from "./Type";
 
 function OrbitMenuButton({
   onClick,

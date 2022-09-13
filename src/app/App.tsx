@@ -145,10 +145,11 @@ export default function App({ marginX, textRoot }: AppProps) {
               css={{
                 position: "absolute",
                 zIndex: zIndices.displayOverContent,
+                pointerEvents: "none",
                 ...reviewModule.frame,
               }}
             >
-              <InlineReviewOverlay />
+              <InlineReviewOverlay reviewModuleID={id} />
             </div>
           ))}
         </>

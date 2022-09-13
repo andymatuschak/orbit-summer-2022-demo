@@ -62,6 +62,7 @@ export default function Button({
           border: "none",
           backgroundColor,
           borderRadius: 4,
+          cursor: "pointer",
 
           "&::before": {
             borderRadius: 4,
