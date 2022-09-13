@@ -11,7 +11,6 @@ export interface Prompt {
   isByAuthor: boolean;
   isSaved: boolean;
   isDue: boolean;
-  isNew?: boolean; // TODO: for when we serialize to local storage - don't persist this
 }
 
 // i.e. following Hypothes.is's selector format, as specified in src/vendor/hypothesis-annotator
@@ -86,10 +85,6 @@ const promptsSlice = createSlice({
     createNewPrompt(state, action: CreateNewPrompt) {
       state[action.payload.id] = action.payload.prompt;
     },
-    markAsNotNew(state, action: IdAction) {
-      const prompt = state[action.payload];
-      prompt.isNew = false;
-    },
     syncPromptFromReview(state, action: SyncPromptFromReview) {
       const { id, wasSkipped, newInterval } = action.payload;
       const prompt = state[id];
@@ -121,7 +116,6 @@ export const {
   updatePromptFront,
   updatePromptBack,
   createNewPrompt,
-  markAsNotNew,
   syncPromptFromReview,
 } = promptsSlice.actions;
 export const promptsReducer = promptsSlice.reducer;

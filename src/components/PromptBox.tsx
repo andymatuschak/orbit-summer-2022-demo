@@ -19,6 +19,7 @@ function getPromptImageSrc(promptContent: string): string | undefined  {
 
 export interface PromptProps {
     prompt: Prompt
+    isNew: boolean;
     savePrompt: () => any;
     updatePromptFront: (newPrompt: string) => any;
     updatePromptBack: (newPrompt: string) => any;
@@ -148,12 +149,13 @@ const Container = styled.div<HoverProps & SavedProps & EditingProps>`
 
 export default function PromptBox({
     prompt, 
+    isNew,
     savePrompt,
     updatePromptFront,
     updatePromptBack,
 }: PromptProps) {
     const [isHovered, setIsHovered] = useState<boolean>(false);
-    const [isEditing, setIsEditing] = useState<boolean>(prompt.isNew ?? false);
+    const [isEditing, setIsEditing] = useState<boolean>(isNew);
     const hidePromptBackTimeout = useRef<number | undefined>();
     const [showPromptBack, setShowPromptBack] = useState<boolean>(false);
     const [imageSrc, setImageSrc] = useState<string | undefined>();
@@ -202,10 +204,10 @@ export default function PromptBox({
 
     // Focus if new
     useEffect(() => {
-      if (prompt.isNew && promptFrontRef.current) {
+      if (isNew && promptFrontRef.current) {
         promptFrontRef.current.focus({preventScroll: true});
       }
-    }, [prompt, promptFrontRef]);
+    }, [isNew, promptFrontRef]);
 
     // Check if image
     useEffect(() => {
