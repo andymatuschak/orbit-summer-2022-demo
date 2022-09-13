@@ -2,14 +2,16 @@ import { css } from "@emotion/react";
 import React from "react";
 import Add from "../static/images/Icons/Plus.png";
 import { hoverAndActiveStyles } from "./common/hoverAndActiveStyles";
-import { LabelColor, LabelSmall } from "./Type";
+import { colorsByEnumValue, Label, LabelColor, LabelSmall } from "./Type";
 
 type IconName = "add";
 export interface ButtonProps {
   children: string;
+  onClick: () => void;
   size?: "regular" | "large";
   icon?: IconName;
   backgroundColor?: string;
+  color?: LabelColor;
 }
 
 const iconsByIconName: Record<IconName, typeof Add> = {
@@ -26,15 +28,15 @@ const largeButtonStyle = css({
   height: 56,
   paddingTop: 14,
   paddingBottom: 18,
-  paddingLeft: 24,
-  paddingRight: 24,
+  paddingLeft: 32,
+  paddingRight: 32,
 });
 
 const largeTitleStyle = css({
   fontFamily: "Dr-ExtraBold",
   fontSize: 24,
   lineHeight: "24px",
-  letterSpacing: "0.01em",
+  letterSpacing: "0.02em",
   color: "var(--accentPrimary)",
 });
 
@@ -43,6 +45,7 @@ export default function Button({
   icon,
   size = "regular",
   backgroundColor = "clear",
+  color = LabelColor.AccentPrimary,
 }: ButtonProps) {
   return (
     <button
@@ -56,6 +59,7 @@ export default function Button({
           background: "none",
           border: "none",
           backgroundColor,
+          borderRadius: 4,
 
           "&::before": {
             borderRadius: 4,
@@ -81,10 +85,12 @@ export default function Button({
       )}
       {size === "regular" ? (
         <div css={{ marginTop: 5 }}>
-          <LabelSmall text={children} color={LabelColor.AccentPrimary} />
+          <LabelSmall text={children} color={color} />
         </div>
       ) : (
-        <div css={largeTitleStyle}>{children}</div>
+        <div css={[largeTitleStyle, { color: colorsByEnumValue[color] }]}>
+          {children}
+        </div>
       )}
     </button>
   );

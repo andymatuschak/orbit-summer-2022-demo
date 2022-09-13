@@ -9,7 +9,7 @@ export enum LabelColor {
   FGDisabled = "FGDisabled",
   White = "White",
 }
-const colorsByEnumValue = {
+export const colorsByEnumValue = {
   [LabelColor.AccentPrimary]: "var(--accentPrimary)",
   [LabelColor.FGPrimary]: "var(--fgPrimary)",
   [LabelColor.FGSecondaryLarge]: "var(--fgSecondaryLarge)",

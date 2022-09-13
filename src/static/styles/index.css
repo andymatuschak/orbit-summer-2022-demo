@@ -7,11 +7,6 @@ html {
 }
 
 body {
-  /* TODO: necessary? */
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  -ms-overflow-style: scrollbar;
-
   --accentPrimary: #D60909;
   --accentSecondary: #A06813;
   --fgPrimary: rgba(0,0,0,0.8);
@@ -36,6 +31,10 @@ body {
 }
 
 #demo-root *, .sb-show-main #root * {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  -ms-overflow-style: scrollbar;
+
   /* The article page can use whatever it wants, but we'll lay out UI with border-box metrics. */
   box-sizing: border-box;
 }

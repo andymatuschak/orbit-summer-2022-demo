@@ -1,7 +1,9 @@
 import React, { DOMAttributes, useState } from "react";
 import ScrollLock from "react-scrolllock";
 import { useAppSelector } from "../app/store";
+import Button from "./Button";
 import zIndices from "./common/zIndices";
+import { LabelColor } from "./Type";
 
 type CustomElement<T> = Partial<T & DOMAttributes<T> & { children: any }>;
 
@@ -82,17 +84,17 @@ export function ModalReview(props: ModalReviewProps) {
           <div
             css={{
               position: "absolute",
-              top: 0,
+              top: 128,
               left: 0,
               bottom: 0,
               right: 0,
-              paddingBottom: 64, // shift a bit off-center
               opacity: isReviewComplete ? 1 : 0,
               pointerEvents: isReviewComplete ? "all" : "none",
               transition: "opacity 0.25s 650ms linear",
               display: "flex",
               flexDirection: "column",
               justifyContent: "center",
+              alignItems: "center",
             }}
           >
             <div
@@ -103,10 +105,20 @@ export function ModalReview(props: ModalReviewProps) {
                 lineHeight: "40px",
                 letterSpacing: "-0.01em",
                 color: "var(--fgPrimary)",
+                marginBottom: 156,
               }}
             >
               Review complete
             </div>
+            {/* TODO: vary colors by context (modal vs inline) */}
+            <Button
+              size="large"
+              onClick={props.onClose}
+              color={LabelColor.White}
+              backgroundColor="#F73B3B"
+            >
+              Return to Book
+            </Button>
           </div>
         }
       </div>
