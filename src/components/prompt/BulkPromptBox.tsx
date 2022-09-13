@@ -1,7 +1,7 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import styled from '@emotion/styled'
-import { Prompt, PromptsState, savePrompt } from "../../app/promptSlice";
-import { ANIMATION_TIME_MSEC, Icon } from "./PromptComponents";
+import { Prompt } from "../../app/promptSlice";
+import { Icon } from "./PromptComponents";
 import PromptBox from "./PromptBox";
 
 export interface BulkPromptBoxProps {
