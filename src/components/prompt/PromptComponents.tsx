@@ -22,6 +22,10 @@ export interface EditingProps {
 export interface BulkProps {
     isBulk: boolean;
 }
+
+export interface HiddenProps {
+    isHidden: boolean;
+}
   
 export const Icon = styled.div<HoverProps & SavedProps & EditingProps>`
     width: 24px;
