@@ -11,7 +11,7 @@ declare global {
     // noinspection JSUnusedGlobalSymbols
     interface IntrinsicElements {
       ["orbit-reviewarea"]: CustomElement<
-        HTMLElement & { height?: string; ref: any }
+        HTMLElement & { height?: string; ref: any; modal: boolean }
       >;
       ["orbit-prompt"]: CustomElement<{
         question: string;
@@ -66,6 +66,7 @@ export function ModalReview(props: ModalReviewProps) {
         }}
       >
         <orbit-reviewarea
+          modal
           ref={(
             element: {
               onExitReview: () => void;
