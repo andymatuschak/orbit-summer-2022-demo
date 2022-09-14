@@ -37,7 +37,7 @@ export function PromptLayoutManager({prompts, promptLocations, marginX, newPromp
     const [boundingBoxes, setBoundingBoxes] = useState<PromptBoundingBoxes>({});
     const [promptRuns, setPromptRuns] = useState<string[][]>(Object.entries(prompts).map(([id, _]) => [id]));
     const [localPromptLocations, setLocalPromptLocations] = useState<{ [id: string]: PromptLocation}>({});
-    const [saveQueue, setSaveQueue] = useState<Set<string>>(new Set());
+    const [bulkSaves, setBulkSaves] = useState<Set<string>>(new Set());
 
     const updateBoundingBoxes = function(id: string, boundingBox: PromptAbsoluteLocation){
         boundingBoxes[id] = boundingBox;
@@ -58,13 +58,13 @@ export function PromptLayoutManager({prompts, promptLocations, marginX, newPromp
                 const currBottom = boundingBoxes[runs[currRunStartIdx][0]].bottom;
                 // The top ot the bounding box being evaluated for merge
                 const nextTop = boundingBoxes[nextId].top;
-                if (prompts[nextId].isSaved && !saveQueue.has(nextId)){
+                if (prompts[nextId].isSaved && !bulkSaves.has(nextId)){
                     // Saved elements not in the bulk saved state are not eligible for bulk prompts, Add to its own run
                     currRunStartIdx += 1;
                     runs[currRunStartIdx] = [nextId];
                 } else if (nextTop < currBottom - MERGE_THRESHOLD_PIXELS){
                     // Lookback - add to current run if the run is eligible for merge (is not a saved prompt or in the bulk queue)
-                    if (!prompts[runs[currRunStartIdx][0]].isSaved || saveQueue.has(runs[currRunStartIdx][0])){
+                    if (!prompts[runs[currRunStartIdx][0]].isSaved || bulkSaves.has(runs[currRunStartIdx][0])){
                         runs[currRunStartIdx].push(nextId);
                     } else {
                         // Lookback is ineligable for merge - create new run
@@ -92,7 +92,7 @@ export function PromptLayoutManager({prompts, promptLocations, marginX, newPromp
             setPromptRuns(runs.reverse());
             setLocalPromptLocations(newPromptLocations);
         }
-    }, [boundingBoxes, prompts, saveQueue, promptLocations]);
+    }, [boundingBoxes, prompts, bulkSaves, promptLocations]);
 
     return (
         <>
@@ -174,8 +174,8 @@ export function PromptLayoutManager({prompts, promptLocations, marginX, newPromp
                                 savePrompt={(id) => 
                                     dispatch(savePrompt(id))
                                 }
-                                addToSaveQueue={(id) => setSaveQueue(new Set(saveQueue.add(id)))}
-                                clearSaveQueue={() => setSaveQueue(new Set())}
+                                addToSaves={(id) => setBulkSaves(new Set(bulkSaves.add(id)))}
+                                clearSaves={() => setBulkSaves(new Set())}
                             />
                         </div>
                     )

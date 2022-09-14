@@ -10,9 +10,9 @@ export interface BulkPromptBoxProps {
     ids: string[];
     saveAll: () => any;
     savePrompt: (id: string) => any;
-    // A parent can provide a mechanism to keep track of all items saved while the bulk prompt hovers, when the hover exits, the save queue is cleared
-    addToSaveQueue?: (id: string) => any;
-    clearSaveQueue?: () => any;
+    // A parent can provide a mechanism to keep track of all items saved while the bulk prompt hovers, when the hover exits, the saves are cleared
+    addToSaves?: (id: string) => any;
+    clearSaves?: () => any;
 }
 
 const ButtonContainer = styled.div`
@@ -45,21 +45,21 @@ const ButtonText = styled.div`
   opacity: 0.696;
 `;
 
-export default function BulkPromptBox({prompts, ids, saveAll, savePrompt, addToSaveQueue, clearSaveQueue}: BulkPromptBoxProps){
+export default function BulkPromptBox({prompts, ids, saveAll, savePrompt, addToSaves, clearSaves}: BulkPromptBoxProps){
   const [isButtonHovered, setIsButtonHovered] = useState<boolean>(false);
   const [isBulkPromptHovered, setIsBulkPromptHovered] = useState<boolean>(false);
-  const [localSaveQueue, setLocalSaveQueue] = useState<Set<string>>(new Set());
+  const [localSaveSet, setLocalSaveSet] = useState<Set<string>>(new Set());
 
   function isHovered(){
     return isBulkPromptHovered || isButtonHovered;
   }
 
   useEffect(() => {
-    if(!isBulkPromptHovered && !isButtonHovered && localSaveQueue.size > 0 && clearSaveQueue){
-      clearSaveQueue();
-      setLocalSaveQueue(new Set());
+    if(!isBulkPromptHovered && !isButtonHovered && localSaveSet.size > 0 && clearSaves){
+      clearSaves();
+      setLocalSaveSet(new Set());
     }
-  }, [isBulkPromptHovered, isButtonHovered, localSaveQueue, clearSaveQueue, setLocalSaveQueue])
+  }, [isBulkPromptHovered, isButtonHovered, localSaveSet, clearSaves, setLocalSaveSet])
 
   return (
     <>
@@ -69,7 +69,7 @@ export default function BulkPromptBox({prompts, ids, saveAll, savePrompt, addToS
         onClick={() => saveAll()}
       >
           <Icon isHovered={isHovered()} isSaved={false} isEditing={false}/>
-          <ButtonText>{isHovered() ? `Save ${prompts.length - localSaveQueue.size} prompts` : `${prompts.length - localSaveQueue.size} prompts available`}</ButtonText>
+          <ButtonText>{isHovered() ? `Save ${prompts.length - localSaveSet.size} prompts` : `${prompts.length - localSaveSet.size} prompts available`}</ButtonText>
       </ButtonContainer>
       {isHovered() &&
           <PromptsContainer
@@ -83,8 +83,8 @@ export default function BulkPromptBox({prompts, ids, saveAll, savePrompt, addToS
                   key={ids[idx]}
                   isBulk={true}
                   savePrompt={() => {
-                    if(addToSaveQueue) addToSaveQueue(ids[idx]);
-                    setLocalSaveQueue(new Set(localSaveQueue.add(ids[idx])));
+                    if(addToSaves) addToSaves(ids[idx]);
+                    setLocalSaveSet(new Set(localSaveSet.add(ids[idx])));
                     savePrompt(ids[idx]);
                   }}
                   //TODO: pass in appropriate handlers
