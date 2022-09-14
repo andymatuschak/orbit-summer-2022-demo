@@ -48,18 +48,19 @@ const ButtonText = styled.div`
 export default function BulkPromptBox({prompts, ids, saveAll, savePrompt, addToSaves, clearSaves}: BulkPromptBoxProps){
   const [isButtonHovered, setIsButtonHovered] = useState<boolean>(false);
   const [isBulkPromptHovered, setIsBulkPromptHovered] = useState<boolean>(false);
+  const [isFocused, setIsFocused] = useState<boolean>(false);
   const [localSaveSet, setLocalSaveSet] = useState<Set<string>>(new Set());
 
-  function isHovered(){
-    return isBulkPromptHovered || isButtonHovered;
+  function isEnabled(){
+    return isBulkPromptHovered || isButtonHovered || isFocused;
   }
 
   useEffect(() => {
-    if(!isBulkPromptHovered && !isButtonHovered && localSaveSet.size > 0 && clearSaves){
+    if(!isBulkPromptHovered && !isButtonHovered && !isFocused && localSaveSet.size > 0 && clearSaves){
       clearSaves();
       setLocalSaveSet(new Set());
     }
-  }, [isBulkPromptHovered, isButtonHovered, localSaveSet, clearSaves, setLocalSaveSet])
+  }, [isBulkPromptHovered, isButtonHovered, isFocused, localSaveSet, clearSaves, setLocalSaveSet])
 
   return (
     <>
@@ -68,13 +69,15 @@ export default function BulkPromptBox({prompts, ids, saveAll, savePrompt, addToS
         onMouseLeave={() => setIsButtonHovered(false)} 
         onClick={() => saveAll()}
       >
-          <Icon isHovered={isHovered()} isSaved={false} isEditing={false}/>
-          <ButtonText>{isHovered() ? `Save ${prompts.length - localSaveSet.size} prompts` : `${prompts.length - localSaveSet.size} prompts available`}</ButtonText>
+          <Icon isHovered={isEnabled()} isSaved={false} isEditing={false}/>
+          <ButtonText>{isEnabled() ? `Save ${prompts.length - localSaveSet.size} prompts` : `${prompts.length - localSaveSet.size} prompts available`}</ButtonText>
       </ButtonContainer>
-      {isHovered() &&
+      {isEnabled() &&
           <PromptsContainer
             onMouseEnter={() => setIsBulkPromptHovered(true)}
             onMouseLeave={() => setIsBulkPromptHovered(false)} 
+            onFocus={() => setIsFocused(true)}
+            onBlur={() => setIsFocused(false)}
           >
             {prompts.map((prompt, idx) => {
               return (
