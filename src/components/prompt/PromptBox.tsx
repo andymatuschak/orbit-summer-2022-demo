@@ -15,10 +15,11 @@ function getPromptImageSrc(promptContent: string): string | undefined  {
 
 export interface PromptProps {
     prompt: Prompt
-    isNew: boolean;
+    isNew?: boolean;
+    clearNew?: () => any;
     isBulk?: boolean;
     // Informs the parent of bounding box of the fully expanded state on mount
-    setFullBoundingBox?: (box: DOMRect) => any;
+    setFullBoundingBox?: (box: {top: number, bottom: number}) => any;
     computeFullBoundingBox?: boolean;
     savePrompt: () => any;
     updatePromptFront: (newPrompt: string) => any;
@@ -106,6 +107,7 @@ const Container = styled.div<HoverProps & SavedProps & EditingProps & BulkProps 
 export default function PromptBox({
     prompt, 
     isNew,
+    clearNew,
     isBulk,
     setFullBoundingBox,
     computeFullBoundingBox,
@@ -114,7 +116,7 @@ export default function PromptBox({
     updatePromptBack,
 }: PromptProps) {
     const [isHovered, setIsHovered] = useState<boolean>(false);
-    const [isEditing, setIsEditing] = useState<boolean>(isNew);
+    const [isEditing, setIsEditing] = useState<boolean>(isNew ?? false);
     const hidePromptBackTimeout = useRef<number | undefined>();
     const [showPromptBack, setShowPromptBack] = useState<boolean>(false);
     const [imageSrc, setImageSrc] = useState<string | undefined>();
@@ -160,6 +162,7 @@ export default function PromptBox({
       }
       setIsEditing(false);
       savePrompt();
+      if (clearNew) clearNew();
     };
 
     // Focus if new
@@ -177,10 +180,15 @@ export default function PromptBox({
     // Get full bounding rect
     useEffect(() => {
       if (setFullBoundingBox && containerRef.current && computeFullBoundingBox){
-        const rect = containerRef.current.getBoundingClientRect();
-        setFullBoundingBox(rect);
+        // TODO: eliminate this awful hack
+        setTimeout(() => {
+          const rect = containerRef.current?.getBoundingClientRect();
+          if (rect){
+            setFullBoundingBox({top: rect.top + window.scrollY, bottom: rect.bottom + window.scrollY});
+          }
+        }, 0);
       }
-    }, [setFullBoundingBox, containerRef]);
+    }, [setFullBoundingBox, containerRef, computeFullBoundingBox]);
 
     return (
       <Container 

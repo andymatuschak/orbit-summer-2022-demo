@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import styled from '@emotion/styled'
 import { Prompt } from "../../app/promptSlice";
 import { Icon } from "./PromptComponents";
@@ -9,6 +9,10 @@ export interface BulkPromptBoxProps {
     prompts: Prompt[];
     ids: string[];
     saveAll: () => any;
+    savePrompt: (id: string) => any;
+    // A parent can provide a mechanism to keep track of all items saved while the bulk prompt hovers, when the hover exits, the saves are cleared
+    addToSaves?: (id: string) => any;
+    clearSaves?: () => any;
 }
 
 const ButtonContainer = styled.div`
@@ -41,13 +45,21 @@ const ButtonText = styled.div`
   opacity: 0.696;
 `;
 
-export default function BulkPromptBox({prompts, ids, saveAll}: BulkPromptBoxProps){
+export default function BulkPromptBox({prompts, ids, saveAll, savePrompt, addToSaves, clearSaves}: BulkPromptBoxProps){
   const [isButtonHovered, setIsButtonHovered] = useState<boolean>(false);
   const [isBulkPromptHovered, setIsBulkPromptHovered] = useState<boolean>(false);
+  const [localSaveSet, setLocalSaveSet] = useState<Set<string>>(new Set());
 
   function isHovered(){
     return isBulkPromptHovered || isButtonHovered;
   }
+
+  useEffect(() => {
+    if(!isBulkPromptHovered && !isButtonHovered && localSaveSet.size > 0 && clearSaves){
+      clearSaves();
+      setLocalSaveSet(new Set());
+    }
+  }, [isBulkPromptHovered, isButtonHovered, localSaveSet, clearSaves, setLocalSaveSet])
 
   return (
     <>
@@ -57,7 +69,7 @@ export default function BulkPromptBox({prompts, ids, saveAll}: BulkPromptBoxProp
         onClick={() => saveAll()}
       >
           <Icon isHovered={isHovered()} isSaved={false} isEditing={false}/>
-          <ButtonText>{isHovered() ? `Save ${prompts.length} prompts` : `${prompts.length} prompts available`}</ButtonText>
+          <ButtonText>{isHovered() ? `Save ${prompts.length - localSaveSet.size} prompts` : `${prompts.length - localSaveSet.size} prompts available`}</ButtonText>
       </ButtonContainer>
       {isHovered() &&
           <PromptsContainer
@@ -69,10 +81,13 @@ export default function BulkPromptBox({prompts, ids, saveAll}: BulkPromptBoxProp
                 <PromptBox 
                   prompt={prompt}
                   key={ids[idx]}
-                  isNew={false}
                   isBulk={true}
+                  savePrompt={() => {
+                    if(addToSaves) addToSaves(ids[idx]);
+                    setLocalSaveSet(new Set(localSaveSet.add(ids[idx])));
+                    savePrompt(ids[idx]);
+                  }}
                   //TODO: pass in appropriate handlers
-                  savePrompt={() => null}
                   updatePromptBack={() => null}
                   updatePromptFront={() => null}
                 />

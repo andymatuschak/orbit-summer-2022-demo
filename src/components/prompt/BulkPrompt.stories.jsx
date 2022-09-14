@@ -57,4 +57,5 @@ Primary.args = {
     "1",
   ],
   saveAll: () => null,
+  savePrompt: (id) => null,
 };
