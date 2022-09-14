@@ -8,7 +8,6 @@ export interface BulkPromptBoxProps {
     // Prompts and ids must be same order
     prompts: Prompt[];
     ids: string[];
-    saveAll: () => any;
     savePrompt: (id: string) => any;
     // A parent can provide a mechanism to keep track of all items saved while the bulk prompt hovers, when the hover exits, the saves are cleared
     addToSaves?: (id: string) => any;
@@ -45,7 +44,7 @@ const ButtonText = styled.div`
   opacity: 0.696;
 `;
 
-export default function BulkPromptBox({prompts, ids, saveAll, savePrompt, addToSaves, clearSaves}: BulkPromptBoxProps){
+export default function BulkPromptBox({prompts, ids, savePrompt, addToSaves, clearSaves}: BulkPromptBoxProps){
   const [isButtonHovered, setIsButtonHovered] = useState<boolean>(false);
   const [isBulkPromptHovered, setIsBulkPromptHovered] = useState<boolean>(false);
   const [isFocused, setIsFocused] = useState<boolean>(false);
@@ -53,6 +52,12 @@ export default function BulkPromptBox({prompts, ids, saveAll, savePrompt, addToS
 
   function isEnabled(){
     return isBulkPromptHovered || isButtonHovered || isFocused;
+  }
+
+  function saveAll(){
+    ids.forEach((id) => {
+      savePrompt(id);
+    });
   }
 
   useEffect(() => {
