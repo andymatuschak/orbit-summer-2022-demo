@@ -1,11 +1,10 @@
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useCallback, useState } from "react";
 import uuidBase64 from "../components/common/uuid";
 import zIndices from "../components/common/zIndices";
 import ContextualMenu from "../components/ContextualMenu";
 import { InlineReviewOverlay } from "../components/InlineReviewOverlay";
 import { ModalReview, ModalReviewState } from "../components/ModalReview";
 import { OrbitMenu } from "../components/OrbitMenu";
-import PromptBox from "../components/prompt/PromptBox";
 import { PromptLayoutManager } from "../components/prompt/PromptLayoutManager";
 import { useAsyncLayoutDependentValue } from "../hooks/useLayoutDependentValue";
 import { usePageHeight } from "../hooks/usePageHeight";
@@ -16,9 +15,6 @@ import { describe } from "../vendor/hypothesis-annotator/html";
 import {
   createNewPrompt,
   Prompt,
-  savePrompt,
-  updatePromptBack,
-  updatePromptFront,
 } from "./promptSlice";
 import { useAppDispatch, useAppSelector } from "./store";
 
@@ -55,12 +51,6 @@ export default function App({ marginX, textRoot }: AppProps) {
     useState<ModalReviewState | null>(null);
 
   const [newPromptId, setNewPromptId] = useState<string | undefined>();
-
-  useEffect(() => {
-    if (newPromptId) {
-      setNewPromptId(undefined);
-    }
-  }, [newPromptId]);
 
   if (!promptLocations) return null;
   return (
@@ -120,6 +110,7 @@ export default function App({ marginX, textRoot }: AppProps) {
           promptLocations={promptLocations}
           marginX={marginX}
           newPromptId={newPromptId}
+          clearNewPrompt={() => setNewPromptId(undefined)}
         />
         <>
           {Object.entries(inlineReviewModules).map(([id, reviewModule]) => (
