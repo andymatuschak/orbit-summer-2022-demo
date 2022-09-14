@@ -96,6 +96,7 @@ export function PromptLayoutManager({prompts, promptLocations, marginX, newPromp
 
     return (
         <>
+        {/* This is not pretty, forgive me (prototype?) - ShadowContainer is a copy of the prompts used for measurement purposes, we don't need this but it makes some data flow easier for now */}
         <ShadowContainer>
         {
             Object.entries(prompts).map(([id, prompt]) => {
