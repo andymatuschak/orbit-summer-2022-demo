@@ -7,24 +7,7 @@ export default {
   component: BulkPromptBox,
 };
 
-const Template = (args) => (
-  <div 
-    css={css`
-      width: 100%;
-      height: 100vh;
-    `}
-  >
-    <div
-      css={css`
-        position: absolute;
-        bottom: 0px;
-        left: 0px;
-      `}
-    >
-      <BulkPromptBox {...args} />
-    </div>
-  </div>
-);
+const Template = (args) => <BulkPromptBox {...args} />;
 
 const prompt1 = { 
     content: {
@@ -54,7 +37,7 @@ Primary.args = {
   ],
   ids: [
     "1",
-    "1",
+    "2",
   ],
   saveAll: () => null,
   savePrompt: (id) => null,

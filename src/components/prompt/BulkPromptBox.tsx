@@ -3,6 +3,7 @@ import styled from '@emotion/styled'
 import { Prompt } from "../../app/promptSlice";
 import { Icon } from "./PromptComponents";
 import PromptBox from "./PromptBox";
+import Button from "../Button";
 
 export interface BulkPromptBoxProps {
     // Prompts and ids must be same order
@@ -31,6 +32,7 @@ const PromptsContainer = styled.div`
   background-color: var(--bgPrimary);
   border-color:  var(--fgTertiary);
   border-style: solid;
+  width: 332px;
   border-width: 3px 3px 3px 0px;
   box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.07), 0px 4px 15px rgba(0, 0, 0, 0.1);
 `;
@@ -69,14 +71,24 @@ export default function BulkPromptBox({prompts, ids, savePrompt, addToSaves, cle
 
   return (
     <>
-      <ButtonContainer 
+      <div 
         onMouseEnter={() => setIsButtonHovered(true)}
         onMouseLeave={() => setIsButtonHovered(false)} 
-        onClick={() => saveAll()}
       >
-          <Icon isHovered={isEnabled()} isSaved={false} isEditing={false}/>
-          <ButtonText>{isEnabled() ? `Save ${prompts.length - localSaveSet.size} prompts` : `${prompts.length - localSaveSet.size} prompts available`}</ButtonText>
-      </ButtonContainer>
+        {
+          !isEnabled() ? 
+            <ButtonContainer>
+              <Icon isHovered={false} isSaved={false} isEditing={false}/>
+              <ButtonText>{`${prompts.length - localSaveSet.size} prompts available`}</ButtonText>
+            </ButtonContainer> :
+            <Button
+              onClick={() => saveAll()}
+              children={`Save ${prompts.length - localSaveSet.size} prompts`}
+              icon={"add"}
+            />
+        }
+          
+      </div>
       {isEnabled() &&
           <PromptsContainer
             onMouseEnter={() => setIsBulkPromptHovered(true)}
