@@ -50,7 +50,7 @@ const Container = styled.div<HoverProps & SavedProps & EditingProps & BulkProps 
   position: relative;
   opacity: ${props => props.isHidden ? 0.0 : 1.0};
   border-left: ${props => {
-    if (props.isBulk && !props.isHovered){
+    if (props.isBulk && !props.isHovered && !props.isSaved){
       return '3px solid var(--fgTertiary)';
     } else if (props.isHovered && !props.isSaved){
       return '3px solid var(--accentPrimary)';
@@ -76,7 +76,7 @@ const Container = styled.div<HoverProps & SavedProps & EditingProps & BulkProps 
   }};
 
   /* Bulk hover state */
-  ${props => props.isBulk ? `
+  ${props => props.isBulk && !props.isSaved ? `
     :hover::before {
       position: absolute;
       content: '';
