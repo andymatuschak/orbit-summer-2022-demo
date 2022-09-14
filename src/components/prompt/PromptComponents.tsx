@@ -66,6 +66,7 @@ export const PromptText = styled.div<HoverProps & SavedProps & BulkProps>`
     content: attr(placeholder);
     color: var(--fgDisabled);
   }
+  word-break: break-word;
 `;
 
 export const PromptBack = styled(PromptText)`

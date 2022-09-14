@@ -44,6 +44,12 @@ export function PromptLayoutManager({prompts, promptLocations, marginX, newPromp
         setBoundingBoxes({...boundingBoxes});
     };
 
+    const deleteBoundingBoxForId = function(id: string){
+        const newBoundingBoxes = Object.assign({}, boundingBoxes);
+        delete newBoundingBoxes[id];
+        setBoundingBoxes(newBoundingBoxes);
+    }
+
     useEffect(() => {
         if (Object.keys(boundingBoxes).length === Object.keys(prompts).length){
             const sortedIds = Object.entries(boundingBoxes).sort((a, b) => compareDOMy(a[1], b[1])).map((a) => a[0]);
@@ -94,6 +100,7 @@ export function PromptLayoutManager({prompts, promptLocations, marginX, newPromp
         }
     }, [boundingBoxes, prompts, bulkSaves, promptLocations]);
 
+
     return (
         <>
         {/* This is not pretty, forgive me (prototype?) - ShadowContainer is a copy of the prompts used for measurement purposes, we don't need this but it makes some data flow easier for now */}
@@ -111,15 +118,9 @@ export function PromptLayoutManager({prompts, promptLocations, marginX, newPromp
                     >
                         <PromptBox
                             prompt={prompt}
-                            savePrompt={() => 
-                                dispatch(savePrompt(id))
-                            }
-                            updatePromptFront={(newPrompt) =>
-                                dispatch(updatePromptFront([id, newPrompt]))
-                            }
-                            updatePromptBack={(newPrompt) =>
-                                dispatch(updatePromptBack([id, newPrompt]))
-                            }
+                            savePrompt={() => null}
+                            updatePromptFront={(newPrompt) => null}
+                            updatePromptBack={(newPrompt) => null}
                             setFullBoundingBox={(box) => updateBoundingBoxes(id, box)}
                             computeFullBoundingBox={boundingBoxes[id] === undefined}
                         />
@@ -147,11 +148,15 @@ export function PromptLayoutManager({prompts, promptLocations, marginX, newPromp
                                 savePrompt={() => 
                                     dispatch(savePrompt(id))
                                 }
-                                updatePromptFront={(newPrompt) =>
-                                    dispatch(updatePromptFront([id, newPrompt]))
+                                updatePromptFront={(newPrompt) => {
+                                        deleteBoundingBoxForId(id);
+                                        dispatch(updatePromptFront([id, newPrompt]));
+                                    }
                                 }
-                                updatePromptBack={(newPrompt) =>
-                                    dispatch(updatePromptBack([id, newPrompt]))
+                                updatePromptBack={(newPrompt) => {
+                                        deleteBoundingBoxForId(id);
+                                        dispatch(updatePromptBack([id, newPrompt]));
+                                    }
                                 }
                                 clearNew={clearNewPrompt}
                             />
