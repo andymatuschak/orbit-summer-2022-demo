@@ -175,7 +175,6 @@ export function PromptLayoutManager({prompts, promptLocations, marginX, newPromp
                             <BulkPromptBox
                                 prompts={ids.map((id) => prompts[id])}
                                 ids={ids}
-                                saveAll={() => console.error("UNIMPLEMENTED")}
                                 savePrompt={(id) => 
                                     dispatch(savePrompt(id))
                                 }
