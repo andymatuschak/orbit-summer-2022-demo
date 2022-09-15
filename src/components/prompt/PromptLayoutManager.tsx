@@ -75,9 +75,7 @@ export function PromptLayoutManager({prompts, promptLocations, marginX, newPromp
                 } else if (nextTop < currBottom - MERGE_THRESHOLD_PIXELS){
                     // Lookback - add to current run if the run is eligible for merge (is not a saved prompt or in the bulk queue)
                     if (!prompts[runStartId].isSaved || bulkSaves.has(runStartId)){
-                        runs[currRunStartIdx].push(nextId);
-                        //const runHeight = 
-                        //promptLocations[nextId].top = promptLocations[runStartId].top + 
+                        runs[currRunStartIdx].push(nextId); 
                     } else {
                         // Lookback is ineligable for merge - create new run
                         currRunStartIdx += 1;
@@ -90,7 +88,7 @@ export function PromptLayoutManager({prompts, promptLocations, marginX, newPromp
                 }
             }
             // Pass 2 - adjust saved prompt locations so that overlapping boxes are spaced out
-            prevLocalPromptLocations.current = promptLocations;
+            prevLocalPromptLocations.current = Object.assign({}, localPromptLocations);
             const newPromptLocations = Object.assign({}, promptLocations);
             for(i = 0; i < runs.length - 1; i++){
                 const currId = runs[i][0];
@@ -106,6 +104,9 @@ export function PromptLayoutManager({prompts, promptLocations, marginX, newPromp
             setLocalPromptLocations(newPromptLocations);
         }
     }, [promptMeasureRefs, prompts, bulkSaves, promptLocations]);
+
+    console.log(prevLocalPromptLocations.current['When is shaping work communicated to the wider team?']);
+    console.log(localPromptLocations['When is shaping work communicated to the wider team?']);
 
     return (
         <>
@@ -148,9 +149,11 @@ export function PromptLayoutManager({prompts, promptLocations, marginX, newPromp
                                 top: localPromptLocations[id]?.top,
                             }}
                             animate={{
-                                top: localPromptLocations[id]?.top
+                                //top: localPromptLocations[id]?.top
                             }}
-                            initial={{top: prevLocalPromptLocations.current[id]?.top}}
+                            initial={{
+                                //top: prevLocalPromptLocations.current[id]?.top
+                            }}
                         >
                             <PromptBox
                                 prompt={prompts[id]}
@@ -174,9 +177,11 @@ export function PromptLayoutManager({prompts, promptLocations, marginX, newPromp
                                 top: localPromptLocations[ids[0]]?.top,
                             }}
                             animate={{
-                                top: localPromptLocations[ids[0]]?.top
+                                //top: localPromptLocations[ids[0]]?.top
                             }}
-                            initial={{top: prevLocalPromptLocations.current[ids[0]]?.top}}
+                            initial={{
+                                //top: prevLocalPromptLocations.current[ids[0]]?.top
+                            }}
                         >
                             <BulkPromptBox
                                 prompts={ids.map((id) => prompts[id])}
