@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import styled from '@emotion/styled'
 import { Prompt } from "../../app/promptSlice";
-import { EditingProps, HoverProps, Icon, SavedProps, BulkProps, PromptText, PromptBack, HiddenProps, ANIMATION_TIME_MSEC} from "./PromptComponents";
+import { EditingProps, HoverProps, Icon, SavedProps, BulkProps, PromptText, PromptBack, ANIMATION_TIME_MSEC} from "./PromptComponents";
 
 // HACKy regex for seeing if prompt is image
 const IMAGE_REGEX = /<img.+src="(.+)".+>/;
@@ -16,11 +16,9 @@ function getPromptImageSrc(promptContent: string): string | undefined  {
 export interface PromptProps {
     prompt: Prompt
     isNew?: boolean;
+    forceHover?: boolean
     clearNew?: () => any;
     isBulk?: boolean;
-    // Informs the parent of bounding box of the fully expanded state on mount
-    setFullBoundingBox?: (box: {top: number, bottom: number}) => any;
-    computeFullBoundingBox?: boolean;
     savePrompt: () => any;
     updatePromptFront: (newPrompt: string) => any;
     updatePromptBack: (newPrompt: string) => any;
@@ -39,7 +37,7 @@ const PromptContainer = styled.div`
   gap: 8px;
 `;
 
-const Container = styled.div<HoverProps & SavedProps & EditingProps & BulkProps & HiddenProps>`
+const Container = styled.div<HoverProps & SavedProps & EditingProps & BulkProps>`
   display: flex;
   flex-direction: row;
   align-items: flex-start;
@@ -48,7 +46,6 @@ const Container = styled.div<HoverProps & SavedProps & EditingProps & BulkProps 
   gap: 8px;
   cursor: ${props => !props.isSaved ? 'pointer' : 'auto'};
   position: relative;
-  opacity: ${props => props.isHidden ? 0.0 : 1.0};
   border-left: ${props => {
     if (props.isBulk && !props.isHovered && !props.isSaved){
       return '3px solid var(--fgTertiary)';
@@ -109,13 +106,12 @@ export default function PromptBox({
     isNew,
     clearNew,
     isBulk,
-    setFullBoundingBox,
-    computeFullBoundingBox,
+    forceHover,
     savePrompt,
     updatePromptFront,
     updatePromptBack,
 }: PromptProps) {
-    const [isHovered, setIsHovered] = useState<boolean>(false);
+    const [isHovered, setIsHovered] = useState<boolean>(forceHover ?? false);
     const [isEditing, setIsEditing] = useState<boolean>(isNew ?? false);
     const hidePromptBackTimeout = useRef<number | undefined>();
     const [showPromptBack, setShowPromptBack] = useState<boolean>(false);
@@ -124,7 +120,6 @@ export default function PromptBox({
 
     const promptFrontRef = useRef<HTMLDivElement | null>(null);
     const promptBackRef = useRef<HTMLDivElement | null>(null);
-    const containerRef = useRef<HTMLDivElement | null>(null);
 
     // We hide the prompt back only after the animation for unhover'ing is done. This way the container doesn't instantly resize and cause animation to glitch
     useEffect(() => {
@@ -177,30 +172,15 @@ export default function PromptBox({
       setImageSrc(getPromptImageSrc(prompt.content.back));
     }, [prompt]);
 
-    // Get full bounding rect
-    useEffect(() => {
-      if (setFullBoundingBox && containerRef.current && computeFullBoundingBox){
-        // TODO: eliminate this awful hack
-        setTimeout(() => {
-          const rect = containerRef.current?.getBoundingClientRect();
-          if (rect){
-            setFullBoundingBox({top: rect.top + window.scrollY, bottom: rect.bottom + window.scrollY});
-          }
-        }, 0);
-      }
-    }, [setFullBoundingBox, containerRef, computeFullBoundingBox]);
-
     return (
       <Container 
         isHovered={isHovered} 
         isSaved={isSaved} 
         isEditing={isEditing}
-        isHidden={computeFullBoundingBox ?? false}
         isBulk={isBulk ?? false}
         onMouseEnter={() => setIsHovered(true)}
         onMouseLeave={() => setIsHovered(false)} 
         onClick={() => savePrompt()}
-        ref={containerRef}
       >
         <Icon isHovered={isHovered} isSaved={isSaved} isEditing={isEditing}/>
         <PromptContainer>
@@ -218,7 +198,7 @@ export default function PromptBox({
           >
             {prompt.content.front}
           </PromptText>
-          {(showPromptBack || isBulk || computeFullBoundingBox) && 
+          {(showPromptBack || isBulk || forceHover || isSaved) && 
             (imageSrc ?
               <PromptImage src={imageSrc} />
               : <PromptBack 

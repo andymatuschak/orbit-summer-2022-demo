@@ -80,7 +80,8 @@ export default function BulkPromptBox({prompts, ids, savePrompt, addToSaves, cle
             <ButtonContainer>
               <Icon isHovered={false} isSaved={false} isEditing={false}/>
               <ButtonText>{`${prompts.length - localSaveSet.size} prompts available`}</ButtonText>
-            </ButtonContainer> :
+            </ButtonContainer> 
+            : 
             <Button
               onClick={() => saveAll()}
               children={`Save ${prompts.length - localSaveSet.size} prompts`}

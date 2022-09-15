@@ -47,7 +47,8 @@ export const Icon = styled.div<HoverProps & SavedProps & EditingProps>`
 `;
 
 export const PromptText = styled.div<HoverProps & SavedProps & BulkProps>`
-  font-family: "Dr-Medium";
+  /* Use a fallback font for sizing purposes */
+  font-family: "Dr-Medium", Sans-Serif;
   font-size: 14px;
   line-height: 17px;
   letter-spacing: 0.04em;
