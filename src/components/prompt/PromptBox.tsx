@@ -198,7 +198,7 @@ export default function PromptBox({
           >
             {prompt.content.front}
           </PromptText>
-          {(showPromptBack || isBulk || forceHover) && 
+          {(showPromptBack || isBulk || forceHover || isSaved) && 
             (imageSrc ?
               <PromptImage src={imageSrc} />
               : <PromptBack 

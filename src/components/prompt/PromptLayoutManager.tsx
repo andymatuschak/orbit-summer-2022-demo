@@ -7,7 +7,7 @@ import BulkPromptBox from "./BulkPromptBox";
 import styled from "@emotion/styled";
 import { motion } from "framer-motion";
 
-const BULK_BUTTON_HEIGHT = 40.0;
+const BULK_BUTTON_HEIGHT = 43.0;
 
 export interface PromptLayoutManagerProps {
     prompts: PromptsState,
@@ -54,7 +54,7 @@ export function PromptLayoutManager({prompts, promptLocations, marginX, newPromp
     }
 
     useEffect(() => {
-        if (Object.keys(promptMeasureRefs.current).length === Object.keys(prompts).length){
+        if (Object.keys(promptMeasureRefs.current).length === Object.keys(prompts).length && Object.keys(prompts).length === Object.keys(promptLocations).length){
             // Collect bounding boxes
             const boundingBoxes: PromptBoundingBoxes = {}
             Object.entries(promptMeasureRefs.current).forEach(([id, el]) => {
