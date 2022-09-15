@@ -2,7 +2,7 @@ import { css } from "@emotion/react";
 import React from "react";
 import Add from "../static/images/Icons/Plus.png";
 import { hoverAndActiveStyles } from "./common/hoverAndActiveStyles";
-import { colorsByEnumValue, Label, LabelColor, LabelSmall } from "./Type";
+import { colorsByEnumValue, LabelColor, LabelSmall } from "./Type";
 
 type IconName = "add";
 export interface ButtonProps {
