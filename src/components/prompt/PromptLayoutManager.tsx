@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useLayoutEffect, useRef, useState } from "react";
 import { PromptsState, savePrompt, updatePromptBack, updatePromptFront, } from "../../app/promptSlice";
 import { PromptLocation } from "../../util/resolvePromptLocations";
 import { useAppDispatch } from "../../app/store";
@@ -6,6 +6,8 @@ import PromptBox from "./PromptBox";
 import BulkPromptBox from "./BulkPromptBox";
 import styled from "@emotion/styled";
 import { motion } from "framer-motion";
+
+const BULK_BUTTON_HEIGHT = 40.0;
 
 export interface PromptLayoutManagerProps {
     prompts: PromptsState,
@@ -64,8 +66,9 @@ export function PromptLayoutManager({prompts, promptLocations, marginX, newPromp
                 }
             });
 
+            prevLocalPromptLocations.current = clonePromptLocations(prevLocalPromptLocations.current);
+            
             const sortedIds = Object.entries(boundingBoxes).sort((a, b) => compareDOMy({id: a[0], loc: a[1]}, {id: b[0], loc: b[1]})).map((a) => a[0]);
-            //console.log(sortedIds);
             const startId = sortedIds[0];
             const runs: string[][] = [[startId]];
             var currRunStartIdx = 0;
@@ -74,6 +77,8 @@ export function PromptLayoutManager({prompts, promptLocations, marginX, newPromp
             for(var i = 0; i < sortedIds.length - 1; i++){
                 const runStartId = runs[currRunStartIdx][0];
                 const nextId = sortedIds[i + 1];
+                // The top of the current run
+                const currTop = boundingBoxes[runStartId].top;
                 // The bottom of the bounding box of the current run
                 const currBottom = boundingBoxes[runStartId].bottom;
                 // The top of the bounding box being evaluated for merge
@@ -85,6 +90,13 @@ export function PromptLayoutManager({prompts, promptLocations, marginX, newPromp
                 } else if (nextTop < currBottom - MERGE_THRESHOLD_PIXELS){
                     // Lookback - add to current run if the run is eligible for merge (is not a saved prompt or in the bulk queue)
                     if (!prompts[runStartId].isSaved || bulkSaves.has(runStartId)){
+                        // We are adding a prompt to a bulk prompt, for animation bookkeeping, track where its top position in the bulk is
+                        const runHeight = runs[currRunStartIdx].map((id) => boundingBoxes[id].bottom - boundingBoxes[id].top).reduce((a, b) => a + b);
+                        // TODO: refactor so we aren't creating a fake range, don't hardcode the button height
+                        if (runs[currRunStartIdx].length === 1){
+                          prevLocalPromptLocations.current[runStartId] = {top: currTop + BULK_BUTTON_HEIGHT, range: new Range()}
+                        }
+                        prevLocalPromptLocations.current[nextId] = {top: currTop + runHeight + BULK_BUTTON_HEIGHT, range: new Range()}
                         runs[currRunStartIdx].push(nextId); 
                     } else {
                         // Lookback is ineligable for merge - create new run
@@ -98,7 +110,6 @@ export function PromptLayoutManager({prompts, promptLocations, marginX, newPromp
                 }
             }
             // Pass 2 - adjust saved prompt locations so that overlapping boxes are spaced out
-            prevLocalPromptLocations.current = Object.assign({}, localPromptLocations);
             const newPromptLocations = clonePromptLocations(promptLocations);
             for(i = 0; i < runs.length - 1; i++){
                 const currId = runs[i][0];
@@ -114,6 +125,7 @@ export function PromptLayoutManager({prompts, promptLocations, marginX, newPromp
             setLocalPromptLocations(newPromptLocations);
         }
     }, [promptMeasureRefs, prompts, bulkSaves, promptLocations]);
+
 
     return (
         <>
@@ -156,11 +168,12 @@ export function PromptLayoutManager({prompts, promptLocations, marginX, newPromp
                                 top: localPromptLocations[id]?.top,
                             }}
                             animate={{
-                                //top: localPromptLocations[id]?.top
+                                top: localPromptLocations[id]?.top
                             }}
                             initial={{
-                                //top: prevLocalPromptLocations.current[id]?.top
+                                top: prevLocalPromptLocations.current[id]?.top
                             }}
+                            transition={{duration: 0.3, ease: "easeOut"}}
                         >
                             <PromptBox
                                 prompt={prompts[id]}
@@ -184,11 +197,12 @@ export function PromptLayoutManager({prompts, promptLocations, marginX, newPromp
                                 top: localPromptLocations[ids[0]]?.top,
                             }}
                             animate={{
-                                //top: localPromptLocations[ids[0]]?.top
+                                top: localPromptLocations[ids[0]]?.top
                             }}
                             initial={{
-                                //top: prevLocalPromptLocations.current[ids[0]]?.top
+                                top: prevLocalPromptLocations.current[ids[0]]?.top - BULK_BUTTON_HEIGHT
                             }}
+                            transition={{duration: 0.3, ease: "easeOut"}}
                         >
                             <BulkPromptBox
                                 prompts={ids.map((id) => prompts[id])}
