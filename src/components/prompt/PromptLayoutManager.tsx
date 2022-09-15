@@ -42,6 +42,15 @@ export function PromptLayoutManager({prompts, promptLocations, marginX, newPromp
     const promptMeasureRefs = useRef<{[id: string]: HTMLDivElement | null}>({});
     const [bulkSaves, setBulkSaves] = useState<Set<string>>(new Set());
 
+    function clonePromptLocations(locs: { [id: string]: PromptLocation}){
+        const clone: { [id: string]: PromptLocation } = {};
+        Object.entries(locs).forEach(([id, loc]) => {
+            const locClone = {...loc};
+            clone[id] = locClone;
+        });
+        return clone;
+    }
+
     useEffect(() => {
         if (Object.keys(promptMeasureRefs.current).length === Object.keys(prompts).length){
             // Collect bounding boxes
@@ -56,6 +65,7 @@ export function PromptLayoutManager({prompts, promptLocations, marginX, newPromp
             });
 
             const sortedIds = Object.entries(boundingBoxes).sort((a, b) => compareDOMy({id: a[0], loc: a[1]}, {id: b[0], loc: b[1]})).map((a) => a[0]);
+            //console.log(sortedIds);
             const startId = sortedIds[0];
             const runs: string[][] = [[startId]];
             var currRunStartIdx = 0;
@@ -89,7 +99,7 @@ export function PromptLayoutManager({prompts, promptLocations, marginX, newPromp
             }
             // Pass 2 - adjust saved prompt locations so that overlapping boxes are spaced out
             prevLocalPromptLocations.current = Object.assign({}, localPromptLocations);
-            const newPromptLocations = Object.assign({}, promptLocations);
+            const newPromptLocations = clonePromptLocations(promptLocations);
             for(i = 0; i < runs.length - 1; i++){
                 const currId = runs[i][0];
                 const nextId = runs[i + 1][0];
@@ -104,9 +114,6 @@ export function PromptLayoutManager({prompts, promptLocations, marginX, newPromp
             setLocalPromptLocations(newPromptLocations);
         }
     }, [promptMeasureRefs, prompts, bulkSaves, promptLocations]);
-
-    console.log(prevLocalPromptLocations.current['When is shaping work communicated to the wider team?']);
-    console.log(localPromptLocations['When is shaping work communicated to the wider team?']);
 
     return (
         <>
