@@ -18,7 +18,10 @@ if (document.location.pathname.includes("shape-up")) {
 } else if (document.location.pathname.includes("ims")) {
   page = <IMSApp />;
   const chapterName = window.location.pathname.match(/\/ims\/(.+?).html$/)![1];
-  store.dispatch(loadPrompts(`ims/${chapterName}`));
+  // Give the LaTeX a chance to resolve...
+  setTimeout(() => {
+    store.dispatch(loadPrompts(`ims/${chapterName}`));
+  }, 1000);
 }
 
 if (page) {
