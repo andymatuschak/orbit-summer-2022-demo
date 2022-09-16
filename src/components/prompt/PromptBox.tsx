@@ -1,32 +1,40 @@
+import styled from "@emotion/styled";
 import React, { useEffect, useRef, useState } from "react";
-import styled from '@emotion/styled'
 import { Prompt } from "../../app/promptSlice";
-import { EditingProps, HoverProps, Icon, SavedProps, BulkProps, PromptText, PromptBack, ANIMATION_TIME_MSEC} from "./PromptComponents";
+import {
+  ANIMATION_TIME_MSEC,
+  BulkProps,
+  EditingProps,
+  HoverProps,
+  Icon,
+  PromptText,
+  SavedProps,
+} from "./PromptComponents";
 
 // HACKy regex for seeing if prompt is image
 const IMAGE_REGEX = /<img.+src="(.+)".+>/;
 
-function getPromptImageSrc(promptContent: string): string | undefined  {
+function getPromptImageSrc(promptContent: string): string | undefined {
   const res = promptContent.match(IMAGE_REGEX);
-  if (res && res.length > 0){
+  if (res && res.length > 0) {
     return res[1];
-  } 
+  }
 }
 
 export interface PromptProps {
-    prompt: Prompt
-    isNew?: boolean;
-    forceHover?: boolean
-    clearNew?: () => any;
-    isBulk?: boolean;
-    savePrompt: () => any;
-    updatePromptFront: (newPrompt: string) => any;
-    updatePromptBack: (newPrompt: string) => any;
+  prompt: Prompt;
+  isNew?: boolean;
+  forceHover?: boolean;
+  clearNew?: () => any;
+  isBulk?: boolean;
+  savePrompt: () => any;
+  updatePromptFront: (newPrompt: string) => any;
+  updatePromptBack: (newPrompt: string) => any;
 }
 
 const PromptImage = styled.img`
-    width: 50%;
-    border-radius: 0px;
+  width: 50%;
+  border-radius: 0px;
 `;
 
 const PromptContainer = styled.div`
@@ -37,43 +45,47 @@ const PromptContainer = styled.div`
   gap: 8px;
 `;
 
-const Container = styled.div<HoverProps & SavedProps & EditingProps & BulkProps>`
+const Container = styled.div<
+  HoverProps & SavedProps & EditingProps & BulkProps
+>`
   display: flex;
   flex-direction: row;
   align-items: flex-start;
   width: 332px;
   padding: 8px 8px 10px 9px;
   gap: 8px;
-  cursor: ${props => !props.isSaved ? 'pointer' : 'auto'};
+  cursor: ${(props) => (!props.isSaved ? "pointer" : "auto")};
   position: relative;
-  border-left: ${props => {
-    if (props.isBulk && !props.isHovered && !props.isSaved){
-      return '3px solid var(--fgTertiary)';
-    } else if (props.isHovered && !props.isSaved){
-      return '3px solid var(--accentPrimary)';
+  border-left: ${(props) => {
+    if (props.isBulk && !props.isHovered && !props.isSaved) {
+      return "3px solid var(--fgTertiary)";
+    } else if (props.isHovered && !props.isSaved) {
+      return "3px solid var(--accentPrimary)";
     } else if (props.isSaved && !props.isEditing) {
-      return '3px solid var(--accentSecondary)';
-    } else if (props.isSaved && props.isEditing){
-      return '3px solid var(--accentPrimary)';
+      return "3px solid var(--accentSecondary)";
+    } else if (props.isSaved && props.isEditing) {
+      return "3px solid var(--accentPrimary)";
     } else {
-      return '3px solid transparent';
+      return "3px solid transparent";
     }
   }};
-  box-shadow: ${props => {
-    if (props.isHovered && !props.isSaved && !props.isBulk){
-      return '0px 1px 3px rgba(0, 0, 0, 0.07), 0px 5px 10px rgba(0, 0, 0, 0.08)';
+  box-shadow: ${(props) => {
+    if (props.isHovered && !props.isSaved && !props.isBulk) {
+      return "0px 1px 3px rgba(0, 0, 0, 0.07), 0px 5px 10px rgba(0, 0, 0, 0.08)";
     }
   }};
-  background: ${props => {
+  background: ${(props) => {
     if (props.isSaved) {
-      return 'var(--bgPrimary)';
-    } else if (props.isHovered && !props.isSaved && !props.isBulk){
-      return 'var(--bgContent)';
+      return "var(--bgPrimary)";
+    } else if (props.isHovered && !props.isSaved && !props.isBulk) {
+      return "var(--bgContent)";
     }
   }};
 
   /* Bulk hover state */
-  ${props => props.isBulk && !props.isSaved ? `
+  ${(props) =>
+    props.isBulk && !props.isSaved
+      ? `
     :hover::before {
       position: absolute;
       content: '';
@@ -82,11 +94,13 @@ const Container = styled.div<HoverProps & SavedProps & EditingProps & BulkProps>
       right: 0;
       bottom: 0;
       background-color: var(--hoverLayer);
-    };` : null
-  }
+    };`
+      : null}
 
   /* Pressed state */
-  ${props => !props.isSaved ? `
+  ${(props) =>
+    !props.isSaved
+      ? `
     :active::before {
       position: absolute;
       content: '';
@@ -95,129 +109,131 @@ const Container = styled.div<HoverProps & SavedProps & EditingProps & BulkProps>
       right: 0;
       bottom: 0;
       background-color: var(--pressedLayer);
-    };` : null
-  }
+    };`
+      : null}
 
   transition: ${ANIMATION_TIME_MSEC / 1000}s ease-out;
 `;
 
 export default function PromptBox({
-    prompt, 
-    isNew,
-    clearNew,
-    isBulk,
-    forceHover,
-    savePrompt,
-    updatePromptFront,
-    updatePromptBack,
+  prompt,
+  isNew,
+  clearNew,
+  isBulk,
+  forceHover,
+  savePrompt,
+  updatePromptFront,
+  updatePromptBack,
 }: PromptProps) {
-    const [isHovered, setIsHovered] = useState<boolean>(forceHover ?? false);
-    const [isEditing, setIsEditing] = useState<boolean>(isNew ?? false);
-    const hidePromptBackTimeout = useRef<number | undefined>();
-    const [showPromptBack, setShowPromptBack] = useState<boolean>(false);
-    const [imageSrc, setImageSrc] = useState<string | undefined>();
-    const isSaved = prompt.isSaved;
+  const [isHovered, setIsHovered] = useState<boolean>(forceHover ?? false);
+  const [isEditing, setIsEditing] = useState<boolean>(isNew ?? false);
+  const hidePromptBackTimeout = useRef<number | undefined>();
+  const [showPromptBack, setShowPromptBack] = useState<boolean>(false);
+  const [imageSrc, setImageSrc] = useState<string | undefined>();
+  const isSaved = prompt.isSaved;
 
-    const promptFrontRef = useRef<HTMLDivElement | null>(null);
-    const promptBackRef = useRef<HTMLDivElement | null>(null);
+  const promptFrontRef = useRef<HTMLDivElement | null>(null);
+  const promptBackRef = useRef<HTMLDivElement | null>(null);
 
-    // We hide the prompt back only after the animation for unhover'ing is done. This way the container doesn't instantly resize and cause animation to glitch
-    useEffect(() => {
-      if(!isHovered && !isSaved){
-        hidePromptBackTimeout.current = window.setTimeout(() => {
-          setShowPromptBack(false);
-        }, ANIMATION_TIME_MSEC);
-      } else if(isHovered || isSaved){
-        clearTimeout(hidePromptBackTimeout.current);
-        hidePromptBackTimeout.current = undefined;
-        setShowPromptBack(true);
-      }
-    }, [isHovered, isSaved, setShowPromptBack]);
-
-    const startEditing = function(editingFront: boolean){
-      setIsEditing(true);
-
-      // Select all text in prompt
-      const el = editingFront ? promptFrontRef.current : promptBackRef.current;
-      const sel = window.getSelection();
-      const range = document.createRange();
-      if (el && sel && range) {
-        range.selectNodeContents(el);
-        sel.removeAllRanges();
-        sel.addRange(range);
-      }
+  // We hide the prompt back only after the animation for unhover'ing is done. This way the container doesn't instantly resize and cause animation to glitch
+  useEffect(() => {
+    if (!isHovered && !isSaved) {
+      hidePromptBackTimeout.current = window.setTimeout(() => {
+        setShowPromptBack(false);
+      }, ANIMATION_TIME_MSEC);
+    } else if (isHovered || isSaved) {
+      clearTimeout(hidePromptBackTimeout.current);
+      hidePromptBackTimeout.current = undefined;
+      setShowPromptBack(true);
     }
+  }, [isHovered, isSaved, setShowPromptBack]);
 
-    const endEditing = function(){
-      if(promptFrontRef.current?.innerText) {
-        updatePromptFront(promptFrontRef.current.innerText);
-      }
-      if(promptBackRef.current?.innerText) {
-        updatePromptBack(promptBackRef.current.innerText);
-      }
-      setIsEditing(false);
-      savePrompt();
-      if (clearNew) clearNew();
-    };
+  const startEditing = function (editingFront: boolean) {
+    setIsEditing(true);
 
-    // Focus if new
-    useEffect(() => {
-      if (isNew && promptFrontRef.current) {
-        promptFrontRef.current.focus({preventScroll: true});
-      }
-    }, [isNew, promptFrontRef]);
+    // Select all text in prompt
+    const el = editingFront ? promptFrontRef.current : promptBackRef.current;
+    const sel = window.getSelection();
+    const range = document.createRange();
+    if (el && sel && range) {
+      range.selectNodeContents(el);
+      sel.removeAllRanges();
+      sel.addRange(range);
+    }
+  };
 
-    // Check if image
-    useEffect(() => {
-      setImageSrc(getPromptImageSrc(prompt.content.back));
-    }, [prompt]);
+  const endEditing = function () {
+    if (promptFrontRef.current?.innerText) {
+      updatePromptFront(promptFrontRef.current.innerText);
+    }
+    if (promptBackRef.current?.innerText) {
+      updatePromptBack(promptBackRef.current.innerText);
+    }
+    setIsEditing(false);
+    savePrompt();
+    if (clearNew) clearNew();
+  };
 
-    return (
-      <Container 
-        isHovered={isHovered} 
-        isSaved={isSaved} 
-        isEditing={isEditing}
-        isBulk={isBulk ?? false}
-        onMouseEnter={() => setIsHovered(true)}
-        onMouseLeave={() => setIsHovered(false)} 
-        onClick={() => savePrompt()}
-      >
-        <Icon isHovered={isHovered} isSaved={isSaved} isEditing={isEditing}/>
-        <PromptContainer>
-          <PromptText 
-            isHovered={isHovered} 
-            isSaved={isSaved}
-            isBulk={isBulk ?? false}
-            contentEditable={isSaved} 
-            onFocus={() => startEditing(true)}
-            onBlur={() => endEditing()}
-            suppressContentEditableWarning
-            ref={promptFrontRef}
-            placeholder="Type a prompt here."
-            spellCheck={isEditing}
-          >
-            {prompt.content.front}
-          </PromptText>
-          {(showPromptBack || isBulk || forceHover || isSaved) && 
-            (imageSrc ?
-              <PromptImage src={imageSrc} />
-              : <PromptBack 
-                isHovered={isHovered} 
-                isSaved={isSaved}
-                isBulk={isBulk ?? false}
-                contentEditable={isSaved} 
-                onFocus={() => startEditing(false)}
-                onBlur={() => endEditing()}
-                suppressContentEditableWarning
-                ref={promptBackRef}
-                placeholder="Type a response here."
-                spellCheck={isEditing}
-              >
-                {prompt.content.back}
-              </PromptBack>
-            ) 
-          }
-        </PromptContainer>
-      </Container>
+  // Focus if new
+  useEffect(() => {
+    if (isNew && promptFrontRef.current) {
+      promptFrontRef.current.focus({ preventScroll: true });
+    }
+  }, [isNew, promptFrontRef]);
+
+  // Check if image
+  useEffect(() => {
+    setImageSrc(getPromptImageSrc(prompt.content.back));
+  }, [prompt]);
+
+  return (
+    <Container
+      isHovered={isHovered}
+      isSaved={isSaved}
+      isEditing={isEditing}
+      isBulk={isBulk ?? false}
+      onMouseEnter={() => setIsHovered(true)}
+      onMouseLeave={() => setIsHovered(false)}
+      onClick={() => savePrompt()}
+    >
+      <Icon isHovered={isHovered} isSaved={isSaved} isEditing={isEditing} />
+      <PromptContainer>
+        <PromptText
+          side="front"
+          isHovered={isHovered}
+          isSaved={isSaved}
+          isBulk={isBulk ?? false}
+          contentEditable={isSaved}
+          onFocus={() => startEditing(true)}
+          onBlur={() => endEditing()}
+          suppressContentEditableWarning
+          ref={promptFrontRef}
+          placeholder="Type a prompt here."
+          spellCheck={isEditing}
+        >
+          {prompt.content.front}
+        </PromptText>
+        {(showPromptBack || isBulk || forceHover || isSaved) &&
+          (imageSrc ? (
+            <PromptImage src={imageSrc} />
+          ) : (
+            <PromptText
+              side="back"
+              isHovered={isHovered}
+              isSaved={isSaved}
+              isBulk={isBulk ?? false}
+              contentEditable={isSaved}
+              onFocus={() => startEditing(false)}
+              onBlur={() => endEditing()}
+              suppressContentEditableWarning
+              ref={promptBackRef}
+              placeholder="Type a response here."
+              spellCheck={isEditing}
+            >
+              {prompt.content.back}
+            </PromptText>
+          ))}
+      </PromptContainer>
+    </Container>
   );
 }
