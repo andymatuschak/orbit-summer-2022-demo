@@ -202,14 +202,12 @@ export default function PromptBox({
           side="front"
           isHovered={isHovered}
           isSaved={isSaved}
+          isEditing={isEditing}
           isBulk={isBulk ?? false}
-          contentEditable={isSaved}
           onFocus={() => startEditing(true)}
           onBlur={() => endEditing()}
-          suppressContentEditableWarning
           ref={promptFrontRef}
           placeholder="Type a prompt here."
-          spellCheck={isEditing}
         >
           {prompt.content.front}
         </PromptText>
@@ -222,13 +220,11 @@ export default function PromptBox({
               isHovered={isHovered}
               isSaved={isSaved}
               isBulk={isBulk ?? false}
-              contentEditable={isSaved}
+              isEditing={isEditing}
               onFocus={() => startEditing(false)}
               onBlur={() => endEditing()}
-              suppressContentEditableWarning
               ref={promptBackRef}
               placeholder="Type a response here."
-              spellCheck={isEditing}
             >
               {prompt.content.back}
             </PromptText>

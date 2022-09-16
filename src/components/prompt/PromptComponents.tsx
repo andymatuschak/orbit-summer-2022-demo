@@ -1,12 +1,12 @@
 import { css } from "@emotion/react";
 import styled from "@emotion/styled";
 import renderMathInElement from "katex/contrib/auto-render";
-import { ComponentProps, forwardRef, PropsWithChildren } from "react";
-
-import startburst_null from "../../static/images/Icons/Starburst-Null.png";
+import { ForwardedRef, forwardRef, useEffect, useState } from "react";
+import plus from "../../static/images/Icons/Plus.png";
 import starburst_active from "../../static/images/Icons/Starburst-Active.png";
 import starburst_editing from "../../static/images/Icons/Starburst-Edit.png";
-import plus from "../../static/images/Icons/Plus.png";
+
+import startburst_null from "../../static/images/Icons/Starburst-Null.png";
 
 export const ANIMATION_TIME_MSEC = 48.0;
 
@@ -22,16 +22,18 @@ export interface EditingProps {
   isEditing: boolean;
 }
 
+export interface EditableTextProps {
+  placeholder: string;
+  onFocus?: () => void;
+  onBlur?: () => void;
+}
+
 export interface BulkProps {
   isBulk: boolean;
 }
 
 export interface SidedProps {
   side: "front" | "back";
-}
-
-export interface HiddenProps {
-  isHidden: boolean;
 }
 
 export const Icon = styled.div<HoverProps & SavedProps & EditingProps>`
@@ -58,16 +60,42 @@ export const PromptText = forwardRef(function (
     SavedProps &
     BulkProps &
     SidedProps &
-    React.DetailedHTMLProps<
-      React.HTMLAttributes<HTMLDivElement>,
-      HTMLDivElement
-    >,
-  ref: React.Ref<HTMLDivElement>,
+    EditingProps &
+    EditableTextProps & { children: string },
+  ref: ForwardedRef<HTMLDivElement>,
 ) {
+  const [localRef, setLocalRef] = useState<HTMLDivElement | null>(null);
+  const { children } = props;
+
+  useEffect(() => {
+    if (localRef && children) {
+      if (localRef.innerText !== children) {
+        localRef.innerHTML = children;
+      }
+      renderMathInElement(localRef, {
+        delimiters: [
+          { left: "$$", right: "$$", display: true },
+          { left: "$", right: "$", display: false },
+        ],
+      });
+    }
+  }, [localRef, children]);
+
   return (
     <div
-      ref={ref}
-      {...props}
+      ref={(r) => {
+        setLocalRef(r);
+        if (typeof ref === "function") {
+          ref(r);
+        } else if (ref) {
+          ref.current = r;
+        }
+      }}
+      onFocus={props.onFocus}
+      onBlur={props.onBlur}
+      spellCheck={props.isEditing}
+      contentEditable={props.isSaved}
+      suppressContentEditableWarning
       css={[
         css`
           /* Use a fallback font for sizing purposes */
@@ -92,6 +120,7 @@ export const PromptText = forwardRef(function (
             content: attr(placeholder);
             color: var(--fgDisabled);
           }
+
           word-break: break-word;
         `,
         props.side === "back" &&
@@ -116,8 +145,6 @@ export const PromptText = forwardRef(function (
             transition: ${ANIMATION_TIME_MSEC / 1000}s ease-out;
           `,
       ]}
-    >
-      {props.children}
-    </div>
+    />
   );
 });
