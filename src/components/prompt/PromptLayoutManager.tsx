@@ -126,8 +126,7 @@ export function PromptLayoutManager({prompts, promptLocations, marginX, newPromp
                 const nextTop = newPromptLocations[nextId].top;
                 if (nextTop < currBottom - PROMPT_SPACE_THRESHOLD) {
                     newPromptLocations[nextId].top = currBottom + PROMPT_SPACING;
-                    var addedSpace = 0.0;
-                    addedSpace = newPromptLocations[nextId].top - promptLocations[nextId].top;
+                    const addedSpace = newPromptLocations[nextId].top - promptLocations[nextId].top;
                     offsets[nextId] = addedSpace;
                     // If bulk run, track the added space
                     if (runs[i + 1].length > 1){
