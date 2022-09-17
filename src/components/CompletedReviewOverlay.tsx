@@ -31,7 +31,7 @@ export function CompletedReviewOverlay({
     <div
       css={{
         position: "absolute",
-        top: shouldShowContinueUpsell ? 128 : 100,
+        top: shouldShowContinueUpsell ? (context === "modal" ? 128 : 164) : 100,
         left: 0,
         bottom: 0,
         right: 0,
@@ -40,7 +40,7 @@ export function CompletedReviewOverlay({
         transition: "opacity 0.25s 600ms linear",
         display: "flex",
         flexDirection: "column",
-        justifyContent: "center",
+        justifyContent: context === "modal" ? "center" : "flex-start",
         alignItems: "center",
       }}
     >
@@ -52,7 +52,7 @@ export function CompletedReviewOverlay({
           lineHeight: "40px",
           letterSpacing: "-0.01em",
           color: "var(--fgPrimary)",
-          marginBottom: 156,
+          marginBottom: context === "modal" ? 156 : 96,
         }}
       >
         Review complete
