@@ -6,6 +6,8 @@ import PromptBox from "./PromptBox";
 import BulkPromptBox from "./BulkPromptBox";
 import styled from "@emotion/styled";
 import { motion } from "framer-motion";
+import { AnchorHighlight } from "./AnchorHighlights";
+import { HighlightFunc } from "./AnchorHighlights";
 
 const BULK_BUTTON_HEIGHT = 43.0;
 
@@ -44,6 +46,7 @@ export function PromptLayoutManager({prompts, promptLocations, marginX, newPromp
     const bulkPromptLocations = useRef<{ [id: string]: PromptLocation}>({});
     const promptMeasureRefs = useRef<{[id: string]: HTMLDivElement | null}>({});
     const [bulkSaves, setBulkSaves] = useState<Set<string>>(new Set());
+    const [highlightFunc, setHighlightFunc] = useState<HighlightFunc>();
 
     function clonePromptLocations(locs: { [id: string]: PromptLocation}){
         const clone: { [id: string]: PromptLocation } = {};
@@ -112,6 +115,7 @@ export function PromptLayoutManager({prompts, promptLocations, marginX, newPromp
                 }
             }
             // Pass 2 - adjust saved prompt locations so that overlapping boxes are spaced out
+            // TODO: use bulk button size for runs length > 1 instead
             const newPromptLocations = clonePromptLocations(promptLocations);
             const offsets: {[id: string]: number} = {}
             for(i = 0; i < runs.length - 1; i++){
@@ -196,6 +200,10 @@ export function PromptLayoutManager({prompts, promptLocations, marginX, newPromp
                                 updatePromptFront={(newPrompt) => dispatch(updatePromptFront([id, newPrompt]))}
                                 updatePromptBack={(newPrompt) => dispatch(updatePromptBack([id, newPrompt]))}
                                 clearNew={clearNewPrompt}
+                                onMouseEnter={() => highlightFunc && !prompts[id].isSaved ? highlightFunc(id, true) : null}
+                                onMouseLeave={() =>  highlightFunc && !prompts[id].isSaved ? highlightFunc(id, false) : null}
+                                onEditStart={() => highlightFunc ? highlightFunc(id, true) : null}
+                                onEditEnd={() =>  highlightFunc ? highlightFunc(id, false) : null}
                             />
                         </motion.div>
                     )
@@ -223,12 +231,20 @@ export function PromptLayoutManager({prompts, promptLocations, marginX, newPromp
                                 }
                                 addToSaves={(id) => setBulkSaves(new Set(bulkSaves.add(id)))}
                                 clearSaves={() => setBulkSaves(new Set())}
+                                highlightFunc={highlightFunc}
+                                updatePromptFront={(id, newPrompt) => dispatch(updatePromptFront([id, newPrompt]))}
+                                updatePromptBack={(id, newPrompt) => dispatch(updatePromptBack([id, newPrompt]))}
                             />
                         </motion.div>
                     )
                 }
             })
         }
+        <AnchorHighlight
+          prompts={prompts}
+          promptLocations={promptLocations}
+          setHighlightFunc={setHighlightFunc}
+        />
         </>
     )
 }

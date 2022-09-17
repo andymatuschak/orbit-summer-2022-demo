@@ -1,18 +1,22 @@
 import React, { useEffect, useState } from "react";
 import styled from '@emotion/styled'
-import { Prompt } from "../../app/promptSlice";
+import { Prompt, updatePromptBack, updatePromptFront } from "../../app/promptSlice";
 import { Icon } from "./PromptComponents";
 import PromptBox from "./PromptBox";
 import Button from "../Button";
+import { HighlightFunc } from "./AnchorHighlights";
 
 export interface BulkPromptBoxProps {
     // Prompts and ids must be same order
     prompts: Prompt[];
     ids: string[];
     savePrompt: (id: string) => any;
+    updatePromptFront: (id: string, newPrompt: string) => any;
+    updatePromptBack: (id: string, newPrompt: string) => any;
     // A parent can provide a mechanism to keep track of all items saved while the bulk prompt hovers, when the hover exits, the saves are cleared
     addToSaves?: (id: string) => any;
     clearSaves?: () => any;
+    highlightFunc?: HighlightFunc;
 }
 
 const ButtonContainer = styled.div`
@@ -46,7 +50,7 @@ const ButtonText = styled.div`
   opacity: 0.696;
 `;
 
-export default function BulkPromptBox({prompts, ids, savePrompt, addToSaves, clearSaves}: BulkPromptBoxProps){
+export default function BulkPromptBox({prompts, ids, savePrompt, addToSaves, clearSaves, highlightFunc, updatePromptBack, updatePromptFront}: BulkPromptBoxProps){
   const [isButtonHovered, setIsButtonHovered] = useState<boolean>(false);
   const [isBulkPromptHovered, setIsBulkPromptHovered] = useState<boolean>(false);
   const [isFocused, setIsFocused] = useState<boolean>(false);
@@ -72,8 +76,18 @@ export default function BulkPromptBox({prompts, ids, savePrompt, addToSaves, cle
   return (
     <>
       <div 
-        onMouseEnter={() => setIsButtonHovered(true)}
-        onMouseLeave={() => setIsButtonHovered(false)} 
+        onMouseEnter={() => {
+          setIsButtonHovered(true);
+          if(highlightFunc) {
+            ids.forEach((id) => highlightFunc(id, true));
+          }
+        }}
+        onMouseLeave={() => {
+          setIsButtonHovered(false);
+          if(highlightFunc) {
+            ids.forEach((id) => highlightFunc(id, false));
+          }
+        }}
       >
         {
           !isEnabled() ? 
@@ -98,19 +112,23 @@ export default function BulkPromptBox({prompts, ids, savePrompt, addToSaves, cle
             onBlur={() => setIsFocused(false)}
           >
             {prompts.map((prompt, idx) => {
+              const id = ids[idx];
               return (
                 <PromptBox 
                   prompt={prompt}
-                  key={ids[idx]}
+                  key={id}
                   isBulk={true}
                   savePrompt={() => {
-                    if(addToSaves) addToSaves(ids[idx]);
-                    setLocalSaveSet(new Set(localSaveSet.add(ids[idx])));
-                    savePrompt(ids[idx]);
+                    if(addToSaves) addToSaves(id);
+                    setLocalSaveSet(new Set(localSaveSet.add((id))));
+                    savePrompt(id);
                   }}
-                  //TODO: pass in appropriate handlers
-                  updatePromptBack={() => null}
-                  updatePromptFront={() => null}
+                  updatePromptBack={(newPrompt: string) => updatePromptBack(id, newPrompt)}
+                  updatePromptFront={(newPrompt: string) => updatePromptFront(id, newPrompt)}
+                  onMouseEnter={() => highlightFunc && !prompt.isSaved ? highlightFunc(id, true) : null}
+                  onMouseLeave={() =>  highlightFunc && !prompt.isSaved ? highlightFunc(id, false) : null}
+                  onEditStart={() => highlightFunc ? highlightFunc(id, true) : null}
+                  onEditEnd={() =>  highlightFunc ? highlightFunc(id, false) : null}
                 />
               )
             })}
