@@ -6,6 +6,7 @@ import {
 } from "../../app/promptSlice";
 import { useAppDispatch, useAppSelector } from "../../app/store";
 import { useLayoutDependentValue } from "../../hooks/useLayoutDependentValue";
+import Button from "../Button";
 import zIndices from "../common/zIndices";
 import PromptBox from "./PromptBox";
 import { PromptContext } from "./PromptComponents";
@@ -81,14 +82,42 @@ export function PromptList({ promptIDs, targetElementID }: PromptListProps) {
         top,
         width: width + (12 + 3) * 2,
         zIndex: zIndices.displayOverContent,
-        display: "flex",
-        flexDirection: "row",
       }}
       ref={setListElement}
     >
-      <PromptListColumn prompts={promptEntries.filter((_, i) => i % 2 === 0)} />
-      <div style={{ width: 8 }}></div>
-      <PromptListColumn prompts={promptEntries.filter((_, i) => i % 2 === 1)} />
+      <div style={{ display: "flex", marginBottom: 4 }}>
+        <div style={{ flexGrow: 0 }}>
+          <Button
+            onClick={() => {
+              for (const promptID of promptIDs) {
+                dispatch(savePrompt(promptID));
+              }
+            }}
+            icon="add"
+          >
+            Save All to Orbit
+          </Button>
+        </div>
+        <div style={{ flexGrow: 0 }}>
+          <Button onClick={() => alert("UNIMPLEMENTED")} icon="rightArrow">
+            Review All
+          </Button>
+        </div>
+      </div>
+      <div
+        css={{
+          display: "flex",
+          flexDirection: "row",
+        }}
+      >
+        <PromptListColumn
+          prompts={promptEntries.filter((_, i) => i % 2 === 0)}
+        />
+        <div style={{ width: 8 }}></div>
+        <PromptListColumn
+          prompts={promptEntries.filter((_, i) => i % 2 === 1)}
+        />
+      </div>
     </div>
   );
 }

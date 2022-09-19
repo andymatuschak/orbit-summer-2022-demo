@@ -1,10 +1,11 @@
 import { css } from "@emotion/react";
 import React from "react";
 import Add from "../static/images/Icons/Plus.png";
+import RightArrow from "../static/images/Icons/Right.png";
 import { hoverAndActiveStyles } from "./common/hoverAndActiveStyles";
 import { colorsByEnumValue, LabelColor, LabelSmall } from "./Type";
 
-type IconName = "add";
+type IconName = "add" | "rightArrow";
 export interface ButtonProps {
   children: string;
   onClick: () => void;
@@ -16,6 +17,7 @@ export interface ButtonProps {
 
 const iconsByIconName: Record<IconName, typeof Add> = {
   add: Add,
+  rightArrow: RightArrow,
 };
 
 const regularButtonStyle = css({
@@ -67,7 +69,7 @@ export default function Button({
           "&::before": {
             borderRadius: 4,
           },
-          width: '100%',
+          width: "100%",
         },
         size === "regular" ? regularButtonStyle : largeButtonStyle,
       ]}
