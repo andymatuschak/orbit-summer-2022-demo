@@ -237,6 +237,7 @@ export function PromptLayoutManager({
                   css={{
                     position: "absolute",
                     left: marginX,
+                    pointerEvents: "none",
                   }}
                   animate={{
                     top:

@@ -1,9 +1,10 @@
-import React, { useLayoutEffect, useState, useRef, useCallback } from "react";
+import React, { useLayoutEffect, useState, useRef, useCallback, useEffect } from "react";
 import styled from "@emotion/styled";
 import { Prompt, PromptId } from "../../app/promptSlice";
 import Button from "../Button";
 import PromptBox from "./PromptBox";
 import { Icon, PromptContext } from "./PromptComponents";
+import { css } from "@emotion/react";
 
 export interface BulkPromptBoxProps {
   // Prompts and ids must be same order
@@ -31,7 +32,10 @@ const ButtonContainer = styled.div`
   cursor: pointer;
 `;
 
-const PromptsContainer = styled.div`
+interface ContainerProps {
+  isEnabled: boolean
+}
+const PromptsContainer = styled.div<ContainerProps>`
   display: flex;
   flex-direction: column;
   align-items: flex-start;
@@ -41,6 +45,8 @@ const PromptsContainer = styled.div`
   width: 332px;
   border-width: 3px 3px 3px 0px;
   box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.07), 0px 4px 15px rgba(0, 0, 0, 0.1);
+  opacity: ${props => props.isEnabled ? 1.0 : 0.0};
+  pointer-events: ${props => props.isEnabled ? 'auto' : 'none'};
 `;
 
 const ButtonText = styled.div`
@@ -65,6 +71,7 @@ export default function BulkPromptBox({
   setEditPrompt,
   setTops,
 }: BulkPromptBoxProps) {
+  const [isOpen, setIsOpen] = useState<boolean>(false);
   const [isButtonHovered, setIsButtonHovered] = useState<boolean>(false);
   const [isBulkPromptHovered, setIsBulkPromptHovered] =
     useState<boolean>(false);
@@ -95,8 +102,17 @@ export default function BulkPromptBox({
     prevIsFocused.current = isFocused;
   }, [isFocused, isEnabled, saves, clearSaves]);
 
+  useEffect(() => {
+    if (!isEnabled()){
+      setIsOpen(false);
+    }
+  }, [isEnabled]);
+
   return (
     <div
+      css={css`
+          pointer-events: ${isOpen ? 'auto' : 'none'};
+      `}
       onMouseEnter={() => {
         setIsBulkPromptHovered(true);
       }}
@@ -110,15 +126,20 @@ export default function BulkPromptBox({
       <div
         onMouseEnter={() => {
           setIsButtonHovered(true);
+          setIsOpen(true);
           if (setHoverPrompt) setHoverPrompt(ids[0]);
         }}
         onMouseLeave={() => {
           setIsButtonHovered(false);
           if (setHoverPrompt) setHoverPrompt(undefined);
         }}
-        css={{ display: "flex", flexDirection: "column" }}
+        css={{ 
+          display: "flex", 
+          flexDirection: "column",
+          pointerEvents: "all",
+        }}
       >
-        {!isEnabled() ? (
+        {!isOpen ? (
           <ButtonContainer>
             <Icon isHovered={false} isSaved={false} isEditing={false} />
             <ButtonText>{`${
@@ -133,10 +154,10 @@ export default function BulkPromptBox({
           />
         )}
       </div>
-      {(isEnabled()) && (
         <PromptsContainer
           onFocus={() => setIsFocused(true)}
           onBlur={() => setIsFocused(false)}
+          isEnabled={isOpen}
         >
           {prompts.map((prompt, idx) => {
             const id = ids[idx];
@@ -176,7 +197,6 @@ export default function BulkPromptBox({
             );
           })}
         </PromptsContainer>
-      )}
     </div>
   );
 }
