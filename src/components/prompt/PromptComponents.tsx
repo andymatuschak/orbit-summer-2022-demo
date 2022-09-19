@@ -113,7 +113,8 @@ export const PromptText = forwardRef(function (
           color: var(--fgPrimary);
           opacity: ${props.isHovered ||
           props.isSaved ||
-          props.context === PromptContext.Bulk
+          props.context === PromptContext.Bulk ||
+          props.context === PromptContext.List
             ? 1.0
             : 0.696};
           outline: none;

@@ -62,7 +62,8 @@ const Container = styled.div<
   position: relative;
   border-left: ${(props) => {
     if (
-      props.context === PromptContext.Bulk &&
+      (props.context === PromptContext.Bulk ||
+        props.context === PromptContext.List) &&
       !props.isHovered &&
       !props.isSaved
     ) {
@@ -95,6 +96,8 @@ const Container = styled.div<
       props.context !== PromptContext.Bulk
     ) {
       return "var(--bgContent)";
+    } else if (props.context === PromptContext.List) {
+      return "var(--bgPrimary)";
     }
   }};
 
