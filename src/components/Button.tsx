@@ -13,6 +13,7 @@ export interface ButtonProps {
   icon?: IconName;
   backgroundColor?: string;
   color?: LabelColor;
+  disabled?: boolean;
 }
 
 const iconsByIconName: Record<IconName, typeof Add> = {
@@ -49,12 +50,15 @@ export default function Button({
   backgroundColor = "clear",
   color = LabelColor.AccentPrimary,
   onClick,
+  disabled = false,
 }: ButtonProps) {
+  const effectiveColor = disabled ? LabelColor.FGDisabled : color;
+
   return (
     <button
       onClick={onClick}
       css={[
-        hoverAndActiveStyles,
+        !disabled && hoverAndActiveStyles,
         {
           paddingLeft: icon ? 12 : 16, // the icon has 4px of internal padding
           paddingRight: 16,
@@ -64,7 +68,7 @@ export default function Button({
           border: "none",
           backgroundColor,
           borderRadius: 4,
-          cursor: "pointer",
+          cursor: disabled ? "not-allowed" : "pointer",
 
           "&::before": {
             borderRadius: 4,
@@ -72,6 +76,7 @@ export default function Button({
         },
         size === "regular" ? regularButtonStyle : largeButtonStyle,
       ]}
+      disabled={disabled}
     >
       {icon && (
         <div
@@ -79,7 +84,9 @@ export default function Button({
             width: 24,
             height: 24,
             marginRight: 6, // forgive me, gods of the grid--this is what it needs!
-            backgroundColor: "var(--accentPrimary)",
+            backgroundColor: disabled
+              ? "var(--fgDisabled)"
+              : "var(--accentPrimary)",
             maskPosition: "center",
             maskRepeat: "no-repeat",
             maskImage: `url(${iconsByIconName[icon]})`,
@@ -90,10 +97,12 @@ export default function Button({
       )}
       {size === "regular" ? (
         <div css={{ marginTop: 5 }}>
-          <LabelSmall text={children} color={color} />
+          <LabelSmall text={children} color={effectiveColor} />
         </div>
       ) : (
-        <div css={[largeTitleStyle, { color: colorsByEnumValue[color] }]}>
+        <div
+          css={[largeTitleStyle, { color: colorsByEnumValue[effectiveColor] }]}
+        >
           {children}
         </div>
       )}

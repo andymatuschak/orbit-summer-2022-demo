@@ -100,12 +100,19 @@ export function PromptList({
               }
             }}
             icon="add"
+            disabled={promptEntries.every(([_, { isSaved }]) => isSaved)}
           >
             Save All to Orbit
           </Button>
         </div>
         <div style={{ flexGrow: 0 }}>
-          <Button onClick={onStartReview} icon="rightArrow">
+          <Button
+            onClick={onStartReview}
+            icon="rightArrow"
+            disabled={promptEntries.every(
+              ([_, { isSaved, isDue }]) => isSaved && !isDue,
+            )}
+          >
             Review All
           </Button>
         </div>
