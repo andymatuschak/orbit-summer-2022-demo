@@ -6,24 +6,23 @@ import { InlineReviewOverlay } from "../components/InlineReviewOverlay";
 import { ModalReview, ModalReviewState } from "../components/ModalReview";
 import { OrbitMenu } from "../components/OrbitMenu";
 import { PromptLayoutManager } from "../components/prompt/PromptLayoutManager";
+import { PromptList, PromptListSpec } from "../components/prompt/PromptList";
 import { useAsyncLayoutDependentValue } from "../hooks/useLayoutDependentValue";
 import { usePageHeight } from "../hooks/usePageHeight";
 import { useReviewAreaIntegration } from "../hooks/useReviewAreaIntegration";
 import { useSelectionBounds } from "../hooks/useSelectionBounds";
 import { resolvePromptLocations } from "../util/resolvePromptLocations";
 import { describe } from "../vendor/hypothesis-annotator/html";
-import {
-  createNewPrompt,
-  Prompt,
-} from "./promptSlice";
+import { createNewPrompt, Prompt } from "./promptSlice";
 import { useAppDispatch, useAppSelector } from "./store";
 
 export interface AppProps {
   marginX: number;
   textRoot: Element;
+  promptLists?: { [elementID: string]: PromptListSpec };
 }
 
-export default function App({ marginX, textRoot }: AppProps) {
+export default function App({ marginX, textRoot, promptLists }: AppProps) {
   const prompts = useAppSelector((state) => state.prompts);
   const inlineReviewModules = useAppSelector(
     (state) => state.inlineReviewModules,
@@ -162,6 +161,10 @@ export default function App({ marginX, textRoot }: AppProps) {
           {...modalReviewState}
         />
       )}
+      {promptLists &&
+        Object.entries(promptLists).map(([id, spec]) => (
+          <PromptList key={`promptList-${id}`} targetElementID={id} {...spec} />
+        ))}
     </>
   );
 }

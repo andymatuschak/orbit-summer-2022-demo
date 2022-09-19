@@ -3,17 +3,15 @@ import ReactDOM from "react-dom/client";
 import { Provider } from "react-redux";
 import IMSApp from "./app/IMSApp";
 import { loadPrompts } from "./app/promptSlice";
-import ShapeUpApp from "./app/ShapeUpApp";
-import "./static/styles/index.css";
+import ShapeUpApp, { getShapeUpChapterName } from "./app/ShapeUpApp";
 import { store } from "./app/store";
+import "./static/styles/index.css";
 
 let page: ReactNode | null = null;
 
 if (document.location.pathname.includes("shape-up")) {
   page = <ShapeUpApp />;
-  const chapterName = window.location.pathname.match(
-    /\/shape-up\/shapeup\/(.+?)(\/.*)?$/,
-  )![1];
+  const chapterName = getShapeUpChapterName();
   store.dispatch(loadPrompts(`shapeup/${chapterName}`));
 } else if (document.location.pathname.includes("ims")) {
   page = <IMSApp />;
