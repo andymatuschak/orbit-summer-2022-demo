@@ -152,15 +152,23 @@ export default function App({ marginX, textRoot, promptLists }: AppProps) {
         <ModalReview
           key={modalReviewState.mode} /* remount when mode changes */
           onClose={() => setModalReviewState(null)}
-          onContinueReview={function () {
-            setModalReviewState({ mode: "user" });
-          }}
+          onContinueReview={() => setModalReviewState({ mode: "user" })}
           {...modalReviewState}
         />
       )}
       {promptLists &&
         Object.entries(promptLists).map(([id, spec]) => (
-          <PromptList key={`promptList-${id}`} targetElementID={id} {...spec} />
+          <PromptList
+            key={`promptList-${id}`}
+            targetElementID={id}
+            onStartReview={() =>
+              setModalReviewState({
+                mode: "list",
+                promptIDs: spec.promptIDs,
+              })
+            }
+            {...spec}
+          />
         ))}
     </>
   );
