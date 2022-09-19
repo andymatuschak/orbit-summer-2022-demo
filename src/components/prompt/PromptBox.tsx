@@ -30,6 +30,10 @@ export interface PromptProps {
   savePrompt: () => any;
   updatePromptFront: (newPrompt: string) => any;
   updatePromptBack: (newPrompt: string) => any;
+  onMouseEnter?: () => any;
+  onMouseLeave?: () => any;
+  onEditStart?: () => any;
+  onEditEnd?: () => any;
 }
 
 const PromptImage = styled.img`
@@ -124,6 +128,10 @@ export default function PromptBox({
   savePrompt,
   updatePromptFront,
   updatePromptBack,
+  onMouseEnter,
+  onMouseLeave,
+  onEditStart,
+  onEditEnd,
 }: PromptProps) {
   const [isHovered, setIsHovered] = useState<boolean>(forceHover ?? false);
   const [isEditing, setIsEditing] = useState<boolean>(isNew ?? false);
@@ -150,6 +158,7 @@ export default function PromptBox({
 
   const startEditing = function (editingFront: boolean) {
     setIsEditing(true);
+    if (onEditStart) onEditStart();
 
     // Select all text in prompt
     const el = editingFront ? promptFrontRef.current : promptBackRef.current;
@@ -172,14 +181,16 @@ export default function PromptBox({
     setIsEditing(false);
     savePrompt();
     if (clearNew) clearNew();
+    if (onEditEnd) onEditEnd();
   };
 
   // Focus if new
   useEffect(() => {
     if (isNew && promptFrontRef.current) {
       promptFrontRef.current.focus({ preventScroll: true });
+      if (onEditStart) onEditStart();
     }
-  }, [isNew, promptFrontRef]);
+  }, [isNew, promptFrontRef, onEditStart]);
 
   // Check if image
   useEffect(() => {
@@ -192,8 +203,14 @@ export default function PromptBox({
       isSaved={isSaved}
       isEditing={isEditing}
       isBulk={isBulk ?? false}
-      onMouseEnter={() => setIsHovered(true)}
-      onMouseLeave={() => setIsHovered(false)}
+      onMouseEnter={() => {
+        setIsHovered(true);
+        if(onMouseEnter) onMouseEnter();
+      }}
+      onMouseLeave={() => {
+        setIsHovered(false)
+        if(onMouseLeave) onMouseLeave();
+      }}
       onClick={() => savePrompt()}
     >
       <Icon isHovered={isHovered} isSaved={isSaved} isEditing={isEditing} />
