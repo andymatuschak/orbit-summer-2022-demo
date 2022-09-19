@@ -2,6 +2,10 @@ main orbit-reviewarea {
     margin-top: 24px;
 }
 
+#promptList {
+    margin-top: 20px;
+}
+
 main .menu {
     /* Put Shape Up's menu below ours */
     z-index: 10000;

@@ -13,6 +13,7 @@ import BulkPromptBox from "./BulkPromptBox";
 import styled from "@emotion/styled";
 import { AnimatePresence, motion } from "framer-motion";
 import { AnchorHighlight } from "./AnchorHighlights";
+import { PromptContext } from "./PromptComponents";
 
 export interface PromptLayoutManagerProps {
   prompts: PromptsState;
@@ -176,6 +177,7 @@ export function PromptLayoutManager({
             >
               <PromptBox
                 prompt={prompt}
+                context={PromptContext.Floating}
                 savePrompt={() => null}
                 forceHover={true}
                 updatePromptFront={(newPrompt) => null}
@@ -213,6 +215,7 @@ export function PromptLayoutManager({
                   <PromptBox
                     prompt={prompts[id]}
                     isNew={id === newPromptId}
+                    context={PromptContext.Floating}
                     savePrompt={() => dispatch(savePrompt(id))}
                     updatePromptFront={(newPrompt) =>
                       dispatch(updatePromptFront([id, newPrompt]))

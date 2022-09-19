@@ -2,7 +2,7 @@ const { override, addBabelPreset } = require("customize-cra");
 
 /* Generate a Reactified index.html for each page of the books we're augmenting. */
 const shapeUpChapters = ["1.1-chapter-02", "1.2-chapter-03"];
-const IMSChapters = ["foundations-randomization"];
+const IMSChapters = ["foundations-mathematical"];
 const multipleEntry = require("react-app-rewire-multiple-entry")([
   ...shapeUpChapters.map((c) => ({
     entry: "src/index.tsx",

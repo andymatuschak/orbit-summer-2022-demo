@@ -1,9 +1,9 @@
 import React, { useLayoutEffect, useState, useRef, useCallback } from "react";
 import styled from "@emotion/styled";
 import { Prompt, PromptId } from "../../app/promptSlice";
-import { Icon } from "./PromptComponents";
-import PromptBox from "./PromptBox";
 import Button from "../Button";
+import PromptBox from "./PromptBox";
+import { Icon, PromptContext } from "./PromptComponents";
 
 export interface BulkPromptBoxProps {
   // Prompts and ids must be same order
@@ -143,7 +143,7 @@ export default function BulkPromptBox({
               <PromptBox
                 prompt={prompt}
                 key={id}
-                isBulk={true}
+                context={PromptContext.Bulk}
                 savePrompt={() => {
                   if (addToSaves) addToSaves(id);
                   savePrompt(id);

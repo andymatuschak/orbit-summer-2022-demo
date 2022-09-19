@@ -28,8 +28,14 @@ export interface EditableTextProps {
   onBlur?: () => void;
 }
 
-export interface BulkProps {
-  isBulk: boolean;
+export interface ContextProps {
+  context: PromptContext;
+}
+
+export enum PromptContext {
+  Floating = "floating",
+  Bulk = "bulk",
+  List = "list",
 }
 
 export interface SidedProps {
@@ -58,7 +64,7 @@ export const Icon = styled.div<HoverProps & SavedProps & EditingProps>`
 export const PromptText = forwardRef(function (
   props: HoverProps &
     SavedProps &
-    BulkProps &
+    ContextProps &
     SidedProps &
     EditingProps &
     EditableTextProps & { children: string },
@@ -105,7 +111,10 @@ export const PromptText = forwardRef(function (
           line-height: 17px;
           letter-spacing: 0.04em;
           color: var(--fgPrimary);
-          opacity: ${props.isHovered || props.isSaved || props.isBulk
+          opacity: ${props.isHovered ||
+          props.isSaved ||
+          props.context === PromptContext.Bulk ||
+          props.context === PromptContext.List
             ? 1.0
             : 0.696};
           outline: none;
@@ -131,7 +140,7 @@ export const PromptText = forwardRef(function (
                 return 1.0;
               } else if (props.isHovered) {
                 return 0.7;
-              } else if (props.isBulk) {
+              } else if (props.context === PromptContext.Bulk) {
                 return 0.4;
               } else {
                 return 0.0;

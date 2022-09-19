@@ -35,5 +35,5 @@ yarn install
 ## Development
 
 * To run a local development server: `yarn start`
-  * Then visit e.g. http://localhost:3000/shape-up/shapeup/1.1-chapter-02/index.html or http://localhost:3000/ims/foundations-randomization.html
+  * Then visit e.g. http://localhost:3000/shape-up/shapeup/1.1-chapter-02/index.html or http://localhost:3000/ims/foundations-mathematical.html
 * To run the Storybook UI: `yarn storybook`

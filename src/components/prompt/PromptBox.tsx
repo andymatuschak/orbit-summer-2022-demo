@@ -9,10 +9,11 @@ import React, {
 import { Prompt } from "../../app/promptSlice";
 import {
   ANIMATION_TIME_MSEC,
-  BulkProps,
+  ContextProps,
   EditingProps,
   HoverProps,
   Icon,
+  PromptContext,
   PromptText,
   SavedProps,
 } from "./PromptComponents";
@@ -32,7 +33,7 @@ export interface PromptProps {
   isNew?: boolean;
   forceHover?: boolean;
   clearNew?: () => any;
-  isBulk?: boolean;
+  context: PromptContext;
   savePrompt: () => any;
   updatePromptFront: (newPrompt: string) => any;
   updatePromptBack: (newPrompt: string) => any;
@@ -56,18 +57,22 @@ const PromptContainer = styled.div`
 `;
 
 const Container = styled.div<
-  HoverProps & SavedProps & EditingProps & BulkProps
+  HoverProps & SavedProps & EditingProps & ContextProps
 >`
   display: flex;
   flex-direction: row;
   align-items: flex-start;
-  width: 332px;
   padding: 8px 8px 10px 9px;
   gap: 8px;
   cursor: ${(props) => (!props.isSaved ? "pointer" : "auto")};
   position: relative;
   border-left: ${(props) => {
-    if (props.isBulk && !props.isHovered && !props.isSaved) {
+    if (
+      (props.context === PromptContext.Bulk ||
+        props.context === PromptContext.List) &&
+      !props.isHovered &&
+      !props.isSaved
+    ) {
       return "3px solid var(--fgTertiary)";
     } else if (props.isHovered && !props.isSaved) {
       return "3px solid var(--accentPrimary)";
@@ -80,21 +85,31 @@ const Container = styled.div<
     }
   }};
   box-shadow: ${(props) => {
-    if (props.isHovered && !props.isSaved && !props.isBulk) {
+    if (
+      props.isHovered &&
+      !props.isSaved &&
+      props.context !== PromptContext.Bulk
+    ) {
       return "0px 1px 3px rgba(0, 0, 0, 0.07), 0px 5px 10px rgba(0, 0, 0, 0.08)";
     }
   }};
   background: ${(props) => {
     if (props.isSaved) {
       return "var(--bgPrimary)";
-    } else if (props.isHovered && !props.isSaved && !props.isBulk) {
+    } else if (
+      props.isHovered &&
+      !props.isSaved &&
+      props.context !== PromptContext.Bulk
+    ) {
       return "var(--bgContent)";
+    } else if (props.context === PromptContext.List) {
+      return "var(--bgPrimary)";
     }
   }};
 
   /* Bulk hover state */
   ${(props) =>
-    props.isBulk && !props.isSaved
+    props.context === PromptContext.Bulk && !props.isSaved
       ? `
     :hover::before {
       position: absolute;
@@ -130,7 +145,7 @@ export default forwardRef(function (
     prompt,
     isNew,
     clearNew,
-    isBulk,
+    context,
     forceHover,
     savePrompt,
     updatePromptFront,
@@ -211,7 +226,7 @@ export default forwardRef(function (
       isHovered={isHovered}
       isSaved={isSaved}
       isEditing={isEditing}
-      isBulk={isBulk ?? false}
+      context={context}
       onMouseEnter={() => {
         setIsHovered(true);
         if (onMouseEnter) onMouseEnter();
@@ -230,7 +245,7 @@ export default forwardRef(function (
           isHovered={isHovered}
           isSaved={isSaved}
           isEditing={isEditing}
-          isBulk={isBulk ?? false}
+          context={context}
           onFocus={() => startEditing(true)}
           onBlur={() => endEditing()}
           ref={promptFrontRef}
@@ -238,7 +253,10 @@ export default forwardRef(function (
         >
           {prompt.content.front}
         </PromptText>
-        {(showPromptBack || isBulk || forceHover || isSaved) &&
+        {(showPromptBack ||
+          context === PromptContext.Bulk ||
+          forceHover ||
+          isSaved) &&
           (imageSrc ? (
             <PromptImage src={imageSrc} />
           ) : (
@@ -246,7 +264,7 @@ export default forwardRef(function (
               side="back"
               isHovered={isHovered}
               isSaved={isSaved}
-              isBulk={isBulk ?? false}
+              context={context}
               isEditing={isEditing}
               onFocus={() => startEditing(false)}
               onBlur={() => endEditing()}
