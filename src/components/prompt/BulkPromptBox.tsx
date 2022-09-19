@@ -1,9 +1,9 @@
-import React, { useEffect, useState } from "react";
 import styled from "@emotion/styled";
+import React, { useEffect, useState } from "react";
 import { Prompt } from "../../app/promptSlice";
-import { Icon } from "./PromptComponents";
-import PromptBox from "./PromptBox";
 import Button from "../Button";
+import PromptBox from "./PromptBox";
+import { Icon, PromptContext } from "./PromptComponents";
 
 export interface BulkPromptBoxProps {
   // Prompts and ids must be same order
@@ -137,7 +137,7 @@ export default function BulkPromptBox({
               <PromptBox
                 prompt={prompt}
                 key={id}
-                isBulk={true}
+                context={PromptContext.Bulk}
                 savePrompt={() => {
                   if (addToSaves) addToSaves(id);
                   setLocalSaveSet(new Set(localSaveSet.add(id)));
@@ -149,10 +149,16 @@ export default function BulkPromptBox({
                 updatePromptFront={(newPrompt: string) =>
                   updatePromptFront(id, newPrompt)
                 }
-                onMouseEnter={() => setHoverPrompt ? setHoverPrompt(id) : null}
-                onMouseLeave={() => setHoverPrompt ? setHoverPrompt(undefined) : null}
-                onEditStart={() => setEditPrompt? setEditPrompt(id) : null}
-                onEditEnd={() => setEditPrompt ? setEditPrompt(undefined) : null}
+                onMouseEnter={() =>
+                  setHoverPrompt ? setHoverPrompt(id) : null
+                }
+                onMouseLeave={() =>
+                  setHoverPrompt ? setHoverPrompt(undefined) : null
+                }
+                onEditStart={() => (setEditPrompt ? setEditPrompt(id) : null)}
+                onEditEnd={() =>
+                  setEditPrompt ? setEditPrompt(undefined) : null
+                }
               />
             );
           })}

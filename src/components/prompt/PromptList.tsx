@@ -8,6 +8,7 @@ import { useAppDispatch, useAppSelector } from "../../app/store";
 import { useLayoutDependentValue } from "../../hooks/useLayoutDependentValue";
 import zIndices from "../common/zIndices";
 import PromptBox from "./PromptBox";
+import { PromptContext } from "./PromptComponents";
 
 export interface PromptListSpec {
   promptIDs: string[];
@@ -56,7 +57,7 @@ export function PromptList({ promptIDs, targetElementID }: PromptListProps) {
     <div
       css={{
         position: "absolute",
-        left,
+        left: left - 12,
         top,
         width,
         zIndex: zIndices.displayOverContent,
@@ -66,6 +67,7 @@ export function PromptList({ promptIDs, targetElementID }: PromptListProps) {
       {promptEntries.map(([id, prompt]) => (
         <PromptBox
           prompt={prompt}
+          context={PromptContext.List}
           savePrompt={() => dispatch(savePrompt(id))}
           updatePromptFront={(newPrompt) =>
             dispatch(updatePromptFront([id, newPrompt]))
