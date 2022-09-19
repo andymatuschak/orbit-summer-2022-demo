@@ -133,7 +133,7 @@ export default function BulkPromptBox({
           />
         )}
       </div>
-      {(isEnabled() || (saves && saves.size > 0)) && (
+      {(isEnabled()) && (
         <PromptsContainer
           onFocus={() => setIsFocused(true)}
           onBlur={() => setIsFocused(false)}
