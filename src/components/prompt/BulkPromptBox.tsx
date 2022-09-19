@@ -33,8 +33,10 @@ const ButtonContainer = styled.div`
 `;
 
 interface ContainerProps {
-  isEnabled: boolean
+  isEnabled: boolean;
+  offset: number;
 }
+
 const PromptsContainer = styled.div<ContainerProps>`
   display: flex;
   flex-direction: column;
@@ -47,6 +49,8 @@ const PromptsContainer = styled.div<ContainerProps>`
   box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.07), 0px 4px 15px rgba(0, 0, 0, 0.1);
   opacity: ${props => props.isEnabled ? 1.0 : 0.0};
   pointer-events: ${props => props.isEnabled ? 'auto' : 'none'};
+  position: relative;
+  top: ${props => props.offset}px;
 `;
 
 const ButtonText = styled.div`
@@ -75,8 +79,12 @@ export default function BulkPromptBox({
   const [isButtonHovered, setIsButtonHovered] = useState<boolean>(false);
   const [isBulkPromptHovered, setIsBulkPromptHovered] =
     useState<boolean>(false);
+  const [layoutOffset, setLayoutOffset] = useState<number>(0);
   const [isFocused, setIsFocused] = useState<boolean>(false);
   const prevIsFocused = useRef<boolean>(false);
+  const buttonRef = useRef<HTMLDivElement>(null);
+  const promptsContainerRef = useRef<HTMLDivElement>(null);
+
 
   const isEnabled = useCallback(() => {
     return isBulkPromptHovered || isButtonHovered || isFocused;
@@ -86,6 +94,22 @@ export default function BulkPromptBox({
     ids.forEach((id) => {
       savePrompt(id);
     });
+  }
+
+  function determineLayout() {
+    if (buttonRef.current && promptsContainerRef.current){
+      const btnRect = buttonRef.current.getBoundingClientRect();
+      const btnTop = btnRect.top;
+      const btnBottom = btnRect.bottom;
+      const topAvailableSpace = btnTop;
+      const bottomAvailableSpace = window.innerHeight - btnBottom;
+      if (bottomAvailableSpace >= topAvailableSpace){
+        setLayoutOffset(0);
+      } else {
+        const promptsRect = promptsContainerRef.current.getBoundingClientRect();
+        setLayoutOffset((promptsRect.top-promptsRect.bottom) - btnRect.height);
+      }
+    }
   }
 
   useLayoutEffect(() => {
@@ -127,6 +151,7 @@ export default function BulkPromptBox({
         onMouseEnter={() => {
           setIsButtonHovered(true);
           setIsOpen(true);
+          determineLayout();
           if (setHoverPrompt) setHoverPrompt(ids[0]);
         }}
         onMouseLeave={() => {
@@ -138,6 +163,7 @@ export default function BulkPromptBox({
           flexDirection: "column",
           pointerEvents: "all",
         }}
+        ref={buttonRef}
       >
         {!isOpen ? (
           <ButtonContainer>
@@ -158,6 +184,8 @@ export default function BulkPromptBox({
           onFocus={() => setIsFocused(true)}
           onBlur={() => setIsFocused(false)}
           isEnabled={isOpen}
+          offset={layoutOffset}
+          ref={promptsContainerRef}
         >
           {prompts.map((prompt, idx) => {
             const id = ids[idx];
