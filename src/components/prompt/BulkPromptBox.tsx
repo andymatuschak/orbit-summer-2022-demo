@@ -108,6 +108,7 @@ export default function BulkPromptBox({
           setIsButtonHovered(false);
           if (setHoverPrompt) setHoverPrompt(undefined);
         }}
+        css={{ display: "flex", flexDirection: "column" }}
       >
         {!isEnabled() ? (
           <ButtonContainer>

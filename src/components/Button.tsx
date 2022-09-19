@@ -69,7 +69,6 @@ export default function Button({
           "&::before": {
             borderRadius: 4,
           },
-          width: "100%",
         },
         size === "regular" ? regularButtonStyle : largeButtonStyle,
       ]}
