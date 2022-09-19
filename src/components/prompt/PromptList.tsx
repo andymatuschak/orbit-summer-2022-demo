@@ -60,25 +60,54 @@ export function PromptList({
 
   const dispatch = useAppDispatch();
 
-  const PromptListColumn = ({ prompts }: { prompts: typeof promptEntries }) => (
-    <div style={{ flexBasis: "50%" }}>
-      {prompts.map(([id, prompt]) => (
-        <div style={{ marginBottom: 8 }} key={id}>
-          <PromptBox
-            prompt={prompt}
-            context={PromptContext.List}
-            savePrompt={() => dispatch(savePrompt(id))}
-            updatePromptFront={(newPrompt) =>
-              dispatch(updatePromptFront([id, newPrompt]))
-            }
-            updatePromptBack={(newPrompt) =>
-              dispatch(updatePromptBack([id, newPrompt]))
-            }
-          />
-        </div>
-      ))}
-    </div>
-  );
+  const PromptListColumn = ({ prompts }: { prompts: typeof promptEntries }) => {
+    // We track prompt heights while they're being hovered to hackily create the "expand on hover without resizing" behavior seen in the prompt list.
+    const [heightsByPromptID, setHeightsByPromptID] = useState<{
+      [id: string]: number;
+    }>({});
+
+    return (
+      <div css={{ flexBasis: "50%" }}>
+        {prompts.map(([id, prompt], i) => (
+          <div
+            css={{
+              marginBottom: 8,
+              height: heightsByPromptID[id],
+              zIndex: 100 - i, // i.e. in reverse order, so that lower-y items float above higher-y items
+              position: "relative",
+            }}
+            key={id}
+          >
+            <PromptBox
+              prompt={prompt}
+              context={PromptContext.List}
+              savePrompt={() => {
+                setHeightsByPromptID({}); // Hover doesn't change size anymore.
+                dispatch(savePrompt(id));
+              }}
+              updatePromptFront={(newPrompt) =>
+                dispatch(updatePromptFront([id, newPrompt]))
+              }
+              updatePromptBack={(newPrompt) =>
+                dispatch(updatePromptBack([id, newPrompt]))
+              }
+              onMouseEnter={(event) => {
+                if (prompt.isSaved) return;
+                setHeightsByPromptID((heights) => {
+                  // Hack: we just use the first height we see, since if the user moves rapidly back and forth off and on a prompt, it could be animating in this moment. This means that we'll have the wrong height here if the user hovers a prompt list prompt, then saves and edits it *elsewhere* as a floating prompt, then *removes* it, then returns here and hovers it again. I don't think I care about that edge case.
+                  if (heights[id]) return heights;
+                  return {
+                    ...heights,
+                    [id]: event.currentTarget.getBoundingClientRect().height,
+                  };
+                });
+              }}
+            />
+          </div>
+        ))}
+      </div>
+    );
+  };
 
   return (
     <div
@@ -91,8 +120,8 @@ export function PromptList({
       }}
       ref={setListElement}
     >
-      <div style={{ display: "flex", marginBottom: 4 }}>
-        <div style={{ flexGrow: 0 }}>
+      <div css={{ display: "flex", marginBottom: 4 }}>
+        <div css={{ flexGrow: 0 }}>
           <Button
             onClick={() => {
               for (const promptID of promptIDs) {
@@ -105,7 +134,7 @@ export function PromptList({
             Save All to Orbit
           </Button>
         </div>
-        <div style={{ flexGrow: 0 }}>
+        <div css={{ flexGrow: 0 }}>
           <Button
             onClick={onStartReview}
             icon="rightArrow"
@@ -126,7 +155,7 @@ export function PromptList({
         <PromptListColumn
           prompts={promptEntries.filter((_, i) => i % 2 === 0)}
         />
-        <div style={{ width: 8 }}></div>
+        <div css={{ width: 8 }}></div>
         <PromptListColumn
           prompts={promptEntries.filter((_, i) => i % 2 === 1)}
         />

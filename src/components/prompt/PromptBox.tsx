@@ -37,7 +37,7 @@ export interface PromptProps {
   savePrompt: () => any;
   updatePromptFront: (newPrompt: string) => any;
   updatePromptBack: (newPrompt: string) => any;
-  onMouseEnter?: () => any;
+  onMouseEnter?: (event: React.MouseEvent) => any;
   onMouseLeave?: () => any;
   onEditStart?: () => any;
   onEditEnd?: () => any;
@@ -227,9 +227,9 @@ export default forwardRef(function (
       isSaved={isSaved}
       isEditing={isEditing}
       context={context}
-      onMouseEnter={() => {
+      onMouseEnter={(event) => {
         setIsHovered(true);
-        if (onMouseEnter) onMouseEnter();
+        if (onMouseEnter) onMouseEnter(event);
       }}
       onMouseLeave={() => {
         setIsHovered(false);
