@@ -8,10 +8,10 @@ const promptListSpecs: { [chapterName: string]: PromptListSpec } = {
   "1.1-chapter-02": {
     promptIDs: [
       "Why might over-specifying a design make it harder to estimate?",
-      `Why do under-specified projects naturally grow out of control?`,
-      'Visualize the level of fidelity used to define the "dot grid" solution to Basecamp\'s calendar project.',
       "Three key properties of shaped work introduced in this chapter? (one word each)",
+      `Why do under-specified projects naturally grow out of control?`,
       'What are the two "tracks" Basecamp team members work on?',
+      'Visualize the level of fidelity used to define the "dot grid" solution to Basecamp\'s calendar project.',
     ],
   },
   "1.2-chapter-03": {
