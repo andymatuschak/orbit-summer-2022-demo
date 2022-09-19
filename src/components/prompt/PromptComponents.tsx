@@ -83,6 +83,7 @@ export const PromptText = forwardRef(function (
 
   return (
     <div
+      placeholder={props.placeholder}
       ref={(r) => {
         setLocalRef(r);
         if (typeof ref === "function") {
