@@ -53,30 +53,49 @@ export function PromptList({ promptIDs, targetElementID }: PromptListProps) {
 
   const dispatch = useAppDispatch();
 
+  const PromptListColumn = ({ prompts }: { prompts: typeof promptEntries }) => (
+    <>
+      {prompts.map(([id, prompt]) => (
+        <div style={{ marginBottom: 8 }} key={id}>
+          <PromptBox
+            prompt={prompt}
+            context={PromptContext.List}
+            savePrompt={() => dispatch(savePrompt(id))}
+            updatePromptFront={(newPrompt) =>
+              dispatch(updatePromptFront([id, newPrompt]))
+            }
+            updatePromptBack={(newPrompt) =>
+              dispatch(updatePromptBack([id, newPrompt]))
+            }
+          />
+        </div>
+      ))}
+    </>
+  );
+
   return (
     <div
       css={{
         position: "absolute",
-        left: left - 12,
+        left: left - (12 + 3),
         top,
-        width,
+        width: width + (12 + 3) * 2,
         zIndex: zIndices.displayOverContent,
+        display: "flex",
+        flexDirection: "row",
       }}
       ref={setListElement}
     >
-      {promptEntries.map(([id, prompt]) => (
-        <PromptBox
-          prompt={prompt}
-          context={PromptContext.List}
-          savePrompt={() => dispatch(savePrompt(id))}
-          updatePromptFront={(newPrompt) =>
-            dispatch(updatePromptFront([id, newPrompt]))
-          }
-          updatePromptBack={(newPrompt) =>
-            dispatch(updatePromptBack([id, newPrompt]))
-          }
+      <div style={{ marginRight: 8 }}>
+        <PromptListColumn
+          prompts={promptEntries.filter((_, i) => i % 2 === 0)}
         />
-      ))}
+      </div>
+      <div>
+        <PromptListColumn
+          prompts={promptEntries.filter((_, i) => i % 2 === 1)}
+        />
+      </div>
     </div>
   );
 }

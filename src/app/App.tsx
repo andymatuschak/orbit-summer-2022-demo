@@ -8,7 +8,6 @@ import { OrbitMenu } from "../components/OrbitMenu";
 import { PromptLayoutManager } from "../components/prompt/PromptLayoutManager";
 import { PromptList, PromptListSpec } from "../components/prompt/PromptList";
 import { useAsyncLayoutDependentValue } from "../hooks/useLayoutDependentValue";
-import { usePageHeight } from "../hooks/usePageHeight";
 import { useReviewAreaIntegration } from "../hooks/useReviewAreaIntegration";
 import { useSelectionBounds } from "../hooks/useSelectionBounds";
 import { resolvePromptLocations } from "../util/resolvePromptLocations";
@@ -42,7 +41,6 @@ export default function App({ marginX, textRoot, promptLists }: AppProps) {
   );
 
   const dispatch = useAppDispatch();
-  const height = usePageHeight();
 
   const { selectionPosition, selectionRange, clearSelectionPosition } =
     useSelectionBounds();
@@ -61,7 +59,6 @@ export default function App({ marginX, textRoot, promptLists }: AppProps) {
           right: 0,
           bottom: 0,
           left: 0,
-          height,
         }}
       >
         <div
