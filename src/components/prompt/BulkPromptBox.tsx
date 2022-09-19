@@ -1,10 +1,17 @@
-import React, { useLayoutEffect, useState, useRef, useCallback, useEffect } from "react";
+import React, {
+  useLayoutEffect,
+  useState,
+  useRef,
+  useCallback,
+  useEffect,
+} from "react";
 import styled from "@emotion/styled";
 import { Prompt, PromptId } from "../../app/promptSlice";
 import Button from "../Button";
 import PromptBox from "./PromptBox";
 import { Icon, PromptContext } from "./PromptComponents";
 import { css } from "@emotion/react";
+import zIndices from "../common/zIndices";
 
 export interface BulkPromptBoxProps {
   // Prompts and ids must be same order
@@ -47,10 +54,10 @@ const PromptsContainer = styled.div<ContainerProps>`
   width: 332px;
   border-width: 3px 3px 3px 0px;
   box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.07), 0px 4px 15px rgba(0, 0, 0, 0.1);
-  opacity: ${props => props.isEnabled ? 1.0 : 0.0};
-  pointer-events: ${props => props.isEnabled ? 'auto' : 'none'};
+  opacity: ${(props) => (props.isEnabled ? 1.0 : 0.0)};
+  pointer-events: ${(props) => (props.isEnabled ? "auto" : "none")};
   position: relative;
-  top: ${props => props.offset}px;
+  top: ${(props) => props.offset}px;
 `;
 
 const ButtonText = styled.div`
@@ -85,7 +92,6 @@ export default function BulkPromptBox({
   const buttonRef = useRef<HTMLDivElement>(null);
   const promptsContainerRef = useRef<HTMLDivElement>(null);
 
-
   const isEnabled = useCallback(() => {
     return isBulkPromptHovered || isButtonHovered || isFocused;
   }, [isBulkPromptHovered, isButtonHovered, isFocused]);
@@ -97,17 +103,17 @@ export default function BulkPromptBox({
   }
 
   function determineLayout() {
-    if (buttonRef.current && promptsContainerRef.current){
+    if (buttonRef.current && promptsContainerRef.current) {
       const btnRect = buttonRef.current.getBoundingClientRect();
       const btnTop = btnRect.top;
       const btnBottom = btnRect.bottom;
       const topAvailableSpace = btnTop;
       const bottomAvailableSpace = window.innerHeight - btnBottom;
-      if (bottomAvailableSpace >= topAvailableSpace){
+      if (bottomAvailableSpace >= topAvailableSpace) {
         setLayoutOffset(0);
       } else {
         const promptsRect = promptsContainerRef.current.getBoundingClientRect();
-        setLayoutOffset((promptsRect.top-promptsRect.bottom) - btnRect.height);
+        setLayoutOffset(promptsRect.top - promptsRect.bottom - btnRect.height);
       }
     }
   }
@@ -127,7 +133,7 @@ export default function BulkPromptBox({
   }, [isFocused, isEnabled, saves, clearSaves]);
 
   useEffect(() => {
-    if (!isEnabled()){
+    if (!isEnabled()) {
       setIsOpen(false);
     }
   }, [isEnabled]);
@@ -135,7 +141,7 @@ export default function BulkPromptBox({
   return (
     <div
       css={css`
-          pointer-events: ${isOpen ? 'auto' : 'none'};
+        pointer-events: ${isOpen ? "auto" : "none"};
       `}
       onMouseEnter={() => {
         setIsBulkPromptHovered(true);
@@ -158,8 +164,8 @@ export default function BulkPromptBox({
           setIsButtonHovered(false);
           if (setHoverPrompt) setHoverPrompt(undefined);
         }}
-        css={{ 
-          display: "flex", 
+        css={{
+          display: "flex",
           flexDirection: "column",
           pointerEvents: "all",
         }}
@@ -180,51 +186,49 @@ export default function BulkPromptBox({
           />
         )}
       </div>
-        <PromptsContainer
-          onFocus={() => setIsFocused(true)}
-          onBlur={() => setIsFocused(false)}
-          isEnabled={isOpen}
-          offset={layoutOffset}
-          ref={promptsContainerRef}
-        >
-          {prompts.map((prompt, idx) => {
-            const id = ids[idx];
-            return (
-              <PromptBox
-                prompt={prompt}
-                key={id}
-                context={PromptContext.Bulk}
-                savePrompt={() => {
-                  if (addToSaves) addToSaves(id);
-                  savePrompt(id);
-                }}
-                updatePromptBack={(newPrompt: string) =>
-                  updatePromptBack(id, newPrompt)
+      <PromptsContainer
+        onFocus={() => setIsFocused(true)}
+        onBlur={() => setIsFocused(false)}
+        isEnabled={isOpen}
+        offset={layoutOffset}
+        ref={promptsContainerRef}
+      >
+        {prompts.map((prompt, idx) => {
+          const id = ids[idx];
+          return (
+            <PromptBox
+              prompt={prompt}
+              key={id}
+              context={PromptContext.Bulk}
+              savePrompt={() => {
+                if (addToSaves) addToSaves(id);
+                savePrompt(id);
+              }}
+              updatePromptBack={(newPrompt: string) =>
+                updatePromptBack(id, newPrompt)
+              }
+              updatePromptFront={(newPrompt: string) =>
+                updatePromptFront(id, newPrompt)
+              }
+              onMouseEnter={() => (setHoverPrompt ? setHoverPrompt(id) : null)}
+              onMouseLeave={() =>
+                setHoverPrompt ? setHoverPrompt(undefined) : null
+              }
+              onEditStart={() => (setEditPrompt ? setEditPrompt(id) : null)}
+              onEditEnd={() =>
+                setEditPrompt ? setEditPrompt(undefined) : null
+              }
+              ref={(el) => {
+                if (setTops && el) {
+                  const rect = el.getBoundingClientRect();
+                  const top = window.scrollY + rect.top;
+                  setTops(id, top);
                 }
-                updatePromptFront={(newPrompt: string) =>
-                  updatePromptFront(id, newPrompt)
-                }
-                onMouseEnter={() =>
-                  setHoverPrompt ? setHoverPrompt(id) : null
-                }
-                onMouseLeave={() =>
-                  setHoverPrompt ? setHoverPrompt(undefined) : null
-                }
-                onEditStart={() => (setEditPrompt ? setEditPrompt(id) : null)}
-                onEditEnd={() =>
-                  setEditPrompt ? setEditPrompt(undefined) : null
-                }
-                ref={(el) => {
-                  if (setTops && el) {
-                    const rect = el.getBoundingClientRect();
-                    const top = window.scrollY + rect.top;
-                    setTops(id, top);
-                  }
-                }}
-              />
-            );
-          })}
-        </PromptsContainer>
+              }}
+            />
+          );
+        })}
+      </PromptsContainer>
     </div>
   );
 }

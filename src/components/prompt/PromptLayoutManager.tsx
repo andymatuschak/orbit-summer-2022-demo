@@ -14,6 +14,7 @@ import styled from "@emotion/styled";
 import { AnimatePresence, motion } from "framer-motion";
 import { AnchorHighlight } from "./AnchorHighlights";
 import { PromptContext } from "./PromptComponents";
+import zIndices from "../common/zIndices";
 
 export interface PromptLayoutManagerProps {
   prompts: PromptsState;
@@ -188,94 +189,97 @@ export function PromptLayoutManager({
           );
         })}
       </ShadowContainer>
-        {!delayOneRender &&
-          promptRuns.map((ids) => {
-            if (ids.length === 1) {
-              const id = ids[0];
-              return (
-                <motion.div
-                  key={id}
-                  css={{
-                    position: "absolute",
-                    left: marginX,
-                    width: 332,
+      {!delayOneRender &&
+        promptRuns.map((ids) => {
+          if (ids.length === 1) {
+            const id = ids[0];
+            return (
+              <motion.div
+                key={id}
+                css={{
+                  position: "absolute",
+                  left: marginX,
+                  width: 332,
+                  zIndex: zIndices.displayOverContent,
+                }}
+                animate={{
+                  top: promptLocations[id]?.top + (promptOffset[id] ?? 0),
+                }}
+                initial={{
+                  top:
+                    bulkPromptLocations.current[id] !== undefined
+                      ? bulkPromptLocations.current[id]
+                      : promptLocations[id]?.top + (promptOffset[id] ?? 0),
+                }}
+                transition={TRANSITION}
+              >
+                <PromptBox
+                  prompt={prompts[id]}
+                  isNew={id === newPromptId}
+                  context={PromptContext.Floating}
+                  savePrompt={() => dispatch(savePrompt(id))}
+                  updatePromptFront={(newPrompt) =>
+                    dispatch(updatePromptFront([id, newPrompt]))
+                  }
+                  updatePromptBack={(newPrompt) =>
+                    dispatch(updatePromptBack([id, newPrompt]))
+                  }
+                  clearNew={clearNewPrompt}
+                  onMouseEnter={() => setHoverPrompt(id)}
+                  onMouseLeave={() => setHoverPrompt(undefined)}
+                  onEditStart={() => setEditPrompt(id)}
+                  onEditEnd={() => setEditPrompt(undefined)}
+                />
+              </motion.div>
+            );
+          } else {
+            return (
+              <motion.div
+                key={ids.join()}
+                css={{
+                  position: "absolute",
+                  left: marginX,
+                  pointerEvents: "none",
+                  // Pop-up active bulk
+                  zIndex:
+                    ids.indexOf(currHoverPrompt ?? "") !== -1 ||
+                    ids.indexOf(currEditPrompt ?? "") !== -1
+                      ? zIndices.displayOverContent + 1
+                      : zIndices.displayOverContent,
+                }}
+                animate={{
+                  top:
+                    promptLocations[ids[0]]?.top + (promptOffset[ids[0]] ?? 0),
+                }}
+                initial={{
+                  top:
+                    promptLocations[ids[0]]?.top + (promptOffset[ids[0]] ?? 0),
+                }}
+                transition={TRANSITION}
+              >
+                <BulkPromptBox
+                  prompts={ids.map((id) => prompts[id])}
+                  ids={ids}
+                  savePrompt={(id) => dispatch(savePrompt(id))}
+                  addToSaves={(id) => setBulkSaves(new Set(bulkSaves.add(id)))}
+                  saves={bulkSaves}
+                  clearSaves={() => setBulkSaves(new Set())}
+                  updatePromptFront={(id, newPrompt) =>
+                    dispatch(updatePromptFront([id, newPrompt]))
+                  }
+                  updatePromptBack={(id, newPrompt) =>
+                    dispatch(updatePromptBack([id, newPrompt]))
+                  }
+                  setHoverPrompt={(id) => setHoverPrompt(id)}
+                  setEditPrompt={(id) => setEditPrompt(id)}
+                  setTops={(id, top) => {
+                    bulkPromptLocations.current[id] = top;
                   }}
-                  animate={{
-                    top: promptLocations[id]?.top + (promptOffset[id] ?? 0),
-                  }}
-                  initial={{
-                    top:
-                      bulkPromptLocations.current[id] !== undefined
-                        ? bulkPromptLocations.current[id]
-                        : promptLocations[id]?.top + (promptOffset[id] ?? 0),
-                  }}
-                  transition={TRANSITION}
-                >
-                  <PromptBox
-                    prompt={prompts[id]}
-                    isNew={id === newPromptId}
-                    context={PromptContext.Floating}
-                    savePrompt={() => dispatch(savePrompt(id))}
-                    updatePromptFront={(newPrompt) =>
-                      dispatch(updatePromptFront([id, newPrompt]))
-                    }
-                    updatePromptBack={(newPrompt) =>
-                      dispatch(updatePromptBack([id, newPrompt]))
-                    }
-                    clearNew={clearNewPrompt}
-                    onMouseEnter={() => setHoverPrompt(id)}
-                    onMouseLeave={() => setHoverPrompt(undefined)}
-                    onEditStart={() => setEditPrompt(id)}
-                    onEditEnd={() => setEditPrompt(undefined)}
-                  />
-                </motion.div>
-              );
-            } else {
-              return (
-                <motion.div
-                  key={ids.join()}
-                  css={{
-                    position: "absolute",
-                    left: marginX,
-                    pointerEvents: "none",
-                  }}
-                  animate={{
-                    top:
-                      promptLocations[ids[0]]?.top +
-                      (promptOffset[ids[0]] ?? 0),
-                  }}
-                  initial={{
-                    top:
-                      promptLocations[ids[0]]?.top +
-                      (promptOffset[ids[0]] ?? 0),
-                  }}
-                  transition={TRANSITION}
-                >
-                  <BulkPromptBox
-                    prompts={ids.map((id) => prompts[id])}
-                    ids={ids}
-                    savePrompt={(id) => dispatch(savePrompt(id))}
-                    addToSaves={(id) =>
-                      setBulkSaves(new Set(bulkSaves.add(id)))
-                    }
-                    saves={bulkSaves}
-                    clearSaves={() => setBulkSaves(new Set())}
-                    updatePromptFront={(id, newPrompt) =>
-                      dispatch(updatePromptFront([id, newPrompt]))
-                    }
-                    updatePromptBack={(id, newPrompt) =>
-                      dispatch(updatePromptBack([id, newPrompt]))
-                    }
-                    setHoverPrompt={(id) => setHoverPrompt(id)}
-                    setEditPrompt={(id) => setEditPrompt(id)}
-                    setTops={(id, top) => {
-                      bulkPromptLocations.current[id] = top;
-                    }}
-                  />
-                </motion.div>
-              );
-            }
-          })}
+                />
+              </motion.div>
+            );
+          }
+        })}
       <AnchorHighlight
         prompts={prompts}
         promptLocations={promptLocations}
