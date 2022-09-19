@@ -20,6 +20,9 @@ body {
   --hoverLayer: rgba(92, 56, 0, 0.05);
   --pressedLayer: rgba(92, 56, 0, 0.14);
 
+  --selection: #F9EBD9;
+  --selectionHover: #D6090926;
+
   --editSelection: #76a7e8;
 
   --fadeTransition: opacity 0.1s linear;
