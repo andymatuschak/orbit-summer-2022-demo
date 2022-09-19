@@ -1,6 +1,6 @@
+import React, { useLayoutEffect, useState, useRef, useCallback } from "react";
 import styled from "@emotion/styled";
-import React, { useEffect, useState } from "react";
-import { Prompt } from "../../app/promptSlice";
+import { Prompt, PromptId } from "../../app/promptSlice";
 import Button from "../Button";
 import PromptBox from "./PromptBox";
 import { Icon, PromptContext } from "./PromptComponents";
@@ -8,15 +8,17 @@ import { Icon, PromptContext } from "./PromptComponents";
 export interface BulkPromptBoxProps {
   // Prompts and ids must be same order
   prompts: Prompt[];
-  ids: string[];
-  savePrompt: (id: string) => any;
-  updatePromptFront: (id: string, newPrompt: string) => any;
-  updatePromptBack: (id: string, newPrompt: string) => any;
+  ids: PromptId[];
+  savePrompt: (id: PromptId) => any;
+  updatePromptFront: (id: PromptId, newPrompt: string) => any;
+  updatePromptBack: (id: PromptId, newPrompt: string) => any;
   // A parent can provide a mechanism to keep track of all items saved while the bulk prompt hovers, when the hover exits, the saves are cleared
-  addToSaves?: (id: string) => any;
+  addToSaves?: (id: PromptId) => any;
   clearSaves?: () => any;
-  setHoverPrompt?: (id: string | undefined) => any;
-  setEditPrompt?: (id: string | undefined) => any;
+  saves?: Set<PromptId>;
+  setHoverPrompt?: (id: PromptId | undefined) => any;
+  setEditPrompt?: (id: PromptId | undefined) => any;
+  setTops?: (id: PromptId, top: number) => any;
 }
 
 const ButtonContainer = styled.div`
@@ -55,21 +57,23 @@ export default function BulkPromptBox({
   ids,
   savePrompt,
   addToSaves,
+  saves,
   clearSaves,
   updatePromptBack,
   updatePromptFront,
   setHoverPrompt,
   setEditPrompt,
+  setTops,
 }: BulkPromptBoxProps) {
   const [isButtonHovered, setIsButtonHovered] = useState<boolean>(false);
   const [isBulkPromptHovered, setIsBulkPromptHovered] =
     useState<boolean>(false);
   const [isFocused, setIsFocused] = useState<boolean>(false);
-  const [localSaveSet, setLocalSaveSet] = useState<Set<string>>(new Set());
+  const prevIsFocused = useRef<boolean>(false);
 
-  function isEnabled() {
+  const isEnabled = useCallback(() => {
     return isBulkPromptHovered || isButtonHovered || isFocused;
-  }
+  }, [isBulkPromptHovered, isButtonHovered, isFocused]);
 
   function saveAll() {
     ids.forEach((id) => {
@@ -77,28 +81,32 @@ export default function BulkPromptBox({
     });
   }
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     if (
-      !isBulkPromptHovered &&
-      !isButtonHovered &&
+      prevIsFocused.current &&
       !isFocused &&
-      localSaveSet.size > 0 &&
+      !isEnabled() &&
+      saves &&
+      saves.size > 0 &&
       clearSaves
     ) {
       clearSaves();
-      setLocalSaveSet(new Set());
     }
-  }, [
-    isBulkPromptHovered,
-    isButtonHovered,
-    isFocused,
-    localSaveSet,
-    clearSaves,
-    setLocalSaveSet,
-  ]);
+    prevIsFocused.current = isFocused;
+  }, [isFocused, isEnabled, saves, clearSaves]);
 
   return (
-    <>
+    <div
+      onMouseEnter={() => {
+        setIsBulkPromptHovered(true);
+      }}
+      onMouseLeave={() => {
+        setIsBulkPromptHovered(false);
+        if (!isFocused && clearSaves) {
+          clearSaves();
+        }
+      }}
+    >
       <div
         onMouseEnter={() => {
           setIsButtonHovered(true);
@@ -114,21 +122,19 @@ export default function BulkPromptBox({
           <ButtonContainer>
             <Icon isHovered={false} isSaved={false} isEditing={false} />
             <ButtonText>{`${
-              prompts.length - localSaveSet.size
+              prompts.length - (saves?.size ?? 0)
             } prompts available`}</ButtonText>
           </ButtonContainer>
         ) : (
           <Button
             onClick={() => saveAll()}
-            children={`Save ${prompts.length - localSaveSet.size} prompts`}
+            children={`Save ${prompts.length - (saves?.size ?? 0)} prompts`}
             icon={"add"}
           />
         )}
       </div>
-      {isEnabled() && (
+      {(isEnabled() || (saves && saves.size > 0)) && (
         <PromptsContainer
-          onMouseEnter={() => setIsBulkPromptHovered(true)}
-          onMouseLeave={() => setIsBulkPromptHovered(false)}
           onFocus={() => setIsFocused(true)}
           onBlur={() => setIsFocused(false)}
         >
@@ -141,7 +147,6 @@ export default function BulkPromptBox({
                 context={PromptContext.Bulk}
                 savePrompt={() => {
                   if (addToSaves) addToSaves(id);
-                  setLocalSaveSet(new Set(localSaveSet.add(id)));
                   savePrompt(id);
                 }}
                 updatePromptBack={(newPrompt: string) =>
@@ -160,11 +165,18 @@ export default function BulkPromptBox({
                 onEditEnd={() =>
                   setEditPrompt ? setEditPrompt(undefined) : null
                 }
+                ref={(el) => {
+                  if (setTops && el) {
+                    const rect = el.getBoundingClientRect();
+                    const top = window.scrollY + rect.top;
+                    setTops(id, top);
+                  }
+                }}
               />
             );
           })}
         </PromptsContainer>
       )}
-    </>
+    </div>
   );
 }
