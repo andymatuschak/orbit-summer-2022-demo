@@ -54,7 +54,7 @@ export function PromptList({ promptIDs, targetElementID }: PromptListProps) {
   const dispatch = useAppDispatch();
 
   const PromptListColumn = ({ prompts }: { prompts: typeof promptEntries }) => (
-    <>
+    <div style={{ flexBasis: "50%" }}>
       {prompts.map(([id, prompt]) => (
         <div style={{ marginBottom: 8 }} key={id}>
           <PromptBox
@@ -70,7 +70,7 @@ export function PromptList({ promptIDs, targetElementID }: PromptListProps) {
           />
         </div>
       ))}
-    </>
+    </div>
   );
 
   return (
@@ -86,16 +86,9 @@ export function PromptList({ promptIDs, targetElementID }: PromptListProps) {
       }}
       ref={setListElement}
     >
-      <div style={{ marginRight: 8 }}>
-        <PromptListColumn
-          prompts={promptEntries.filter((_, i) => i % 2 === 0)}
-        />
-      </div>
-      <div>
-        <PromptListColumn
-          prompts={promptEntries.filter((_, i) => i % 2 === 1)}
-        />
-      </div>
+      <PromptListColumn prompts={promptEntries.filter((_, i) => i % 2 === 0)} />
+      <div style={{ width: 8 }}></div>
+      <PromptListColumn prompts={promptEntries.filter((_, i) => i % 2 === 1)} />
     </div>
   );
 }

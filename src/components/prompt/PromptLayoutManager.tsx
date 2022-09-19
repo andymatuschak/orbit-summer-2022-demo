@@ -215,6 +215,7 @@ export function PromptLayoutManager({
               key={id}
               css={{
                 position: "absolute",
+                width: 332,
                 left: marginX,
               }}
               animate={{
