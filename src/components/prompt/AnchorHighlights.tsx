@@ -1,121 +1,147 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { PromptsState } from "../../app/promptSlice";
 import { PromptLocation } from "../../util/resolvePromptLocations";
 import { highlightRange } from "./highlightRange";
-
-
-export type HighlightFunc = (id: string, enabled: boolean) => any;
 
 const SAVED_COLOR = "#F9EBD9";
 const TRANSPARENT = "#FFFFFF00";
 const HOVER_COLOR = "#D6090926";
 
 export interface AnchorHighlightProps {
-    prompts: PromptsState;
-    promptLocations: { [id: string]: PromptLocation };
-    setHighlightFunc?: (highlightFunc: HighlightFunc) => any;
+  prompts: PromptsState;
+  promptLocations: { [id: string]: PromptLocation };
+  hoverPrompt: string | undefined;
+  editPrompt: string | undefined;
 }
 
 function areRangesSame(rangeA: Range, rangeB: Range): boolean {
-  return rangeA.compareBoundaryPoints(Range.START_TO_START, rangeB) === 0 && rangeA.compareBoundaryPoints(Range.END_TO_END, rangeB) === 0;
+  return (
+    rangeA.compareBoundaryPoints(Range.START_TO_START, rangeB) === 0 &&
+    rangeA.compareBoundaryPoints(Range.END_TO_END, rangeB) === 0
+  );
 }
 
-export function AnchorHighlight({prompts, promptLocations, setHighlightFunc}: AnchorHighlightProps){
-    // If two prompts share a functional range, then one prompt is the "drawn" prompt and the other does not need to be redrawn
-    // A prompt can have itself as the drawn promptId
-    const [promptIdToDrawnPromptId, setPromptIdToDrawnPromptId] = useState<Map<string, string>>(new Map<string, string>());
-    const [drawnPromptIdToIds, setDrawnPromptIdToIds] = useState<Map<string, string[]>>(new Map<string, string[]>());
-    const [existingPromptIds, setExistingPromptIds] = useState<Set<string>>(new Set<string>());
+export function AnchorHighlight({
+  prompts,
+  promptLocations,
+  hoverPrompt,
+  editPrompt,
+}: AnchorHighlightProps) {
+  // If two prompts share a functional range, then one prompt is the "drawn" prompt and the other does not need to be redrawn
+  // A prompt can have itself as the drawn promptId
+  const [promptIdToDrawnPromptId, setPromptIdToDrawnPromptId] = useState<
+    Map<string, string>
+  >(new Map<string, string>());
+  const [drawnPromptIdToIds, setDrawnPromptIdToIds] = useState<
+    Map<string, string[]>
+  >(new Map<string, string[]>());
+  const [existingPromptIds, setExistingPromptIds] = useState<Set<string>>(
+    new Set<string>(),
+  );
 
-    useEffect(() => {
-      function highlight(id: string, enabled: boolean){
-        const drawnId = promptIdToDrawnPromptId.get(id);
-        var isSaved = prompts[id].isSaved;
-        if (drawnId){
-          const els = document.getElementsByClassName('orbitanchor-' + drawnId);
-          for (const el of els){
-            var color = TRANSPARENT;
-            if (enabled) color = HOVER_COLOR;
-            if (!enabled && isSaved) color = SAVED_COLOR;
-            el.setAttribute('style', `background-color:${color};`);
-          }
-
-          // We may need to return to saved state if we are highlighting something that is shared
-          if (!enabled) {
-            drawnPromptIdToIds.get(drawnId)?.forEach((candidateId) => {
-              if (prompts[drawnId].isSaved || prompts[candidateId].isSaved){
-                for (const el of els){
-                  el.setAttribute('style', `background-color:${SAVED_COLOR};`);
-                }
-              }
-            })
-          } 
+  useEffect(() => {
+    // Set all prompts to state based on saved
+    Object.entries(prompts).forEach(([id, prompt]) => {
+      const drawnId = promptIdToDrawnPromptId.get(id);
+      if (drawnId) {
+        const els = document.getElementsByClassName("orbitanchor-" + drawnId);
+        for (const el of els) {
+          var color = prompt.isSaved ? SAVED_COLOR : TRANSPARENT;
+          el.setAttribute("style", `background-color:${color};`);
         }
-      }
 
-      if(setHighlightFunc) setHighlightFunc(() => highlight);
-    }, [prompts, promptIdToDrawnPromptId, drawnPromptIdToIds]);
-
-    useEffect(() => {
-        const newPromptDraws: Map<string, string> = new Map<string, string>();
-        const newInversePromptDraws: Map<string, string[]> = new Map<string, string[]>();
-
-        // Process ranges, simple brute-force uniqueness check
-        const locationsArr = Object.entries(promptLocations);
-        locationsArr.forEach(([idA, locationA]) => {
-          const candidateRange = locationA.range;
-          // Check if this range may have already been inserted. I.e does any existing prompt have the same range
-          var rangeAExists = false;
-          var idB = null;
-          var existingRange: Range | undefined;
-          for ([idB] of newPromptDraws) {
-            existingRange = promptLocations[idB].range;
-            if (existingRange && areRangesSame(candidateRange, existingRange)){
-              rangeAExists = true;
-              break;
+        // Check if perhaps drawn has a dep that is saved
+        drawnPromptIdToIds.get(drawnId)?.forEach((candidateId) => {
+          if (prompts[drawnId].isSaved || prompts[candidateId].isSaved) {
+            for (const el of els) {
+              el.setAttribute("style", `background-color:${SAVED_COLOR};`);
             }
           }
+        });
+      }
+    });
 
-          if (!rangeAExists){
-            newPromptDraws.set(idA, idA);
-            newInversePromptDraws.set(idA, []);
-          } else {
-            newPromptDraws.set(idA, idB!);
-            newInversePromptDraws.get(idB!)!.push(idA);
-          }
-        })
+    // Apply hover if eligible
+    var targetId: string | undefined;
+    if (hoverPrompt && !prompts[hoverPrompt].isSaved) {
+      targetId = hoverPrompt;
+    }
+    if (editPrompt) {
+      targetId = editPrompt;
+    }
+    const drawnId = promptIdToDrawnPromptId.get(targetId ?? "");
+    if (drawnId) {
+      const els = document.getElementsByClassName("orbitanchor-" + drawnId);
+      for (const el of els) {
+        el.setAttribute("style", `background-color:${HOVER_COLOR};`);
+      }
+    }
+  }, [
+    hoverPrompt,
+    editPrompt,
+    prompts,
+    promptIdToDrawnPromptId,
+    drawnPromptIdToIds,
+  ]);
 
-        setPromptIdToDrawnPromptId(newPromptDraws);
-        setDrawnPromptIdToIds(newInversePromptDraws);
-    }, [promptLocations]);
+  useEffect(() => {
+    const newPromptDraws: Map<string, string> = new Map<string, string>();
+    const newInversePromptDraws: Map<string, string[]> = new Map<
+      string,
+      string[]
+    >();
 
-    useEffect(() => {
-      const newExistingPromptIds = new Set<string>(existingPromptIds);
-
-      var updated = false;
-      // draw all "drawn" prompt ids
-      for (const [idA, idB] of promptIdToDrawnPromptId){
-        // we haven't drawn this before
-        if (!newExistingPromptIds.has(idB)){
-          const copy = promptLocations[idB].range.cloneRange()
-          highlightRange(copy, 'mark', {class:'orbitanchor-'+idB, style: `background-color:${TRANSPARENT};`});
-          newExistingPromptIds.add(idB);
-          updated = true;
-        }
-
-        // handle saved states
-        if (prompts[idA].isSaved){
-          const els = document.getElementsByClassName('orbitanchor-' + idB);
-          for (const el of els){
-            el.setAttribute('style', `background-color:${SAVED_COLOR};`)
-          }
+    // Process ranges, simple brute-force uniqueness check
+    const locationsArr = Object.entries(promptLocations);
+    locationsArr.forEach(([idA, locationA]) => {
+      const candidateRange = locationA.range;
+      // Check if this range may have already been inserted. I.e does any existing prompt have the same range
+      var rangeAExists = false;
+      var idB = null;
+      var existingRange: Range | undefined;
+      for ([idB] of newPromptDraws) {
+        existingRange = promptLocations[idB].range;
+        if (existingRange && areRangesSame(candidateRange, existingRange)) {
+          rangeAExists = true;
+          break;
         }
       }
-      
-      if (updated) {
-        setExistingPromptIds(newExistingPromptIds);
-      }
-    }, [promptIdToDrawnPromptId, promptLocations, prompts, setHighlightFunc]);
 
-    return null;
+      if (!rangeAExists) {
+        newPromptDraws.set(idA, idA);
+        newInversePromptDraws.set(idA, []);
+      } else {
+        newPromptDraws.set(idA, idB!);
+        newInversePromptDraws.get(idB!)!.push(idA);
+      }
+    });
+
+    setPromptIdToDrawnPromptId(newPromptDraws);
+    setDrawnPromptIdToIds(newInversePromptDraws);
+  }, [promptLocations]);
+
+  useEffect(() => {
+    const newExistingPromptIds = new Set<string>(existingPromptIds);
+
+    var updated = false;
+    // draw all "drawn" prompt ids
+    for (const [, idB] of promptIdToDrawnPromptId) {
+      // we haven't drawn this before
+      if (!newExistingPromptIds.has(idB)) {
+        const copy = promptLocations[idB].range.cloneRange();
+        highlightRange(copy, "mark", {
+          class: "orbitanchor-" + idB,
+          style: `background-color:${TRANSPARENT};`,
+        });
+        newExistingPromptIds.add(idB);
+        updated = true;
+      }
+    }
+
+    if (updated) {
+      setExistingPromptIds(newExistingPromptIds);
+    }
+  }, [promptIdToDrawnPromptId, promptLocations, prompts, existingPromptIds]);
+
+  return null;
 }

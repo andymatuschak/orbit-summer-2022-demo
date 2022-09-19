@@ -1,6 +1,8 @@
 import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { readPromptsFromHypothesisJSON } from "../util/readPromptsFromHypothesisJSON";
 
+export type PromptId = string;
+
 export interface Prompt {
   content: {
     front: string;
@@ -51,14 +53,14 @@ export interface TextQuoteSelector {
 //---
 
 export interface PromptsState {
-  [id: string]: Prompt;
+  [id: PromptId]: Prompt;
 }
 
-export type IdAction = PayloadAction<string>;
-export type UpdatePromptText = PayloadAction<[id: string, promptText: string]>;
-export type CreateNewPrompt = PayloadAction<{ id: string; prompt: Prompt }>;
+export type IdAction = PayloadAction<PromptId>;
+export type UpdatePromptText = PayloadAction<[id: PromptId, promptText: string]>;
+export type CreateNewPrompt = PayloadAction<{ id: PromptId; prompt: Prompt }>;
 export type SyncPromptFromReview = PayloadAction<{
-  id: string;
+  id: PromptId;
   wasSkipped: boolean;
   newInterval: number;
 }>;

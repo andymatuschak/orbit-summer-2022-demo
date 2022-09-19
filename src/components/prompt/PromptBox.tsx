@@ -188,9 +188,9 @@ export default function PromptBox({
   useEffect(() => {
     if (isNew && promptFrontRef.current) {
       promptFrontRef.current.focus({ preventScroll: true });
-      if (onEditEnd) onEditEnd();
+      if (onEditStart) onEditStart();
     }
-  }, [isNew, promptFrontRef, onEditEnd]);
+  }, [isNew, promptFrontRef, onEditStart]);
 
   // Check if image
   useEffect(() => {

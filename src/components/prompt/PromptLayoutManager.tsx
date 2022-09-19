@@ -7,7 +7,6 @@ import BulkPromptBox from "./BulkPromptBox";
 import styled from "@emotion/styled";
 import { motion } from "framer-motion";
 import { AnchorHighlight } from "./AnchorHighlights";
-import { HighlightFunc } from "./AnchorHighlights";
 
 const BULK_BUTTON_HEIGHT = 43.0;
 
@@ -34,7 +33,7 @@ function compareDOMy(a: {id: string, loc: PromptAbsoluteLocation}, b: {id: strin
     else return a.id > b.id ? 1 : -1;
 }
 
-const MERGE_THRESHOLD_PIXELS = 0.0;
+// TODO: const MERGE_THRESHOLD_PIXELS = 0.0;
 const PROMPT_SPACING = 12.0;
 const PROMPT_SPACE_THRESHOLD = 4.0;
 const TRANSITION = {duration: 0.3, ease: "easeOut"};
@@ -46,7 +45,8 @@ export function PromptLayoutManager({prompts, promptLocations, marginX, newPromp
     const bulkPromptLocations = useRef<{ [id: string]: PromptLocation}>({});
     const promptMeasureRefs = useRef<{[id: string]: HTMLDivElement | null}>({});
     const [bulkSaves, setBulkSaves] = useState<Set<string>>(new Set());
-    const [highlightFunc, setHighlightFunc] = useState<HighlightFunc>();
+    const [currHoverPrompt, setHoverPrompt] = useState<string>();
+    const [currEditPrompt, setEditPrompt] = useState<string>();
 
     function clonePromptLocations(locs: { [id: string]: PromptLocation}){
         const clone: { [id: string]: PromptLocation } = {};
@@ -199,10 +199,10 @@ export function PromptLayoutManager({prompts, promptLocations, marginX, newPromp
                                 updatePromptFront={(newPrompt) => dispatch(updatePromptFront([id, newPrompt]))}
                                 updatePromptBack={(newPrompt) => dispatch(updatePromptBack([id, newPrompt]))}
                                 clearNew={clearNewPrompt}
-                                onMouseEnter={() => highlightFunc && !prompts[id].isSaved ? highlightFunc(id, true) : null}
-                                onMouseLeave={() =>  highlightFunc && !prompts[id].isSaved ? highlightFunc(id, false) : null}
-                                onEditStart={() => highlightFunc ? highlightFunc(id, true) : null}
-                                onEditEnd={() =>  highlightFunc ? highlightFunc(id, false) : null}
+                                onMouseEnter={() => setHoverPrompt(id)}
+                                onMouseLeave={() =>  setHoverPrompt(undefined)}
+                                onEditStart={() => setEditPrompt(id)}
+                                onEditEnd={() =>  setEditPrompt(undefined)}
                             />
                         </motion.div>
                     )
@@ -230,9 +230,10 @@ export function PromptLayoutManager({prompts, promptLocations, marginX, newPromp
                                 }
                                 addToSaves={(id) => setBulkSaves(new Set(bulkSaves.add(id)))}
                                 clearSaves={() => setBulkSaves(new Set())}
-                                highlightFunc={highlightFunc}
                                 updatePromptFront={(id, newPrompt) => dispatch(updatePromptFront([id, newPrompt]))}
                                 updatePromptBack={(id, newPrompt) => dispatch(updatePromptBack([id, newPrompt]))}
+                                setHoverPrompt={(id) => setHoverPrompt(id)}
+                                setEditPrompt={(id) => setEditPrompt(id)}
                             />
                         </motion.div>
                     )
@@ -242,7 +243,8 @@ export function PromptLayoutManager({prompts, promptLocations, marginX, newPromp
         <AnchorHighlight
           prompts={prompts}
           promptLocations={promptLocations}
-          setHighlightFunc={setHighlightFunc}
+          hoverPrompt={currHoverPrompt}
+          editPrompt={currEditPrompt}
         />
         </>
     )
