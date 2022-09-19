@@ -1,5 +1,11 @@
 import styled from "@emotion/styled";
-import React, { useEffect, useRef, useState } from "react";
+import React, {
+  ForwardedRef,
+  forwardRef,
+  useEffect,
+  useRef,
+  useState,
+} from "react";
 import { Prompt } from "../../app/promptSlice";
 import {
   ANIMATION_TIME_MSEC,
@@ -119,20 +125,23 @@ const Container = styled.div<
   transition: ${ANIMATION_TIME_MSEC / 1000}s ease-out;
 `;
 
-export default function PromptBox({
-  prompt,
-  isNew,
-  clearNew,
-  isBulk,
-  forceHover,
-  savePrompt,
-  updatePromptFront,
-  updatePromptBack,
-  onMouseEnter,
-  onMouseLeave,
-  onEditStart,
-  onEditEnd,
-}: PromptProps) {
+export default forwardRef(function (
+  {
+    prompt,
+    isNew,
+    clearNew,
+    isBulk,
+    forceHover,
+    savePrompt,
+    updatePromptFront,
+    updatePromptBack,
+    onMouseEnter,
+    onMouseLeave,
+    onEditStart,
+    onEditEnd,
+  }: PromptProps,
+  ref: ForwardedRef<HTMLDivElement>,
+) {
   const [isHovered, setIsHovered] = useState<boolean>(forceHover ?? false);
   const [isEditing, setIsEditing] = useState<boolean>(isNew ?? false);
   const hidePromptBackTimeout = useRef<number | undefined>();
@@ -205,13 +214,14 @@ export default function PromptBox({
       isBulk={isBulk ?? false}
       onMouseEnter={() => {
         setIsHovered(true);
-        if(onMouseEnter) onMouseEnter();
+        if (onMouseEnter) onMouseEnter();
       }}
       onMouseLeave={() => {
-        setIsHovered(false)
-        if(onMouseLeave) onMouseLeave();
+        setIsHovered(false);
+        if (onMouseLeave) onMouseLeave();
       }}
       onClick={() => savePrompt()}
+      ref={ref}
     >
       <Icon isHovered={isHovered} isSaved={isSaved} isEditing={isEditing} />
       <PromptContainer>
@@ -249,4 +259,4 @@ export default function PromptBox({
       </PromptContainer>
     </Container>
   );
-}
+});
