@@ -172,6 +172,7 @@ export function PromptLayoutManager({
                 position: "absolute",
                 left: marginX,
                 top: promptLocations[id]?.top,
+                width: 332,
               }}
               ref={(el) => (promptMeasureRefs.current[id] = el)}
             >
@@ -187,7 +188,6 @@ export function PromptLayoutManager({
           );
         })}
       </ShadowContainer>
-      <AnimatePresence>
         {!delayOneRender &&
           promptRuns.map((ids) => {
             if (ids.length === 1) {
@@ -198,17 +198,16 @@ export function PromptLayoutManager({
                   css={{
                     position: "absolute",
                     left: marginX,
+                    width: 332,
                   }}
                   animate={{
                     top: promptLocations[id]?.top + (promptOffset[id] ?? 0),
-                    opacity: 1.0,
                   }}
                   initial={{
                     top:
                       bulkPromptLocations.current[id] !== undefined
                         ? bulkPromptLocations.current[id]
                         : promptLocations[id]?.top + (promptOffset[id] ?? 0),
-                    opacity: 0.0,
                   }}
                   transition={TRANSITION}
                 >
@@ -243,16 +242,11 @@ export function PromptLayoutManager({
                     top:
                       promptLocations[ids[0]]?.top +
                       (promptOffset[ids[0]] ?? 0),
-                    opacity: 1.0,
                   }}
                   initial={{
                     top:
                       promptLocations[ids[0]]?.top +
                       (promptOffset[ids[0]] ?? 0),
-                    opacity: 0.0,
-                  }}
-                  exit={{
-                    opacity: 0,
                   }}
                   transition={TRANSITION}
                 >
@@ -281,7 +275,6 @@ export function PromptLayoutManager({
               );
             }
           })}
-      </AnimatePresence>
       <AnchorHighlight
         prompts={prompts}
         promptLocations={promptLocations}
