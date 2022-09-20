@@ -37,7 +37,7 @@ type PromptAbsoluteLocation = { top: number; bottom: number };
 type PromptBoundingBoxes = { [id: PromptId]: PromptAbsoluteLocation };
 
 const ShadowContainer = styled.div`
-  opacity: 0;
+  opacity: 0.0;
   pointer-events: none;
 `;
 
@@ -66,7 +66,7 @@ export function PromptLayoutManager({
 }: PromptLayoutManagerProps) {
   const dispatch = useAppDispatch();
   const promptVisibility = useAppSelector((state) => state.promptVisibility);
-  const visiblePromptIDs = useMemo(() => {
+  const visiblePromptIDs: PromptId[] = useMemo(() => {
     switch (promptVisibility) {
       case PromptVisibilitySetting.All:
         return Object.keys(prompts);
@@ -124,10 +124,11 @@ export function PromptLayoutManager({
         visiblePromptIDs.length &&
       Object.keys(promptLocations).length >= visiblePromptIDs.length
     ) {
-      // Collect bounding boxes
+      // Collect bounding boxes of visiblePrompts
       const boundingBoxes: PromptBoundingBoxes = {};
-      Object.entries(promptMeasureRefs.current).forEach(([id, el]) => {
-        if (el) {
+      visiblePromptIDs.map((id) => {
+        const el = promptMeasureRefs.current[id];
+        if (el){
           const rect = el.getBoundingClientRect();
           const top = rect.top + window.scrollY;
           const bottom = rect.bottom + window.scrollY;
@@ -146,9 +147,10 @@ export function PromptLayoutManager({
       // TODO: compute width and use adjusted position instead
       for (var i = 0; i < sortedIds.length - 1; i++) {
         const runStartId = runs[currRunStartIdx][0];
+        const runEndId = runs[currRunStartIdx][runs[currRunStartIdx].length - 1];
         const nextId = sortedIds[i + 1];
         // The bottom of the bounding box of the current run
-        const currBottom = boundingBoxes[runStartId].bottom;
+        const currBottom = boundingBoxes[runEndId].bottom;
         // The top of the bounding box being evaluated for merge
         const nextTop = boundingBoxes[nextId].top;
         if (prompts[nextId].isSaved && !bulkSaves.has(nextId)) {
@@ -202,7 +204,7 @@ export function PromptLayoutManager({
     <>
       {/* This is not pretty, forgive me (prototype?) - ShadowContainer is a copy of the prompts used for measurement purposes, we don't need this but it makes some data flow easier for now */}
       <ShadowContainer>
-        {visiblePromptIDs.map((id) => {
+        {Object.entries(prompts).map(([id]) => {
           return (
             <div
               key={id}
