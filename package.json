@@ -13,6 +13,7 @@
     "file-saver": "^2.0.5",
     "framer-motion": "^7.3.5",
     "katex": "^0.16.2",
+    "knuth-shuffle-seeded": "^1.0.6",
     "node-fetch": "^3.2.6",
     "react": "^18.1.0",
     "react-app-rewire-multiple-entry": "^2.2.2",
