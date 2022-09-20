@@ -1,4 +1,10 @@
-import React, { useEffect, useLayoutEffect, useRef, useState } from "react";
+import React, {
+  useCallback,
+  useEffect,
+  useLayoutEffect,
+  useRef,
+  useState,
+} from "react";
 import {
   PromptId,
   PromptsState,
@@ -15,6 +21,7 @@ import { AnimatePresence, motion } from "framer-motion";
 import { AnchorHighlight } from "./AnchorHighlights";
 import { PromptContext } from "./PromptComponents";
 import zIndices from "../common/zIndices";
+import { useLayoutDependentValue } from "../../hooks/useLayoutDependentValue";
 
 export interface PromptLayoutManagerProps {
   prompts: PromptsState;
@@ -46,6 +53,7 @@ function compareDOMy(
 const PROMPT_SPACING = 12.0;
 const PROMPT_SPACE_THRESHOLD = 4.0;
 const TRANSITION = { duration: 0.3, ease: "easeOut" };
+const COLLAPSED_THRESHOLD = 20;
 
 export function PromptLayoutManager({
   prompts,
@@ -70,6 +78,19 @@ export function PromptLayoutManager({
   const [currEditPrompt, setEditPrompt] = useState<PromptId>();
   // We have to let the shadow container mount and render for sizing
   const [delayOneRender, setDelayOneRender] = useState<boolean>(true);
+  const isCollapsed = useLayoutDependentValue<boolean>(
+    useCallback(() => {
+      const refs = Object.values(promptMeasureRefs.current);
+      const rect = refs[0]?.getBoundingClientRect();
+      if (rect) {
+        const right = rect.right;
+        if (right > window.innerWidth - COLLAPSED_THRESHOLD) {
+          return true;
+        }
+      }
+      return false;
+    }, [promptMeasureRefs]),
+  );
 
   function clonePromptLocations(locs: { [id: PromptId]: PromptLocation }) {
     const clone: { [id: PromptId]: PromptLocation } = {};
@@ -216,7 +237,11 @@ export function PromptLayoutManager({
                 <PromptBox
                   prompt={prompts[id]}
                   isNew={id === newPromptId}
-                  context={PromptContext.Floating}
+                  context={
+                    isCollapsed
+                      ? PromptContext.Collapsed
+                      : PromptContext.Floating
+                  }
                   savePrompt={() => dispatch(savePrompt(id))}
                   updatePromptFront={(newPrompt) =>
                     dispatch(updatePromptFront([id, newPrompt]))
