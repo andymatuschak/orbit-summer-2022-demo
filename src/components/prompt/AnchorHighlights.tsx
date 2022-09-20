@@ -22,6 +22,10 @@ function areRangesSame(rangeA: Range, rangeB: Range): boolean {
   );
 }
 
+function classNameForPromptID(id: string): string {
+  return `orbitanchor-${id.replace(/ /g, "-")}`;
+}
+
 export function AnchorHighlight({
   prompts,
   promptLocations,
@@ -46,7 +50,9 @@ export function AnchorHighlight({
     Object.entries(prompts).forEach(([id, prompt]) => {
       const drawnId = promptIdToDrawnPromptId.get(id);
       if (drawnId) {
-        const els = document.getElementsByClassName("orbitanchor-" + drawnId);
+        const els = document.getElementsByClassName(
+          classNameForPromptID(drawnId),
+        );
         for (const el of els) {
           var color =
             prompt.isSaved && visiblePromptIDs.has(id)
@@ -80,7 +86,9 @@ export function AnchorHighlight({
     }
     const drawnId = promptIdToDrawnPromptId.get(targetId ?? "");
     if (drawnId) {
-      const els = document.getElementsByClassName("orbitanchor-" + drawnId);
+      const els = document.getElementsByClassName(
+        classNameForPromptID(drawnId),
+      );
       for (const el of els) {
         el.setAttribute("style", `background-color:${HOVER_COLOR};`);
       }
@@ -140,7 +148,7 @@ export function AnchorHighlight({
       if (!newExistingPromptIds.has(idB)) {
         const copy = promptLocations[idB].range.cloneRange();
         highlightRange(copy, "span", {
-          class: "orbitanchor-" + idB,
+          class: classNameForPromptID(idB),
           style: `background-color:${TRANSPARENT};`,
         });
         newExistingPromptIds.add(idB);
