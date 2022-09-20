@@ -249,7 +249,7 @@ export default function BulkPromptBox({
               {ids.map((id, idx) => (
                 <div
                   css={css`
-                    margin-right: ${idx === ids.length - 1 ? '0px': '-10px'};
+                    margin-right: ${idx === ids.length - 1 ? '0px': '-12px'};
                   `}
                   key={id}
                 >
