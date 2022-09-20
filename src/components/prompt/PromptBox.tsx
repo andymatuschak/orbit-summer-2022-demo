@@ -57,6 +57,15 @@ const PromptContainer = styled.div`
   gap: 8px;
 `;
 
+const CollapsedIconContainer = styled.div<SavedProps & HoverProps>`
+  margin-left: auto;
+  pointer-events: all;
+  min-width: 32px;
+  height: 32px;
+  background-color: ${(props) => props.isSaved && !props.isHovered ? 'var(--bgSecondary)' : null};
+  border-radius: 50%;
+`;
+
 const Container = styled.div<
   HoverProps & SavedProps & EditingProps & ContextProps
 >`
@@ -306,14 +315,24 @@ export default forwardRef(function (
         </PromptContainer>
       )}
       {context === PromptContext.Collapsed && (
-        <div
-          css={css`
-            margin-left: auto;
-            pointer-events: all;
-          `}
+        <CollapsedIconContainer
+          isSaved={isSaved}
+          isHovered={isHovered}
         >
-          <Icon isHovered={isHovered} isSaved={isSaved} isEditing={isEditing} />
-        </div>
+          <div
+            css={css`
+              position: relative;
+              top: 5px;
+              left: 5px;
+            `}
+          >
+            <Icon
+              isHovered={isHovered}
+              isSaved={isSaved}
+              isEditing={isEditing}
+            />
+          </div>
+        </CollapsedIconContainer>
       )}
     </Container>
   );
