@@ -63,7 +63,8 @@ const Container = styled.div<
   display: flex;
   flex-direction: row;
   align-items: flex-start;
-  padding: 8px 8px 10px 9px;
+  padding: 8px 8px 10px
+    ${({ context }) => (context === PromptContext.Collapsed ? "13px" : "9px")};
   gap: 8px;
   cursor: ${(props) => (!props.isSaved ? "pointer" : "auto")};
   position: relative;
