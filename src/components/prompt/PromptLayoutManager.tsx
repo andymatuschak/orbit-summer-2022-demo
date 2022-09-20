@@ -126,7 +126,7 @@ export function PromptLayoutManager({
     ) {
       // Collect bounding boxes of visiblePrompts
       const boundingBoxes: PromptBoundingBoxes = {};
-      visiblePromptIDs.map((id) => {
+      visiblePromptIDs.forEach((id) => {
         const el = promptMeasureRefs.current[id];
         if (el){
           const rect = el.getBoundingClientRect();

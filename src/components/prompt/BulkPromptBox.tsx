@@ -253,7 +253,7 @@ export default function BulkPromptBox({
                   `}
                   key={id}
                 >
-                  <Icon isHovered={false} isSaved={false} isEditing={false} />
+                  <Icon isHovered={false} isSaved={false} isEditing={false} isDue={false}/>
                 </div>
               ))}
               <ButtonText>{`${
