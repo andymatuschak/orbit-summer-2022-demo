@@ -1,4 +1,4 @@
-import approxSearch from 'approx-string-match';
+import approxSearch from "approx-string-match";
 
 /**
  * @typedef {import('approx-string-match').Match} StringMatch
@@ -64,6 +64,11 @@ function textMatchScore(text, str) {
 
   const matches = search(text, str, str.length);
 
+  if (matches.length === 0) {
+    // HACK HACK HACK
+    return 0;
+  }
+
   // prettier-ignore
   return 1 - (matches[0].errors / str.length);
 }
@@ -102,16 +107,12 @@ export function matchQuote(text, quote, context = {}) {
   // Find closest matches for `quote` in `text` based on edit distance.
   const matches = search(text, quote, maxErrors);
 
-  if (matches.length === 0) {
-    return null;
-  }
-
   /**
    * Compute a score between 0 and 1.0 for a match candidate.
    *
    * @param {StringMatch} match
    */
-  const scoreMatch = match => {
+  const scoreMatch = (match) => {
     const quoteWeight = 50; // Similarity of matched text to quote.
     const prefixWeight = 20; // Similarity of text before matched text to `context.prefix`.
     const suffixWeight = 20; // Similarity of text after matched text to `context.suffix`.
@@ -123,20 +124,20 @@ export function matchQuote(text, quote, context = {}) {
       ? textMatchScore(
           text.slice(
             Math.max(0, match.start - context.prefix.length),
-            match.start
+            match.start,
           ),
-          context.prefix
+          context.prefix,
         )
       : 1.0;
     const suffixScore = context.suffix
       ? textMatchScore(
           text.slice(match.end, match.end + context.suffix.length),
-          context.suffix
+          context.suffix,
         )
       : 1.0;
 
     let posScore = 1.0;
-    if (typeof context.hint === 'number') {
+    if (typeof context.hint === "number") {
       const offset = Math.abs(match.start - context.hint);
       posScore = 1.0 - offset / text.length;
     }
@@ -154,7 +155,7 @@ export function matchQuote(text, quote, context = {}) {
 
   // Rank matches based on similarity of actual and expected surrounding text
   // and actual/expected offset in the document text.
-  const scoredMatches = matches.map(m => ({
+  const scoredMatches = matches.map((m) => ({
     start: m.start,
     end: m.end,
     score: scoreMatch(m),
@@ -162,5 +163,6 @@ export function matchQuote(text, quote, context = {}) {
 
   // Choose match with highest score.
   scoredMatches.sort((a, b) => b.score - a.score);
+
   return scoredMatches[0];
 }
