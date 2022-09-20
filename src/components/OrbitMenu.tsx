@@ -167,6 +167,10 @@ export function OrbitMenu(props: OrbitMenuProps) {
     ({ prompts }) =>
       Object.keys(prompts).filter((id) => prompts[id].isDue).length,
   );
+  const anyPromptsSaved = useAppSelector(
+    ({ prompts }) =>
+      Object.keys(prompts).filter((id) => prompts[id].isSaved).length > 0,
+  );
   const containerRef = useRef<HTMLDivElement | null>(null);
 
   const [contentsSize, setContentsSize] = useState<[number, number] | null>(
@@ -228,7 +232,7 @@ export function OrbitMenu(props: OrbitMenuProps) {
         <MenuItem
           title="Export as Anki Deck"
           onClick={unimplemented}
-          disabled={duePromptCount === 0}
+          disabled={!anyPromptsSaved}
         />
         {/* TODO add pending review prompt count */}
         <MenuItem
