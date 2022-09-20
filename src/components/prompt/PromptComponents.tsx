@@ -57,6 +57,10 @@ export const Icon = styled.div<HoverProps & SavedProps & EditingProps>`
       return `url(${startburst_null})`;
     }
   }};
+C  // Optical centering corrections:
+  margin-top: ${({ isHovered }) => (isHovered ? "-2px" : "-0.5px")};
+  margin-left: ${({ isHovered }) => (isHovered ? "0px" : "0.5px")};
+  margin-right: ${({ isHovered }) => (isHovered ? "0px" : "-0.5px")};
   background-repeat: no-repeat;
   background-size: contain;
   flex: 0 0 auto;
