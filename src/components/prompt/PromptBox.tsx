@@ -72,7 +72,8 @@ const Container = styled.div<
   display: flex;
   flex-direction: row;
   align-items: flex-start;
-  padding: 8px 8px 10px 9px;
+  padding: 8px 8px 10px
+    ${({ context }) => (context === PromptContext.Collapsed ? "13px" : "9px")};
   gap: 8px;
   cursor: ${(props) => (!props.isSaved ? "pointer" : "auto")};
   position: relative;
@@ -107,7 +108,7 @@ const Container = styled.div<
   box-shadow: ${(props) => {
     if (
       props.isHovered &&
-      !props.isSaved &&
+      (!props.isSaved || props.context === PromptContext.Collapsed) &&
       props.context !== PromptContext.Bulk
     ) {
       return "0px 1px 3px rgba(0, 0, 0, 0.07), 0px 5px 10px rgba(0, 0, 0, 0.08)";
