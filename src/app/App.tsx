@@ -70,7 +70,7 @@ export default function App({ marginX, textRoot, promptLists }: AppProps) {
             height: 0,
             pointerEvents: selectionPosition ? "auto" : "none",
             opacity: selectionPosition ? 1 : 0,
-            zIndex: zIndices.displayOverContent,
+            zIndex: zIndices.orbitMenu,
           }}
         >
           <ContextualMenu
