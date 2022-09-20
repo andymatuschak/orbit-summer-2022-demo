@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from "react";
+import React, { useCallback, useEffect, useState, useRef } from "react";
 import uuidBase64 from "../components/common/uuid";
 import zIndices from "../components/common/zIndices";
 import ContextualMenu from "../components/ContextualMenu";
@@ -48,6 +48,17 @@ export default function App({ marginX, textRoot, promptLists }: AppProps) {
     useState<ModalReviewState | null>(null);
 
   const [newPromptId, setNewPromptId] = useState<string | undefined>();
+  const mousePosition = useRef<{x: number, y: number}>();
+
+  // Listen to mouse events for context menu
+  useEffect(() => {
+    const onMouseMove = function(e: MouseEvent){
+      const newMousePosition = {x: e.clientX + window.scrollX, y: e.clientY + window.scrollY};
+      mousePosition.current = newMousePosition;
+    }
+    document.addEventListener('mousemove', onMouseMove);
+    return () => document.removeEventListener('mousemove', onMouseMove);
+  }, []);
 
   if (!promptLocations) return null;
   return (
@@ -64,8 +75,8 @@ export default function App({ marginX, textRoot, promptLists }: AppProps) {
         <div
           css={{
             position: "absolute",
-            left: selectionPosition?.left ?? 0,
-            top: selectionPosition?.top ?? 0,
+            left: selectionPosition?.left ? mousePosition.current?.x ?? 0 : 0,
+            top: selectionPosition?.top ? mousePosition.current?.y ?? 0 : 0,
             width: 0,
             height: 0,
             pointerEvents: selectionPosition ? "auto" : "none",
