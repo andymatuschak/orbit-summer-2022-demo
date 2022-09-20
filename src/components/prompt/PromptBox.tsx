@@ -1,3 +1,4 @@
+import { css } from "@emotion/react";
 import styled from "@emotion/styled";
 import React, {
   ForwardedRef,
@@ -76,10 +77,20 @@ const Container = styled.div<
       return "3px solid var(--fgTertiary)";
     } else if (props.isHovered && !props.isSaved) {
       return "3px solid var(--accentPrimary)";
-    } else if (props.isSaved && !props.isEditing) {
+    } else if (
+      props.isSaved &&
+      !props.isEditing &&
+      props.context !== PromptContext.Collapsed
+    ) {
       return "3px solid var(--accentSecondary)";
     } else if (props.isSaved && props.isEditing) {
       return "3px solid var(--accentPrimary)";
+    } else if (
+      props.context === PromptContext.Collapsed &&
+      props.isSaved &&
+      props.isHovered
+    ) {
+      return "3px solid var(--accentSecondary)";
     } else {
       return "3px solid transparent";
     }
@@ -94,7 +105,7 @@ const Container = styled.div<
     }
   }};
   background: ${(props) => {
-    if (props.isSaved) {
+    if (props.isSaved && props.context !== PromptContext.Collapsed) {
       return "var(--bgPrimary)";
     } else if (
       props.isHovered &&
@@ -103,6 +114,12 @@ const Container = styled.div<
     ) {
       return "var(--bgContent)";
     } else if (props.context === PromptContext.List) {
+      return "var(--bgPrimary)";
+    } else if (
+      props.context === PromptContext.Collapsed &&
+      props.isSaved &&
+      (props.isHovered || props.isEditing)
+    ) {
       return "var(--bgPrimary)";
     }
   }};
@@ -138,6 +155,14 @@ const Container = styled.div<
       : null}
 
   transition: ${ANIMATION_TIME_MSEC / 1000}s ease-out;
+
+  /* Collapsed specific handling */
+  ${(props) =>
+    props.context === PromptContext.Collapsed ? "left: -288px;" : null}
+  ${(props) =>
+    props.context === PromptContext.Collapsed && !props.isHovered
+      ? "pointer-events: none;"
+      : null}
 `;
 
 export default forwardRef(function (
@@ -238,43 +263,58 @@ export default forwardRef(function (
       onClick={() => savePrompt()}
       ref={ref}
     >
-      <Icon isHovered={isHovered} isSaved={isSaved} isEditing={isEditing} />
-      <PromptContainer>
-        <PromptText
-          side="front"
-          isHovered={isHovered}
-          isSaved={isSaved}
-          isEditing={isEditing}
-          context={context}
-          onFocus={() => startEditing(true)}
-          onBlur={() => endEditing()}
-          ref={promptFrontRef}
-          placeholder="Type a prompt here."
+      {context !== PromptContext.Collapsed && (
+        <Icon isHovered={isHovered} isSaved={isSaved} isEditing={isEditing} />
+      )}
+      {(context !== PromptContext.Collapsed ||
+        (context === PromptContext.Collapsed && (isHovered || isEditing))) && (
+        <PromptContainer>
+          <PromptText
+            side="front"
+            isHovered={isHovered}
+            isSaved={isSaved}
+            isEditing={isEditing}
+            context={context}
+            onFocus={() => startEditing(true)}
+            onBlur={() => endEditing()}
+            ref={promptFrontRef}
+            placeholder="Type a prompt here."
+          >
+            {prompt.content.front}
+          </PromptText>
+          {(showPromptBack ||
+            context === PromptContext.Bulk ||
+            forceHover ||
+            isSaved) &&
+            (imageSrc ? (
+              <PromptImage src={imageSrc} />
+            ) : (
+              <PromptText
+                side="back"
+                isHovered={isHovered}
+                isSaved={isSaved}
+                context={context}
+                isEditing={isEditing}
+                onFocus={() => startEditing(false)}
+                onBlur={() => endEditing()}
+                ref={promptBackRef}
+                placeholder="Type a response here."
+              >
+                {prompt.content.back}
+              </PromptText>
+            ))}
+        </PromptContainer>
+      )}
+      {context === PromptContext.Collapsed && (
+        <div
+          css={css`
+            margin-left: auto;
+            pointer-events: all;
+          `}
         >
-          {prompt.content.front}
-        </PromptText>
-        {(showPromptBack ||
-          context === PromptContext.Bulk ||
-          forceHover ||
-          isSaved) &&
-          (imageSrc ? (
-            <PromptImage src={imageSrc} />
-          ) : (
-            <PromptText
-              side="back"
-              isHovered={isHovered}
-              isSaved={isSaved}
-              context={context}
-              isEditing={isEditing}
-              onFocus={() => startEditing(false)}
-              onBlur={() => endEditing()}
-              ref={promptBackRef}
-              placeholder="Type a response here."
-            >
-              {prompt.content.back}
-            </PromptText>
-          ))}
-      </PromptContainer>
+          <Icon isHovered={isHovered} isSaved={isSaved} isEditing={isEditing} />
+        </div>
+      )}
     </Container>
   );
 });

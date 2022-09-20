@@ -34,6 +34,7 @@ export interface ContextProps {
 
 export enum PromptContext {
   Floating = "floating",
+  Collapsed = "collapsed",
   Bulk = "bulk",
   List = "list",
 }
