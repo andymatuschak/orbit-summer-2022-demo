@@ -11,8 +11,14 @@ let page: ReactNode | null = null;
 
 if (document.location.pathname.includes("shape-up")) {
   page = <ShapeUpApp />;
-  const chapterName = getShapeUpChapterName();
-  store.dispatch(loadPrompts(`shapeup/${chapterName}`));
+  window.addEventListener(
+    "load",
+    () => {
+      const chapterName = getShapeUpChapterName();
+      store.dispatch(loadPrompts(`shapeup/${chapterName}`));
+    },
+    { once: true },
+  );
 } else if (document.location.pathname.includes("ims")) {
   page = <IMSApp />;
   const chapterName = window.location.pathname.match(/\/ims\/(.+?).html$/)![1];
