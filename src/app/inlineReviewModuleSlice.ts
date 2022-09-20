@@ -1,9 +1,9 @@
-import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { createSlice } from "@reduxjs/toolkit";
 import {
   PromptLocation,
   resolvePromptLocations,
 } from "../util/resolvePromptLocations";
-import { loadPrompts, PromptsState } from "./promptSlice";
+import { loadPrompts, Prompt, PromptsState } from "./promptSlice";
 
 export interface Rect {
   left: number;
@@ -133,10 +133,16 @@ function populateReviewArea(
   for (const [id, prompt] of populatedEntries) {
     populatedPromptIDs.add(id);
     const promptElement = document.createElement("orbit-prompt");
-    promptElement.setAttribute("question", prompt.content.front);
-    promptElement.setAttribute("answer", prompt.content.back);
+    const props = getOrbitPromptProps(prompt);
+    promptElement.setAttribute("question", props.question);
+    promptElement.setAttribute("answer", props.answer);
+    if (props["answer-attachments"]) {
+      promptElement.setAttribute(
+        "answer-attachments",
+        props["answer-attachments"],
+      );
+    }
     promptElement.id = id;
-    // TODO: handle attachments
     reviewAreaElement.appendChild(promptElement);
   }
   element.after(reviewAreaElement);
@@ -160,4 +166,35 @@ function rangeCompareNode(range: Range, node: Node) {
   if (nodeIsBefore && nodeIsAfter) return 2;
 
   return 3;
+}
+
+// HACK: The embedded iframe (which uses the "real" Orbit bits) can't access local URLs. So we convert relative URLs of these images back to absolute paths on the original publication servers.
+function getAttachmentURL(text: string): string | null {
+  const imageMatch = text.match(/<img src="(.+?)".+$/);
+  if (imageMatch) {
+    const resolved = new URL(imageMatch[1], document.baseURI).pathname;
+    const inDomainSubpath = resolved.split("/").slice(2).join("/");
+    if (resolved.startsWith("/shape-up")) {
+      return `https://basecamp.com/${inDomainSubpath}`;
+    } else if (resolved.startsWith("/ims")) {
+      return `https://openintro-ims.netlify.app/${inDomainSubpath}`;
+    } else {
+      throw new Error("Unsupported image URL");
+    }
+  } else {
+    return null;
+  }
+}
+
+export function getOrbitPromptProps({ content: { front, back } }: Prompt): {
+  question: string;
+  answer: string;
+  "answer-attachments": string | null;
+} {
+  const attachmentURL = getAttachmentURL(back);
+  return {
+    question: front,
+    answer: attachmentURL ? "" : back,
+    "answer-attachments": attachmentURL,
+  };
 }

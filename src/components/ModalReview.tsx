@@ -1,5 +1,6 @@
 import React, { DOMAttributes, useState } from "react";
 import ScrollLock from "react-scrolllock";
+import { getOrbitPromptProps } from "../app/inlineReviewModuleSlice";
 import { useAppSelector } from "../app/store";
 import zIndices from "./common/zIndices";
 import { CompletedReviewOverlay } from "./CompletedReviewOverlay";
@@ -85,19 +86,13 @@ export function ModalReview(props: ModalReviewProps) {
           }}
           height="100vh"
         >
-          {queuedPromptIDs.map((id) => {
-            const prompt = prompts[id];
-            const attachmentURL = getAttachmentURL(prompt.content.back);
-            return (
-              <orbit-prompt
-                question={prompt.content.front}
-                answer={attachmentURL ? "" : prompt.content.back}
-                answer-attachments={attachmentURL}
-                id={id}
-                key={id}
-              ></orbit-prompt>
-            );
-          })}
+          {queuedPromptIDs.map((id) => (
+            <orbit-prompt
+              {...getOrbitPromptProps(prompts[id])}
+              id={id}
+              key={id}
+            ></orbit-prompt>
+          ))}
         </orbit-reviewarea>
 
         <CompletedReviewOverlay
@@ -110,22 +105,4 @@ export function ModalReview(props: ModalReviewProps) {
       </div>
     </ScrollLock>
   );
-}
-
-// HACK: The embedded iframe (which uses the "real" Orbit bits) can't access local URLs. So we convert relative URLs of these images back to absolute paths on the original publication servers.
-function getAttachmentURL(text: string): string | null {
-  const imageMatch = text.match(/<img src="(.+?)".+$/);
-  if (imageMatch) {
-    const resolved = new URL(imageMatch[1], document.baseURI).pathname;
-    const inDomainSubpath = resolved.split("/").slice(2).join("/");
-    if (resolved.startsWith("/shape-up")) {
-      return `https://basecamp.com/${inDomainSubpath}`;
-    } else if (resolved.startsWith("/ims")) {
-      return `https://openintro-ims.netlify.app/${inDomainSubpath}`;
-    } else {
-      throw new Error("Unsupported image URL");
-    }
-  } else {
-    return null;
-  }
 }
