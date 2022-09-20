@@ -11,6 +11,7 @@ import Button from "../Button";
 import PromptBox from "./PromptBox";
 import { Icon, PromptContext } from "./PromptComponents";
 import { css } from "@emotion/react";
+import { AnimatePresence, motion } from "framer-motion";
 
 export interface BulkPromptBoxProps {
   // Prompts and ids must be same order
@@ -33,6 +34,7 @@ const ButtonContainer = styled.div`
   flex-direction: row;
   align-items: flex-start;
   width: 332px;
+  height: 40px;
   padding: 8px 8px 10px 12px;
   gap: 8px;
   cursor: pointer;
@@ -42,7 +44,7 @@ interface ContainerProps {
   isEnabled: boolean;
 }
 
-const PromptsContainer = styled.div<ContainerProps>`
+const PromptsContainer = styled(motion.div)<ContainerProps>`
   display: flex;
   flex-direction: column;
   align-items: flex-start;
@@ -52,7 +54,6 @@ const PromptsContainer = styled.div<ContainerProps>`
   width: 332px;
   border-width: 3px 3px 3px 0px;
   box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.07), 0px 4px 15px rgba(0, 0, 0, 0.1);
-  opacity: ${(props) => (props.isEnabled ? 1.0 : 0.0)};
   pointer-events: ${(props) => (props.isEnabled ? "auto" : "none")};
   position: relative;
 `;
@@ -65,6 +66,10 @@ const ButtonText = styled.div`
   color: var(--fgPrimary);
   opacity: 0.696;
 `;
+
+// HACK - add some buffer for dropped frames due to react rerender the whole tree
+// TODO - shorten this time once we decouple hoverprompt / edit prompt rerendering the whole tree
+const TRANSITION = { duration: 0.175, ease: "easeOut" };
 
 export default function BulkPromptBox({
   prompts,
@@ -170,6 +175,29 @@ export default function BulkPromptBox({
     });
   }
 
+  function createPromptsContainer() {
+    return (
+      <PromptsContainer
+        onFocus={() => setIsFocused(true)}
+        onBlur={() => setIsFocused(false)}
+        isEnabled={isOpen}
+        ref={promptsContainerRef}
+        initial={{
+          opacity: 0.0,
+        }}
+        animate={{
+          opacity: isOpen ? 1.0 : 0.0,
+        }}
+        exit={{
+          opacity: 0.0,
+        }}
+        transition={TRANSITION}
+      >
+        {createPrompts()}
+      </PromptsContainer>
+    );
+  }
+
   return (
     <div
       css={css`
@@ -189,73 +217,57 @@ export default function BulkPromptBox({
         if (setHoverPrompt) setHoverPrompt(undefined);
       }}
     >
-      <>
-        {layoutOffset !== 0 && (
-          <PromptsContainer
-            onFocus={() => setIsFocused(true)}
-            onBlur={() => setIsFocused(false)}
-            isEnabled={isOpen}
-            ref={promptsContainerRef}
-          >
-            {createPrompts()}
-          </PromptsContainer>
-        )}
+      <AnimatePresence>
+        <>
+          {layoutOffset !== 0 && createPromptsContainer()}
+          <div
+            css={css`
+              width: 100%;
+              height: 12px;
+            `}
+          />
+        </>
+        <div
+          onMouseEnter={() => {
+            setIsButtonHovered(true);
+            setIsOpen(true);
+            determineLayout();
+            if (setHoverPrompt) setHoverPrompt(ids[0]);
+          }}
+          onMouseLeave={() => {
+            setIsButtonHovered(false);
+          }}
+          css={{
+            display: "flex",
+            flexDirection: "column",
+            pointerEvents: "all",
+            top: -12,
+          }}
+          ref={buttonRef}
+        >
+          {!isOpen ? (
+            <ButtonContainer>
+              <Icon isHovered={false} isSaved={false} isEditing={false} />
+              <ButtonText>{`${
+                prompts.length - (saves?.size ?? 0)
+              } prompts available`}</ButtonText>
+            </ButtonContainer>
+          ) : (
+            <Button
+              onClick={() => saveAll()}
+              children={`Save ${prompts.length - (saves?.size ?? 0)} prompts`}
+              icon={"add"}
+            />
+          )}
+        </div>
         <div
           css={css`
             width: 100%;
             height: 12px;
           `}
         />
-      </>
-      <div
-        onMouseEnter={() => {
-          setIsButtonHovered(true);
-          setIsOpen(true);
-          determineLayout();
-          if (setHoverPrompt) setHoverPrompt(ids[0]);
-        }}
-        onMouseLeave={() => {
-          setIsButtonHovered(false);
-        }}
-        css={{
-          display: "flex",
-          flexDirection: "column",
-          pointerEvents: "all",
-          top: -12,
-        }}
-        ref={buttonRef}
-      >
-        {!isOpen ? (
-          <ButtonContainer>
-            <Icon isHovered={false} isSaved={false} isEditing={false} />
-            <ButtonText>{`${
-              prompts.length - (saves?.size ?? 0)
-            } prompts available`}</ButtonText>
-          </ButtonContainer>
-        ) : (
-          <Button
-            onClick={() => saveAll()}
-            children={`Save ${prompts.length - (saves?.size ?? 0)} prompts`}
-            icon={"add"}
-          />
-        )}
-      </div>
-      <div
-        css={css`
-          width: 100%;
-          height: 12px;
-        `}
-      />
-      {layoutOffset === 0 && (
-        <PromptsContainer
-          onFocus={() => setIsFocused(true)}
-          onBlur={() => setIsFocused(false)}
-          isEnabled={isOpen}
-          ref={promptsContainerRef}
-        >
-          {createPrompts()}
-        </PromptsContainer>
-      )}
+        {layoutOffset === 0 && createPromptsContainer()}
+      </AnimatePresence>
     </div>
   );
 }
