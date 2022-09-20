@@ -44,7 +44,7 @@ interface ContainerProps {
   isEnabled: boolean;
 }
 
-const PromptsContainer = styled(motion.div)<ContainerProps>`
+const PromptsContainer = styled(motion.div, {shouldForwardProp: prop => prop !== "isEnabled"})<ContainerProps>`
   display: flex;
   flex-direction: column;
   align-items: flex-start;
@@ -217,7 +217,6 @@ export default function BulkPromptBox({
         if (setHoverPrompt) setHoverPrompt(undefined);
       }}
     >
-      <AnimatePresence>
         <>
           {layoutOffset !== 0 && createPromptsContainer()}
           <div
@@ -247,7 +246,16 @@ export default function BulkPromptBox({
         >
           {!isOpen ? (
             <ButtonContainer>
-              <Icon isHovered={false} isSaved={false} isEditing={false} />
+              {ids.map((id, idx) => (
+                <div
+                  css={css`
+                    margin-right: ${idx === ids.length - 1 ? '0px': '-10px'};
+                  `}
+                  key={id}
+                >
+                  <Icon isHovered={false} isSaved={false} isEditing={false} />
+                </div>
+              ))}
               <ButtonText>{`${
                 prompts.length - (saves?.size ?? 0)
               } prompts available`}</ButtonText>
@@ -266,7 +274,12 @@ export default function BulkPromptBox({
             height: 12px;
           `}
         />
-        {layoutOffset === 0 && createPromptsContainer()}
+        <AnimatePresence>
+          <div 
+            key={'bottom'}
+          >
+            {layoutOffset === 0 && createPromptsContainer()}
+          </div>
       </AnimatePresence>
     </div>
   );
