@@ -62,8 +62,17 @@ const CollapsedIconContainer = styled.div<SavedProps & HoverProps>`
   pointer-events: all;
   min-width: 32px;
   height: 32px;
-  background-color: ${(props) => props.isSaved && !props.isHovered ? 'var(--bgSecondary)' : null};
+  position: relative;
+  top: -6px;
+  left: 5px;
+`;
+
+const CollapsedIconBackground = styled.div<SavedProps & HoverProps>`
+  background-color: ${(props) =>
+    props.isSaved && !props.isHovered ? "var(--bgSecondary)" : null};
   border-radius: 50%;
+  width: 100%;
+  height: 100%;
 `;
 
 const Container = styled.div<
@@ -274,7 +283,12 @@ export default forwardRef(function (
       ref={ref}
     >
       {context !== PromptContext.Collapsed && (
-        <Icon isHovered={isHovered} isSaved={isSaved} isEditing={isEditing} />
+        <Icon
+          isHovered={isHovered}
+          isSaved={isSaved}
+          isEditing={isEditing}
+          isDue={prompt.isDue}
+        />
       )}
       {(context !== PromptContext.Collapsed ||
         (context === PromptContext.Collapsed && (isHovered || isEditing))) && (
@@ -316,21 +330,20 @@ export default forwardRef(function (
         </PromptContainer>
       )}
       {context === PromptContext.Collapsed && (
-        <CollapsedIconContainer
-          isSaved={isSaved}
-          isHovered={isHovered}
-        >
+        <CollapsedIconContainer isSaved={isSaved} isHovered={isHovered}>
+          <CollapsedIconBackground isSaved={isSaved} isHovered={isHovered} />
           <div
             css={css`
               position: relative;
-              top: 5px;
-              left: 5px;
+              top: -26px;
+              left: 3px;
             `}
           >
             <Icon
               isHovered={isHovered}
               isSaved={isSaved}
               isEditing={isEditing}
+              isDue={prompt.isDue}
             />
           </div>
         </CollapsedIconContainer>

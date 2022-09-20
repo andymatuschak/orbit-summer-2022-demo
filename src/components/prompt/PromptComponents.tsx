@@ -5,7 +5,6 @@ import { ForwardedRef, forwardRef, useEffect, useState } from "react";
 import plus from "../../static/images/Icons/Plus.png";
 import starburst_active from "../../static/images/Icons/Starburst-Active.png";
 import starburst_editing from "../../static/images/Icons/Starburst-Edit.png";
-
 import startburst_null from "../../static/images/Icons/Starburst-Null.png";
 
 export const ANIMATION_TIME_MSEC = 48.0;
@@ -20,6 +19,10 @@ export interface SavedProps {
 
 export interface EditingProps {
   isEditing: boolean;
+}
+
+export interface DueProps {
+  isDue: boolean;
 }
 
 export interface EditableTextProps {
@@ -43,7 +46,7 @@ export interface SidedProps {
   side: "front" | "back";
 }
 
-export const Icon = styled.div<HoverProps & SavedProps & EditingProps>`
+const IconBase = styled.div<HoverProps & SavedProps & EditingProps>`
   width: 24px;
   height: 24px;
   background-image: ${(props) => {
@@ -68,6 +71,42 @@ export const Icon = styled.div<HoverProps & SavedProps & EditingProps>`
   background-size: contain;
   flex: 0 0 auto;
 `;
+
+const DueBadgeInner = styled.div`
+  height: 7px;
+  width: 7px;
+  border-radius: 50%;
+  background-color: var(--accentPrimary);
+`;
+
+const DueBadgeOuter = styled.div`
+  position: relative;
+  left: 16px;
+  top: -2px;
+  border-radius: 50%;
+  width: 10px;
+  height: 10px;
+  padding-left: 1.5px;
+  padding-top: 1.5px;
+  background-color: var(--bgPrimary);
+`;
+
+export const Icon = function ({
+  isHovered,
+  isSaved,
+  isEditing,
+  isDue,
+}: HoverProps & SavedProps & EditingProps & DueProps) {
+  return (
+    <IconBase isHovered={isHovered} isSaved={isSaved} isEditing={isEditing}>
+      {isDue && (
+        <DueBadgeOuter>
+          <DueBadgeInner />
+        </DueBadgeOuter>
+      )}
+    </IconBase>
+  );
+};
 
 export const PromptText = forwardRef(function (
   props: HoverProps &
