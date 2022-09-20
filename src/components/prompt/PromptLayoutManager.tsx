@@ -204,31 +204,12 @@ export function PromptLayoutManager({
   return (
     <>
       {/* This is not pretty, forgive me (prototype?) - ShadowContainer is a copy of the prompts used for measurement purposes, we don't need this but it makes some data flow easier for now */}
-      <ShadowContainer>
-        {Object.entries(prompts).map(([id]) => {
-          return (
-            <div
-              key={id}
-              css={{
-                position: "absolute",
-                left: marginX,
-                top: promptLocations[id]?.top,
-                width: 332,
-              }}
-              ref={(el) => (promptMeasureRefs.current[id] = el)}
-            >
-              <PromptBox
-                prompt={prompts[id]}
-                context={PromptContext.Floating}
-                savePrompt={() => null}
-                forceHover={true}
-                updatePromptFront={(newPrompt) => null}
-                updatePromptBack={(newPrompt) => null}
-              />
-            </div>
-          );
-        })}
-      </ShadowContainer>
+      <ShadowPrompts
+        prompts={prompts}
+        promptLocations={promptLocations}
+        promptMeasureRefs={promptMeasureRefs}
+        marginX={marginX}
+      />
       {!delayOneRender &&
         promptRuns.map((ids) => {
           if (ids.length === 1) {
@@ -337,3 +318,40 @@ export function PromptLayoutManager({
     </>
   );
 }
+
+interface ShadowPromptsProps {
+  prompts: PromptsState;
+  marginX: number;
+  promptMeasureRefs: React.MutableRefObject<{[id: string]: HTMLDivElement | null}>
+  promptLocations: {[id: string]: PromptLocation};
+}
+
+const ShadowPrompts = React.memo(function({prompts, marginX, promptMeasureRefs, promptLocations}: ShadowPromptsProps){
+  return (
+      <ShadowContainer>
+        {Object.entries(prompts).map(([id]) => {
+          return (
+            <div
+              key={id}
+              css={{
+                position: "absolute",
+                left: marginX,
+                top: promptLocations[id]?.top,
+                width: 332,
+              }}
+              ref={(el) => (promptMeasureRefs.current[id] = el)}
+            >
+              <PromptBox
+                prompt={prompts[id]}
+                context={PromptContext.Floating}
+                savePrompt={() => null}
+                forceHover={true}
+                updatePromptFront={(newPrompt) => null}
+                updatePromptBack={(newPrompt) => null}
+              />
+            </div>
+          );
+        })}
+      </ShadowContainer>
+  )
+});
