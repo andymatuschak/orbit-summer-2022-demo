@@ -19,7 +19,7 @@ if (document.location.pathname.includes("shape-up")) {
   // Give the LaTeX a chance to resolve...
   setTimeout(() => {
     store.dispatch(loadPrompts(`ims/${chapterName}`));
-  }, 1000);
+  }, 2000);
 }
 
 if (page) {
