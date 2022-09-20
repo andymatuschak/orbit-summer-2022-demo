@@ -98,7 +98,7 @@ const Container = styled.div<
   box-shadow: ${(props) => {
     if (
       props.isHovered &&
-      !props.isSaved &&
+      (!props.isSaved || props.context === PromptContext.Collapsed) &&
       props.context !== PromptContext.Bulk
     ) {
       return "0px 1px 3px rgba(0, 0, 0, 0.07), 0px 5px 10px rgba(0, 0, 0, 0.08)";
