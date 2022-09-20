@@ -61,7 +61,6 @@ export function ModalReview(props: ModalReviewProps) {
           left: 0,
           bottom: 0,
           right: 0,
-          // TODO abstract palette for inline review
           backgroundColor: "#ff5252",
           zIndex: zIndices.modalReview,
         }}

@@ -2,7 +2,6 @@
 @import "fonts.css";
 
 html {
-  /* TODO: necessary? */
   width: 100vw;
 }
 
@@ -28,7 +27,6 @@ body {
   --fadeTransition: opacity 0.1s linear;
   --expoTiming: cubic-bezier(0.16, 1, 0.3, 1); /* or, rather, a simulation of it */
 
-  /* TODO: necessary? */
   width: 100vw;
   overflow-x: hidden;
 }

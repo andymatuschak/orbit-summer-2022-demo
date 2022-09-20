@@ -234,7 +234,6 @@ export function OrbitMenu(props: OrbitMenuProps) {
           onClick={unimplemented}
           disabled={!anyPromptsSaved}
         />
-        {/* TODO add pending review prompt count */}
         <MenuItem
           title="Start Review"
           onClick={() => {
