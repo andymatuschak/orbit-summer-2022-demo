@@ -4,6 +4,7 @@ import { getOrbitPromptProps } from "../app/inlineReviewModuleSlice";
 import { useAppSelector } from "../app/store";
 import zIndices from "./common/zIndices";
 import { CompletedReviewOverlay } from "./CompletedReviewOverlay";
+import shuffle from "knuth-shuffle-seeded";
 
 type CustomElement<T> = Partial<T & DOMAttributes<T> & { children: any }>;
 
@@ -50,8 +51,8 @@ export function ModalReview(props: ModalReviewProps) {
 
   // A bit of a hack: we tee up the review queue when this component is mounted.
   const [queuedPromptIDs] = useState<string[]>(() =>
-    props.mode === "list" ? props.promptIDs : duePromptIDs,
-  ); // TODO shuffle
+    props.mode === "list" ? props.promptIDs : shuffle(duePromptIDs, 314159265),
+  );
 
   return (
     <ScrollLock>

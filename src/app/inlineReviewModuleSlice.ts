@@ -4,6 +4,7 @@ import {
   resolvePromptLocations,
 } from "../util/resolvePromptLocations";
 import { loadPrompts, Prompt, PromptsState } from "./promptSlice";
+import shuffle from "knuth-shuffle-seeded";
 
 export interface Rect {
   left: number;
@@ -127,6 +128,8 @@ function populateReviewArea(
   if (populatedEntries.length === 0) {
     throw new Error("No prompts seem to belong to review area!");
   }
+
+  shuffle(populatedEntries, 314159265);
 
   const reviewAreaElement = document.createElement("orbit-reviewarea");
   reviewAreaElement.setAttribute("color", "brown");
