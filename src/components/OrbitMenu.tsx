@@ -1,14 +1,12 @@
 import React, { useCallback, useEffect, useRef, useState } from "react";
-import { useAppSelector } from "../app/store";
+import { setPromptVisibility } from "../app/promptVisibilitySlice";
+import { useAppDispatch, useAppSelector } from "../app/store";
 import X from "../static/images/Icons/X.png";
 import Logo from "../static/images/Logo.png";
 import Starburst from "../static/images/Starburst-48.png";
 import { hoverAndActiveStyles } from "./common/hoverAndActiveStyles";
 import MenuItem from "./MenuItem";
-import {
-  OrbitMenuPromptVisibilityControl,
-  PromptVisibilitySetting,
-} from "./OrbitMenuPromptVisibilityControl";
+import { OrbitMenuPromptVisibilityControl } from "./OrbitMenuPromptVisibilityControl";
 import { Label, LabelColor, labelSmallStyle } from "./Type";
 
 function OrbitMenuButton({
@@ -134,10 +132,9 @@ function OrbitMenuLogo() {
 }
 
 function PromptVisibilityMenuItem() {
-  // TODO: Move to store
-  const [value, setValue] = useState<PromptVisibilitySetting>(
-    PromptVisibilitySetting.All,
-  );
+  const dispatch = useAppDispatch();
+  const value = useAppSelector((state) => state.promptVisibility);
+
   return (
     <div
       css={{
@@ -148,7 +145,10 @@ function PromptVisibilityMenuItem() {
     >
       <Label text="Show floating prompts:" color={LabelColor.FGPrimary} />
       <div css={{ height: 8 }} />
-      <OrbitMenuPromptVisibilityControl value={value} onChange={setValue} />
+      <OrbitMenuPromptVisibilityControl
+        value={value}
+        onChange={(value) => dispatch(setPromptVisibility(value))}
+      />
     </div>
   );
 }
@@ -161,6 +161,7 @@ function unimplemented() {
 export interface OrbitMenuProps {
   onStartReview: () => void;
 }
+
 export function OrbitMenu(props: OrbitMenuProps) {
   const [isOpen, setOpen] = useState(false);
   const duePromptCount = useAppSelector(

@@ -1,7 +1,10 @@
+import styled from "@emotion/styled";
+import { motion } from "framer-motion";
 import React, {
   useCallback,
   useEffect,
   useLayoutEffect,
+  useMemo,
   useRef,
   useState,
 } from "react";
@@ -12,16 +15,15 @@ import {
   updatePromptBack,
   updatePromptFront,
 } from "../../app/promptSlice";
-import { PromptLocation } from "../../util/resolvePromptLocations";
-import { useAppDispatch } from "../../app/store";
-import PromptBox from "./PromptBox";
-import BulkPromptBox from "./BulkPromptBox";
-import styled from "@emotion/styled";
-import { AnimatePresence, motion } from "framer-motion";
-import { AnchorHighlight } from "./AnchorHighlights";
-import { PromptContext } from "./PromptComponents";
-import zIndices from "../common/zIndices";
+import { useAppDispatch, useAppSelector } from "../../app/store";
 import { useLayoutDependentValue } from "../../hooks/useLayoutDependentValue";
+import { PromptLocation } from "../../util/resolvePromptLocations";
+import zIndices from "../common/zIndices";
+import { PromptVisibilitySetting } from "../OrbitMenuPromptVisibilityControl";
+import { AnchorHighlight } from "./AnchorHighlights";
+import BulkPromptBox from "./BulkPromptBox";
+import PromptBox from "./PromptBox";
+import { PromptContext } from "./PromptComponents";
 
 export interface PromptLayoutManagerProps {
   prompts: PromptsState;
@@ -63,8 +65,22 @@ export function PromptLayoutManager({
   clearNewPrompt,
 }: PromptLayoutManagerProps) {
   const dispatch = useAppDispatch();
+  const promptVisibility = useAppSelector((state) => state.promptVisibility);
+  const visiblePromptIDs = useMemo(() => {
+    switch (promptVisibility) {
+      case PromptVisibilitySetting.All:
+        return Object.keys(prompts);
+      case PromptVisibilitySetting.None:
+        return [];
+      case PromptVisibilitySetting.Saved:
+        return Object.entries(prompts)
+          .filter(([, { isSaved }]) => isSaved)
+          .map(([id]) => id);
+    }
+  }, [prompts, promptVisibility]);
+
   var [promptRuns, setPromptRuns] = useState<PromptId[][]>(
-    Object.entries(prompts).map(([id, _]) => [id]),
+    visiblePromptIDs.map((id) => [id]),
   );
   var [promptOffset, setPromptOffset] = useState<{ [id: PromptId]: number }>(
     {},
@@ -72,6 +88,7 @@ export function PromptLayoutManager({
   const promptMeasureRefs = useRef<{ [id: PromptId]: HTMLDivElement | null }>(
     {},
   );
+
   const bulkPromptLocations = useRef<{ [id: PromptId]: number }>({});
   const [bulkSaves, setBulkSaves] = useState<Set<PromptId>>(new Set());
   const [currHoverPrompt, setHoverPrompt] = useState<PromptId>();
@@ -89,7 +106,7 @@ export function PromptLayoutManager({
         }
       }
       return false;
-    }, [promptMeasureRefs]),
+    }, []),
   );
 
   function clonePromptLocations(locs: { [id: PromptId]: PromptLocation }) {
@@ -103,9 +120,9 @@ export function PromptLayoutManager({
 
   useLayoutEffect(() => {
     if (
-      Object.keys(promptMeasureRefs.current).length ===
-        Object.keys(prompts).length &&
-      Object.keys(prompts).length === Object.keys(promptLocations).length
+      Object.keys(promptMeasureRefs.current).length >=
+        visiblePromptIDs.length &&
+      Object.keys(promptLocations).length >= visiblePromptIDs.length
     ) {
       // Collect bounding boxes
       const boundingBoxes: PromptBoundingBoxes = {};
@@ -123,8 +140,7 @@ export function PromptLayoutManager({
           compareDOMy({ id: a[0], loc: a[1] }, { id: b[0], loc: b[1] }),
         )
         .map((a) => a[0]);
-      const startId = sortedIds[0];
-      const runs: string[][] = [[startId]];
+      const runs: string[][] = sortedIds.length > 0 ? [[sortedIds[0]]] : [];
       var currRunStartIdx = 0;
       // Pass 1 - create bulk runs for overlapping bounding boxes of non-saved elements
       // TODO: compute width and use adjusted position instead
@@ -176,7 +192,7 @@ export function PromptLayoutManager({
       setPromptRuns(runs.reverse());
       setPromptOffset(offsets);
     }
-  }, [promptMeasureRefs, prompts, bulkSaves, promptLocations, delayOneRender]);
+  }, [prompts, visiblePromptIDs, bulkSaves, promptLocations, delayOneRender]);
 
   useEffect(() => {
     setDelayOneRender(false);
@@ -186,7 +202,7 @@ export function PromptLayoutManager({
     <>
       {/* This is not pretty, forgive me (prototype?) - ShadowContainer is a copy of the prompts used for measurement purposes, we don't need this but it makes some data flow easier for now */}
       <ShadowContainer>
-        {Object.entries(prompts).map(([id, prompt]) => {
+        {visiblePromptIDs.map((id) => {
           return (
             <div
               key={id}
@@ -199,7 +215,7 @@ export function PromptLayoutManager({
               ref={(el) => (promptMeasureRefs.current[id] = el)}
             >
               <PromptBox
-                prompt={prompt}
+                prompt={prompts[id]}
                 context={PromptContext.Floating}
                 savePrompt={() => null}
                 forceHover={true}
@@ -307,6 +323,10 @@ export function PromptLayoutManager({
         })}
       <AnchorHighlight
         prompts={prompts}
+        visiblePromptIDs={useMemo(
+          () => new Set(visiblePromptIDs),
+          [visiblePromptIDs],
+        )}
         promptLocations={promptLocations}
         hoverPrompt={currHoverPrompt}
         editPrompt={currEditPrompt}

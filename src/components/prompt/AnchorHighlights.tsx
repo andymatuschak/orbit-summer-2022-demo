@@ -10,6 +10,7 @@ const HOVER_COLOR = "#D6090926";
 export interface AnchorHighlightProps {
   prompts: PromptsState;
   promptLocations: { [id: string]: PromptLocation };
+  visiblePromptIDs: Set<string>;
   hoverPrompt: string | undefined;
   editPrompt: string | undefined;
 }
@@ -24,6 +25,7 @@ function areRangesSame(rangeA: Range, rangeB: Range): boolean {
 export function AnchorHighlight({
   prompts,
   promptLocations,
+  visiblePromptIDs,
   hoverPrompt,
   editPrompt,
 }: AnchorHighlightProps) {
@@ -46,7 +48,10 @@ export function AnchorHighlight({
       if (drawnId) {
         const els = document.getElementsByClassName("orbitanchor-" + drawnId);
         for (const el of els) {
-          var color = prompt.isSaved ? SAVED_COLOR : TRANSPARENT;
+          var color =
+            prompt.isSaved && visiblePromptIDs.has(id)
+              ? SAVED_COLOR
+              : TRANSPARENT;
           el.setAttribute("style", `background-color:${color};`);
         }
 
@@ -63,7 +68,11 @@ export function AnchorHighlight({
 
     // Apply hover if eligible
     var targetId: string | undefined;
-    if (hoverPrompt && !prompts[hoverPrompt].isSaved) {
+    if (
+      hoverPrompt &&
+      // !prompts[hoverPrompt].isSaved &&
+      visiblePromptIDs.has(hoverPrompt)
+    ) {
       targetId = hoverPrompt;
     }
     if (editPrompt) {
@@ -80,6 +89,7 @@ export function AnchorHighlight({
     hoverPrompt,
     editPrompt,
     prompts,
+    visiblePromptIDs,
     promptIdToDrawnPromptId,
     drawnPromptIdToIds,
   ]);
@@ -129,7 +139,7 @@ export function AnchorHighlight({
       // we haven't drawn this before
       if (!newExistingPromptIds.has(idB)) {
         const copy = promptLocations[idB].range.cloneRange();
-        highlightRange(copy, "mark", {
+        highlightRange(copy, "span", {
           class: "orbitanchor-" + idB,
           style: `background-color:${TRANSPARENT};`,
         });
