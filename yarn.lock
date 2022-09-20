@@ -3394,6 +3394,11 @@
   resolved "https://registry.yarnpkg.com/@types/json5/-/json5-0.0.29.tgz#ee28707ae94e11d2b827bcbe5270bcea7f3e71ee"
   integrity sha512-dRLjCWHYg4oaA77cxO64oO+7JwCwnIzkZPdrrC71jQmQtlhM556pwKo5bUzqvZndkVbeFLIIi+9TC40JNF5hNQ==
 
+"@types/knuth-shuffle-seeded@^1.0.0":
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/@types/knuth-shuffle-seeded/-/knuth-shuffle-seeded-1.0.0.tgz#fdaea03c080e40ded0c90bdd00a83a93fe09148c"
+  integrity sha512-VRkBWIfqKvHHrqBnLZQpsuWZOB0zmx15qcxdncAzOOETHDQxeAJ9NstjR08GgG201F5yLc+zd4uzDYjI9ZV9TA==
+
 "@types/lodash@^4.14.167":
   version "4.14.184"
   resolved "https://registry.yarnpkg.com/@types/lodash/-/lodash-4.14.184.tgz#23f96cd2a21a28e106dc24d825d4aa966de7a9fe"
