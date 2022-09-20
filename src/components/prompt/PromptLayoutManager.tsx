@@ -37,7 +37,7 @@ type PromptAbsoluteLocation = { top: number; bottom: number };
 type PromptBoundingBoxes = { [id: PromptId]: PromptAbsoluteLocation };
 
 const ShadowContainer = styled.div`
-  opacity: 0.0;
+  opacity: 0;
   pointer-events: none;
 `;
 
@@ -128,7 +128,7 @@ export function PromptLayoutManager({
       const boundingBoxes: PromptBoundingBoxes = {};
       visiblePromptIDs.forEach((id) => {
         const el = promptMeasureRefs.current[id];
-        if (el){
+        if (el) {
           const rect = el.getBoundingClientRect();
           const top = rect.top + window.scrollY;
           const bottom = rect.bottom + window.scrollY;
@@ -147,7 +147,8 @@ export function PromptLayoutManager({
       // TODO: compute width and use adjusted position instead
       for (var i = 0; i < sortedIds.length - 1; i++) {
         const runStartId = runs[currRunStartIdx][0];
-        const runEndId = runs[currRunStartIdx][runs[currRunStartIdx].length - 1];
+        const runEndId =
+          runs[currRunStartIdx][runs[currRunStartIdx].length - 1];
         const nextId = sortedIds[i + 1];
         // The bottom of the bounding box of the current run
         const currBottom = boundingBoxes[runEndId].bottom;

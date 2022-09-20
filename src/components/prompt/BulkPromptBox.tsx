@@ -44,7 +44,9 @@ interface ContainerProps {
   isEnabled: boolean;
 }
 
-const PromptsContainer = styled(motion.div, {shouldForwardProp: prop => prop !== "isEnabled"})<ContainerProps>`
+const PromptsContainer = styled(motion.div, {
+  shouldForwardProp: (prop) => prop !== "isEnabled",
+})<ContainerProps>`
   display: flex;
   flex-direction: column;
   align-items: flex-start;
@@ -217,69 +219,72 @@ export default function BulkPromptBox({
         if (setHoverPrompt) setHoverPrompt(undefined);
       }}
     >
-        <>
-          {layoutOffset !== 0 && createPromptsContainer()}
-          <div
-            css={css`
-              width: 100%;
-              height: 12px;
-            `}
-          />
-        </>
-        <div
-          onMouseEnter={() => {
-            setIsButtonHovered(true);
-            setIsOpen(true);
-            determineLayout();
-            if (setHoverPrompt) setHoverPrompt(ids[0]);
-          }}
-          onMouseLeave={() => {
-            setIsButtonHovered(false);
-          }}
-          css={{
-            display: "flex",
-            flexDirection: "column",
-            pointerEvents: "all",
-            top: -12,
-          }}
-          ref={buttonRef}
-        >
-          {!isOpen ? (
-            <ButtonContainer>
-              {ids.map((id, idx) => (
-                <div
-                  css={css`
-                    margin-right: ${idx === ids.length - 1 ? '0px': '-12px'};
-                  `}
-                  key={id}
-                >
-                  <Icon isHovered={false} isSaved={false} isEditing={false} isDue={false}/>
-                </div>
-              ))}
-              <ButtonText>{`${
-                prompts.length - (saves?.size ?? 0)
-              } prompts available`}</ButtonText>
-            </ButtonContainer>
-          ) : (
-            <Button
-              onClick={() => saveAll()}
-              children={`Save ${prompts.length - (saves?.size ?? 0)} prompts`}
-              icon={"add"}
-            />
-          )}
-        </div>
+      <>
+        {layoutOffset !== 0 && createPromptsContainer()}
         <div
           css={css`
             width: 100%;
             height: 12px;
           `}
         />
-        <AnimatePresence>
-          <div 
-            key={'bottom'}
-          >
-            {layoutOffset === 0 && createPromptsContainer()}
-          </div>
+      </>
+      <div
+        onMouseEnter={() => {
+          setIsButtonHovered(true);
+          setIsOpen(true);
+          determineLayout();
+          if (setHoverPrompt) setHoverPrompt(ids[0]);
+        }}
+        onMouseLeave={() => {
+          setIsButtonHovered(false);
+        }}
+        css={{
+          display: "flex",
+          flexDirection: "column",
+          pointerEvents: "all",
+          top: -12,
+        }}
+        ref={buttonRef}
+      >
+        {!isOpen ? (
+          <ButtonContainer>
+            {ids.map((id, idx) => (
+              <div
+                css={css`
+                  margin-right: ${idx === ids.length - 1 ? "0px" : "-12px"};
+                `}
+                key={id}
+              >
+                <Icon
+                  isHovered={false}
+                  isSaved={false}
+                  isEditing={false}
+                  isDue={false}
+                />
+              </div>
+            ))}
+            <ButtonText>{`${
+              prompts.length - (saves?.size ?? 0)
+            } prompts available`}</ButtonText>
+          </ButtonContainer>
+        ) : (
+          <Button
+            onClick={() => saveAll()}
+            children={`Save ${prompts.length - (saves?.size ?? 0)} prompts`}
+            icon={"add"}
+          />
+        )}
+      </div>
+      <div
+        css={css`
+          width: 100%;
+          height: 12px;
+        `}
+      />
+      <AnimatePresence>
+        <div key={"bottom"}>
+          {layoutOffset === 0 && createPromptsContainer()}
+        </div>
       </AnimatePresence>
     </div>
   );
