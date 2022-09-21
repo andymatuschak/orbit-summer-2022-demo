@@ -23,7 +23,7 @@ import { PromptVisibilitySetting } from "../OrbitMenuPromptVisibilityControl";
 import { AnchorHighlight } from "./AnchorHighlights";
 import BulkPromptBox from "./BulkPromptBox";
 import PromptBox from "./PromptBox";
-import { PromptContext } from "./PromptComponents";
+import { CollapsedPromptDirection, PromptContext } from "./PromptComponents";
 
 export interface PromptLayoutManagerProps {
   prompts: PromptsState;
@@ -108,19 +108,31 @@ export function PromptLayoutManager({
   const [currAnchorHovers, setCurrAnchorHovers] = useState<PromptId[]>();
   // We have to let the shadow container mount and render for sizing
   const [delayOneRender, setDelayOneRender] = useState<boolean>(true);
-  const isCollapsed = useLayoutDependentValue<boolean>(
-    useCallback(() => {
-      const refs = Object.values(promptMeasureRefs.current);
-      const rect = refs[0]?.getBoundingClientRect();
-      if (rect) {
-        const right = rect.right;
-        if (right > window.innerWidth - COLLAPSED_THRESHOLD) {
+  const collapsedDirection: CollapsedPromptDirection | undefined =
+    useLayoutDependentValue<CollapsedPromptDirection | undefined>(
+      useCallback(() => {
+        function hasWindowSpace() {
+          const refs = Object.values(promptMeasureRefs.current);
+          const rect = refs[0]?.getBoundingClientRect();
+          if (rect) {
+            const right = rect.right;
+            if (right > window.innerWidth - COLLAPSED_THRESHOLD) {
+              return false;
+            }
+          }
           return true;
         }
-      }
-      return false;
-    }, []),
-  );
+
+        const hasSpace = hasWindowSpace();
+        // If IMS
+        if (document.location.pathname.includes("ims")) {
+          if (hasSpace) return CollapsedPromptDirection.LTR;
+          return CollapsedPromptDirection.RTL;
+        }
+
+        return hasSpace ? undefined : CollapsedPromptDirection.RTL;
+      }, []),
+    );
 
   function clonePromptLocations(locs: { [id: PromptId]: PromptLocation }) {
     const clone: { [id: PromptId]: PromptLocation } = {};
@@ -252,10 +264,11 @@ export function PromptLayoutManager({
                   isNew={id === newPromptId}
                   isAnchorHovered={currAnchorHovers?.includes(id)}
                   context={
-                    isCollapsed
+                    collapsedDirection
                       ? PromptContext.Collapsed
                       : PromptContext.Floating
                   }
+                  collapsedDirection={collapsedDirection}
                   savePrompt={() => dispatch(savePrompt(id))}
                   updatePromptFront={(newPrompt) =>
                     dispatch(updatePromptFront([id, newPrompt]))
@@ -398,6 +411,9 @@ export const PromptBoxMemo = React.memo(PromptBox, (prev, curr) => {
     return false;
   }
   if (prev.isAnchorHovered !== curr.isAnchorHovered) {
+    return false;
+  }
+  if (prev.collapsedDirection !== curr.collapsedDirection) {
     return false;
   }
   return true;

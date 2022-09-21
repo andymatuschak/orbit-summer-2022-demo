@@ -46,6 +46,15 @@ export enum PromptContext {
   List = "list",
 }
 
+export enum CollapsedPromptDirection {
+  LTR = "left_to_right",
+  RTL = "right_to_left",
+}
+
+export interface CollapsedPromptDirectionProps {
+  direction: CollapsedPromptDirection;
+}
+
 export interface SidedProps {
   side: "front" | "back";
 }
