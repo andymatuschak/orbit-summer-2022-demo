@@ -103,7 +103,7 @@ export function PromptLayoutManager({
     }
   }, [bulkSaves, setBulkSaves]);
 
-  const [currHoverPrompt, setHoverPrompt] = useState<PromptId>();
+  const [currHoverPrompts, setHoverPrompts] = useState<PromptId[]>();
   const [currEditPrompt, setEditPrompt] = useState<PromptId>();
   const [currAnchorHover, setCurrAnchorHover] = useState<PromptId>();
   // We have to let the shadow container mount and render for sizing
@@ -264,8 +264,8 @@ export function PromptLayoutManager({
                     dispatch(updatePromptBack([id, newPrompt]))
                   }
                   clearNew={clearNewPrompt}
-                  onMouseEnter={() => setHoverPrompt(id)}
-                  onMouseLeave={() => setHoverPrompt(undefined)}
+                  onMouseEnter={() => setHoverPrompts([id])}
+                  onMouseLeave={() => setHoverPrompts(undefined)}
                   onEditStart={() => setEditPrompt(id)}
                   onEditEnd={() => setEditPrompt(undefined)}
                 />
@@ -281,8 +281,8 @@ export function PromptLayoutManager({
                   pointerEvents: "none",
                   // Pop-up active bulk
                   zIndex:
-                    ids.indexOf(currHoverPrompt ?? "") !== -1 ||
-                    ids.indexOf(currEditPrompt ?? "") !== -1
+                    ids.indexOf(currHoverPrompts ? currHoverPrompts[0] : "") !==
+                      -1 || ids.indexOf(currEditPrompt ?? "") !== -1
                       ? zIndices.displayOverContent + 1
                       : zIndices.displayOverContent,
                 }}
@@ -309,7 +309,9 @@ export function PromptLayoutManager({
                   updatePromptBack={(id, newPrompt) =>
                     dispatch(updatePromptBack([id, newPrompt]))
                   }
-                  setHoverPrompt={(id) => setHoverPrompt(id)}
+                  setHoverPrompts={(ids: PromptId[] | undefined) =>
+                    setHoverPrompts(ids)
+                  }
                   setEditPrompt={(id) => setEditPrompt(id)}
                   setTops={(id, top) => {
                     bulkPromptLocations.current[id] = top;
@@ -326,7 +328,7 @@ export function PromptLayoutManager({
           [visiblePromptIDs],
         )}
         promptLocations={promptLocations}
-        hoverPrompt={currHoverPrompt}
+        hoverPrompts={currHoverPrompts}
         editPrompt={currEditPrompt}
         setHoverPrompt={setCurrAnchorHover}
       />

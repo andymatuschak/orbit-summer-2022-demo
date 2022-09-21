@@ -11,9 +11,9 @@ export interface AnchorHighlightProps {
   prompts: PromptsState;
   promptLocations: { [id: string]: PromptLocation };
   visiblePromptIDs: Set<string>;
-  hoverPrompt: string | undefined;
-  editPrompt: string | undefined;
-  setHoverPrompt: (id: string | undefined) => any;
+  hoverPrompts: PromptId[] | undefined;
+  editPrompt: PromptId | undefined;
+  setHoverPrompt: (id: PromptId | undefined) => any;
 }
 
 function areRangesSame(rangeA: Range, rangeB: Range): boolean {
@@ -23,7 +23,7 @@ function areRangesSame(rangeA: Range, rangeB: Range): boolean {
   );
 }
 
-function classNameForPromptID(id: string): string {
+function classNameForPromptID(id: PromptId): string {
   return `orbitanchor-${id.replace(/ /g, "-")}`;
 }
 
@@ -31,7 +31,7 @@ export function AnchorHighlight({
   prompts,
   promptLocations,
   visiblePromptIDs,
-  hoverPrompt,
+  hoverPrompts,
   editPrompt,
   setHoverPrompt,
 }: AnchorHighlightProps) {
@@ -75,28 +75,30 @@ export function AnchorHighlight({
     });
 
     // Apply hover if eligible
-    var targetId: string | undefined;
-    if (
-      hoverPrompt &&
-      // !prompts[hoverPrompt].isSaved &&
-      visiblePromptIDs.has(hoverPrompt)
-    ) {
-      targetId = hoverPrompt;
-    }
-    if (editPrompt) {
-      targetId = editPrompt;
-    }
-    const drawnId = promptIdToDrawnPromptId.get(targetId ?? "");
-    if (drawnId) {
-      const els = document.getElementsByClassName(
-        classNameForPromptID(drawnId),
-      );
-      for (const el of els) {
-        el.setAttribute("style", `background-color:${HOVER_COLOR};`);
+    hoverPrompts?.forEach((hoverPrompt) => {
+      var targetId: string | undefined;
+      if (
+        hoverPrompt &&
+        // !prompts[hoverPrompt].isSaved &&
+        visiblePromptIDs.has(hoverPrompt)
+      ) {
+        targetId = hoverPrompt;
       }
-    }
+      if (editPrompt) {
+        targetId = editPrompt;
+      }
+      const drawnId = promptIdToDrawnPromptId.get(targetId ?? "");
+      if (drawnId) {
+        const els = document.getElementsByClassName(
+          classNameForPromptID(drawnId),
+        );
+        for (const el of els) {
+          el.setAttribute("style", `background-color:${HOVER_COLOR};`);
+        }
+      }
+    });
   }, [
-    hoverPrompt,
+    hoverPrompts,
     editPrompt,
     prompts,
     visiblePromptIDs,
