@@ -257,6 +257,7 @@ export default function BulkPromptBox({
               >
                 <Icon
                   isHovered={false}
+                  isAnchorHovered={false}
                   isSaved={false}
                   isEditing={false}
                   isDue={false}
