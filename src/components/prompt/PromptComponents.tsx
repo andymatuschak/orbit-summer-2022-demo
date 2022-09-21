@@ -59,11 +59,13 @@ export interface SidedProps {
   side: "front" | "back";
 }
 
-const IconBase = styled.div<HoverProps & SavedProps & EditingProps>`
+const IconBase = styled.div<
+  HoverProps & SavedProps & EditingProps & AnchorHoverProps
+>`
   width: 24px;
   height: 24px;
   background-image: ${(props) => {
-    if (props.isEditing) {
+    if (props.isEditing || props.isAnchorHovered) {
       return `url(${starburst_editing})`;
     } else if (props.isSaved) {
       return `url(${starburst_active})`;
@@ -106,12 +108,18 @@ const DueBadgeOuter = styled.div`
 
 export const Icon = function ({
   isHovered,
+  isAnchorHovered,
   isSaved,
   isEditing,
   isDue,
-}: HoverProps & SavedProps & EditingProps & DueProps) {
+}: HoverProps & SavedProps & EditingProps & DueProps & AnchorHoverProps) {
   return (
-    <IconBase isHovered={isHovered} isSaved={isSaved} isEditing={isEditing}>
+    <IconBase
+      isHovered={isHovered}
+      isSaved={isSaved}
+      isEditing={isEditing}
+      isAnchorHovered={isAnchorHovered}
+    >
       {isDue && (
         <DueBadgeOuter>
           <DueBadgeInner />

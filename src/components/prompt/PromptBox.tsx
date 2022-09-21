@@ -76,12 +76,17 @@ const CollapsedIconContainer = styled.div<
 `;
 
 const CollapsedIconBackground = styled.div<
-  SavedProps & HoverProps & EditingProps
+  SavedProps & HoverProps & EditingProps & AnchorHoverProps
 >`
-  background-color: ${(props) =>
-    props.isSaved && !props.isHovered && !props.isEditing
-      ? "var(--bgSecondary)"
-      : null};
+  background-color: ${(props) => {
+    if (props.isAnchorHovered) {
+      return "var(--selectionHover)";
+    } else if (props.isSaved && !props.isHovered && !props.isEditing) {
+      return "var(--bgSecondary)";
+    } else {
+      return null;
+    }
+  }};
   border-radius: 50%;
   width: 100%;
   height: 100%;
@@ -111,7 +116,10 @@ const Container = styled.div<
       !props.isSaved
     ) {
       return "3px solid var(--fgTertiary)";
-    } else if ((props.isHovered && !props.isSaved) || props.isAnchorHovered) {
+    } else if (
+      (props.isHovered && !props.isSaved) ||
+      (props.isAnchorHovered && props.context !== PromptContext.Collapsed)
+    ) {
       return "3px solid var(--accentPrimary)";
     } else if (
       props.isSaved &&
@@ -142,7 +150,13 @@ const Container = styled.div<
     }
   }};
   background: ${(props) => {
-    if (props.isSaved && props.context !== PromptContext.Collapsed) {
+    if (
+      props.isSaved &&
+      props.isAnchorHovered &&
+      props.context !== PromptContext.Collapsed
+    ) {
+      return "var(--selectionHover)";
+    } else if (props.isSaved && props.context !== PromptContext.Collapsed) {
       return "var(--bgPrimary)";
     } else if (
       props.isHovered &&
@@ -205,16 +219,6 @@ const Container = styled.div<
       : null}
 `;
 
-const AnchorHoverBorder = styled.div`
-  height: calc(100% + 6px);
-  width: calc(100% + 6px);
-  background-color: var(--accentPrimary);
-  position: absolute;
-  top: -3px;
-  left: -3px;
-  z-index: -1;
-`;
-
 const PromptBox = forwardRef(function (
   {
     prompt,
@@ -230,7 +234,7 @@ const PromptBox = forwardRef(function (
     onMouseLeave,
     onEditStart,
     onEditEnd,
-    isAnchorHovered,
+    isAnchorHovered = false,
   }: PromptProps,
   ref: ForwardedRef<HTMLDivElement>,
 ) {
@@ -301,7 +305,7 @@ const PromptBox = forwardRef(function (
   return (
     <Container
       isHovered={isHovered}
-      isAnchorHovered={isAnchorHovered ?? false}
+      isAnchorHovered={isAnchorHovered}
       isSaved={isSaved}
       isEditing={isEditing}
       context={context}
@@ -317,12 +321,12 @@ const PromptBox = forwardRef(function (
       onClick={() => savePrompt()}
       ref={ref}
     >
-      {isAnchorHovered && <AnchorHoverBorder />}
       {(context !== PromptContext.Collapsed ||
         ((isHovered || isEditing) &&
           collapsedDirection === CollapsedPromptDirection.LTR)) && (
         <Icon
           isHovered={isHovered}
+          isAnchorHovered={isAnchorHovered}
           isSaved={isSaved}
           isEditing={isEditing}
           isDue={prompt.isDue}
@@ -376,6 +380,7 @@ const PromptBox = forwardRef(function (
         >
           <CollapsedIconBackground
             isSaved={isSaved}
+            isAnchorHovered={isAnchorHovered}
             isHovered={isHovered}
             isEditing={isEditing}
           />
@@ -388,6 +393,7 @@ const PromptBox = forwardRef(function (
           >
             <Icon
               isHovered={isHovered}
+              isAnchorHovered={isAnchorHovered}
               isSaved={isSaved}
               isEditing={isEditing}
               isDue={prompt.isDue}
