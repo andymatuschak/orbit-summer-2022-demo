@@ -13,6 +13,9 @@ export interface Prompt {
   isByAuthor: boolean;
   isSaved: boolean;
   isDue: boolean;
+
+  // For prompts saved automatically via review, we track the ID of the review area where it came from, so that we can implement the "undo" feature allowing users to *unsave* those auto-saved prompts.
+  sourceReviewAreaID?: string;
 }
 
 // i.e. following Hypothes.is's selector format, as specified in src/vendor/hypothesis-annotator
@@ -57,12 +60,15 @@ export interface PromptsState {
 }
 
 export type IdAction = PayloadAction<PromptId>;
-export type UpdatePromptText = PayloadAction<[id: PromptId, promptText: string]>;
+export type UpdatePromptText = PayloadAction<
+  [id: PromptId, promptText: string]
+>;
 export type CreateNewPrompt = PayloadAction<{ id: PromptId; prompt: Prompt }>;
 export type SyncPromptFromReview = PayloadAction<{
   id: PromptId;
   wasSkipped: boolean;
   newInterval: number;
+  sourceReviewAreaID: string;
 }>;
 
 const initialState: PromptsState = {};
@@ -76,6 +82,11 @@ const promptSlice = createSlice({
       prompt.isSaved = true;
       prompt.isDue = true;
     },
+    removePrompt(state, action: IdAction) {
+      const prompt = state[action.payload];
+      prompt.isSaved = false;
+      prompt.sourceReviewAreaID = undefined;
+    },
     updatePromptFront(state, action: UpdatePromptText) {
       const prompt = state[action.payload[0]];
       prompt.content.front = action.payload[1];
@@ -88,10 +99,15 @@ const promptSlice = createSlice({
       state[action.payload.id] = action.payload.prompt;
     },
     syncPromptFromReview(state, action: SyncPromptFromReview) {
-      const { id, wasSkipped, newInterval } = action.payload;
+      const { id, wasSkipped, newInterval, sourceReviewAreaID } =
+        action.payload;
       const prompt = state[id];
       if (!prompt.isSaved && !wasSkipped) {
         prompt.isSaved = true;
+
+        if (!prompt.sourceReviewAreaID) {
+          prompt.sourceReviewAreaID = sourceReviewAreaID;
+        }
       }
 
       // This hacky predicate corresponds to the data we'll see if they marked the prompt as forgotten (i.e. so it's still due).
@@ -115,6 +131,7 @@ export const loadPrompts = createAsyncThunk(
 
 export const {
   savePrompt,
+  removePrompt,
   updatePromptFront,
   updatePromptBack,
   createNewPrompt,

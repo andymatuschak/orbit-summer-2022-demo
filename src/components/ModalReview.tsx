@@ -30,6 +30,7 @@ export type ModalReviewState =
       // i.e. we're reviewing a list of prompts specified by the author
       mode: "list";
       promptIDs: string[];
+      onReviewExit: (reviewAreaID: string) => void;
     }
   | {
       // i.e. we're reviewing all the due prompts the user has saved
@@ -37,8 +38,8 @@ export type ModalReviewState =
     };
 
 export type ModalReviewProps = {
-  onClose: () => void;
-  onContinueReview: () => void; // i.e. when the user is successfully upsold from author list to review their due prompts
+  onClose: (reviewAreaID: string) => void;
+  onContinueReview: (reviewAreaID: string) => void; // i.e. when the user is successfully upsold from author list to review their due prompts
 } & ModalReviewState;
 
 export function ModalReview(props: ModalReviewProps) {
@@ -46,6 +47,7 @@ export function ModalReview(props: ModalReviewProps) {
   const duePromptIDs = useAppSelector((state) =>
     Object.keys(state.prompts).filter((id) => state.prompts[id].isDue),
   );
+  const [reviewAreaID] = useState(() => `reviewArea-${Date.now()}`);
 
   const [isReviewComplete, setReviewComplete] = useState(false);
 
@@ -68,6 +70,7 @@ export function ModalReview(props: ModalReviewProps) {
         }}
       >
         <orbit-reviewarea
+          id={reviewAreaID}
           modal
           ref={(
             element: {
@@ -77,7 +80,7 @@ export function ModalReview(props: ModalReviewProps) {
           ) => {
             if (element) {
               element.onExitReview = () => {
-                props.onClose();
+                props.onClose(reviewAreaID);
               };
 
               element.onReviewComplete = function () {
@@ -100,8 +103,8 @@ export function ModalReview(props: ModalReviewProps) {
           mode={props.mode}
           context="modal"
           isReviewComplete={isReviewComplete}
-          onClose={props.onClose}
-          onContinueReview={props.onContinueReview}
+          onClose={() => props.onClose(reviewAreaID)}
+          onContinueReview={() => props.onContinueReview(reviewAreaID)}
         />
       </div>
     </ScrollLock>
