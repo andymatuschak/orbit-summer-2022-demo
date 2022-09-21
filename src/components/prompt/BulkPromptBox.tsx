@@ -24,7 +24,7 @@ export interface BulkPromptBoxProps {
   addToSaves?: (id: PromptId) => any;
   clearSaves?: () => any;
   saves?: Set<PromptId>;
-  setHoverPrompt?: (id: PromptId | undefined) => any;
+  setHoverPrompts?: (ids: PromptId[] | undefined) => any;
   setEditPrompt?: (id: PromptId | undefined) => any;
   setTops?: (id: PromptId, top: number) => any;
 }
@@ -82,7 +82,7 @@ export default function BulkPromptBox({
   clearSaves,
   updatePromptBack,
   updatePromptFront,
-  setHoverPrompt,
+  setHoverPrompts,
   setEditPrompt,
   setTops,
 }: BulkPromptBoxProps) {
@@ -162,7 +162,7 @@ export default function BulkPromptBox({
           updatePromptFront={(newPrompt: string) =>
             updatePromptFront(id, newPrompt)
           }
-          onMouseEnter={() => (setHoverPrompt ? setHoverPrompt(id) : null)}
+          onMouseEnter={() => (setHoverPrompts ? setHoverPrompts([id]) : null)}
           onEditStart={() => (setEditPrompt ? setEditPrompt(id) : null)}
           onEditEnd={() => (setEditPrompt ? setEditPrompt(undefined) : null)}
           ref={(el) => {
@@ -209,14 +209,14 @@ export default function BulkPromptBox({
       `}
       onMouseEnter={() => {
         setIsBulkPromptHovered(true);
-        if (setHoverPrompt) setHoverPrompt(ids[0]);
+        if (setHoverPrompts) setHoverPrompts(ids);
       }}
       onMouseLeave={() => {
         setIsBulkPromptHovered(false);
         if (!isFocused && clearSaves) {
           clearSaves();
         }
-        if (setHoverPrompt) setHoverPrompt(undefined);
+        if (setHoverPrompts) setHoverPrompts(undefined);
       }}
     >
       <>
@@ -233,7 +233,7 @@ export default function BulkPromptBox({
           setIsButtonHovered(true);
           setIsOpen(true);
           determineLayout();
-          if (setHoverPrompt) setHoverPrompt(ids[0]);
+          if (setHoverPrompts) setHoverPrompts(ids);
         }}
         onMouseLeave={() => {
           setIsButtonHovered(false);
