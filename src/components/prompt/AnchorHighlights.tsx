@@ -27,6 +27,14 @@ function classNameForPromptID(id: PromptId): string {
   return `orbitanchor-${id.replace(/ /g, "-")}`;
 }
 
+enum HighlightTypes {
+  Transparent,
+  Saved,
+  Hover,
+}
+
+const HighlightColors = [SAVED_COLOR, TRANSPARENT, HOVER_COLOR];
+
 export function AnchorHighlight({
   prompts,
   promptLocations,
@@ -46,6 +54,15 @@ export function AnchorHighlight({
   const [existingPromptIds, setExistingPromptIds] = useState<Set<string>>(
     new Set<string>(),
   );
+
+  // TODO: refactor all instances of this logic to use this instead. It's getting DRY
+  function highlightDrawnId(id: string, type: HighlightTypes) {
+    const color = HighlightColors[type];
+    const els = document.getElementsByClassName(classNameForPromptID(id));
+    for (const el of els) {
+      el.setAttribute("style", `background-color:${color};`);
+    }
+  }
 
   useEffect(() => {
     // Set all prompts to state based on saved
@@ -77,11 +94,7 @@ export function AnchorHighlight({
     // Apply hover if eligible
     hoverPrompts?.forEach((hoverPrompt) => {
       var targetId: string | undefined;
-      if (
-        hoverPrompt &&
-        // !prompts[hoverPrompt].isSaved &&
-        visiblePromptIDs.has(hoverPrompt)
-      ) {
+      if (hoverPrompt && visiblePromptIDs.has(hoverPrompt)) {
         targetId = hoverPrompt;
       }
       if (editPrompt) {
@@ -97,6 +110,12 @@ export function AnchorHighlight({
         }
       }
     });
+
+    // Apply edit
+    if (editPrompt) {
+      const targetId = promptIdToDrawnPromptId.get(editPrompt);
+      if (targetId) highlightDrawnId(targetId, HighlightTypes.Hover);
+    }
   }, [
     hoverPrompts,
     editPrompt,
