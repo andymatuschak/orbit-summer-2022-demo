@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { PromptsState } from "../../app/promptSlice";
+import { Prompt, PromptId, PromptsState } from "../../app/promptSlice";
 import { PromptLocation } from "../../util/resolvePromptLocations";
 import { highlightRange } from "./highlightRange";
 
@@ -13,6 +13,7 @@ export interface AnchorHighlightProps {
   visiblePromptIDs: Set<string>;
   hoverPrompt: string | undefined;
   editPrompt: string | undefined;
+  setHoverPrompt: (id: string | undefined) => any;
 }
 
 function areRangesSame(rangeA: Range, rangeB: Range): boolean {
@@ -32,6 +33,7 @@ export function AnchorHighlight({
   visiblePromptIDs,
   hoverPrompt,
   editPrompt,
+  setHoverPrompt,
 }: AnchorHighlightProps) {
   // If two prompts share a functional range, then one prompt is the "drawn" prompt and the other does not need to be redrawn
   // A prompt can have itself as the drawn promptId
@@ -160,6 +162,40 @@ export function AnchorHighlight({
       setExistingPromptIds(newExistingPromptIds);
     }
   }, [promptIdToDrawnPromptId, promptLocations, prompts, existingPromptIds]);
+
+  useEffect(() => {
+    const onMouseEnter = function (id: string) {
+      if (prompts[id].isSaved) {
+        setHoverPrompt(id);
+      }
+    };
+    const onMouseLeave = function (id: string) {
+      setHoverPrompt(undefined);
+    };
+
+    const callbacks: { [id: PromptId]: (() => void)[] } = {};
+    existingPromptIds.forEach((id) => {
+      callbacks[id] = [() => onMouseEnter(id), () => onMouseLeave(id)];
+    });
+
+    existingPromptIds.forEach((id) => {
+      const els = document.getElementsByClassName(classNameForPromptID(id));
+      for (const el of els) {
+        el.addEventListener("mouseenter", callbacks[id][0]);
+        el.addEventListener("mouseleave", callbacks[id][1]);
+      }
+    });
+
+    return () => {
+      existingPromptIds.forEach((id) => {
+        const els = document.getElementsByClassName(classNameForPromptID(id));
+        for (const el of els) {
+          el.removeEventListener("mouseenter", callbacks[id][0]);
+          el.removeEventListener("mouseleave", callbacks[id][1]);
+        }
+      });
+    };
+  }, [prompts, existingPromptIds]);
 
   return null;
 }
