@@ -184,7 +184,7 @@ const Container = styled.div<
       : null}
 `;
 
-export default forwardRef(function (
+const PromptBox = forwardRef(function (
   {
     prompt,
     isNew,
@@ -351,3 +351,5 @@ export default forwardRef(function (
     </Container>
   );
 });
+
+export default PromptBox;

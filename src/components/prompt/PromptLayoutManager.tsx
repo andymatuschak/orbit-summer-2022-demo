@@ -91,6 +91,18 @@ export function PromptLayoutManager({
 
   const bulkPromptLocations = useRef<{ [id: PromptId]: number }>({});
   const [bulkSaves, setBulkSaves] = useState<Set<PromptId>>(new Set());
+  const addToSaves = useCallback(
+    (id: PromptId) => {
+      setBulkSaves(new Set(bulkSaves.add(id)));
+    },
+    [bulkSaves, setBulkSaves],
+  );
+  const clearSaves = useCallback(() => {
+    if (bulkSaves.size > 0) {
+      setBulkSaves(new Set());
+    }
+  }, [bulkSaves, setBulkSaves]);
+
   const [currHoverPrompt, setHoverPrompt] = useState<PromptId>();
   const [currEditPrompt, setEditPrompt] = useState<PromptId>();
   // We have to let the shadow container mount and render for sizing
@@ -234,7 +246,7 @@ export function PromptLayoutManager({
                 }}
                 transition={TRANSITION}
               >
-                <PromptBox
+                <PromptBoxMemo
                   prompt={prompts[id]}
                   isNew={id === newPromptId}
                   context={
@@ -282,13 +294,13 @@ export function PromptLayoutManager({
                 }}
                 transition={TRANSITION}
               >
-                <BulkPromptBox
+                <BulkPromptBoxMemo
                   prompts={ids.map((id) => prompts[id])}
                   ids={ids}
                   savePrompt={(id) => dispatch(savePrompt(id))}
-                  addToSaves={(id) => setBulkSaves(new Set(bulkSaves.add(id)))}
+                  addToSaves={addToSaves}
                   saves={bulkSaves}
-                  clearSaves={() => setBulkSaves(new Set())}
+                  clearSaves={clearSaves}
                   updatePromptFront={(id, newPrompt) =>
                     dispatch(updatePromptFront([id, newPrompt]))
                   }
@@ -322,36 +334,77 @@ export function PromptLayoutManager({
 interface ShadowPromptsProps {
   prompts: PromptsState;
   marginX: number;
-  promptMeasureRefs: React.MutableRefObject<{[id: string]: HTMLDivElement | null}>
-  promptLocations: {[id: string]: PromptLocation};
+  promptMeasureRefs: React.MutableRefObject<{
+    [id: string]: HTMLDivElement | null;
+  }>;
+  promptLocations: { [id: string]: PromptLocation };
 }
 
-const ShadowPrompts = React.memo(function({prompts, marginX, promptMeasureRefs, promptLocations}: ShadowPromptsProps){
+const ShadowPrompts = React.memo(function ({
+  prompts,
+  marginX,
+  promptMeasureRefs,
+  promptLocations,
+}: ShadowPromptsProps) {
   return (
-      <ShadowContainer>
-        {Object.entries(prompts).map(([id]) => {
-          return (
-            <div
-              key={id}
-              css={{
-                position: "absolute",
-                left: marginX,
-                top: promptLocations[id]?.top,
-                width: 332,
-              }}
-              ref={(el) => (promptMeasureRefs.current[id] = el)}
-            >
-              <PromptBox
-                prompt={prompts[id]}
-                context={PromptContext.Floating}
-                savePrompt={() => null}
-                forceHover={true}
-                updatePromptFront={(newPrompt) => null}
-                updatePromptBack={(newPrompt) => null}
-              />
-            </div>
-          );
-        })}
-      </ShadowContainer>
-  )
+    <ShadowContainer>
+      {Object.entries(prompts).map(([id]) => {
+        return (
+          <div
+            key={id}
+            css={{
+              position: "absolute",
+              left: marginX,
+              top: promptLocations[id]?.top,
+              width: 332,
+            }}
+            ref={(el) => (promptMeasureRefs.current[id] = el)}
+          >
+            <PromptBox
+              prompt={prompts[id]}
+              context={PromptContext.Floating}
+              savePrompt={() => null}
+              forceHover={true}
+              updatePromptFront={(newPrompt) => null}
+              updatePromptBack={(newPrompt) => null}
+            />
+          </div>
+        );
+      })}
+    </ShadowContainer>
+  );
+});
+
+// Memo-ized PromptBox that is aware of some of the logic of PromptLayoutManager
+export const PromptBoxMemo = React.memo(PromptBox, (prev, curr) => {
+  if (prev.prompt !== curr.prompt) {
+    return false;
+  }
+  if (prev.prompt.content.front !== curr.prompt.content.front) {
+    return false;
+  }
+  if (prev.prompt.content.back !== curr.prompt.content.back) {
+    return false;
+  }
+  if (prev.isNew !== curr.isNew) {
+    return false;
+  }
+  if (prev.context !== curr.context) {
+    return false;
+  }
+  return true;
+});
+
+// Memo-ized PromptBox that is aware of some of the logic of PromptLayoutManager and also aware of the fact that saved prompts cannot be in a bulk unless the bulk is hovered
+export const BulkPromptBoxMemo = React.memo(BulkPromptBox, (prev, curr) => {
+  if (prev.ids.join() !== curr.ids.join()) {
+    return false;
+  }
+  if (prev.saves !== curr.saves) {
+    return false;
+  }
+  if (prev.addToSaves !== curr.addToSaves) {
+    return false;
+  }
+  return true;
 });
