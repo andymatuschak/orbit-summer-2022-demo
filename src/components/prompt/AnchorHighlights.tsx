@@ -46,13 +46,13 @@ export function AnchorHighlight({
   // If two prompts share a functional range, then one prompt is the "drawn" prompt and the other does not need to be redrawn
   // A prompt can have itself as the drawn promptId
   const [promptIdToDrawnPromptId, setPromptIdToDrawnPromptId] = useState<
-    Map<string, string>
-  >(new Map<string, string>());
+    Map<PromptId, PromptId>
+  >(new Map<PromptId, PromptId>());
   const [drawnPromptIdToIds, setDrawnPromptIdToIds] = useState<
     Map<string, string[]>
-  >(new Map<string, string[]>());
+  >(new Map<PromptId, PromptId[]>());
   const [existingPromptIds, setExistingPromptIds] = useState<Set<string>>(
-    new Set<string>(),
+    new Set<PromptId>(),
   );
 
   // TODO: refactor all instances of this logic to use this instead. It's getting DRY
@@ -185,7 +185,9 @@ export function AnchorHighlight({
   }, [promptIdToDrawnPromptId, promptLocations, prompts, existingPromptIds]);
 
   useEffect(() => {
-    const onMouseEnter = function (id: string) {
+    const interruptibleDebounces = new Set<PromptId>();
+    const onMouseEnter = function (id: PromptId) {
+      interruptibleDebounces.delete(id);
       if (prompts[id].isSaved) {
         // Get other prompts this one may be drawing for
         const others = drawnPromptIdToIds.get(id);
@@ -193,9 +195,25 @@ export function AnchorHighlight({
         setHoverPrompts(all);
       }
     };
-    const onMouseLeave = function (id: string) {
+
+    // Lagging edge debounce to prevent scroll-flicker, with interruption
+    function debounce(func: Function, timeout = 200) {
+      let timeoutId: number;
+      return function (this: any, id: PromptId) {
+        clearTimeout(timeoutId);
+        interruptibleDebounces.add(id);
+        timeoutId = window.setTimeout(() => {
+          if (interruptibleDebounces.has(id)) {
+            interruptibleDebounces.delete(id);
+            func.apply(this, [id]);
+          }
+        }, timeout);
+      };
+    }
+
+    const onMouseLeave = debounce(function (id: PromptId) {
       setHoverPrompts(undefined);
-    };
+    });
 
     const callbacks: { [id: PromptId]: (() => void)[] } = {};
     existingPromptIds.forEach((id) => {
