@@ -28,16 +28,27 @@ export default function App({ marginX, textRoot, promptLists }: AppProps) {
   );
   useReviewAreaIntegration();
 
+  // HACK HACK: when orbit-reviewarea lays out, it'll move prompts down the page. Lay out again a couple seconds after load...
+  const [promptRelayoutTime, setPromptRelayoutTime] = useState(0);
+  useEffect(() => {
+    setTimeout(() => {
+      setPromptRelayoutTime(Date.now());
+    }, 2000);
+  }, []);
+
   const promptLocations = useAsyncLayoutDependentValue(
     null,
     useCallback(async () => {
+      // noinspection JSUnusedLocalSymbols
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
+      const unused = promptRelayoutTime;
       if (Object.keys(prompts).length > 0) {
         return await resolvePromptLocations(prompts);
       } else {
         return null;
       }
       // TODO: We don't really want to rerun this every time `prompts` changes. Think more carefully about this...
-    }, [prompts]),
+    }, [prompts, promptRelayoutTime]),
   );
 
   const dispatch = useAppDispatch();
