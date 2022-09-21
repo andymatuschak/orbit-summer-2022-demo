@@ -13,7 +13,7 @@ export interface AnchorHighlightProps {
   visiblePromptIDs: Set<string>;
   hoverPrompts: PromptId[] | undefined;
   editPrompt: PromptId | undefined;
-  setHoverPrompt: (id: PromptId | undefined) => any;
+  setHoverPrompts: (id: PromptId[] | undefined) => any;
 }
 
 function areRangesSame(rangeA: Range, rangeB: Range): boolean {
@@ -33,7 +33,7 @@ export function AnchorHighlight({
   visiblePromptIDs,
   hoverPrompts,
   editPrompt,
-  setHoverPrompt,
+  setHoverPrompts,
 }: AnchorHighlightProps) {
   // If two prompts share a functional range, then one prompt is the "drawn" prompt and the other does not need to be redrawn
   // A prompt can have itself as the drawn promptId
@@ -168,11 +168,14 @@ export function AnchorHighlight({
   useEffect(() => {
     const onMouseEnter = function (id: string) {
       if (prompts[id].isSaved) {
-        setHoverPrompt(id);
+        // Get other prompts this one may be drawing for
+        const others = drawnPromptIdToIds.get(id);
+        const all = others ? [id, ...others] : [id];
+        setHoverPrompts(all);
       }
     };
     const onMouseLeave = function (id: string) {
-      setHoverPrompt(undefined);
+      setHoverPrompts(undefined);
     };
 
     const callbacks: { [id: PromptId]: (() => void)[] } = {};
@@ -197,7 +200,7 @@ export function AnchorHighlight({
         }
       });
     };
-  }, [prompts, existingPromptIds]);
+  }, [prompts, existingPromptIds, drawnPromptIdToIds]);
 
   return null;
 }
