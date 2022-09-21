@@ -105,6 +105,7 @@ export function PromptLayoutManager({
 
   const [currHoverPrompt, setHoverPrompt] = useState<PromptId>();
   const [currEditPrompt, setEditPrompt] = useState<PromptId>();
+  const [currAnchorHover, setCurrAnchorHover] = useState<PromptId>();
   // We have to let the shadow container mount and render for sizing
   const [delayOneRender, setDelayOneRender] = useState<boolean>(true);
   const isCollapsed = useLayoutDependentValue<boolean>(
@@ -249,6 +250,7 @@ export function PromptLayoutManager({
                 <PromptBoxMemo
                   prompt={prompts[id]}
                   isNew={id === newPromptId}
+                  isAnchorHovered={id === currAnchorHover}
                   context={
                     isCollapsed
                       ? PromptContext.Collapsed
@@ -326,6 +328,7 @@ export function PromptLayoutManager({
         promptLocations={promptLocations}
         hoverPrompt={currHoverPrompt}
         editPrompt={currEditPrompt}
+        setHoverPrompt={setCurrAnchorHover}
       />
     </>
   );
@@ -390,6 +393,9 @@ export const PromptBoxMemo = React.memo(PromptBox, (prev, curr) => {
     return false;
   }
   if (prev.context !== curr.context) {
+    return false;
+  }
+  if (prev.isAnchorHovered !== curr.isAnchorHovered) {
     return false;
   }
   return true;

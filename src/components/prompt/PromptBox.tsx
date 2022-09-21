@@ -9,6 +9,7 @@ import React, {
 } from "react";
 import { Prompt } from "../../app/promptSlice";
 import {
+  AnchorHoverProps,
   ANIMATION_TIME_MSEC,
   ContextProps,
   EditingProps,
@@ -42,6 +43,7 @@ export interface PromptProps {
   onMouseLeave?: () => any;
   onEditStart?: () => any;
   onEditEnd?: () => any;
+  isAnchorHovered?: boolean;
 }
 
 const PromptImage = styled.img`
@@ -76,7 +78,7 @@ const CollapsedIconBackground = styled.div<SavedProps & HoverProps>`
 `;
 
 const Container = styled.div<
-  HoverProps & SavedProps & EditingProps & ContextProps
+  HoverProps & SavedProps & EditingProps & ContextProps & AnchorHoverProps
 >`
   display: flex;
   flex-direction: row;
@@ -94,7 +96,7 @@ const Container = styled.div<
       !props.isSaved
     ) {
       return "3px solid var(--fgTertiary)";
-    } else if (props.isHovered && !props.isSaved) {
+    } else if ((props.isHovered && !props.isSaved) || props.isAnchorHovered) {
       return "3px solid var(--accentPrimary)";
     } else if (
       props.isSaved &&
@@ -184,6 +186,16 @@ const Container = styled.div<
       : null}
 `;
 
+const AnchorHoverBorder = styled.div`
+  height: calc(100% + 6px);
+  width: calc(100% + 6px);
+  background-color: var(--accentPrimary);
+  position: absolute;
+  top: -3px;
+  left: -3px;
+  z-index: -1;
+`;
+
 const PromptBox = forwardRef(function (
   {
     prompt,
@@ -198,6 +210,7 @@ const PromptBox = forwardRef(function (
     onMouseLeave,
     onEditStart,
     onEditEnd,
+    isAnchorHovered,
   }: PromptProps,
   ref: ForwardedRef<HTMLDivElement>,
 ) {
@@ -268,6 +281,7 @@ const PromptBox = forwardRef(function (
   return (
     <Container
       isHovered={isHovered}
+      isAnchorHovered={isAnchorHovered ?? false}
       isSaved={isSaved}
       isEditing={isEditing}
       context={context}
@@ -282,6 +296,7 @@ const PromptBox = forwardRef(function (
       onClick={() => savePrompt()}
       ref={ref}
     >
+      {isAnchorHovered && <AnchorHoverBorder />}
       {context !== PromptContext.Collapsed && (
         <Icon
           isHovered={isHovered}

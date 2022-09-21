@@ -13,6 +13,10 @@ export interface HoverProps {
   isHovered: boolean;
 }
 
+export interface AnchorHoverProps {
+  isAnchorHovered: boolean;
+}
+
 export interface SavedProps {
   isSaved: boolean;
 }
