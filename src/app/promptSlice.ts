@@ -116,7 +116,12 @@ const promptSlice = createSlice({
   },
   extraReducers(builder) {
     builder.addCase(loadPrompts.fulfilled, (_state, action) => {
-      return action.payload;
+      // Merge the loaded prompts with any persisted prompts.
+      for (const [id, prompt] of Object.entries(action.payload)) {
+        if (!_state[id]) {
+          _state[id] = prompt;
+        }
+      }
     });
   },
 });

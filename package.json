@@ -22,6 +22,7 @@
     "react-redux": "^8.0.2",
     "react-scripts": "5.0.1",
     "react-scrolllock": "^5.0.1",
+    "redux-persist": "^6.0.0",
     "typescript": "^4.7.3",
     "uuid": "^9.0.0"
   },
