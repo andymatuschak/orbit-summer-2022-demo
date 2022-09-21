@@ -48,17 +48,30 @@ export default function App({ marginX, textRoot, promptLists }: AppProps) {
     useState<ModalReviewState | null>(null);
 
   const [newPromptId, setNewPromptId] = useState<string | undefined>();
-  const mousePosition = useRef<{x: number, y: number}>();
+  const mousePosition = useRef<{ x: number; y: number }>();
 
   // Listen to mouse events for context menu
   useEffect(() => {
-    const onMouseMove = function(e: MouseEvent){
-      const newMousePosition = {x: e.clientX + window.scrollX, y: e.clientY + window.scrollY};
+    const onMouseMove = function (e: MouseEvent) {
+      const newMousePosition = {
+        x: e.clientX + window.scrollX,
+        y: e.clientY + window.scrollY,
+      };
       mousePosition.current = newMousePosition;
-    }
-    document.addEventListener('mousemove', onMouseMove);
-    return () => document.removeEventListener('mousemove', onMouseMove);
+    };
+    document.addEventListener("mousemove", onMouseMove);
+    return () => document.removeEventListener("mousemove", onMouseMove);
   }, []);
+
+  function onModalReviewComplete(
+    reviewAreaID: string,
+    nextState: ModalReviewState | null,
+  ) {
+    if (modalReviewState?.mode === "list") {
+      modalReviewState.onReviewExit(reviewAreaID);
+    }
+    setModalReviewState(nextState);
+  }
 
   if (!promptLocations) return null;
   return (
@@ -162,8 +175,8 @@ export default function App({ marginX, textRoot, promptLists }: AppProps) {
       {modalReviewState && (
         <ModalReview
           key={modalReviewState.mode} /* remount when mode changes */
-          onClose={() => setModalReviewState(null)}
-          onContinueReview={() => setModalReviewState({ mode: "user" })}
+          onClose={(id) => onModalReviewComplete(id, null)}
+          onContinueReview={(id) => onModalReviewComplete(id, { mode: "user" })}
           {...modalReviewState}
         />
       )}
@@ -172,10 +185,11 @@ export default function App({ marginX, textRoot, promptLists }: AppProps) {
           <PromptList
             key={`promptList-${id}`}
             targetElementID={id}
-            onStartReview={() =>
+            onStartReview={(onReviewExit) =>
               setModalReviewState({
                 mode: "list",
                 promptIDs: spec.promptIDs,
+                onReviewExit,
               })
             }
             {...spec}

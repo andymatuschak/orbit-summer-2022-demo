@@ -1,15 +1,69 @@
 import React, { useCallback, useEffect, useMemo, useState } from "react";
 import {
+  removePrompt,
   savePrompt,
   updatePromptBack,
   updatePromptFront,
 } from "../../app/promptSlice";
 import { useAppDispatch, useAppSelector } from "../../app/store";
 import { useLayoutDependentValue } from "../../hooks/useLayoutDependentValue";
+import Check from "../../static/images/Icons/Check.png";
 import Button from "../Button";
 import zIndices from "../common/zIndices";
+import { LabelColor, LabelSmall } from "../Type";
 import PromptBox from "./PromptBox";
 import { PromptContext } from "./PromptComponents";
+
+interface AutosaveBannerProps {
+  onUndo: () => void;
+}
+
+function AutosaveBanner({ onUndo }: AutosaveBannerProps) {
+  return (
+    <div
+      css={{
+        backgroundColor: `var(--bgSecondary)`,
+        marginBottom: 8,
+        borderLeftWidth: 3,
+        borderLeftStyle: "solid",
+        borderLeftColor: `var(--accentSecondary)`,
+        paddingTop: 6,
+        paddingRight: 16,
+        paddingBottom: 6,
+        paddingLeft: 9,
+        display: "flex",
+        alignItems: "center",
+      }}
+    >
+      <div
+        css={{
+          width: 24,
+          height: 24,
+          backgroundColor: "var(--accentSecondary)",
+          maskPosition: "center",
+          maskRepeat: "no-repeat",
+          maskImage: `url(${Check})`,
+          maskSize: "24px 24px",
+          marginRight: 6,
+        }}
+      ></div>
+      <div css={{ marginTop: -2, display: "flex", gap: 8 }}>
+        <LabelSmall text="The prompts you reviewed have been saved to your Orbit." />
+        <button
+          onClick={onUndo}
+          style={{
+            border: "none",
+            background: "none",
+            padding: 0,
+            cursor: "pointer",
+          }}
+        >
+          <LabelSmall text="Undo" color={LabelColor.AccentPrimary} />
+        </button>
+      </div>
+    </div>
+  );
+}
 
 export interface PromptListSpec {
   promptIDs: string[];
@@ -19,7 +73,7 @@ export interface PromptListProps extends PromptListSpec {
   // Very much a hack. To make prompt lists appear to be "in" the main flow of the text, without adding N different React roots, we add an empty placeholder <div> to the body of the article. This component uses that <div>s width and y position to define its own, then lays out an absolutely-positioned *overlay* in the floating prototype root node. Then it syncs the height of that laid-out component *back* to the placeholder <div> in the main flow of the article, so that content below is repositioned accordingly.
   targetElementID: string;
 
-  onStartReview: () => void;
+  onStartReview: (onReviewExit: (reviewAreaID: string) => void) => void;
 }
 
 export function PromptList({
@@ -59,6 +113,36 @@ export function PromptList({
   }, [listElement, targetElement]);
 
   const dispatch = useAppDispatch();
+
+  const [completedModalReviewID, setCompletedModalReviewID] = useState<
+    string | null
+  >(null);
+  const mostRecentReviewID = completedModalReviewID;
+  function onReviewComplete(reviewAreaID: string) {
+    setCompletedModalReviewID(reviewAreaID);
+  }
+
+  const autosavedPromptIDs = useMemo(() => {
+    return mostRecentReviewID
+      ? promptEntries
+          .filter(
+            ([id, prompt]) => prompt.sourceReviewAreaID === mostRecentReviewID,
+          )
+          .map(([id]) => id)
+      : [];
+  }, [promptEntries, mostRecentReviewID]);
+
+  useEffect(() => {
+    const savedPromptIDs = promptEntries.filter(
+      ([id, prompt]) => prompt.sourceReviewAreaID === mostRecentReviewID,
+    );
+    console.log("REVIEW COMPLETE", savedPromptIDs, promptEntries);
+  }, [mostRecentReviewID]);
+
+  function onUndoAutosave() {
+    setCompletedModalReviewID(null);
+    autosavedPromptIDs.forEach((id) => dispatch(removePrompt(id)));
+  }
 
   const PromptListColumn = ({ prompts }: { prompts: typeof promptEntries }) => {
     // We track prompt heights while they're being hovered to hackily create the "expand on hover without resizing" behavior seen in the prompt list.
@@ -136,7 +220,7 @@ export function PromptList({
         </div>
         <div css={{ flexGrow: 0 }}>
           <Button
-            onClick={onStartReview}
+            onClick={() => onStartReview(onReviewComplete)}
             icon="rightArrow"
             disabled={promptEntries.every(
               ([_, { isSaved, isDue }]) => isSaved && !isDue,
@@ -145,6 +229,18 @@ export function PromptList({
             Review All
           </Button>
         </div>
+      </div>
+      <div
+        css={{
+          height: autosavedPromptIDs.length > 0 ? 48 : 0,
+          overflow: "hidden",
+          transition:
+            autosavedPromptIDs.length > 0
+              ? "height 500ms 300ms var(--expoTiming)"
+              : undefined,
+        }}
+      >
+        <AutosaveBanner onUndo={onUndoAutosave} />
       </div>
       <div
         css={{
