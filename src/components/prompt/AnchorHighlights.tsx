@@ -197,7 +197,7 @@ export function AnchorHighlight({
     };
 
     // Lagging edge debounce to prevent scroll-flicker, with interruption
-    function debounce(func: Function, timeout = 200) {
+    function debounce(func: Function, timeout = 50) {
       let timeoutId: number;
       return function (this: any, id: PromptId) {
         clearTimeout(timeoutId);

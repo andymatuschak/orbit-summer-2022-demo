@@ -388,7 +388,7 @@ const PromptBox = forwardRef(function (
             css={css`
               position: relative;
               top: -26px;
-              left: 3px;
+              left: 4px;
             `}
           >
             <Icon
