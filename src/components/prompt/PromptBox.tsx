@@ -11,6 +11,8 @@ import { Prompt } from "../../app/promptSlice";
 import {
   AnchorHoverProps,
   ANIMATION_TIME_MSEC,
+  CollapsedPromptDirection,
+  CollapsedPromptDirectionProps,
   ContextProps,
   EditingProps,
   HoverProps,
@@ -36,6 +38,7 @@ export interface PromptProps {
   forceHover?: boolean;
   clearNew?: () => any;
   context: PromptContext;
+  collapsedDirection?: CollapsedPromptDirection;
   savePrompt: () => any;
   updatePromptFront: (newPrompt: string) => any;
   updatePromptBack: (newPrompt: string) => any;
@@ -59,26 +62,38 @@ const PromptContainer = styled.div`
   gap: 8px;
 `;
 
-const CollapsedIconContainer = styled.div<SavedProps & HoverProps>`
+const CollapsedIconContainer = styled.div<
+  SavedProps & HoverProps & CollapsedPromptDirectionProps
+>`
   margin-left: auto;
   pointer-events: all;
   min-width: 32px;
   height: 32px;
   position: relative;
   top: -6px;
-  left: 5px;
+  left: ${(props) =>
+    props.direction === CollapsedPromptDirection.LTR ? -279 : 0}px;
 `;
 
-const CollapsedIconBackground = styled.div<SavedProps & HoverProps>`
+const CollapsedIconBackground = styled.div<
+  SavedProps & HoverProps & EditingProps
+>`
   background-color: ${(props) =>
-    props.isSaved && !props.isHovered ? "var(--bgSecondary)" : null};
+    props.isSaved && !props.isHovered && !props.isEditing
+      ? "var(--bgSecondary)"
+      : null};
   border-radius: 50%;
   width: 100%;
   height: 100%;
 `;
 
 const Container = styled.div<
-  HoverProps & SavedProps & EditingProps & ContextProps & AnchorHoverProps
+  HoverProps &
+    SavedProps &
+    EditingProps &
+    ContextProps &
+    AnchorHoverProps &
+    CollapsedPromptDirectionProps
 >`
   display: flex;
   flex-direction: row;
@@ -118,7 +133,8 @@ const Container = styled.div<
   }};
   box-shadow: ${(props) => {
     if (
-      props.isHovered &&
+      (props.isHovered ||
+        (props.context === PromptContext.Collapsed && props.isEditing)) &&
       (!props.isSaved || props.context === PromptContext.Collapsed) &&
       props.context !== PromptContext.Bulk
     ) {
@@ -179,7 +195,10 @@ const Container = styled.div<
 
   /* Collapsed specific handling */
   ${(props) =>
-    props.context === PromptContext.Collapsed ? "left: -288px;" : null}
+    props.context === PromptContext.Collapsed &&
+    props.direction === CollapsedPromptDirection.RTL
+      ? "left: -284px;"
+      : null}
   ${(props) =>
     props.context === PromptContext.Collapsed && !props.isHovered
       ? "pointer-events: none;"
@@ -202,6 +221,7 @@ const PromptBox = forwardRef(function (
     isNew,
     clearNew,
     context,
+    collapsedDirection = CollapsedPromptDirection.RTL,
     forceHover,
     savePrompt,
     updatePromptFront,
@@ -285,6 +305,7 @@ const PromptBox = forwardRef(function (
       isSaved={isSaved}
       isEditing={isEditing}
       context={context}
+      direction={collapsedDirection}
       onMouseEnter={(event) => {
         setIsHovered(true);
         if (onMouseEnter) onMouseEnter(event);
@@ -297,7 +318,9 @@ const PromptBox = forwardRef(function (
       ref={ref}
     >
       {isAnchorHovered && <AnchorHoverBorder />}
-      {context !== PromptContext.Collapsed && (
+      {(context !== PromptContext.Collapsed ||
+        ((isHovered || isEditing) &&
+          collapsedDirection === CollapsedPromptDirection.LTR)) && (
         <Icon
           isHovered={isHovered}
           isSaved={isSaved}
@@ -344,9 +367,18 @@ const PromptBox = forwardRef(function (
             ))}
         </PromptContainer>
       )}
+      {/* This icon is used in the collapsed state as the trigger icon for showing full prompt */}
       {context === PromptContext.Collapsed && (
-        <CollapsedIconContainer isSaved={isSaved} isHovered={isHovered}>
-          <CollapsedIconBackground isSaved={isSaved} isHovered={isHovered} />
+        <CollapsedIconContainer
+          isSaved={isSaved}
+          isHovered={isHovered}
+          direction={collapsedDirection}
+        >
+          <CollapsedIconBackground
+            isSaved={isSaved}
+            isHovered={isHovered}
+            isEditing={isEditing}
+          />
           <div
             css={css`
               position: relative;
