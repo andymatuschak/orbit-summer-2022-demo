@@ -1,10 +1,10 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
+import shuffle from "knuth-shuffle-seeded";
 import {
   PromptLocation,
   resolvePromptLocations,
 } from "../util/resolvePromptLocations";
 import { loadPrompts, Prompt, PromptsState } from "./promptSlice";
-import shuffle from "knuth-shuffle-seeded";
 
 export interface Rect {
   left: number;
@@ -16,6 +16,9 @@ export interface Rect {
 export interface InlineReviewModule {
   frame: Rect;
   promptIDs: string[];
+
+  // If this inline review has been "turned into" a prompt list, its ID will be saved here. Pretty hacky approach...
+  promptListID: string | null;
 }
 
 export type InlineReviewModuleState = { [id: string]: InlineReviewModule };
@@ -31,34 +34,61 @@ const inlineReviewModuleSlice = createSlice({
         state[id].frame = getFrame(element);
       }
     },
+    convertIntoPromptList(
+      state,
+      action: PayloadAction<{ reviewModuleID: string; promptListID: string }>,
+    ) {
+      state[action.payload.reviewModuleID].promptListID =
+        action.payload.promptListID;
+    },
   },
   extraReducers(builder) {
     // We scan the page for review modules once we've loaded the prompt data for the page.
     builder.addCase(loadPrompts.fulfilled, (state, action) => {
-      const prompts = action.payload;
-      const modules = indexReviewModules(prompts);
-      // HACK: not really kosher to cause an async side-effect from a reducer like this, but eh.
-      (async () => {
-        const promptLocations = await resolvePromptLocations(prompts);
-        const protoReviewAreas =
-          document.getElementsByClassName("orbit-reviewarea");
-        const populatedPromptIDs = new Set<string>();
-        for (const protoReviewArea of protoReviewAreas) {
-          populateReviewArea(
-            protoReviewArea,
-            prompts,
-            promptLocations,
-            populatedPromptIDs,
-          );
-        }
-      })();
+      return indexReviewModules(action.payload);
+    });
+    builder.addCase(autopopulateReviewAreas.fulfilled, (state, action) => {
+      for (const { reviewAreaID, promptIDs } of action.payload) {
+        state[reviewAreaID] = {
+          promptIDs,
+          frame: getFrame(document.getElementById(reviewAreaID)!),
+          promptListID: null,
+        };
+      }
     });
     // TODO: implement extra reducers to update inline review module state when prompt contents are edited
   },
 });
 
-export const { updateReviewModuleFrames } = inlineReviewModuleSlice.actions;
+export const { updateReviewModuleFrames, convertIntoPromptList } =
+  inlineReviewModuleSlice.actions;
 export const inlineReviewModuleReducer = inlineReviewModuleSlice.reducer;
+
+export const autopopulateReviewAreas = createAsyncThunk(
+  "autopopulateReviewAreas",
+  async (prompts: PromptsState) => {
+    const promptLocations = await resolvePromptLocations(prompts);
+    const protoReviewAreas =
+      document.getElementsByClassName("orbit-reviewarea");
+    const usedPromptIDs = new Set<string>();
+
+    const populatedReviewAreas: {
+      reviewAreaID: string;
+      promptIDs: string[];
+    }[] = [];
+    for (const protoReviewArea of protoReviewAreas) {
+      populatedReviewAreas.push(
+        populateReviewArea(
+          protoReviewArea,
+          prompts,
+          promptLocations,
+          usedPromptIDs,
+        ),
+      );
+    }
+    return populatedReviewAreas;
+  },
+);
 
 interface ReviewArea extends HTMLElement {
   iframe: HTMLIFrameElement;
@@ -72,6 +102,7 @@ interface ReviewArea extends HTMLElement {
   };
 }
 
+// n.b. this isn't actually used right now because now all review areas are autopopulated, as opposed to being included in the text's .html... maybe should remove...
 function indexReviewModules(prompts: PromptsState): InlineReviewModuleState {
   const reviewAreas = document.getElementsByTagName(
     "orbit-reviewarea",
@@ -97,6 +128,7 @@ function indexReviewModules(prompts: PromptsState): InlineReviewModuleState {
         {
           frame: getFrame(reviewArea),
           promptIDs,
+          promptListID: null,
         },
       ];
     }),
@@ -117,24 +149,25 @@ function populateReviewArea(
   element: Element,
   prompts: PromptsState,
   promptLocations: { [id: string]: PromptLocation },
-  populatedPromptIDs: Set<string>,
-): void {
-  const populatedEntries = Object.entries(prompts).filter(([id, prompt]) => {
-    if (populatedPromptIDs.has(id)) return false;
+  usedPromptIDs: Set<string>,
+): { reviewAreaID: string; promptIDs: string[] } {
+  const reviewAreaPromptIDs = Object.entries(prompts).filter(([id]) => {
+    if (usedPromptIDs.has(id)) return false;
     const range = promptLocations[id].range;
     return rangeCompareNode(range, element) === 1;
   });
 
-  if (populatedEntries.length === 0) {
+  if (reviewAreaPromptIDs.length === 0) {
     throw new Error("No prompts seem to belong to review area!");
   }
 
-  shuffle(populatedEntries, 314159265);
+  shuffle(reviewAreaPromptIDs, 314159265);
 
   const reviewAreaElement = document.createElement("orbit-reviewarea");
+  reviewAreaElement.id = `reviewArea-${element.id || Date.now()}`;
   reviewAreaElement.setAttribute("color", "brown");
-  for (const [id, prompt] of populatedEntries) {
-    populatedPromptIDs.add(id);
+  for (const [id, prompt] of reviewAreaPromptIDs) {
+    usedPromptIDs.add(id);
     const promptElement = document.createElement("orbit-prompt");
     const props = getOrbitPromptProps(prompt);
     promptElement.setAttribute("question", props.question);
@@ -149,6 +182,11 @@ function populateReviewArea(
     reviewAreaElement.appendChild(promptElement);
   }
   element.after(reviewAreaElement);
+
+  return {
+    reviewAreaID: reviewAreaElement.id,
+    promptIDs: reviewAreaPromptIDs.map(([id]) => id),
+  };
 }
 
 // From https://developer.mozilla.org/en-US/docs/Web/API/Range/compareNode

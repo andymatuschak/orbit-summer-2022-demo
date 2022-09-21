@@ -5,6 +5,10 @@ html {
   width: 100vw;
 }
 
+#demo-root {
+  height: 0;
+}
+
 body {
   --accentPrimary: #D60909;
   --accentSecondary: #A06813;

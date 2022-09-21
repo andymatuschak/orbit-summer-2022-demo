@@ -67,6 +67,9 @@ function AutosaveBanner({ onUndo }: AutosaveBannerProps) {
 
 export interface PromptListSpec {
   promptIDs: string[];
+
+  // If this prompt list is "replacing" an inline review area, this prop should correspond to its ID.
+  inlineReviewID?: string;
 }
 
 export interface PromptListProps extends PromptListSpec {
@@ -79,6 +82,7 @@ export interface PromptListProps extends PromptListSpec {
 export function PromptList({
   promptIDs,
   targetElementID,
+  inlineReviewID,
   onStartReview,
 }: PromptListProps) {
   const promptEntries = useAppSelector((state) =>
@@ -103,6 +107,7 @@ export function PromptList({
   const [listElement, setListElement] = useState<HTMLElement | null>(null);
   useEffect(() => {
     if (!listElement) return;
+    targetElement.style.transition = "height 300ms var(--expoTiming)";
     const observer = new ResizeObserver(() => {
       // hackily not bothering to read the observer entries
       const rect = listElement.getBoundingClientRect();
@@ -117,7 +122,7 @@ export function PromptList({
   const [completedModalReviewID, setCompletedModalReviewID] = useState<
     string | null
   >(null);
-  const mostRecentReviewID = completedModalReviewID;
+  const mostRecentReviewID = completedModalReviewID ?? inlineReviewID;
   function onReviewComplete(reviewAreaID: string) {
     setCompletedModalReviewID(reviewAreaID);
   }
@@ -131,13 +136,6 @@ export function PromptList({
           .map(([id]) => id)
       : [];
   }, [promptEntries, mostRecentReviewID]);
-
-  useEffect(() => {
-    const savedPromptIDs = promptEntries.filter(
-      ([id, prompt]) => prompt.sourceReviewAreaID === mostRecentReviewID,
-    );
-    console.log("REVIEW COMPLETE", savedPromptIDs, promptEntries);
-  }, [mostRecentReviewID]);
 
   function onUndoAutosave() {
     setCompletedModalReviewID(null);
@@ -201,6 +199,11 @@ export function PromptList({
         top,
         width: width + (12 + 3) * 2,
         zIndex: zIndices.displayOverContent,
+        animation: "300ms linear fadeIn",
+        "@keyframes fadeIn": {
+          from: { opacity: 0 },
+          to: { opacity: 1 },
+        },
       }}
       ref={setListElement}
     >

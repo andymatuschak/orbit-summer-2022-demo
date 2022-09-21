@@ -18,7 +18,7 @@ import { useAppDispatch, useAppSelector } from "./store";
 export interface AppProps {
   marginX: number;
   textRoot: Element;
-  promptLists?: { [elementID: string]: PromptListSpec };
+  promptLists: { [elementID: string]: PromptListSpec };
 }
 
 export default function App({ marginX, textRoot, promptLists }: AppProps) {
@@ -79,10 +79,8 @@ export default function App({ marginX, textRoot, promptLists }: AppProps) {
       <div
         css={{
           position: "absolute",
-          top: 0,
-          right: 0,
-          bottom: 0,
           left: 0,
+          top: 0,
         }}
       >
         <div
@@ -145,6 +143,7 @@ export default function App({ marginX, textRoot, promptLists }: AppProps) {
             >
               <InlineReviewOverlay
                 reviewModuleID={id}
+                promptIDs={reviewModule.promptIDs}
                 onContinueReview={() => setModalReviewState({ mode: "user" })}
               />
             </div>
@@ -181,7 +180,24 @@ export default function App({ marginX, textRoot, promptLists }: AppProps) {
         />
       )}
       {promptLists &&
-        Object.entries(promptLists).map(([id, spec]) => (
+        [
+          ...Object.entries(promptLists),
+          ...Object.entries(inlineReviewModules)
+            // Include inline review modules which have been "turned into" prompt lists.
+            .filter(
+              ([id, inlineReviewModule]) => !!inlineReviewModule.promptListID,
+            )
+            .map(
+              ([id, inlineReviewModule]) =>
+                [
+                  inlineReviewModule.promptListID!,
+                  {
+                    promptIDs: inlineReviewModule.promptIDs,
+                    inlineReviewID: id,
+                  },
+                ] as const,
+            ),
+        ].map(([id, spec]) => (
           <PromptList
             key={`promptList-${id}`}
             targetElementID={id}

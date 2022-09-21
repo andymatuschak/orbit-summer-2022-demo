@@ -11,5 +11,11 @@ export default function IMSApp() {
     }, []),
   );
 
-  return <App marginX={markerX} textRoot={document.getElementById("content")!}/>;
+  return (
+    <App
+      marginX={markerX}
+      textRoot={document.getElementById("content")!}
+      promptLists={{}}
+    />
+  );
 }

@@ -102,7 +102,7 @@ export function ModalReview(props: ModalReviewProps) {
         <CompletedReviewOverlay
           mode={props.mode}
           context="modal"
-          isReviewComplete={isReviewComplete}
+          isVisible={isReviewComplete}
           onClose={() => props.onClose(reviewAreaID)}
           onContinueReview={() => props.onContinueReview(reviewAreaID)}
         />

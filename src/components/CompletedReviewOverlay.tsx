@@ -6,13 +6,13 @@ import { LabelColor } from "./Type";
 export function CompletedReviewOverlay({
   mode,
   context,
-  isReviewComplete,
+  isVisible,
   onClose,
   onContinueReview,
 }: {
   mode: "list" | "user";
   context: "inline" | "modal";
-  isReviewComplete: boolean;
+  isVisible: boolean;
   onClose: () => void;
   onContinueReview: () => void;
 }) {
@@ -23,21 +23,25 @@ export function CompletedReviewOverlay({
 
   const shouldShowContinueUpsell = mode === "list" && duePromptCount > 0;
 
-  // We don't show this completed overlay for inline review modules when no extra prompts are due.
-  const shouldShowOverlay =
-    isReviewComplete && (context === "modal" || duePromptCount > 0);
-
   return (
     <div
       css={{
         position: "absolute",
-        top: shouldShowContinueUpsell ? (context === "modal" ? 128 : 164) : 100,
+        top: shouldShowContinueUpsell
+          ? context === "modal"
+            ? 128
+            : 164
+          : context === "modal"
+          ? 100
+          : "calc(50% + 125px)",
         left: 0,
         bottom: 0,
         right: 0,
-        opacity: shouldShowOverlay ? 1 : 0,
-        pointerEvents: shouldShowOverlay ? "all" : "none",
-        transition: "opacity 0.25s 600ms linear",
+        opacity: isVisible ? 1 : 0,
+        pointerEvents: isVisible ? "all" : "none",
+        transition: isVisible
+          ? "opacity 0.25s 600ms linear"
+          : "opacity 0.25s linear",
         display: "flex",
         flexDirection: "column",
         justifyContent: context === "modal" ? "center" : "flex-start",
@@ -74,51 +78,53 @@ export function CompletedReviewOverlay({
           duePromptCount > 1 ? "are" : "is"
         } ready for review.`}</div>
       )}
-      <div
-        css={{
-          display: "flex",
-          flexDirection: "row",
-        }}
-      >
-        <Button
-          size="large"
-          onClick={onClose}
-          color={
-            context === "modal" ? LabelColor.White : LabelColor.AccentPrimary
-          }
-          backgroundColor={
-            shouldShowContinueUpsell
-              ? undefined
-              : context === "modal"
-              ? "#F73B3B"
-              : "var(--bgSecondary)"
-          }
+      {(context === "modal" || duePromptCount > 0) && (
+        <div
+          css={{
+            display: "flex",
+            flexDirection: "row",
+          }}
         >
-          {context === "modal" ? "Return to Book" : "Review Later"}
-        </Button>
-        {shouldShowContinueUpsell && (
-          <div
-            css={{
-              marginLeft: 16,
-            }}
+          <Button
+            size="large"
+            onClick={onClose}
+            color={
+              context === "modal" ? LabelColor.White : LabelColor.AccentPrimary
+            }
+            backgroundColor={
+              shouldShowContinueUpsell
+                ? undefined
+                : context === "modal"
+                ? "#F73B3B"
+                : "var(--bgSecondary)"
+            }
           >
-            <Button
-              size="large"
-              onClick={onContinueReview}
-              color={
-                context === "modal"
-                  ? LabelColor.White
-                  : LabelColor.AccentPrimary
-              }
-              backgroundColor={
-                context === "modal" ? "#F73B3B" : "var(--bgSecondary)"
-              }
+            {context === "modal" ? "Return to Book" : "Review Later"}
+          </Button>
+          {shouldShowContinueUpsell && (
+            <div
+              css={{
+                marginLeft: 16,
+              }}
             >
-              Review Now
-            </Button>
-          </div>
-        )}
-      </div>
+              <Button
+                size="large"
+                onClick={onContinueReview}
+                color={
+                  context === "modal"
+                    ? LabelColor.White
+                    : LabelColor.AccentPrimary
+                }
+                backgroundColor={
+                  context === "modal" ? "#F73B3B" : "var(--bgSecondary)"
+                }
+              >
+                Review Now
+              </Button>
+            </div>
+          )}
+        </div>
+      )}
     </div>
   );
 }
