@@ -72,7 +72,7 @@ const CollapsedIconContainer = styled.div<
   position: relative;
   top: -6px;
   left: ${(props) =>
-    props.direction === CollapsedPromptDirection.LTR ? -279 : 0}px;
+    props.direction === CollapsedPromptDirection.LTR ? -280 : 0}px;
 `;
 
 const CollapsedIconBackground = styled.div<
