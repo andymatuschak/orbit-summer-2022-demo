@@ -12,6 +12,7 @@ import {
   PromptId,
   PromptsState,
   savePrompt,
+  unsavePrompt,
   updatePromptBack,
   updatePromptFront,
 } from "../../app/promptSlice";
@@ -270,6 +271,7 @@ export function PromptLayoutManager({
                   }
                   collapsedDirection={collapsedDirection}
                   savePrompt={() => dispatch(savePrompt(id))}
+                  unsavePrompt={() => dispatch(unsavePrompt(id))}
                   updatePromptFront={(newPrompt) =>
                     dispatch(updatePromptFront([id, newPrompt]))
                   }
