@@ -210,6 +210,13 @@ export function PromptLayoutManager({
       for (i = 0; i < runs.length - 1; i++) {
         const currId = runs[i][0];
         const nextId = runs[i + 1][0];
+        // If the prompt locations haven't resolved for a new prompt, they may be not be ready, we skip and assume when they resolve this hook will rerun
+        if (
+          newPromptLocations[currId] === undefined ||
+          newPromptLocations[nextId] === undefined
+        ) {
+          continue;
+        }
         const currHeight =
           boundingBoxes[currId].bottom - boundingBoxes[currId].top;
         const currBottom = newPromptLocations[currId].top + currHeight;
@@ -242,7 +249,10 @@ export function PromptLayoutManager({
       {!delayOneRender &&
         promptRuns.map((ids) => {
           // If we delete a user authored id, it may be null until layout recalc happens
-          if (prompts[ids[0]] === undefined) {
+          if (
+            prompts[ids[0]] === undefined ||
+            promptLocations[ids[0]] === undefined
+          ) {
             return null;
           } else if (ids.length === 1) {
             const id = ids[0];
