@@ -212,6 +212,7 @@ export default function App({ marginX, textRoot, promptLists }: AppProps) {
           <PromptList
             key={`promptList-${id}`}
             targetElementID={id}
+            promptLocations={promptLocations}
             onStartReview={(onReviewExit) =>
               setModalReviewState({
                 mode: "list",

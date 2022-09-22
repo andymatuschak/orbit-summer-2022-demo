@@ -1,13 +1,16 @@
 import React, { useCallback, useEffect, useMemo, useState } from "react";
 import {
+  PromptId,
   removePrompt,
   savePrompt,
+  unsavePrompt,
   updatePromptBack,
   updatePromptFront,
 } from "../../app/promptSlice";
 import { useAppDispatch, useAppSelector } from "../../app/store";
 import { useLayoutDependentValue } from "../../hooks/useLayoutDependentValue";
 import Check from "../../static/images/Icons/Check.png";
+import { PromptLocation } from "../../util/resolvePromptLocations";
 import Button from "../Button";
 import zIndices from "../common/zIndices";
 import { LabelColor, LabelSmall } from "../Type";
@@ -75,7 +78,7 @@ export interface PromptListSpec {
 export interface PromptListProps extends PromptListSpec {
   // Very much a hack. To make prompt lists appear to be "in" the main flow of the text, without adding N different React roots, we add an empty placeholder <div> to the body of the article. This component uses that <div>s width and y position to define its own, then lays out an absolutely-positioned *overlay* in the floating prototype root node. Then it syncs the height of that laid-out component *back* to the placeholder <div> in the main flow of the article, so that content below is repositioned accordingly.
   targetElementID: string;
-
+  promptLocations: { [id: string]: PromptLocation };
   onStartReview: (onReviewExit: (reviewAreaID: string) => void) => void;
 }
 
@@ -84,6 +87,7 @@ export function PromptList({
   targetElementID,
   inlineReviewID,
   onStartReview,
+  promptLocations,
 }: PromptListProps) {
   const promptEntries = useAppSelector((state) =>
     promptIDs.map((id) => [id, state.prompts[id]] as const),
@@ -142,7 +146,15 @@ export function PromptList({
     autosavedPromptIDs.forEach((id) => dispatch(removePrompt(id)));
   }
 
-  const PromptListColumn = ({ prompts }: { prompts: typeof promptEntries }) => {
+  const PromptListColumn = ({
+    prompts,
+    zStart,
+    promptLocations,
+  }: {
+    prompts: typeof promptEntries;
+    zStart: number;
+    promptLocations: { [id: string]: PromptLocation };
+  }) => {
     // We track prompt heights while they're being hovered to hackily create the "expand on hover without resizing" behavior seen in the prompt list.
     const [heightsByPromptID, setHeightsByPromptID] = useState<{
       [id: string]: number;
@@ -155,7 +167,7 @@ export function PromptList({
             css={{
               marginBottom: 8,
               height: heightsByPromptID[id],
-              zIndex: 100 - i, // i.e. in reverse order, so that lower-y items float above higher-y items
+              zIndex: zStart - i, // i.e. in reverse order, so that lower-y items float above higher-y items
               position: "relative",
             }}
             key={id}
@@ -166,6 +178,17 @@ export function PromptList({
               savePrompt={() => {
                 setHeightsByPromptID({}); // Hover doesn't change size anymore.
                 dispatch(savePrompt(id));
+              }}
+              unsavePrompt={() => {
+                setHeightsByPromptID({}); // Hover doesn't change size anymore.
+                dispatch(unsavePrompt(id));
+              }}
+              jumpToSrcLocation={() => {
+                window.scrollTo({
+                  left: window.scrollX,
+                  top: promptLocations[id].top,
+                  behavior: "smooth",
+                });
               }}
               updatePromptFront={(newPrompt) =>
                 dispatch(updatePromptFront([id, newPrompt]))
@@ -253,10 +276,14 @@ export function PromptList({
       >
         <PromptListColumn
           prompts={promptEntries.filter((_, i) => i % 2 === 0)}
+          promptLocations={promptLocations}
+          zStart={200}
         />
         <div css={{ width: 8 }}></div>
         <PromptListColumn
           prompts={promptEntries.filter((_, i) => i % 2 === 1)}
+          promptLocations={promptLocations}
+          zStart={100}
         />
       </div>
     </div>

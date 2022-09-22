@@ -44,6 +44,7 @@ export interface PromptProps {
   collapsedDirection?: CollapsedPromptDirection;
   savePrompt: () => any;
   unsavePrompt?: () => any;
+  jumpToSrcLocation?: () => any;
   updatePromptFront: (newPrompt: string) => any;
   updatePromptBack: (newPrompt: string) => any;
   onMouseEnter?: (event: React.MouseEvent) => any;
@@ -233,6 +234,7 @@ const PromptBox = forwardRef(function (
     forceHover,
     savePrompt,
     unsavePrompt,
+    jumpToSrcLocation,
     updatePromptFront,
     updatePromptBack,
     onMouseEnter,
@@ -327,7 +329,9 @@ const PromptBox = forwardRef(function (
   if (context === PromptContext.List) {
     contextMenuItems.push({
       title: "Jump to Source Location",
-      onClick: () => null,
+      onClick: () => {
+        if (jumpToSrcLocation) jumpToSrcLocation();
+      },
       shortcutKey: "J",
       isEnabled: contextMenuOpen,
     });
