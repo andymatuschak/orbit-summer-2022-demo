@@ -11,7 +11,7 @@ const promptListSpecs: { [chapterName: string]: PromptListSpec } = {
       "Three key properties of shaped work introduced in this chapter? (one word each)",
       `Why do under-specified projects naturally grow out of control?`,
       'What are the two "tracks" Basecamp team members work on?',
-      'Visualize the level of fidelity used to define the "dot grid" solution to Basecamp\'s calendar project.',
+      'Visualize: what level of fidelity was used to define the "dot grid" solution to Basecamp\'s calendar project?',
     ],
   },
   "1.2-chapter-03": {
