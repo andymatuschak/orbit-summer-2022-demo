@@ -1,5 +1,56 @@
 [[
   {
+    "id": "CszOOjouEe2WSssMH8IlDA",
+    "authority": "hypothes.is",
+    "url": "https://basecamp.com/shapeup/1.2-chapter-03",
+    "created": "2022-09-22T04:21:34",
+    "updated": "2022-09-22T18:25:33",
+    "title": "Shape Up",
+    "refs": [],
+    "isReply": false,
+    "isPagenote": false,
+    "user": "andymatuschak",
+    "displayName": null,
+    "text": "Q. What standard sizes does Basecamp usually use for appetite?\nA. Small batch (takes a team 1-2 weeks); big batch (same team, 6 weeks)\n\nQ. How are \"small batch\" projects handled in the six week cycles?\nA. Several are combined in a single six-week cycle.",
+    "prefix": " the appetite in two sizes:\n\n\n  ",
+    "exact": "Small Batch: This is a project that a team of one designer and one or two programmers can build in one or two weeks. We batch these together into a six week cycle (more on that later).\n  Big Batch: This project takes the same-size team a full six-weeks.",
+    "suffix": "\n\n\nIn rare cases where the scope",
+    "start": 2746,
+    "end": 2999,
+    "tags": [],
+    "group": "XwJd3WaA",
+    "target": [
+      {
+        "source": "https://basecamp.com/shapeup/1.2-chapter-03",
+        "selector": [
+          {
+            "type": "RangeSelector",
+            "endOffset": 66,
+            "startOffset": 0,
+            "endContainer": "/main[1]/div[2]/ul[1]/li[2]",
+            "startContainer": "/main[1]/div[2]/ul[1]/li[1]/code[1]"
+          },
+          {
+            "end": 2999,
+            "type": "TextPositionSelector",
+            "start": 2746
+          },
+          {
+            "type": "TextQuoteSelector",
+            "exact": "Small Batch: This is a project that a team of one designer and one or two programmers can build in one or two weeks. We batch these together into a six week cycle (more on that later).\n  Big Batch: This project takes the same-size team a full six-weeks.",
+            "prefix": " the appetite in two sizes:\n\n\n  ",
+            "suffix": "\n\n\nIn rare cases where the scope"
+          }
+        ]
+      }
+    ],
+    "document": {
+      "title": [
+        "Shape Up"
+      ]
+    }
+  },
+  {
     "id": "2b36RDotEe2MNQucOUh8sg",
     "authority": "hypothes.is",
     "url": "https://basecamp.com/shapeup/1.2-chapter-03",
@@ -862,110 +913,6 @@
             "exact": "In rare cases where the scope is so big that a six-week project isn’t conceivable, we’ll try to hammer it down by narrowing the problem definition. If we still can’t shrink the scope, we’ll break off a meaningful part of the project that we can shape to a six-week appetite.",
             "prefix": "e-size team a full six-weeks.\n\n\n",
             "suffix": "\n\nFixed time, variable scope\n   "
-          }
-        ]
-      }
-    ],
-    "document": {
-      "title": [
-        "Shape Up"
-      ]
-    }
-  },
-  {
-    "id": "GZt4-DouEe2yhNt1HcYwug",
-    "authority": "hypothes.is",
-    "url": "https://basecamp.com/shapeup/1.2-chapter-03",
-    "created": "2022-09-22T04:21:59",
-    "updated": "2022-09-22T04:21:59",
-    "title": "Shape Up",
-    "refs": [],
-    "isReply": false,
-    "isPagenote": false,
-    "user": "andymatuschak",
-    "displayName": null,
-    "text": "Q. How are \"small batch\" projects handled in the six week cycles?\nA. Several are combined in a single six-week cycle.",
-    "prefix": " can build in one or two weeks. ",
-    "exact": "We batch these together into a six week cycle (more on that later).",
-    "suffix": "\n  Big Batch: This project takes",
-    "start": 2863,
-    "end": 2930,
-    "tags": [],
-    "group": "XwJd3WaA",
-    "target": [
-      {
-        "source": "https://basecamp.com/shapeup/1.2-chapter-03",
-        "selector": [
-          {
-            "type": "RangeSelector",
-            "endOffset": 28,
-            "startOffset": 106,
-            "endContainer": "/main[1]/div[2]/ul[1]/li[1]/hypothesis-highlight[2]",
-            "startContainer": "/main[1]/div[2]/ul[1]/li[1]/hypothesis-highlight[1]"
-          },
-          {
-            "end": 2930,
-            "type": "TextPositionSelector",
-            "start": 2863
-          },
-          {
-            "type": "TextQuoteSelector",
-            "exact": "We batch these together into a six week cycle (more on that later).",
-            "prefix": " can build in one or two weeks. ",
-            "suffix": "\n  Big Batch: This project takes"
-          }
-        ]
-      }
-    ],
-    "document": {
-      "title": [
-        "Shape Up"
-      ]
-    }
-  },
-  {
-    "id": "CszOOjouEe2WSssMH8IlDA",
-    "authority": "hypothes.is",
-    "url": "https://basecamp.com/shapeup/1.2-chapter-03",
-    "created": "2022-09-22T04:21:34",
-    "updated": "2022-09-22T04:21:34",
-    "title": "Shape Up",
-    "refs": [],
-    "isReply": false,
-    "isPagenote": false,
-    "user": "andymatuschak",
-    "displayName": null,
-    "text": "Q. What standard sizes does Basecamp usually use for appetite?\nA. Small batch (takes a team 1-2 weeks); big batch (same team, 6 weeks)",
-    "prefix": " the appetite in two sizes:\n\n\n  ",
-    "exact": "Small Batch: This is a project that a team of one designer and one or two programmers can build in one or two weeks. We batch these together into a six week cycle (more on that later).\n  Big Batch: This project takes the same-size team a full six-weeks.",
-    "suffix": "\n\n\nIn rare cases where the scope",
-    "start": 2746,
-    "end": 2999,
-    "tags": [
-      "no-anchor"
-    ],
-    "group": "XwJd3WaA",
-    "target": [
-      {
-        "source": "https://basecamp.com/shapeup/1.2-chapter-03",
-        "selector": [
-          {
-            "type": "RangeSelector",
-            "endOffset": 66,
-            "startOffset": 0,
-            "endContainer": "/main[1]/div[2]/ul[1]/li[2]",
-            "startContainer": "/main[1]/div[2]/ul[1]/li[1]/code[1]"
-          },
-          {
-            "end": 2999,
-            "type": "TextPositionSelector",
-            "start": 2746
-          },
-          {
-            "type": "TextQuoteSelector",
-            "exact": "Small Batch: This is a project that a team of one designer and one or two programmers can build in one or two weeks. We batch these together into a six week cycle (more on that later).\n  Big Batch: This project takes the same-size team a full six-weeks.",
-            "prefix": " the appetite in two sizes:\n\n\n  ",
-            "suffix": "\n\n\nIn rare cases where the scope"
           }
         ]
       }
