@@ -141,7 +141,7 @@ export function AnchorHighlight({
     // Process ranges, simple brute-force uniqueness check
     const locationsArr = Object.entries(promptLocations);
     locationsArr.forEach(([idA, locationA]) => {
-      if (!prompts[idA].showAnchors) {
+      if (prompts[idA] && !prompts[idA].showAnchors) {
         return;
       }
       const candidateRange = locationA.range;
