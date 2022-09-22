@@ -16,7 +16,7 @@ export async function resolvePromptLocations(prompts: {
           return [
             id,
             {
-              top: range.getBoundingClientRect().top + window.scrollY - 8,
+              top: range.getBoundingClientRect().top + window.scrollY - 4,
               range,
             },
           ];
