@@ -43,6 +43,7 @@ export interface PromptProps {
   context: PromptContext;
   collapsedDirection?: CollapsedPromptDirection;
   savePrompt: () => any;
+  unsavePrompt?: () => any;
   updatePromptFront: (newPrompt: string) => any;
   updatePromptBack: (newPrompt: string) => any;
   onMouseEnter?: (event: React.MouseEvent) => any;
@@ -231,6 +232,7 @@ const PromptBox = forwardRef(function (
     collapsedDirection = CollapsedPromptDirection.RTL,
     forceHover,
     savePrompt,
+    unsavePrompt,
     updatePromptFront,
     updatePromptBack,
     onMouseEnter,
@@ -311,9 +313,13 @@ const PromptBox = forwardRef(function (
   const contextMenuItems = [
     {
       title: "Unsave prompt",
-      onClick: () => null,
+      onClick: () => {
+        if (unsavePrompt) unsavePrompt();
+        setContextMenuOpen(false);
+        setIsHovered(false);
+      },
       shortcutKey: "U",
-      isEnabled: true,
+      isEnabled: contextMenuOpen,
     },
   ];
 
@@ -322,7 +328,7 @@ const PromptBox = forwardRef(function (
       title: "Jump to Source Location",
       onClick: () => null,
       shortcutKey: "J",
-      isEnabled: true,
+      isEnabled: contextMenuOpen,
     });
   }
 
@@ -343,7 +349,7 @@ const PromptBox = forwardRef(function (
         if (onMouseLeave) onMouseLeave();
         if (!isEditing) setContextMenuOpen(false);
       }}
-      onClick={() => savePrompt()}
+      onClick={() => (!isSaved ? savePrompt() : null)}
       ref={ref}
     >
       {(context !== PromptContext.Collapsed ||
