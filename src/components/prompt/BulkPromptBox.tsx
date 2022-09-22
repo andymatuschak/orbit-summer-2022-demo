@@ -213,6 +213,9 @@ export default function BulkPromptBox({
       }}
       onMouseLeave={() => {
         setIsBulkPromptHovered(false);
+        if(!isFocused){
+          setIsOpen(false);
+        }
         if (!isFocused && clearSaves) {
           clearSaves();
         }

@@ -4,6 +4,7 @@ export type HypothesisJSONData = [
   entries: {
     text: string;
     target: { selector: PromptSelector[] }[];
+    tags: string[];
   }[],
 ];
 
@@ -41,6 +42,7 @@ export function readPromptsFromHypothesisJSON(json: HypothesisJSONData): {
         isByAuthor: true,
         isSaved: false,
         isDue: false,
+        showAnchors: entry.tags.indexOf("no-anchor") === -1,
       };
     }
   }

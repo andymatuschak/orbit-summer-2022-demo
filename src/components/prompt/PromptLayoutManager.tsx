@@ -399,7 +399,7 @@ const ShadowPrompts = React.memo(function ({
               prompt={prompts[id]}
               context={PromptContext.Floating}
               savePrompt={() => null}
-              forceHover={true}
+              forceHover={prompts[id].isSaved ? true : false}
               updatePromptFront={(newPrompt) => null}
               updatePromptBack={(newPrompt) => null}
             />

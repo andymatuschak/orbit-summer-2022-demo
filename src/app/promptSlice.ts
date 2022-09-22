@@ -13,6 +13,7 @@ export interface Prompt {
   isByAuthor: boolean;
   isSaved: boolean;
   isDue: boolean;
+  showAnchors: boolean;
 
   // For prompts saved automatically via review, we track the ID of the review area where it came from, so that we can implement the "undo" feature allowing users to *unsave* those auto-saved prompts.
   sourceReviewAreaID?: string;

@@ -140,6 +140,7 @@ export default function App({ marginX, textRoot, promptLists }: AppProps) {
                       isByAuthor: false,
                       isSaved: true,
                       isDue: true,
+                      showAnchors: true,
                     };
                     const newId = uuidBase64();
                     dispatch(createNewPrompt({ id: newId, prompt: newPrompt }));
