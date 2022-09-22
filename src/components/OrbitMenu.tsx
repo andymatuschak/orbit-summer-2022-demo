@@ -4,6 +4,7 @@ import { useAppDispatch, useAppSelector } from "../app/store";
 import X from "../static/images/Icons/X.png";
 import Logo from "../static/images/Logo.png";
 import Starburst from "../static/images/Starburst-48.png";
+import { downloadAnkiDeck } from "../util/downloadAnkiDeck";
 import { hoverAndActiveStyles } from "./common/hoverAndActiveStyles";
 import MenuItem from "./MenuItem";
 import { OrbitMenuPromptVisibilityControl } from "./OrbitMenuPromptVisibilityControl";
@@ -153,11 +154,6 @@ function PromptVisibilityMenuItem() {
   );
 }
 
-// TODO implement all callers
-function unimplemented() {
-  alert("UNIMPLEMENTED");
-}
-
 export interface OrbitMenuProps {
   onStartReview: () => void;
 }
@@ -232,7 +228,7 @@ export function OrbitMenu(props: OrbitMenuProps) {
         <PromptVisibilityMenuItem />
         <MenuItem
           title="Export as Anki Deck"
-          onClick={unimplemented}
+          onClick={() => downloadAnkiDeck()}
           disabled={!anyPromptsSaved}
         />
         <MenuItem
