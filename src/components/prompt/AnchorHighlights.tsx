@@ -141,6 +141,9 @@ export function AnchorHighlight({
     // Process ranges, simple brute-force uniqueness check
     const locationsArr = Object.entries(promptLocations);
     locationsArr.forEach(([idA, locationA]) => {
+      if (!prompts[idA].showAnchors) {
+        return;
+      }
       const candidateRange = locationA.range;
       // Check if this range may have already been inserted. I.e does any existing prompt have the same range
       var rangeAExists = false;
@@ -165,7 +168,7 @@ export function AnchorHighlight({
 
     setPromptIdToDrawnPromptId(newPromptDraws);
     setDrawnPromptIdToIds(newInversePromptDraws);
-  }, [promptLocations]);
+  }, [promptLocations, prompts]);
 
   useEffect(() => {
     const newExistingPromptIds = new Set<string>(existingPromptIds);
