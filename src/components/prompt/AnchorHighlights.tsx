@@ -193,7 +193,7 @@ export function AnchorHighlight({
   useEffect(() => {
     const interruptibleDebounces = new Set<PromptId>();
     const onMouseEnter = function (id: PromptId) {
-      interruptibleDebounces.delete(id);
+      interruptibleDebounces.clear();
       if (prompts[id]?.isSaved) {
         // Get other prompts this one may be drawing for
         const others = drawnPromptIdToIds.get(id);
