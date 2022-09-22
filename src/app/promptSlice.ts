@@ -79,8 +79,10 @@ const promptSlice = createSlice({
   reducers: {
     savePrompt(state, action: IdAction) {
       const prompt = state[action.payload];
-      prompt.isSaved = true;
-      prompt.isDue = true;
+      if (!prompt.isSaved) {
+        prompt.isSaved = true;
+        prompt.isDue = true;
+      }
     },
     unsavePrompt(state, action: IdAction) {
       const prompt = state[action.payload];
