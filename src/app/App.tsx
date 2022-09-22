@@ -1,4 +1,10 @@
-import React, { useCallback, useEffect, useState, useRef } from "react";
+import React, {
+  useCallback,
+  useEffect,
+  useState,
+  useRef,
+  useMemo,
+} from "react";
 import uuidBase64 from "../components/common/uuid";
 import zIndices from "../components/common/zIndices";
 import ContextualMenu from "../components/ContextualMenu";
@@ -10,9 +16,12 @@ import { PromptList, PromptListSpec } from "../components/prompt/PromptList";
 import { useAsyncLayoutDependentValue } from "../hooks/useLayoutDependentValue";
 import { useReviewAreaIntegration } from "../hooks/useReviewAreaIntegration";
 import { useSelectionBounds } from "../hooks/useSelectionBounds";
-import { resolvePromptLocations } from "../util/resolvePromptLocations";
+import {
+  PromptLocation,
+  resolvePromptLocations,
+} from "../util/resolvePromptLocations";
 import { describe } from "../vendor/hypothesis-annotator/html";
-import { createNewPrompt, Prompt } from "./promptSlice";
+import { createNewPrompt, Prompt, savePrompt } from "./promptSlice";
 import { useAppDispatch, useAppSelector } from "./store";
 
 export interface AppProps {
@@ -55,6 +64,15 @@ export default function App({ marginX, textRoot, promptLists }: AppProps) {
 
   const { selectionPosition, selectionRange, clearSelectionPosition } =
     useSelectionBounds();
+  const selectedPromptIDs = useMemo(() => {
+    return selectionRange && promptLocations
+      ? findIntersectingPrompts(selectionRange, promptLocations)
+      : [];
+  }, [selectionRange, promptLocations]);
+  const suggestedPromptIDs = useMemo(
+    () => selectedPromptIDs.filter((id) => !prompts[id].isSaved),
+    [prompts, selectedPromptIDs],
+  );
   const [modalReviewState, setModalReviewState] =
     useState<ModalReviewState | null>(null);
 
@@ -109,7 +127,7 @@ export default function App({ marginX, textRoot, promptLists }: AppProps) {
           <ContextualMenu
             items={[
               {
-                title: "New prompt",
+                title: "New Prompt",
                 onClick: () => {
                   clearSelectionPosition();
                   if (selectionRange) {
@@ -131,6 +149,23 @@ export default function App({ marginX, textRoot, promptLists }: AppProps) {
                 shortcutKey: "N",
                 isEnabled: !!selectionPosition,
               },
+              ...(suggestedPromptIDs.length > 0
+                ? [
+                    {
+                      title: `Add Suggested Prompt${
+                        suggestedPromptIDs.length > 1 ? "s" : ""
+                      }`,
+                      onClick: () => {
+                        clearSelectionPosition();
+                        suggestedPromptIDs.forEach((id) =>
+                          dispatch(savePrompt(id)),
+                        );
+                      },
+                      shortcutKey: "S",
+                      isEnabled: true,
+                    },
+                  ]
+                : []),
             ]}
           />
         </div>
@@ -140,6 +175,7 @@ export default function App({ marginX, textRoot, promptLists }: AppProps) {
           marginX={marginX}
           newPromptId={newPromptId}
           clearNewPrompt={() => setNewPromptId(undefined)}
+          suggestedPromptIDs={suggestedPromptIDs}
         />
         <>
           {Object.entries(inlineReviewModules).map(([id, reviewModule]) => (
@@ -225,4 +261,19 @@ export default function App({ marginX, textRoot, promptLists }: AppProps) {
         ))}
     </>
   );
+}
+
+function findIntersectingPrompts(
+  range: Range,
+  locations: { [promptID: string]: PromptLocation },
+) {
+  if (range.collapsed) return [];
+  return Object.keys(locations).filter((id) => {
+    const promptRange = locations[id].range;
+    // A prompt intersects the range if its start point is before the range's end point, and its end point is after the range's start point
+    return (
+      promptRange.compareBoundaryPoints(Range.END_TO_START, range) <= 0 &&
+      promptRange.compareBoundaryPoints(Range.START_TO_END, range) >= 0
+    );
+  });
 }

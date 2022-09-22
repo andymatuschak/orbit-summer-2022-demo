@@ -245,7 +245,8 @@ const PromptBox = forwardRef(function (
   }: PromptProps,
   ref: ForwardedRef<HTMLDivElement>,
 ) {
-  const [isHovered, setIsHovered] = useState<boolean>(forceHover ?? false);
+  const [_isHovered, setIsHovered] = useState<boolean>(false);
+  const isHovered = forceHover || _isHovered;
   const [isEditing, setIsEditing] = useState<boolean>(isNew ?? false);
   const hidePromptBackTimeout = useRef<number | undefined>();
   const [showPromptBack, setShowPromptBack] = useState<boolean>(false);

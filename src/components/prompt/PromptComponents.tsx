@@ -61,31 +61,36 @@ export interface SidedProps {
 
 const IconBase = styled.div<
   HoverProps & SavedProps & EditingProps & AnchorHoverProps
->`
-  width: 24px;
-  height: 24px;
-  background-image: ${(props) => {
-    if (props.isEditing || props.isAnchorHovered) {
-      return `url(${starburst_editing})`;
-    } else if (props.isSaved) {
-      return `url(${starburst_active})`;
-    } else if (props.isHovered) {
-      return `url(${plus})`;
-    } else {
-      return `url(${startburst_null})`;
-    }
-  }};
-  // Optical centering corrections:
-  margin-top: ${({ isHovered, isSaved }) =>
-    isHovered && !isSaved ? "-2px" : "-0.5px"};
-  margin-left: ${({ isHovered, isSaved }) =>
-    isHovered && !isSaved ? "0px" : "0.5px"};
-  margin-right: ${({ isHovered, isSaved }) =>
-    isHovered && !isSaved ? "0px" : "-0.5px"};
-  background-repeat: no-repeat;
-  background-size: contain;
-  flex: 0 0 auto;
-`;
+>((props) => {
+  let isStarburst: boolean;
+  let backgroundImageURL: string;
+  if (props.isEditing || props.isAnchorHovered) {
+    isStarburst = true;
+    backgroundImageURL = `url(${starburst_editing})`;
+  } else if (props.isSaved) {
+    isStarburst = true;
+    backgroundImageURL = `url(${starburst_active})`;
+  } else if (props.isHovered) {
+    isStarburst = false;
+    backgroundImageURL = `url(${plus})`;
+  } else {
+    isStarburst = true;
+    backgroundImageURL = `url(${startburst_null})`;
+  }
+
+  return css`
+    width: 24px;
+    height: 24px;
+    background-image: ${backgroundImageURL};
+    // Optical centering corrections:
+    margin-top: ${isStarburst ? "-0.5px" : "-2px"};
+    margin-left: ${isStarburst ? "0.5px" : "0px"};
+    margin-right: ${isStarburst ? "-0.5px" : "0px"};
+    background-repeat: no-repeat;
+    background-size: contain;
+    flex: 0 0 auto;
+  `;
+});
 
 const DueBadgeInner = styled.div`
   height: 7px;

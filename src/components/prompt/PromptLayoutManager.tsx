@@ -31,6 +31,7 @@ export interface PromptLayoutManagerProps {
   prompts: PromptsState;
   promptLocations: { [id: string]: PromptLocation };
   marginX: number;
+  suggestedPromptIDs: PromptId[];
   newPromptId?: PromptId;
   clearNewPrompt?: () => any;
 }
@@ -63,6 +64,7 @@ export function PromptLayoutManager({
   prompts,
   promptLocations,
   marginX,
+  suggestedPromptIDs,
   newPromptId,
   clearNewPrompt,
 }: PromptLayoutManagerProps) {
@@ -267,7 +269,12 @@ export function PromptLayoutManager({
                 <PromptBoxMemo
                   prompt={prompts[id]}
                   isNew={id === newPromptId}
-                  isAnchorHovered={currAnchorHovers?.includes(id)}
+                  isAnchorHovered={
+                    currAnchorHovers?.includes(id) ||
+                    // HACK: When a prompt is suggested (i.e. because your selection range intersects its anchor, we pretend its anchor is highlighted. Semantically, it'd be better to separate this into a different prop--not really appropriate to force this value like this.
+                    suggestedPromptIDs.includes(id)
+                  }
+                  forceHover={suggestedPromptIDs.includes(id)}
                   context={
                     collapsedDirection
                       ? PromptContext.Collapsed
