@@ -38,7 +38,7 @@ export function readPromptsFromHypothesisJSON(json: HypothesisJSONData): {
           back: lines[1].substring(3),
         },
         selectors: entry.target[0].selector,
-        isByAuthor: false,
+        isByAuthor: true,
         isSaved: false,
         isDue: false,
       };

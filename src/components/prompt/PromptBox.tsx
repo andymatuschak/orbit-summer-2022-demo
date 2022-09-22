@@ -312,14 +312,14 @@ const PromptBox = forwardRef(function (
   // Set up context menu items
   const contextMenuItems = [
     {
-      title: "Unsave prompt",
+      title: prompt.isByAuthor ? "Unsave prompt" : "Delete Prompt",
       onClick: () => {
-        if (unsavePrompt) unsavePrompt();
         setContextMenuOpen(false);
         setIsHovered(false);
         if (onMouseLeave) onMouseLeave();
+        if (unsavePrompt) unsavePrompt();
       },
-      shortcutKey: "U",
+      shortcutKey: prompt.isByAuthor ? "U" : "D",
       isEnabled: contextMenuOpen,
     },
   ];

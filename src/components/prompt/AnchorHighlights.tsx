@@ -33,7 +33,7 @@ enum HighlightTypes {
   Hover,
 }
 
-const HighlightColors = [SAVED_COLOR, TRANSPARENT, HOVER_COLOR];
+const HighlightColors = [TRANSPARENT, SAVED_COLOR, HOVER_COLOR];
 
 export function AnchorHighlight({
   prompts,
@@ -66,8 +66,14 @@ export function AnchorHighlight({
 
   useEffect(() => {
     // Set all prompts to state based on saved
-    Object.entries(prompts).forEach(([id, prompt]) => {
-      const drawnId = promptIdToDrawnPromptId.get(id);
+    promptIdToDrawnPromptId.forEach((id, drawnId) => {
+      const prompt = prompts[id];
+      if (!prompt) {
+        highlightDrawnId(drawnId, HighlightTypes.Transparent);
+        // TODO: clean up all state related to deleted prompt
+        return;
+      }
+
       if (drawnId) {
         const els = document.getElementsByClassName(
           classNameForPromptID(drawnId),
@@ -188,7 +194,7 @@ export function AnchorHighlight({
     const interruptibleDebounces = new Set<PromptId>();
     const onMouseEnter = function (id: PromptId) {
       interruptibleDebounces.delete(id);
-      if (prompts[id].isSaved) {
+      if (prompts[id]?.isSaved) {
         // Get other prompts this one may be drawing for
         const others = drawnPromptIdToIds.get(id);
         const all = others ? [id, ...others] : [id];

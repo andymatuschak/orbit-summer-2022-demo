@@ -89,6 +89,9 @@ const promptSlice = createSlice({
       prompt.isSaved = false;
       prompt.isDue = false;
     },
+    deletePrompt(state, action: IdAction) {
+      delete state[action.payload];
+    },
     removePrompt(state, action: IdAction) {
       const prompt = state[action.payload];
       prompt.isSaved = false;
@@ -144,6 +147,7 @@ export const loadPrompts = createAsyncThunk(
 export const {
   savePrompt,
   unsavePrompt,
+  deletePrompt,
   removePrompt,
   updatePromptFront,
   updatePromptBack,

@@ -13,6 +13,7 @@ import {
   PromptsState,
   savePrompt,
   unsavePrompt,
+  deletePrompt,
   updatePromptBack,
   updatePromptFront,
 } from "../../app/promptSlice";
@@ -238,7 +239,10 @@ export function PromptLayoutManager({
       />
       {!delayOneRender &&
         promptRuns.map((ids) => {
-          if (ids.length === 1) {
+          // If we delete a user authored id, it may be null until layout recalc happens
+          if (prompts[ids[0]] === undefined) {
+            return null;
+          } else if (ids.length === 1) {
             const id = ids[0];
             return (
               <motion.div
@@ -271,7 +275,11 @@ export function PromptLayoutManager({
                   }
                   collapsedDirection={collapsedDirection}
                   savePrompt={() => dispatch(savePrompt(id))}
-                  unsavePrompt={() => dispatch(unsavePrompt(id))}
+                  unsavePrompt={() =>
+                    prompts[id].isByAuthor
+                      ? dispatch(unsavePrompt(id))
+                      : dispatch(deletePrompt(id))
+                  }
                   updatePromptFront={(newPrompt) =>
                     dispatch(updatePromptFront([id, newPrompt]))
                   }
