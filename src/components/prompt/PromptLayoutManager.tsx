@@ -212,7 +212,7 @@ export function PromptLayoutManager({
           boundingBoxes[currId].bottom - boundingBoxes[currId].top;
         const currBottom = newPromptLocations[currId].top + currHeight;
         const nextTop = newPromptLocations[nextId].top;
-        if (nextTop < currBottom - PROMPT_SPACE_THRESHOLD) {
+        if (nextTop < currBottom + PROMPT_SPACE_THRESHOLD) {
           newPromptLocations[nextId].top = currBottom + PROMPT_SPACING;
           const addedSpace =
             newPromptLocations[nextId].top - promptLocations[nextId].top;
