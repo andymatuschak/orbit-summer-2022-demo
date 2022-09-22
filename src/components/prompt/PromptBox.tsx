@@ -8,6 +8,8 @@ import React, {
   useState,
 } from "react";
 import { Prompt } from "../../app/promptSlice";
+import zIndices from "../common/zIndices";
+import ContextualMenu from "../ContextualMenu";
 import {
   AnchorHoverProps,
   ANIMATION_TIME_MSEC,
@@ -21,6 +23,7 @@ import {
   PromptText,
   SavedProps,
 } from "./PromptComponents";
+import PromptEllipses from "./PromptEllipses";
 
 // HACKy regex for seeing if prompt is image
 const IMAGE_REGEX = /<img.+src="(.+)".+>/;
@@ -242,6 +245,7 @@ const PromptBox = forwardRef(function (
   const [isEditing, setIsEditing] = useState<boolean>(isNew ?? false);
   const hidePromptBackTimeout = useRef<number | undefined>();
   const [showPromptBack, setShowPromptBack] = useState<boolean>(false);
+  const [contextMenuOpen, setContextMenuOpen] = useState<boolean>(false);
   const [imageSrc, setImageSrc] = useState<string | undefined>();
   const isSaved = prompt.isSaved;
 
@@ -285,6 +289,7 @@ const PromptBox = forwardRef(function (
     }
     setIsEditing(false);
     savePrompt();
+    setContextMenuOpen(false);
     if (clearNew) clearNew();
     if (onEditEnd) onEditEnd();
   };
@@ -302,6 +307,25 @@ const PromptBox = forwardRef(function (
     setImageSrc(getPromptImageSrc(prompt.content.back));
   }, [prompt]);
 
+  // Set up context menu items
+  const contextMenuItems = [
+    {
+      title: "Unsave prompt",
+      onClick: () => null,
+      shortcutKey: "U",
+      isEnabled: true,
+    },
+  ];
+
+  if (context === PromptContext.List) {
+    contextMenuItems.push({
+      title: "Jump to Source Location",
+      onClick: () => null,
+      shortcutKey: "J",
+      isEnabled: true,
+    });
+  }
+
   return (
     <Container
       isHovered={isHovered}
@@ -317,6 +341,7 @@ const PromptBox = forwardRef(function (
       onMouseLeave={() => {
         setIsHovered(false);
         if (onMouseLeave) onMouseLeave();
+        if (!isEditing) setContextMenuOpen(false);
       }}
       onClick={() => savePrompt()}
       ref={ref}
@@ -400,6 +425,40 @@ const PromptBox = forwardRef(function (
             />
           </div>
         </CollapsedIconContainer>
+      )}
+      {/* ------ ellipses menu  ------- */}
+      {prompt.isSaved &&
+        (isHovered || isEditing) &&
+        context !== PromptContext.Collapsed && (
+          <div
+            css={css`
+              position: absolute;
+              top: 3px;
+              right: 1px;
+            `}
+          >
+            <PromptEllipses onClick={() => setContextMenuOpen(true)} />
+          </div>
+        )}
+      {/* ----- context menu ------ */}
+      {contextMenuOpen && (
+        <div
+          css={css`
+            position: absolute;
+            top: 0px;
+            left: calc(100% + 0px);
+            display: flex;
+            flex-direction: row;
+            z-index: ${zIndices.orbitMenu + 100};
+          `}
+        >
+          <div
+            css={css`
+              width: 6px;
+            `}
+          />
+          <ContextualMenu items={contextMenuItems} />
+        </div>
       )}
     </Container>
   );
