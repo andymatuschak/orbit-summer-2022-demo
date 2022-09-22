@@ -24,7 +24,7 @@ function Segment(props: SegmentProps) {
           flexGrow: 1,
           pointer: "cursor",
         },
-        hoverAndActiveStyles,
+        !props.isActive && hoverAndActiveStyles,
       ]}
     >
       <LabelSmall
