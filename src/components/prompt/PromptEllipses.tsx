@@ -12,38 +12,38 @@ const Container = styled.div`
 `;
 
 const HoverContainer = styled.div`
-    width: 15px;
-    height: 23px;
+  width: 15px;
+  height: 23px;
+  border-radius: 4px;
+  position: relative;
+  top: 3px;
+  left: 8.5px;
+
+  :hover::before {
+    position: absolute;
+    content: "";
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
     border-radius: 4px;
-    position: relative;
-    top: 3px;
-    left: 8.5px;
+    background-color: var(--hoverLayer);
+  }
 
-    :hover::before {
-        position: absolute;
-        content: "";
-        top: 0;
-        left: 0;
-        right: 0;
-        bottom: 0;
-        border-radius: 4px;
-        background-color: var(--hoverLayer);
-    };
+  :active::before {
+    position: absolute;
+    content: "";
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    border-radius: 4px;
+    background-color: var(--pressedLayer);
+  }
 
-    :active::before {
-        position: absolute;
-        content: "";
-        top: 0;
-        left: 0;
-        right: 0;
-        bottom: 0;
-        border-radius: 4px;
-        background-color: var(--pressedLayer);
-    };
-
-    &:hover > div {
-      background-color: var(--accentPrimary);
-    }
+  &:hover > div {
+    background-color: var(--accentPrimary);
+  }
 `;
 
 interface DotProps {
@@ -60,10 +60,14 @@ const Dot = styled.div<DotProps>`
   border-radius: 50%;
 `;
 
-export default function PromptEllipses() {
+export interface PromptEllipsesProps {
+  onClick: () => any;
+}
+
+export default function PromptEllipses({ onClick }: PromptEllipsesProps) {
   return (
     <Container>
-      <HoverContainer>
+      <HoverContainer onClick={onClick}>
         <Dot i={0} />
         <Dot i={1} />
         <Dot i={2} />
