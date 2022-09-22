@@ -186,7 +186,7 @@ export function PromptList({
               jumpToSrcLocation={() => {
                 window.scrollTo({
                   left: window.scrollX,
-                  top: promptLocations[id].top,
+                  top: promptLocations[id].top - window.innerHeight / 2,
                   behavior: "smooth",
                 });
               }}
