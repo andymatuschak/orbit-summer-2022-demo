@@ -317,6 +317,7 @@ const PromptBox = forwardRef(function (
         if (unsavePrompt) unsavePrompt();
         setContextMenuOpen(false);
         setIsHovered(false);
+        if (onMouseLeave) onMouseLeave();
       },
       shortcutKey: "U",
       isEnabled: contextMenuOpen,
