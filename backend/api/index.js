@@ -18,7 +18,10 @@ async function convertData(incomingData, host) {
       // TODO use urls in inline review slice file
       if (imageMatch) {
         const basename = path.parse(imageMatch[1]).base;
-        const url = imageMatch[1].replace("../../", "https://basecamp.com/");
+        const url = imageMatch[1].replace(
+          "../../",
+          "https://www.basecamp.com/",
+        );
         const response = await fetch(url);
         apkg.addMedia(basename, await response.arrayBuffer());
         prompt.content.back = prompt.content.back.replace(

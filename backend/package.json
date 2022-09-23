@@ -1,0 +1,19 @@
+{
+  "name": "backend",
+  "version": "1.0.0",
+  "license": "MIT",
+  "type": "module",
+  "engines": {
+    "node": "^14.20.0"
+  },
+  "scripts": {
+    "start": "vercel dev --listen 0.0.0.0:3010"
+  },
+  "dependencies": {
+    "@steve2955/anki-apkg-export": "^5.0.0",
+    "node-fetch": "^3.2.10"
+  },
+  "devDependencies": {
+    "vercel": "^28.4.1"
+  }
+}
