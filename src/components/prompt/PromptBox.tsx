@@ -409,7 +409,7 @@ const PromptBox = forwardRef(function (
         </PromptContainer>
       )}
       {/* This icon is used in the collapsed state as the trigger icon for showing full prompt */}
-      {context === PromptContext.Collapsed && (
+      {context === PromptContext.Collapsed && !isHovered && (
         <CollapsedIconContainer
           isSaved={isSaved}
           isHovered={isHovered}
