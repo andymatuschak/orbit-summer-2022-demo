@@ -231,14 +231,35 @@ export function OrbitMenu(props: OrbitMenuProps) {
           onClick={() => downloadAnkiDeck()}
           disabled={!anyPromptsSaved}
         />
-        <MenuItem
-          title="Start Review"
-          onClick={() => {
-            props.onStartReview();
-            setOpen(false);
+        <div
+          css={{
+            position: "relative",
+            display: "flex",
+            flexDirection: "column",
           }}
-          disabled={duePromptCount === 0}
-        />
+        >
+          <MenuItem
+            title="Start Review"
+            onClick={() => {
+              props.onStartReview();
+              setOpen(false);
+            }}
+            disabled={duePromptCount === 0}
+          />
+          <div
+            css={{
+              position: "absolute",
+              top: 8,
+              right: 10, // sorry, grid!!!
+            }}
+          >
+            <DueCount
+              count={duePromptCount}
+              menuIsOpen={isOpen}
+              context="menuItem"
+            />
+          </div>
+        </div>
 
         {/* Bottom bar */}
         <div
@@ -261,7 +282,19 @@ export function OrbitMenu(props: OrbitMenuProps) {
       </div>
       <OrbitMenuButton onClick={() => setOpen((o) => !o)} menuIsOpen={isOpen} />
       {duePromptCount > 0 && (
-        <DueCount count={duePromptCount} menuIsOpen={isOpen} />
+        <div
+          css={{
+            position: "absolute",
+            bottom: 30,
+            right: -10,
+          }}
+        >
+          <DueCount
+            count={duePromptCount}
+            menuIsOpen={isOpen}
+            context="orbitButton"
+          />
+        </div>
       )}
     </div>
   );
@@ -270,27 +303,29 @@ export function OrbitMenu(props: OrbitMenuProps) {
 function DueCount({
   count,
   menuIsOpen,
+  context,
 }: {
   count: number;
   menuIsOpen: boolean;
+  context: "orbitButton" | "menuItem";
 }) {
   return (
     <div
       css={{
-        position: "absolute",
         width: 20,
         height: 20,
-        bottom: 30,
-        right: -10,
         borderRadius: "50%",
         display: "flex",
         alignItems: "center",
         paddingBottom: 3,
         backgroundColor: "var(--accentPrimary)",
         filter:
-          "drop-shadow(0px 3px 5px rgba(0, 0, 0, 0.15)) drop-shadow(0px 1px 3px rgba(77, 51, 8, 0.4))",
-        opacity: menuIsOpen ? 0 : 1,
-        transition: "var(--fadeTransition)",
+          context === "orbitButton"
+            ? "drop-shadow(0px 3px 5px rgba(0, 0, 0, 0.15)) drop-shadow(0px 1px 3px rgba(77, 51, 8, 0.4))"
+            : undefined,
+        opacity: context === "orbitButton" ? (menuIsOpen ? 0 : 1) : 1,
+        transition:
+          context === "orbitButton" ? "var(--fadeTransition)" : undefined,
         transitionDuration: "83ms",
       }}
     >
