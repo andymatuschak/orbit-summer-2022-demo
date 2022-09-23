@@ -246,19 +246,21 @@ export function OrbitMenu(props: OrbitMenuProps) {
             }}
             disabled={duePromptCount === 0}
           />
-          <div
-            css={{
-              position: "absolute",
-              top: 8,
-              right: 10, // sorry, grid!!!
-            }}
-          >
-            <DueCount
-              count={duePromptCount}
-              menuIsOpen={isOpen}
-              context="menuItem"
-            />
-          </div>
+          {duePromptCount > 0 && (
+            <div
+              css={{
+                position: "absolute",
+                top: 8,
+                right: 10, // sorry, grid!!!
+              }}
+            >
+              <DueCount
+                count={duePromptCount}
+                menuIsOpen={isOpen}
+                context="menuItem"
+              />
+            </div>
+          )}
         </div>
 
         {/* Bottom bar */}
