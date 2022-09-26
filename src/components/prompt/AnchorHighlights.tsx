@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Prompt, PromptId, PromptsState } from "../../app/promptSlice";
+import { PromptId, PromptsState } from "../../app/promptSlice";
 import { PromptLocation } from "../../util/resolvePromptLocations";
 import { highlightRange } from "./highlightRange";
 

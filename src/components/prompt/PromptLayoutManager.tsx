@@ -40,7 +40,7 @@ type PromptAbsoluteLocation = { top: number; bottom: number };
 type PromptBoundingBoxes = { [id: PromptId]: PromptAbsoluteLocation };
 
 const ShadowContainer = styled.div`
-  opacity: 0;
+  opacity: 0.0;
   pointer-events: none;
 `;
 
@@ -245,6 +245,7 @@ export function PromptLayoutManager({
         promptLocations={promptLocations}
         promptMeasureRefs={promptMeasureRefs}
         marginX={marginX}
+        collapsedDirection={collapsedDirection}
       />
       {!delayOneRender &&
         promptRuns.map((ids) => {
@@ -287,7 +288,7 @@ export function PromptLayoutManager({
                   forceHover={suggestedPromptIDs.includes(id)}
                   context={
                     collapsedDirection
-                      ? PromptContext.Collapsed
+                      ? PromptContext.FloatingCollapsed
                       : PromptContext.Floating
                   }
                   collapsedDirection={collapsedDirection}
@@ -342,6 +343,7 @@ export function PromptLayoutManager({
                   savePrompt={(id) => dispatch(savePrompt(id))}
                   addToSaves={addToSaves}
                   saves={bulkSaves}
+                  collapsedDirection={collapsedDirection}
                   clearSaves={clearSaves}
                   updatePromptFront={(id, newPrompt) =>
                     dispatch(updatePromptFront([id, newPrompt]))
@@ -383,6 +385,7 @@ interface ShadowPromptsProps {
     [id: string]: HTMLDivElement | null;
   }>;
   promptLocations: { [id: string]: PromptLocation };
+  collapsedDirection: CollapsedPromptDirection | undefined;
 }
 
 const ShadowPrompts = React.memo(function ({
@@ -390,6 +393,7 @@ const ShadowPrompts = React.memo(function ({
   marginX,
   promptMeasureRefs,
   promptLocations,
+  collapsedDirection,
 }: ShadowPromptsProps) {
   return (
     <ShadowContainer>
@@ -409,7 +413,8 @@ const ShadowPrompts = React.memo(function ({
               prompt={prompts[id]}
               context={PromptContext.Floating}
               savePrompt={() => null}
-              forceHover={prompts[id].isSaved ? true : false}
+              forceHover={prompts[id].isSaved && !collapsedDirection ? true : false}
+              forceHideBack={collapsedDirection !== undefined}
               updatePromptFront={(newPrompt) => null}
               updatePromptBack={(newPrompt) => null}
             />
@@ -452,6 +457,9 @@ export const BulkPromptBoxMemo = React.memo(BulkPromptBox, (prev, curr) => {
     return false;
   }
   if (prev.saves !== curr.saves) {
+    return false;
+  }
+  if(prev.collapsedDirection !== curr.collapsedDirection){
     return false;
   }
   if (prev.addToSaves !== curr.addToSaves) {
