@@ -41,9 +41,22 @@ export interface ContextProps {
 
 export enum PromptContext {
   Floating = "floating",
-  Collapsed = "collapsed",
+  FloatingCollapsed = "floating_collapsed",
+  BulkCollapsed = "bulk_collapsed",
   Bulk = "bulk",
   List = "list",
+}
+
+export const isContextFloatingCollapsed = function(context: PromptContext){
+  return context === PromptContext.FloatingCollapsed;
+}
+
+export const isContextBulk = function(context: PromptContext){
+  return context === PromptContext.BulkCollapsed || context === PromptContext.Bulk;
+}
+
+export const isContextCollapsed = function(context: PromptContext){
+  return context === PromptContext.FloatingCollapsed || context === PromptContext.BulkCollapsed;
 }
 
 export enum CollapsedPromptDirection {
@@ -186,7 +199,7 @@ export const PromptText = forwardRef(function (
           color: var(--fgPrimary);
           opacity: ${props.isHovered ||
           props.isSaved ||
-          props.context === PromptContext.Bulk ||
+          isContextBulk(props.context) ||
           props.context === PromptContext.List
             ? 1.0
             : 0.696};
@@ -213,7 +226,7 @@ export const PromptText = forwardRef(function (
                 return 1.0;
               } else if (props.isHovered) {
                 return 0.7;
-              } else if (props.context === PromptContext.Bulk) {
+              } else if (isContextBulk(props.context)) {
                 return 0.4;
               } else {
                 return 0.0;

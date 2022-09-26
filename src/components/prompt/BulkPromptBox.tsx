@@ -9,14 +9,20 @@ import styled from "@emotion/styled";
 import { Prompt, PromptId } from "../../app/promptSlice";
 import Button from "../Button";
 import PromptBox from "./PromptBox";
-import { Icon, PromptContext } from "./PromptComponents";
+import {
+  CollapsedPromptDirection,
+  Icon,
+  PromptContext,
+} from "./PromptComponents";
 import { css } from "@emotion/react";
 import { AnimatePresence, motion } from "framer-motion";
+import CollapsedPromptIcon from "./CollapsedPromptIcon";
 
 export interface BulkPromptBoxProps {
   // Prompts and ids must be same order
   prompts: Prompt[];
   ids: PromptId[];
+  collapsedDirection?: CollapsedPromptDirection;
   savePrompt: (id: PromptId) => any;
   updatePromptFront: (id: PromptId, newPrompt: string) => any;
   updatePromptBack: (id: PromptId, newPrompt: string) => any;
@@ -33,7 +39,6 @@ const ButtonContainer = styled.div`
   display: flex;
   flex-direction: row;
   align-items: flex-start;
-  width: 332px;
   height: 40px;
   padding: 8px 8px 10px 12px;
   gap: 8px;
@@ -85,6 +90,7 @@ export default function BulkPromptBox({
   setHoverPrompts,
   setEditPrompt,
   setTops,
+  collapsedDirection,
 }: BulkPromptBoxProps) {
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const [isButtonHovered, setIsButtonHovered] = useState<boolean>(false);
@@ -151,7 +157,8 @@ export default function BulkPromptBox({
         <PromptBox
           prompt={prompt}
           key={id}
-          context={PromptContext.Bulk}
+          context={collapsedDirection ? PromptContext.BulkCollapsed : PromptContext.Bulk}
+          collapsedDirection={collapsedDirection}
           savePrompt={() => {
             if (addToSaves) addToSaves(id);
             savePrompt(id);
@@ -200,12 +207,89 @@ export default function BulkPromptBox({
     );
   }
 
+  function createUnhoveredButton() {
+    if (collapsedDirection) {
+      return (
+        <div 
+          css={css`
+            position: relative;
+            left: ${collapsedDirection === CollapsedPromptDirection.RTL ? '276px' : '-4px'};
+          `}
+        >
+          <ButtonContainer>
+            <CollapsedPromptIcon
+              isSaved={false}
+              isDue={false}
+              isAnchorHovered={false}
+              isEditing={false}
+              isHovered={false}
+            />
+          </ButtonContainer>
+        </div>
+      );
+    }
+
+    return (
+      <ButtonContainer>
+        {ids.map((id, idx) => (
+          <div
+            css={css`
+              margin-right: ${idx === ids.length - 1 ? "0px" : "-12px"};
+            `}
+            key={id}
+          >
+            <Icon
+              isHovered={false}
+              isAnchorHovered={false}
+              isSaved={false}
+              isEditing={false}
+              isDue={false}
+            />
+          </div>
+        ))}
+        <ButtonText>{`${
+          prompts.length - (saves?.size ?? 0)
+        } prompts available`}</ButtonText>
+      </ButtonContainer>
+    );
+  }
+
+  function createHoveredButton() {
+    if (collapsedDirection) {
+      return (
+        <div
+          css={css`
+            width: 160px;
+          `}
+        >
+          <Button
+            onClick={() => saveAll()}
+            children={`Save ${prompts.length - (saves?.size ?? 0)} prompts`}
+            icon={"add"}
+            backgroundColor={"white"}
+            isFloating={true}
+            isFlipped={collapsedDirection === CollapsedPromptDirection.RTL}
+          />
+        </div>
+      );
+    }
+
+    return (
+      <Button
+        onClick={() => saveAll()}
+        children={`Save ${prompts.length - (saves?.size ?? 0)} prompts`}
+        icon={"add"}
+      />
+    );
+  }
+
   return (
     <div
       css={css`
         pointer-events: ${isOpen ? "auto" : "none"};
         top: ${-layoutOffset - 12}px;
         position: relative;
+        left: ${(collapsedDirection === CollapsedPromptDirection.RTL) ? -280 : 4}px;
       `}
       onMouseEnter={() => {
         setIsBulkPromptHovered(true);
@@ -213,7 +297,7 @@ export default function BulkPromptBox({
       }}
       onMouseLeave={() => {
         setIsBulkPromptHovered(false);
-        if(!isFocused){
+        if (!isFocused) {
           setIsOpen(false);
         }
         if (!isFocused && clearSaves) {
@@ -223,14 +307,16 @@ export default function BulkPromptBox({
       }}
     >
       <>
+        {/* --- Top layout prompts container + 12px spacer ---- */}
         {layoutOffset !== 0 && createPromptsContainer()}
         <div
           css={css`
-            width: 100%;
+            width: ${collapsedDirection ? '160px' : '100%'};
             height: 12px;
           `}
         />
       </>
+      {/* --- N-prompts available icon when unhovered + button to save all when hovered ---- */}
       <div
         onMouseEnter={() => {
           setIsButtonHovered(true);
@@ -241,47 +327,32 @@ export default function BulkPromptBox({
         onMouseLeave={() => {
           setIsButtonHovered(false);
         }}
-        css={{
-          display: "flex",
-          flexDirection: "column",
-          pointerEvents: "all",
-          top: -12,
-        }}
+        css={css`
+          display: flex;
+          flex-direction: column;
+          pointer-events: all;
+          top: -12px;
+          width: ${(() => {
+            if(!isOpen && collapsedDirection){ 
+              return '32px'
+            } else if (collapsedDirection){
+              return '160px'
+            } else {
+              return 'auto'
+            }
+          })()};
+          ${(() => {
+            return (collapsedDirection === CollapsedPromptDirection.RTL && isOpen) ? {marginLeft: 'auto'} : null;
+          })()}
+        `}
         ref={buttonRef}
       >
-        {!isOpen ? (
-          <ButtonContainer>
-            {ids.map((id, idx) => (
-              <div
-                css={css`
-                  margin-right: ${idx === ids.length - 1 ? "0px" : "-12px"};
-                `}
-                key={id}
-              >
-                <Icon
-                  isHovered={false}
-                  isAnchorHovered={false}
-                  isSaved={false}
-                  isEditing={false}
-                  isDue={false}
-                />
-              </div>
-            ))}
-            <ButtonText>{`${
-              prompts.length - (saves?.size ?? 0)
-            } prompts available`}</ButtonText>
-          </ButtonContainer>
-        ) : (
-          <Button
-            onClick={() => saveAll()}
-            children={`Save ${prompts.length - (saves?.size ?? 0)} prompts`}
-            icon={"add"}
-          />
-        )}
+        {!isOpen ? createUnhoveredButton() : createHoveredButton()}
       </div>
+      {/* ---- Bottom layout prompts container + 12 px spacer ---- */}
       <div
         css={css`
-          width: 100%;
+          width: ${collapsedDirection ? '160px' : '100%'};
           height: 12px;
         `}
       />
