@@ -203,7 +203,7 @@ const Container = styled.div<
       ? "left: -284px;"
       : null}
   ${(props) =>
-    isContextFloatingCollapsed(props.context) && !props.isHovered
+    isContextFloatingCollapsed(props.context) && !props.isHovered && !props.isEditing
       ? "pointer-events: none;"
       : null}
 `;
