@@ -84,11 +84,13 @@ const Container = styled.div<
   display: flex;
   flex-direction: row;
   align-items: flex-start;
-  padding: 8px ${({ context, direction }) =>
-    (context === PromptContext.BulkCollapsed &&
-      direction === CollapsedPromptDirection.RTL)
-      ? "13px"
-      : "8px"} 10px
+  padding: 8px
+    ${({ context, direction }) =>
+      context === PromptContext.BulkCollapsed &&
+      direction === CollapsedPromptDirection.RTL
+        ? "13px"
+        : "8px"}
+    10px
     ${({ context, direction }) =>
       isContextFloatingCollapsed(context) ||
       (context === PromptContext.BulkCollapsed &&
@@ -203,7 +205,9 @@ const Container = styled.div<
       ? "left: -284px;"
       : null}
   ${(props) =>
-    isContextFloatingCollapsed(props.context) && !props.isHovered && !props.isEditing
+    isContextFloatingCollapsed(props.context) &&
+    !props.isHovered &&
+    !props.isEditing
       ? "pointer-events: none;"
       : null}
 `;
@@ -236,9 +240,12 @@ const PromptBox = forwardRef(function (
   const hidePromptBackTimeout = useRef<number | undefined>();
   const [showPromptBack, setShowPromptBack] = useState<boolean>(false);
   const [contextMenuOpen, setContextMenuOpen] = useState<boolean>(false);
+  const [contextMenuRightLayout, setContextMenuRightLayout] =
+    useState<boolean>(true);
   const [imageSrc, setImageSrc] = useState<string | undefined>();
   const isSaved = prompt.isSaved;
 
+  const containerRef = useRef<HTMLDivElement | null>(null);
   const promptFrontRef = useRef<HTMLDivElement | null>(null);
   const promptBackRef = useRef<HTMLDivElement | null>(null);
 
@@ -357,10 +364,11 @@ const PromptBox = forwardRef(function (
           >
             {prompt.content.front}
           </PromptText>
-          {!forceHideBack && ((showPromptBack ||
-            isContextBulk(context) ||
-            forceHover ||
-            isSaved)) &&
+          {!forceHideBack &&
+            (showPromptBack ||
+              isContextBulk(context) ||
+              forceHover ||
+              isSaved) &&
             (imageSrc ? (
               <PromptImage src={imageSrc} />
             ) : (
@@ -383,6 +391,18 @@ const PromptBox = forwardRef(function (
     );
   }
 
+  function determineContextLayout() {
+    if (containerRef.current) {
+      const bb = containerRef.current.getBoundingClientRect();
+      const x = bb.right + window.scrollX + 254;
+      if (x >= window.innerWidth) {
+        setContextMenuRightLayout(false);
+      } else {
+        setContextMenuRightLayout(true);
+      }
+    }
+  }
+
   return (
     <Container
       isHovered={isHovered}
@@ -401,7 +421,14 @@ const PromptBox = forwardRef(function (
         if (!isEditing) setContextMenuOpen(false);
       }}
       onClick={() => (!isSaved ? savePrompt() : null)}
-      ref={ref}
+      ref={(handle) => {
+        if (typeof ref === "function") {
+          ref(handle);
+        } else if (ref) {
+          ref.current = handle;
+        }
+        containerRef.current = handle;
+      }}
     >
       {/* Create the icon and text (both front and back) */}
       {context === PromptContext.BulkCollapsed &&
@@ -456,31 +483,43 @@ const PromptBox = forwardRef(function (
           </div>
         )}
       {/* ------ ellipses menu  ------- */}
-      {prompt.isSaved &&
-        (isHovered || isEditing) &&
-        !isContextCollapsed(context) &&
-        !isContextBulk(context) && (
-          <div
-            css={css`
-              position: absolute;
-              top: 3px;
-              right: 1px;
-            `}
-          >
-            <PromptEllipses onClick={() => setContextMenuOpen(true)} />
-          </div>
-        )}
+      {prompt.isSaved && (isHovered || isEditing) && !isContextBulk(context) && (
+        <div
+          css={css`
+            position: absolute;
+            top: ${isContextCollapsed(context) &&
+            collapsedDirection === CollapsedPromptDirection.RTL
+              ? "calc(100% - 32px)"
+              : "3px"};
+            right: ${isContextCollapsed(context) &&
+            collapsedDirection === CollapsedPromptDirection.RTL
+              ? 8
+              : 1}px;
+          `}
+        >
+          <PromptEllipses
+            onClick={() => {
+              determineContextLayout();
+              setContextMenuOpen(true);
+            }}
+          />
+        </div>
+      )}
       {/* ----- context menu ------ */}
       {contextMenuOpen && (
         <div
           css={css`
             position: absolute;
-            top: 0px;
-            left: calc(100%);
+            top: ${isContextCollapsed(context) &&
+            collapsedDirection === CollapsedPromptDirection.RTL
+              ? "calc(100% - 32px)"
+              : "0px"};
+            left: calc(100% - ${!contextMenuRightLayout ? "295px" : "0px"});
             display: flex;
             flex-direction: row;
             z-index: ${zIndices.orbitMenu + 100};
           `}
+          onMouseLeave={() => setContextMenuOpen(false)}
         >
           <div
             css={css`
