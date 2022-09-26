@@ -1,5 +1,58 @@
 [[
   {
+    "id": "GIoPij3JEe2e_MfrJMlwDQ",
+    "authority": "hypothes.is",
+    "url": "https://basecamp.com/shapeup/1.1-chapter-02",
+    "created": "2022-09-26T18:29:02",
+    "updated": "2022-09-26T18:29:02",
+    "title": "Shape Up",
+    "refs": [],
+    "isReply": false,
+    "isPagenote": false,
+    "user": "andymatuschak",
+    "displayName": null,
+    "text": "Q. Visualize: what level of fidelity was used to define the \"dot grid\" solution to Basecamp's calendar project?\nA. <img src=\"../../assets/books/shapeup/1.1/calendar_sketch-355ff96889735772138625e1d56acdbc8740186af109b5383cc5954939349cb4.png\" />",
+    "prefix": "etch of the Dot Grid concept\n\n\n\n",
+    "exact": "Note how rough the sketch is and how many details are left out. The designer had a lot of room to interpret how this should look and feel.\n\nAt the same time, note how specific the idea is. It’s very clear how it works, what needs to be built, what’s in and what’s out.",
+    "suffix": "\n\nAt the end of the project, the",
+    "start": 5234,
+    "end": 5502,
+    "tags": [
+      "no-anchor"
+    ],
+    "group": "XwJd3WaA",
+    "target": [
+      {
+        "source": "https://basecamp.com/shapeup/1.1-chapter-02",
+        "selector": [
+          {
+            "type": "RangeSelector",
+            "endOffset": 128,
+            "startOffset": 0,
+            "endContainer": "/main[1]/div[2]/p[17]",
+            "startContainer": "/main[1]/div[2]/p[16]"
+          },
+          {
+            "end": 5502,
+            "type": "TextPositionSelector",
+            "start": 5234
+          },
+          {
+            "type": "TextQuoteSelector",
+            "exact": "Note how rough the sketch is and how many details are left out. The designer had a lot of room to interpret how this should look and feel.\n\nAt the same time, note how specific the idea is. It’s very clear how it works, what needs to be built, what’s in and what’s out.",
+            "prefix": "etch of the Dot Grid concept\n\n\n\n",
+            "suffix": "\n\nAt the end of the project, the"
+          }
+        ]
+      }
+    ],
+    "document": {
+      "title": [
+        "Shape Up"
+      ]
+    }
+  },
+  {
     "id": "VTb99DocEe2zFR_Sz2E3Aw",
     "authority": "hypothes.is",
     "url": "https://basecamp.com/shapeup/1.1-chapter-02",
@@ -654,57 +707,6 @@
             "exact": "two separate tracks: one for shaping, one for building",
             "prefix": "nknown. For that reason we have ",
             "suffix": ". During any six week cycle, the"
-          }
-        ]
-      }
-    ],
-    "document": {
-      "title": [
-        "Shape Up"
-      ]
-    }
-  },
-  {
-    "id": "3InVijoaEe2LcUe-FJzg0Q",
-    "authority": "hypothes.is",
-    "url": "https://basecamp.com/shapeup/1.1-chapter-02",
-    "created": "2022-09-22T02:04:16",
-    "updated": "2022-09-22T02:04:16",
-    "title": "Shape Up",
-    "refs": [],
-    "isReply": false,
-    "isPagenote": false,
-    "user": "andymatuschak",
-    "displayName": null,
-    "text": "Q. Visualize: what level of fidelity was used to define the \"dot grid\" solution to Basecamp's calendar project?\nA. <img src=\"../../assets/books/shapeup/1.1/calendar_sketch-355ff96889735772138625e1d56acdbc8740186af109b5383cc5954939349cb4.png\" />",
-    "prefix": "understanding of the use case.\n\n",
-    "exact": "This is the level of fidelity we used to define the solution:",
-    "suffix": "\n\n\n  \n    \n  \n  Rough sketch of ",
-    "start": 5117,
-    "end": 5178,
-    "tags": [],
-    "group": "XwJd3WaA",
-    "target": [
-      {
-        "source": "https://basecamp.com/shapeup/1.1-chapter-02",
-        "selector": [
-          {
-            "type": "RangeSelector",
-            "endOffset": 61,
-            "startOffset": 0,
-            "endContainer": "/main[1]/div[2]/p[15]",
-            "startContainer": "/main[1]/div[2]/p[15]"
-          },
-          {
-            "end": 5178,
-            "type": "TextPositionSelector",
-            "start": 5117
-          },
-          {
-            "type": "TextQuoteSelector",
-            "exact": "This is the level of fidelity we used to define the solution:",
-            "prefix": "understanding of the use case.\n\n",
-            "suffix": "\n\n\n  \n    \n  \n  Rough sketch of "
           }
         ]
       }
