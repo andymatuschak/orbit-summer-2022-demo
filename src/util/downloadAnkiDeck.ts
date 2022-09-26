@@ -24,11 +24,18 @@ export async function downloadAnkiDeck() {
       );
     }
   }
-  const response = await fetch("http://localhost:3010/api", {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify(sitePrompts),
-  });
+  const response = await fetch(
+    `${
+      process.env["NODE_ENV"] === "production"
+        ? "https://orbit-summer-2022-demo-backend.vercel.app"
+        : "http://localhost:3010"
+    }/api`,
+    {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(sitePrompts),
+    },
+  );
   if (response.ok) {
     const blob = await response.blob();
     saveAs(blob, `${siteName}.apkg`);
