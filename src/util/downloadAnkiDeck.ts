@@ -10,7 +10,7 @@ export async function downloadAnkiDeck() {
   } else {
     throw new Error(`Unknown site name ${sitePathComponent}`);
   }
-  const sitePrompts: any = { siteName, prompts: {} };
+  const sitePrompts: any = { siteName, prompts: {}, baseURI: document.baseURI };
 
   // HACK: accessing redux-persist's data directly because we need to save all prompts for this book, not just the current page's
   const localStorage = window.localStorage;

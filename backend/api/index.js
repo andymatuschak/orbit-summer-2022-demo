@@ -1,33 +1,24 @@
-import path from "path";
 import AnkiExport from "@steve2955/anki-apkg-export";
 import fetch from "node-fetch";
 
 async function convertData(incomingData, host) {
-  const apkg = new AnkiExport("Shape Up");
-  console.log(incomingData);
-
   const siteName = incomingData.siteName;
+  const apkg = new AnkiExport(siteName);
+
   for (const [pathname, prompts] of Object.entries(incomingData.prompts)) {
     for (const prompt of Object.values(prompts)) {
       if (!prompt.isSaved) {
         continue;
       }
-      const imageMatch = prompt.content.back.match(/<img src="(.+?)".+$/);
-
-      // HACK for Shape Up images
-      // TODO use urls in inline review slice file
-      if (imageMatch) {
-        const basename = path.parse(imageMatch[1]).base;
-        const url = imageMatch[1].replace(
-          "../../",
-          "https://www.basecamp.com/",
-        );
-        const response = await fetch(url);
-        apkg.addMedia(basename, await response.arrayBuffer());
-        prompt.content.back = prompt.content.back.replace(
-          imageMatch[1],
-          basename,
-        );
+      const imageURL = getAttachmentURL(
+        prompt.content.back,
+        incomingData.baseURI,
+      );
+      if (imageURL) {
+        const response = await fetch(imageURL);
+        const filename = imageURL.split("/").pop();
+        apkg.addMedia(filename, await response.arrayBuffer());
+        prompt.content.back = `<img src="${filename}" />`;
       }
 
       let sourceString;
@@ -63,5 +54,24 @@ export default async function handler(req, res) {
     res.status(200).send(result.data);
   } else {
     res.status(201).send();
+  }
+}
+
+// HACK: copy/pasta from inlineReviewModuleSlice.ts--sorry! This file can't see that one...
+// HACK: The embedded iframe (which uses the "real" Orbit bits) can't access local URLs. So we convert relative URLs of these images back to absolute paths on the original publication servers.
+function getAttachmentURL(text, baseURI) {
+  const imageMatch = text.match(/<img src="(.+?)".+$/);
+  if (imageMatch) {
+    const resolved = new URL(imageMatch[1], baseURI).pathname;
+    const inDomainSubpath = resolved.split("/").slice(2).join("/");
+    if (resolved.startsWith("/shape-up")) {
+      return `https://basecamp.com/${inDomainSubpath}`;
+    } else if (resolved.startsWith("/ims")) {
+      return `https://openintro-ims.netlify.app/${inDomainSubpath}`;
+    } else {
+      throw new Error("Unsupported image URL");
+    }
+  } else {
+    return null;
   }
 }
