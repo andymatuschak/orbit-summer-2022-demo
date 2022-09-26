@@ -1,70 +1,17 @@
 [[
   {
-    "id": "xzzmBDX7Ee2vtDtyDUu2CA",
-    "authority": "hypothes.is",
-    "url": "https://openintro-ims.netlify.app/foundations-mathematical.html",
-    "created": "2022-09-16T20:11:41",
-    "updated": "2022-09-16T21:00:09",
-    "title": "Chapter 13 Inference with mathematical models | Introduction to Modern Statistics",
-    "refs": [],
-    "isReply": false,
-    "isPagenote": false,
-    "user": "andymatuschak",
-    "displayName": null,
-    "text": "Q. In a hypothesis test, how do you find the Z score for a point estimate?\nA. $Z = \\frac{\\text{point estimate} - \\text{null value}}{SE}$",
-    "prefix": "\n\nZ score in a hypothesis test.\n",
-    "exact": "In the context of a hypothesis test, the Z score for a point estimate is\nZ=point estimate−null valueSEZ=point estimate−null valueSEZ = \\frac{\\text{point estimate} - \\text{null value}}{SE}\n",
-    "suffix": "The standard error in this case ",
-    "start": 30135,
-    "end": 30323,
-    "tags": [
-      "sr"
-    ],
-    "group": "VdL8yv9V",
-    "target": [
-      {
-        "source": "https://openintro-ims.netlify.app/foundations-mathematical.html",
-        "selector": [
-          {
-            "type": "RangeSelector",
-            "endOffset": 0,
-            "startOffset": 0,
-            "endContainer": "/div[2]/div[1]/main[1]/div[1]/div[5]/div[3]/div[2]/p[4]",
-            "startContainer": "/div[2]/div[1]/main[1]/div[1]/div[5]/div[3]/div[2]/p[2]"
-          },
-          {
-            "end": 30323,
-            "type": "TextPositionSelector",
-            "start": 30135
-          },
-          {
-            "type": "TextQuoteSelector",
-            "exact": "In the context of a hypothesis test, the Z score for a point estimate is\nZ=point estimate−null valueSEZ=point estimate−null valueSEZ = \\frac{\\text{point estimate} - \\text{null value}}{SE}\n",
-            "prefix": "\n\nZ score in a hypothesis test.\n",
-            "suffix": "The standard error in this case "
-          }
-        ]
-      }
-    ],
-    "document": {
-      "title": [
-        "Chapter 13 Inference with mathematical models | Introduction to Modern Statistics"
-      ]
-    }
-  },
-  {
     "id": "dTxCYjX9Ee2cCeOJvAcpcA",
     "authority": "hypothes.is",
     "url": "https://openintro-ims.netlify.app/foundations-mathematical.html",
     "created": "2022-09-16T20:23:42",
-    "updated": "2022-09-16T20:58:23",
+    "updated": "2022-09-26T20:07:12",
     "title": "Chapter 13 Inference with mathematical models | Introduction to Modern Statistics",
     "refs": [],
     "isReply": false,
     "isPagenote": false,
     "user": "andymatuschak",
     "displayName": null,
-    "text": "Q. After flossing, we find that 15% fewer test subjects get plaque, with a 95% confidence interval of $(-5\\%, 35\\%)$. What can we say about flossing as an intervention?\nA. Because the 95% confidence interval includes 0, this data doesn't permit us to reject the null hypothesis that flossing has no effect.",
+    "text": "Q. We find that 15% fewer test subjects get plaque if they floss, with a 95% confidence interval of $(-5\\%, 35\\%)$. What can we say about flossing as an intervention?\nA. Because the 95% confidence interval includes 0, we can't reject the null hypothesis (flossing has no effect).",
     "prefix": "6 \\times 0.078 = (0.047, 0.353)\n",
     "exact": "We are 95% confident that the video purchase rate resulting from the treatment is between 4.7% and 35.3% lower than in the control group.\nSince this confidence interval does not contain 0, it is consistent with our earlier result where we rejected the notion of “no difference” using a hypothesis test.",
     "suffix": "\nNote that we have used SE = 0.0",
@@ -107,18 +54,285 @@
     }
   },
   {
-    "id": "v1qnYjXuEe2cvtPODFgGMg",
+    "id": "02RNVDX8Ee2scbP5hd_SrA",
     "authority": "hypothes.is",
     "url": "https://openintro-ims.netlify.app/foundations-mathematical.html",
-    "created": "2022-09-16T18:38:24",
-    "updated": "2022-09-16T20:50:35",
+    "created": "2022-09-16T20:19:11",
+    "updated": "2022-09-26T20:06:17",
     "title": "Chapter 13 Inference with mathematical models | Introduction to Modern Statistics",
     "refs": [],
     "isReply": false,
     "isPagenote": false,
     "user": "andymatuschak",
     "displayName": null,
-    "text": "Q. Give the equation for the Z score of an observation $x$ drawn from $N(\\mu, \\sigma)$.\nA. $Z=\\frac{x-\\mu}{\\sigma}$",
+    "text": "Q. What's the 95% confidence interval for a point estimate of 1, assuming $SE=1$?\nA. $(-0.96, 2.96)$\n\nQ. How to find the 95% confidence interval for a point estimate of a normally distributed sample statistic?\nA. $\\text{point estimate} \\pm 1.96 \\times SE$\n\nQ. If the 95% confidence interval of some point estimate is $(-1, 1)$, what does that tell us?\nA. 95% of the time, the true population parameter is within $(-1, 1)$.",
+    "prefix": "interest about 95% of the time.\n",
+    "exact": "Thus, a 95% confidence interval for such a point estimate can be constructed:\npoint estimate±1.96×SEpoint estimate±1.96×SE\\text{point estimate} \\pm 1.96 \\times SE\n",
+    "suffix": "We can be 95% confident this int",
+    "start": 35688,
+    "end": 35851,
+    "tags": [
+      "sr"
+    ],
+    "group": "VdL8yv9V",
+    "target": [
+      {
+        "source": "https://openintro-ims.netlify.app/foundations-mathematical.html",
+        "selector": [
+          {
+            "type": "RangeSelector",
+            "endOffset": 0,
+            "startOffset": 207,
+            "endContainer": "/div[2]/div[1]/main[1]/div[1]/div[7]/div[1]/p[4]",
+            "startContainer": "/div[2]/div[1]/main[1]/div[1]/div[7]/div[1]/p[2]"
+          },
+          {
+            "end": 35851,
+            "type": "TextPositionSelector",
+            "start": 35688
+          },
+          {
+            "type": "TextQuoteSelector",
+            "exact": "Thus, a 95% confidence interval for such a point estimate can be constructed:\npoint estimate±1.96×SEpoint estimate±1.96×SE\\text{point estimate} \\pm 1.96 \\times SE\n",
+            "prefix": "interest about 95% of the time.\n",
+            "suffix": "We can be 95% confident this int"
+          }
+        ]
+      }
+    ],
+    "document": {
+      "title": [
+        "Chapter 13 Inference with mathematical models | Introduction to Modern Statistics"
+      ]
+    }
+  },
+  {
+    "id": "xzzmBDX7Ee2vtDtyDUu2CA",
+    "authority": "hypothes.is",
+    "url": "https://openintro-ims.netlify.app/foundations-mathematical.html",
+    "created": "2022-09-16T20:11:41",
+    "updated": "2022-09-26T20:05:03",
+    "title": "Chapter 13 Inference with mathematical models | Introduction to Modern Statistics",
+    "refs": [],
+    "isReply": false,
+    "isPagenote": false,
+    "user": "andymatuschak",
+    "displayName": null,
+    "text": "Q. In a hypothesis test, how do you find the Z score for a point estimate?\nA. $Z = (\\text{point estimate} - \\text{null value}) / SE$",
+    "prefix": "\n\nZ score in a hypothesis test.\n",
+    "exact": "In the context of a hypothesis test, the Z score for a point estimate is\nZ=point estimate−null valueSEZ=point estimate−null valueSEZ = \\frac{\\text{point estimate} - \\text{null value}}{SE}\n",
+    "suffix": "The standard error in this case ",
+    "start": 30135,
+    "end": 30323,
+    "tags": [
+      "sr"
+    ],
+    "group": "VdL8yv9V",
+    "target": [
+      {
+        "source": "https://openintro-ims.netlify.app/foundations-mathematical.html",
+        "selector": [
+          {
+            "type": "RangeSelector",
+            "endOffset": 0,
+            "startOffset": 0,
+            "endContainer": "/div[2]/div[1]/main[1]/div[1]/div[5]/div[3]/div[2]/p[4]",
+            "startContainer": "/div[2]/div[1]/main[1]/div[1]/div[5]/div[3]/div[2]/p[2]"
+          },
+          {
+            "end": 30323,
+            "type": "TextPositionSelector",
+            "start": 30135
+          },
+          {
+            "type": "TextQuoteSelector",
+            "exact": "In the context of a hypothesis test, the Z score for a point estimate is\nZ=point estimate−null valueSEZ=point estimate−null valueSEZ = \\frac{\\text{point estimate} - \\text{null value}}{SE}\n",
+            "prefix": "\n\nZ score in a hypothesis test.\n",
+            "suffix": "The standard error in this case "
+          }
+        ]
+      }
+    ],
+    "document": {
+      "title": [
+        "Chapter 13 Inference with mathematical models | Introduction to Modern Statistics"
+      ]
+    }
+  },
+  {
+    "id": "PmmTkDX2Ee2aHg95xKxo4w",
+    "authority": "hypothes.is",
+    "url": "https://openintro-ims.netlify.app/foundations-mathematical.html",
+    "created": "2022-09-16T19:32:04",
+    "updated": "2022-09-26T20:04:18",
+    "title": "Chapter 13 Inference with mathematical models | Introduction to Modern Statistics",
+    "refs": [],
+    "isReply": false,
+    "isPagenote": false,
+    "user": "andymatuschak",
+    "displayName": null,
+    "text": "Q. How is the standard error defined?\nA. It's the standard deviation of the sampling distribution.\n\nQ. How does the standard error differ from the standard deviation of the observations?\nA. The standard error describes the variability for sample statistic point estimates, rather than for data observations.",
+    "prefix": "called the standard error (SE).\n",
+    "exact": "The standard error is equal to the standard deviation associated with the statistic",
+    "suffix": ".\nSo, for example, to quantify t",
+    "start": 25888,
+    "end": 25971,
+    "tags": [
+      "sr"
+    ],
+    "group": "VdL8yv9V",
+    "target": [
+      {
+        "source": "https://openintro-ims.netlify.app/foundations-mathematical.html",
+        "selector": [
+          {
+            "type": "RangeSelector",
+            "endOffset": 205,
+            "startOffset": 122,
+            "endContainer": "/div[2]/div[1]/main[1]/div[1]/div[4]/div[2]/p[1]",
+            "startContainer": "/div[2]/div[1]/main[1]/div[1]/div[4]/div[2]/p[1]"
+          },
+          {
+            "end": 25971,
+            "type": "TextPositionSelector",
+            "start": 25888
+          },
+          {
+            "type": "TextQuoteSelector",
+            "exact": "The standard error is equal to the standard deviation associated with the statistic",
+            "prefix": "called the standard error (SE).\n",
+            "suffix": ".\nSo, for example, to quantify t"
+          }
+        ]
+      }
+    ],
+    "document": {
+      "title": [
+        "Chapter 13 Inference with mathematical models | Introduction to Modern Statistics"
+      ]
+    }
+  },
+  {
+    "id": "ylJzTjXyEe2HzGNut9b9Qw",
+    "authority": "hypothes.is",
+    "url": "https://openintro-ims.netlify.app/foundations-mathematical.html",
+    "created": "2022-09-16T19:07:21",
+    "updated": "2022-09-26T20:02:41",
+    "title": "Chapter 13 Inference with mathematical models | Introduction to Modern Statistics",
+    "refs": [],
+    "isReply": false,
+    "isPagenote": false,
+    "user": "andymatuschak",
+    "displayName": null,
+    "text": "Q. Assuming height is normally distributed, how would you find what height corresponds to the 20th percentile?\nA. Find the corresponding Z score (using a table or software); solve $Z = (x-\\mu) / \\sigma$ for $x$.",
+    "prefix": "ile.\n(b) 96.55th percentile.\n\n\n\n",
+    "exact": "The last several problems have focused on finding the probability or percentile for a particular observation.\nWhat if you would like to know the observation corresponding to a particular percentile?",
+    "suffix": "\n\nYousef’s height is at the 40th",
+    "start": 20601,
+    "end": 20799,
+    "tags": [
+      "sr",
+      "no-anchor"
+    ],
+    "group": "VdL8yv9V",
+    "target": [
+      {
+        "source": "https://openintro-ims.netlify.app/foundations-mathematical.html",
+        "selector": [
+          {
+            "type": "RangeSelector",
+            "endOffset": 198,
+            "startOffset": 0,
+            "endContainer": "/div[2]/div[1]/main[1]/div[1]/div[3]/div[5]/p[3]",
+            "startContainer": "/div[2]/div[1]/main[1]/div[1]/div[3]/div[5]/p[3]"
+          },
+          {
+            "end": 20799,
+            "type": "TextPositionSelector",
+            "start": 20601
+          },
+          {
+            "type": "TextQuoteSelector",
+            "exact": "The last several problems have focused on finding the probability or percentile for a particular observation.\nWhat if you would like to know the observation corresponding to a particular percentile?",
+            "prefix": "ile.\n(b) 96.55th percentile.\n\n\n\n",
+            "suffix": "\n\nYousef’s height is at the 40th"
+          }
+        ]
+      }
+    ],
+    "document": {
+      "title": [
+        "Chapter 13 Inference with mathematical models | Introduction to Modern Statistics"
+      ]
+    }
+  },
+  {
+    "id": "FkTBXDX0Ee2ezS_lHfGywg",
+    "authority": "hypothes.is",
+    "url": "https://openintro-ims.netlify.app/foundations-mathematical.html",
+    "created": "2022-09-16T19:16:37",
+    "updated": "2022-09-26T20:02:19",
+    "title": "Chapter 13 Inference with mathematical models | Introduction to Modern Statistics",
+    "refs": [],
+    "isReply": false,
+    "isPagenote": false,
+    "user": "andymatuschak",
+    "displayName": null,
+    "text": "Q. What's the geometric interpretation of a normally distributed observation's percentile?\nA. The area under the normal curve to the left of that value.\n\nQ. What's the probabilistic interpretation of a normally distributed observation's percentile?\nA. The probability that a sample drawn from the distribution will be less than or equal to that value.\n\nQ. What's the total area under the normal curve?\nA. 1",
+    "prefix": " in among all SAT test-takers.\n\n",
+    "exact": "Nel’s percentile is the percentage of people who earned a lower SAT score than Nel.\nWe shade the area representing those individuals in Figure 13.6.\nThe total area under the normal curve is always equal to 1, and the proportion of people who scored below Nel on the SAT is equal to the area shaded in Figure 13.6: 0.8413.\nIn other words, Nel is in the 84th84th84^{th} percentile of SAT takers.",
+    "suffix": "\n\n\n\n\nFigure 13.6: The normal mod",
+    "start": 14582,
+    "end": 14975,
+    "tags": [
+      "sr",
+      "no-anchor"
+    ],
+    "group": "VdL8yv9V",
+    "target": [
+      {
+        "source": "https://openintro-ims.netlify.app/foundations-mathematical.html",
+        "selector": [
+          {
+            "type": "RangeSelector",
+            "endOffset": 393,
+            "startOffset": 0,
+            "endContainer": "/div[2]/div[1]/main[1]/div[1]/div[3]/div[4]/div[1]/p[2]",
+            "startContainer": "/div[2]/div[1]/main[1]/div[1]/div[3]/div[4]/div[1]/p[2]"
+          },
+          {
+            "end": 14975,
+            "type": "TextPositionSelector",
+            "start": 14582
+          },
+          {
+            "type": "TextQuoteSelector",
+            "exact": "Nel’s percentile is the percentage of people who earned a lower SAT score than Nel.\nWe shade the area representing those individuals in Figure 13.6.\nThe total area under the normal curve is always equal to 1, and the proportion of people who scored below Nel on the SAT is equal to the area shaded in Figure 13.6: 0.8413.\nIn other words, Nel is in the 84th84th84^{th} percentile of SAT takers.",
+            "prefix": " in among all SAT test-takers.\n\n",
+            "suffix": "\n\n\n\n\nFigure 13.6: The normal mod"
+          }
+        ]
+      }
+    ],
+    "document": {
+      "title": [
+        "Chapter 13 Inference with mathematical models | Introduction to Modern Statistics"
+      ]
+    }
+  },
+  {
+    "id": "v1qnYjXuEe2cvtPODFgGMg",
+    "authority": "hypothes.is",
+    "url": "https://openintro-ims.netlify.app/foundations-mathematical.html",
+    "created": "2022-09-16T18:38:24",
+    "updated": "2022-09-26T20:00:51",
+    "title": "Chapter 13 Inference with mathematical models | Introduction to Modern Statistics",
+    "refs": [],
+    "isReply": false,
+    "isPagenote": false,
+    "user": "andymatuschak",
+    "displayName": null,
+    "text": "Q. Give the equation for the Z score of an observation $x$ drawn from $N(\\mu, \\sigma)$.\nA. $Z=(x-\\mu) / \\sigma$",
     "prefix": "n N(μ,σ),N(μ,σ),N(\\mu, \\sigma), ",
     "exact": "we define the Z score mathematically as\nZ=x−μσ",
     "suffix": "Z=x−μσ Z = \\frac{x-\\mu}{\\sigma} ",
@@ -164,14 +378,14 @@
     "authority": "hypothes.is",
     "url": "https://openintro-ims.netlify.app/foundations-mathematical.html",
     "created": "2022-09-16T18:37:40",
-    "updated": "2022-09-16T20:46:53",
+    "updated": "2022-09-26T19:58:54",
     "title": "Chapter 13 Inference with mathematical models | Introduction to Modern Statistics",
     "refs": [],
     "isReply": false,
     "isPagenote": false,
     "user": "andymatuschak",
     "displayName": null,
-    "text": "Q. What are the parameters of a normal distribution?\nA. Mean, standard deviation\n\nQ. The mean and standard deviation are the normal distribution's…\nA. Parameters",
+    "text": "Q. What are the parameters of a normal distribution?\nA. Mean, standard deviation\n\nQ. The mean and standard deviation are called the normal distribution's…\nA. Parameters",
     "prefix": " a normal distribution exactly, ",
     "exact": "they are called the distribution’s parameters",
     "suffix": ".\n\nWrite down the short-hand for",
@@ -202,6 +416,591 @@
             "exact": "they are called the distribution’s parameters",
             "prefix": " a normal distribution exactly, ",
             "suffix": ".\n\nWrite down the short-hand for"
+          }
+        ]
+      }
+    ],
+    "document": {
+      "title": [
+        "Chapter 13 Inference with mathematical models | Introduction to Modern Statistics"
+      ]
+    }
+  },
+  {
+    "id": "JLasvjXbEe2jhm_LMv7p8g",
+    "authority": "hypothes.is",
+    "url": "https://openintro-ims.netlify.app/foundations-mathematical.html",
+    "created": "2022-09-16T16:18:04",
+    "updated": "2022-09-26T19:57:53",
+    "title": "Chapter 13 Inference with mathematical models | Introduction to Modern Statistics",
+    "refs": [],
+    "isReply": false,
+    "isPagenote": false,
+    "user": "andymatuschak",
+    "displayName": null,
+    "text": "Q. About how many observations are needed for the central limit theorem to hold for sample proportions?\nA. At least 10 successes and 10 failures.",
+    "prefix": "ervations\n\nLarge enough sample: ",
+    "exact": "For proportions, at least 10 expected successes and 10 expected failures in the sample",
+    "suffix": ".\n\n\n\n\n\n13.2 Normal Distribution\n",
+    "start": 7493,
+    "end": 7579,
+    "tags": [
+      "sr"
+    ],
+    "group": "VdL8yv9V",
+    "target": [
+      {
+        "source": "https://openintro-ims.netlify.app/foundations-mathematical.html",
+        "selector": [
+          {
+            "type": "RangeSelector",
+            "endOffset": 108,
+            "startOffset": 22,
+            "endContainer": "/div[2]/div[1]/main[1]/div[1]/div[2]/div[6]/ol[1]/li[2]",
+            "startContainer": "/div[2]/div[1]/main[1]/div[1]/div[2]/div[6]/ol[1]/li[2]"
+          },
+          {
+            "end": 7579,
+            "type": "TextPositionSelector",
+            "start": 7493
+          },
+          {
+            "type": "TextQuoteSelector",
+            "exact": "For proportions, at least 10 expected successes and 10 expected failures in the sample",
+            "prefix": "ervations\n\nLarge enough sample: ",
+            "suffix": ".\n\n\n\n\n\n13.2 Normal Distribution\n"
+          }
+        ]
+      }
+    ],
+    "document": {
+      "title": [
+        "Chapter 13 Inference with mathematical models | Introduction to Modern Statistics"
+      ]
+    }
+  },
+  {
+    "id": "pl2ASjXaEe24njtmOxM5pA",
+    "authority": "hypothes.is",
+    "url": "https://openintro-ims.netlify.app/foundations-mathematical.html",
+    "created": "2022-09-16T16:14:32",
+    "updated": "2022-09-26T19:56:35",
+    "title": "Chapter 13 Inference with mathematical models | Introduction to Modern Statistics",
+    "refs": [],
+    "isReply": false,
+    "isPagenote": false,
+    "user": "andymatuschak",
+    "displayName": null,
+    "text": "Q. Two conditions of the central limit theorem for sample proportions?\nA. Observations must be independent; there can't be too few of them.",
+    "prefix": "ufficiently large sample size.\n\n",
+    "exact": "Observations in the sample are independent.\nIndependence is guaranteed when we take a random sample from a population.\nIndependence can also be guaranteed if we randomly divide individuals into treatment and control groups.\nThe sample is large enough.\nThe sample size cannot be too small.\nWhat qualifies as “small” differs from one context to the next, and we’ll provide suitable guidelines for proportions in Chapter 16.",
+    "suffix": "\n\nSo far we have had no need for",
+    "start": 6079,
+    "end": 6500,
+    "tags": [
+      "sr",
+      "no-anchor"
+    ],
+    "group": "VdL8yv9V",
+    "target": [
+      {
+        "source": "https://openintro-ims.netlify.app/foundations-mathematical.html",
+        "selector": [
+          {
+            "type": "RangeSelector",
+            "endOffset": 197,
+            "startOffset": 0,
+            "endContainer": "/div[2]/div[1]/main[1]/div[1]/div[2]/ol[1]/li[2]/p[1]",
+            "startContainer": "/div[2]/div[1]/main[1]/div[1]/div[2]/ol[1]/li[1]/p[1]"
+          },
+          {
+            "end": 6500,
+            "type": "TextPositionSelector",
+            "start": 6079
+          },
+          {
+            "type": "TextQuoteSelector",
+            "exact": "Observations in the sample are independent.\nIndependence is guaranteed when we take a random sample from a population.\nIndependence can also be guaranteed if we randomly divide individuals into treatment and control groups.\nThe sample is large enough.\nThe sample size cannot be too small.\nWhat qualifies as “small” differs from one context to the next, and we’ll provide suitable guidelines for proportions in Chapter 16.",
+            "prefix": "ufficiently large sample size.\n\n",
+            "suffix": "\n\nSo far we have had no need for"
+          }
+        ]
+      }
+    ],
+    "document": {
+      "title": [
+        "Chapter 13 Inference with mathematical models | Introduction to Modern Statistics"
+      ]
+    }
+  },
+  {
+    "id": "iheTcjXZEe25gj-gXxtw3A",
+    "authority": "hypothes.is",
+    "url": "https://openintro-ims.netlify.app/foundations-mathematical.html",
+    "created": "2022-09-16T16:06:35",
+    "updated": "2022-09-26T19:55:39",
+    "title": "Chapter 13 Inference with mathematical models | Introduction to Modern Statistics",
+    "refs": [],
+    "isReply": false,
+    "isPagenote": false,
+    "user": "andymatuschak",
+    "displayName": null,
+    "text": "Q. What does the Central Limit Theorem claim about sample proportions?\nA. Sample proportions, and their differences, will approximate a normal distribution (subject to certain conditions).",
+    "prefix": "isfies certain conditions, then ",
+    "exact": "the sample proportion (or difference in proportions) will appear to follow a bell-shaped curve called the normal distribution",
+    "suffix": ".\n\nAn example of a perfect norma",
+    "start": 5125,
+    "end": 5250,
+    "tags": [
+      "sr"
+    ],
+    "group": "VdL8yv9V",
+    "target": [
+      {
+        "source": "https://openintro-ims.netlify.app/foundations-mathematical.html",
+        "selector": [
+          {
+            "type": "RangeSelector",
+            "endOffset": 19,
+            "startOffset": 110,
+            "endContainer": "/div[2]/div[1]/main[1]/div[1]/div[2]/div[4]/p[2]/em[1]",
+            "startContainer": "/div[2]/div[1]/main[1]/div[1]/div[2]/div[4]/p[2]"
+          },
+          {
+            "end": 5250,
+            "type": "TextPositionSelector",
+            "start": 5125
+          },
+          {
+            "type": "TextQuoteSelector",
+            "exact": "the sample proportion (or difference in proportions) will appear to follow a bell-shaped curve called the normal distribution",
+            "prefix": "isfies certain conditions, then ",
+            "suffix": ".\n\nAn example of a perfect norma"
+          }
+        ]
+      }
+    ],
+    "document": {
+      "title": [
+        "Chapter 13 Inference with mathematical models | Introduction to Modern Statistics"
+      ]
+    }
+  },
+  {
+    "id": "MgrGaDXUEe2OmsdrkR1ATg",
+    "authority": "hypothes.is",
+    "url": "https://openintro-ims.netlify.app/foundations-mathematical.html",
+    "created": "2022-09-16T15:28:20",
+    "updated": "2022-09-26T19:54:52",
+    "title": "Chapter 13 Inference with mathematical models | Introduction to Modern Statistics",
+    "refs": [],
+    "isReply": false,
+    "isPagenote": false,
+    "user": "andymatuschak",
+    "displayName": null,
+    "text": "Q. I flip a coin repeatedly to see if it's fair. What value is the null distribution centered around?\nA. 0.5",
+    "prefix": " hypothesis is true.\nTherefore, ",
+    "exact": "the null distribution will always be centered at the value of the parameter given by the null hypothesis",
+    "suffix": ".\nIn the case of the opportunity",
+    "start": 3982,
+    "end": 4086,
+    "tags": [
+      "sr"
+    ],
+    "group": "VdL8yv9V",
+    "target": [
+      {
+        "source": "https://openintro-ims.netlify.app/foundations-mathematical.html",
+        "selector": [
+          {
+            "type": "RangeSelector",
+            "endOffset": 361,
+            "startOffset": 257,
+            "endContainer": "/div[2]/div[1]/main[1]/div[1]/div[2]/p[2]",
+            "startContainer": "/div[2]/div[1]/main[1]/div[1]/div[2]/p[2]"
+          },
+          {
+            "end": 4086,
+            "type": "TextPositionSelector",
+            "start": 3982
+          },
+          {
+            "type": "TextQuoteSelector",
+            "exact": "the null distribution will always be centered at the value of the parameter given by the null hypothesis",
+            "prefix": " hypothesis is true.\nTherefore, ",
+            "suffix": ".\nIn the case of the opportunity"
+          }
+        ]
+      }
+    ],
+    "document": {
+      "title": [
+        "Chapter 13 Inference with mathematical models | Introduction to Modern Statistics"
+      ]
+    }
+  },
+  {
+    "id": "3BSoFDXTEe2TH7uanygMKQ",
+    "authority": "hypothes.is",
+    "url": "https://openintro-ims.netlify.app/foundations-mathematical.html",
+    "created": "2022-09-16T15:25:56",
+    "updated": "2022-09-26T19:54:44",
+    "title": "Chapter 13 Inference with mathematical models | Introduction to Modern Statistics",
+    "refs": [],
+    "isReply": false,
+    "isPagenote": false,
+    "user": "andymatuschak",
+    "displayName": null,
+    "text": "Q. What sort of values do null distributions describe?\nA. The sample statistic point estimates you'd observe if the null hypothesis were true.",
+    "prefix": "n 10,000 simulations.\nNote that ",
+    "exact": "the null distribution is the sampling distribution of the statistic created under the setting where the null hypothesis is true",
+    "suffix": ".\nTherefore, the null distributi",
+    "start": 3842,
+    "end": 3969,
+    "tags": [
+      "sr"
+    ],
+    "group": "VdL8yv9V",
+    "target": [
+      {
+        "source": "https://openintro-ims.netlify.app/foundations-mathematical.html",
+        "selector": [
+          {
+            "type": "RangeSelector",
+            "endOffset": 244,
+            "startOffset": 117,
+            "endContainer": "/div[2]/div[1]/main[1]/div[1]/div[2]/p[2]",
+            "startContainer": "/div[2]/div[1]/main[1]/div[1]/div[2]/p[2]"
+          },
+          {
+            "end": 3969,
+            "type": "TextPositionSelector",
+            "start": 3842
+          },
+          {
+            "type": "TextQuoteSelector",
+            "exact": "the null distribution is the sampling distribution of the statistic created under the setting where the null hypothesis is true",
+            "prefix": "n 10,000 simulations.\nNote that ",
+            "suffix": ".\nTherefore, the null distributi"
+          }
+        ]
+      }
+    ],
+    "document": {
+      "title": [
+        "Chapter 13 Inference with mathematical models | Introduction to Modern Statistics"
+      ]
+    }
+  },
+  {
+    "id": "IFW3pjXQEe2uoL-qvUgcrA",
+    "authority": "hypothes.is",
+    "url": "https://openintro-ims.netlify.app/foundations-mathematical.html",
+    "created": "2022-09-16T14:59:12",
+    "updated": "2022-09-26T19:54:19",
+    "title": "Chapter 13 Inference with mathematical models | Introduction to Modern Statistics",
+    "refs": [],
+    "isReply": false,
+    "isPagenote": false,
+    "user": "andymatuschak",
+    "displayName": null,
+    "text": "Q. What sort of values do sampling distributions describe?\nA. Point estimates of sample statistics (given a population and sample size)",
+    "prefix": "shaped.\n\nSampling distribution.\n",
+    "exact": "A sampling distribution is the distribution of all possible values of a sample statistic from samples of a given sample size from a given population",
+    "suffix": ".\nWe can think about the sample ",
+    "start": 2845,
+    "end": 2993,
+    "tags": [
+      "sr"
+    ],
+    "group": "VdL8yv9V",
+    "target": [
+      {
+        "source": "https://openintro-ims.netlify.app/foundations-mathematical.html",
+        "selector": [
+          {
+            "type": "RangeSelector",
+            "endOffset": 148,
+            "startOffset": 0,
+            "endContainer": "/div[2]/div[1]/main[1]/div[1]/div[2]/div[1]/p[2]",
+            "startContainer": "/div[2]/div[1]/main[1]/div[1]/div[2]/div[1]/p[2]"
+          },
+          {
+            "end": 2993,
+            "type": "TextPositionSelector",
+            "start": 2845
+          },
+          {
+            "type": "TextQuoteSelector",
+            "exact": "A sampling distribution is the distribution of all possible values of a sample statistic from samples of a given sample size from a given population",
+            "prefix": "shaped.\n\nSampling distribution.\n",
+            "suffix": ".\nWe can think about the sample "
+          }
+        ]
+      }
+    ],
+    "document": {
+      "title": [
+        "Chapter 13 Inference with mathematical models | Introduction to Modern Statistics"
+      ]
+    }
+  },
+  {
+    "id": "s33j_DXTEe2T2_fG4WKsMw",
+    "authority": "hypothes.is",
+    "url": "https://openintro-ims.netlify.app/foundations-mathematical.html",
+    "created": "2022-09-16T15:24:48",
+    "updated": "2022-09-26T19:52:57",
+    "title": "Chapter 13 Inference with mathematical models | Introduction to Modern Statistics",
+    "refs": [],
+    "isReply": false,
+    "isPagenote": false,
+    "user": "andymatuschak",
+    "displayName": null,
+    "text": "Q. If we usually make only one point estimate of sample statistics, how can we ever work with sampling distributions?\nA. We can estimate them from their expected mathematical structure.",
+    "prefix": "from a single dataset.\nInstead, ",
+    "exact": "we use either computational or mathematical structures to estimate the sampling distribution",
+    "suffix": " and hence to describe the expec",
+    "start": 3539,
+    "end": 3631,
+    "tags": [
+      "sr"
+    ],
+    "group": "VdL8yv9V",
+    "target": [
+      {
+        "source": "https://openintro-ims.netlify.app/foundations-mathematical.html",
+        "selector": [
+          {
+            "type": "RangeSelector",
+            "endOffset": 786,
+            "startOffset": 694,
+            "endContainer": "/div[2]/div[1]/main[1]/div[1]/div[2]/div[1]/p[2]",
+            "startContainer": "/div[2]/div[1]/main[1]/div[1]/div[2]/div[1]/p[2]"
+          },
+          {
+            "end": 3631,
+            "type": "TextPositionSelector",
+            "start": 3539
+          },
+          {
+            "type": "TextQuoteSelector",
+            "exact": "we use either computational or mathematical structures to estimate the sampling distribution",
+            "prefix": "from a single dataset.\nInstead, ",
+            "suffix": " and hence to describe the expec"
+          }
+        ]
+      }
+    ],
+    "document": {
+      "title": [
+        "Chapter 13 Inference with mathematical models | Introduction to Modern Statistics"
+      ]
+    }
+  },
+  {
+    "id": "Sm5_EjXSEe2InlOzIxqCoA",
+    "authority": "hypothes.is",
+    "url": "https://openintro-ims.netlify.app/foundations-mathematical.html",
+    "created": "2022-09-16T15:14:42",
+    "updated": "2022-09-26T19:52:10",
+    "title": "Chapter 13 Inference with mathematical models | Introduction to Modern Statistics",
+    "refs": [],
+    "isReply": false,
+    "isPagenote": false,
+    "user": "andymatuschak",
+    "displayName": null,
+    "text": "Q. Why is it hard to visualize a sampling distribution from a single dataset?\nA. You only have one point estimate of the sample statistic. Plotting one point won't show you a distribution.",
+    "prefix": "om the observations themselves.\n",
+    "exact": "However, because a sampling distribution describes sample statistics computed from many studies, it cannot be visualized directly from a single dataset.",
+    "suffix": "\nInstead, we use either computat",
+    "start": 3377,
+    "end": 3529,
+    "tags": [
+      "sr"
+    ],
+    "group": "VdL8yv9V",
+    "target": [
+      {
+        "source": "https://openintro-ims.netlify.app/foundations-mathematical.html",
+        "selector": [
+          {
+            "type": "RangeSelector",
+            "endOffset": 684,
+            "startOffset": 532,
+            "endContainer": "/div[2]/div[1]/main[1]/div[1]/div[2]/div[1]/p[2]",
+            "startContainer": "/div[2]/div[1]/main[1]/div[1]/div[2]/div[1]/p[2]"
+          },
+          {
+            "end": 3529,
+            "type": "TextPositionSelector",
+            "start": 3377
+          },
+          {
+            "type": "TextQuoteSelector",
+            "exact": "However, because a sampling distribution describes sample statistics computed from many studies, it cannot be visualized directly from a single dataset.",
+            "prefix": "om the observations themselves.\n",
+            "suffix": "\nInstead, we use either computat"
+          }
+        ]
+      }
+    ],
+    "document": {
+      "title": [
+        "Chapter 13 Inference with mathematical models | Introduction to Modern Statistics"
+      ]
+    }
+  },
+  {
+    "id": "ZxFJPjXREe2jA3PAPGIVDg",
+    "authority": "hypothes.is",
+    "url": "https://openintro-ims.netlify.app/foundations-mathematical.html",
+    "created": "2022-09-16T15:08:21",
+    "updated": "2022-09-26T19:50:47",
+    "title": "Chapter 13 Inference with mathematical models | Introduction to Modern Statistics",
+    "refs": [],
+    "isReply": false,
+    "isPagenote": false,
+    "user": "andymatuschak",
+    "displayName": null,
+    "text": "Q. What's the difference between data distributions and sampling distributions?\nA. Data distributions describe observed values (e.g. individuals' heights); sampling distributions describe sample statistics (e.g. average height of a sample)",
+    "prefix": "ries from one study to another.\n",
+    "exact": "A sampling distribution is contrasted with a data distribution which shows the variability of the observed data values",
+    "suffix": ".\nThe data distribution can be v",
+    "start": 3183,
+    "end": 3301,
+    "tags": [
+      "sr"
+    ],
+    "group": "VdL8yv9V",
+    "target": [
+      {
+        "source": "https://openintro-ims.netlify.app/foundations-mathematical.html",
+        "selector": [
+          {
+            "type": "RangeSelector",
+            "endOffset": 456,
+            "startOffset": 338,
+            "endContainer": "/div[2]/div[1]/main[1]/div[1]/div[2]/div[1]/p[2]",
+            "startContainer": "/div[2]/div[1]/main[1]/div[1]/div[2]/div[1]/p[2]"
+          },
+          {
+            "end": 3301,
+            "type": "TextPositionSelector",
+            "start": 3183
+          },
+          {
+            "type": "TextQuoteSelector",
+            "exact": "A sampling distribution is contrasted with a data distribution which shows the variability of the observed data values",
+            "prefix": "ries from one study to another.\n",
+            "suffix": ".\nThe data distribution can be v"
+          }
+        ]
+      }
+    ],
+    "document": {
+      "title": [
+        "Chapter 13 Inference with mathematical models | Introduction to Modern Statistics"
+      ]
+    }
+  },
+  {
+    "id": "qB_nEDXQEe2z6gv3znOicA",
+    "authority": "hypothes.is",
+    "url": "https://openintro-ims.netlify.app/foundations-mathematical.html",
+    "created": "2022-09-16T15:03:00",
+    "updated": "2022-09-26T19:49:43",
+    "title": "Chapter 13 Inference with mathematical models | Introduction to Modern Statistics",
+    "refs": [],
+    "isReply": false,
+    "isPagenote": false,
+    "user": "andymatuschak",
+    "displayName": null,
+    "text": "Q. I flip a coin 10 times to see if it's fair. What would this sampling distribution describe?\nA. The sample proportion: the fraction of those 10 flips which came up \"heads\".",
+    "prefix": "ibing as how sample statistics (",
+    "exact": "e.g. the sample proportion ^pp^\\hat{p} or the sample mean ¯x",
+    "suffix": "x¯\\bar{x}) varies from one study",
+    "start": 3078,
+    "end": 3138,
+    "tags": [
+      "sr"
+    ],
+    "group": "VdL8yv9V",
+    "target": [
+      {
+        "source": "https://openintro-ims.netlify.app/foundations-mathematical.html",
+        "selector": [
+          {
+            "type": "RangeSelector",
+            "endOffset": 1,
+            "startOffset": 233,
+            "endContainer": "/div[2]/div[1]/main[1]/div[1]/div[2]/div[1]/p[2]/span[2]/span[2]/span[1]/span[1]/span[1]/span[1]/span[1]/span[1]/span[2]/span[1]/span[1]",
+            "startContainer": "/div[2]/div[1]/main[1]/div[1]/div[2]/div[1]/p[2]"
+          },
+          {
+            "end": 3138,
+            "type": "TextPositionSelector",
+            "start": 3078
+          },
+          {
+            "type": "TextQuoteSelector",
+            "exact": "e.g. the sample proportion ^pp^\\hat{p} or the sample mean ¯x",
+            "prefix": "ibing as how sample statistics (",
+            "suffix": "x¯\\bar{x}) varies from one study"
+          }
+        ]
+      }
+    ],
+    "document": {
+      "title": [
+        "Chapter 13 Inference with mathematical models | Introduction to Modern Statistics"
+      ]
+    }
+  },
+  {
+    "id": "ILhZDjXcEe2jjNO7cn3Obg",
+    "authority": "hypothes.is",
+    "url": "https://openintro-ims.netlify.app/foundations-mathematical.html",
+    "created": "2022-09-16T16:25:07",
+    "updated": "2022-09-19T19:45:56",
+    "title": "Chapter 13 Inference with mathematical models | Introduction to Modern Statistics",
+    "refs": [],
+    "isReply": false,
+    "isPagenote": false,
+    "user": "andymatuschak",
+    "displayName": null,
+    "text": "Q. Visualize $N(\\mu = 0, \\sigma = 1)$ and $N(\\mu = 19, \\sigma = 4)$ plotted on the same axes.\nA. &ltimg src=\"./13-foundations-mathematical_files/figure-html/twoSampleNormalsStacked-1.png\" />",
+    "prefix": "9 and standard deviation 4.\n\n\n\n\n",
+    "exact": "\nFigure 13.4: The two normal models shown in Figure 13.3 but plotted together on the same scale.",
+    "suffix": "\n\n\n\nIf a normal distribution has",
+    "start": 9956,
+    "end": 10052,
+    "tags": [
+      "sr",
+      "no-anchor"
+    ],
+    "group": "VdL8yv9V",
+    "target": [
+      {
+        "source": "https://openintro-ims.netlify.app/foundations-mathematical.html",
+        "selector": [
+          {
+            "type": "RangeSelector",
+            "endOffset": 96,
+            "startOffset": 0,
+            "endContainer": "/div[2]/div[1]/main[1]/div[1]/div[3]/div[2]/div[2]/p[1]",
+            "startContainer": "/div[2]/div[1]/main[1]/div[1]/div[3]/div[2]/div[2]/p[1]"
+          },
+          {
+            "end": 10052,
+            "type": "TextPositionSelector",
+            "start": 9956
+          },
+          {
+            "type": "TextQuoteSelector",
+            "exact": "\nFigure 13.4: The two normal models shown in Figure 13.3 but plotted together on the same scale.",
+            "prefix": "9 and standard deviation 4.\n\n\n\n\n",
+            "suffix": "\n\n\n\nIf a normal distribution has"
           }
         ]
       }
@@ -427,112 +1226,6 @@
     }
   },
   {
-    "id": "02RNVDX8Ee2scbP5hd_SrA",
-    "authority": "hypothes.is",
-    "url": "https://openintro-ims.netlify.app/foundations-mathematical.html",
-    "created": "2022-09-16T20:19:11",
-    "updated": "2022-09-16T20:29:28",
-    "title": "Chapter 13 Inference with mathematical models | Introduction to Modern Statistics",
-    "refs": [],
-    "isReply": false,
-    "isPagenote": false,
-    "user": "andymatuschak",
-    "displayName": null,
-    "text": "Q. What's the 95% confidence interval for a point estimate of 1, assuming $SE=1$?\nA. $(-0.96, 2.96)$\n\nQ. How to find the 95% confidence interval for a point estimate of a normally distributed sample statistic?\nA. $\\text{point estimate} \\pm 1.96 \\times SE$\n\nQ. If the 95% confidence interval of some point estimate is $(-1, 1)$, what does that tell us?\nA. 95% of the time, the true population parameter is within that interval.",
-    "prefix": "interest about 95% of the time.\n",
-    "exact": "Thus, a 95% confidence interval for such a point estimate can be constructed:\npoint estimate±1.96×SEpoint estimate±1.96×SE\\text{point estimate} \\pm 1.96 \\times SE\n",
-    "suffix": "We can be 95% confident this int",
-    "start": 35688,
-    "end": 35851,
-    "tags": [
-      "sr"
-    ],
-    "group": "VdL8yv9V",
-    "target": [
-      {
-        "source": "https://openintro-ims.netlify.app/foundations-mathematical.html",
-        "selector": [
-          {
-            "type": "RangeSelector",
-            "endOffset": 0,
-            "startOffset": 207,
-            "endContainer": "/div[2]/div[1]/main[1]/div[1]/div[7]/div[1]/p[4]",
-            "startContainer": "/div[2]/div[1]/main[1]/div[1]/div[7]/div[1]/p[2]"
-          },
-          {
-            "end": 35851,
-            "type": "TextPositionSelector",
-            "start": 35688
-          },
-          {
-            "type": "TextQuoteSelector",
-            "exact": "Thus, a 95% confidence interval for such a point estimate can be constructed:\npoint estimate±1.96×SEpoint estimate±1.96×SE\\text{point estimate} \\pm 1.96 \\times SE\n",
-            "prefix": "interest about 95% of the time.\n",
-            "suffix": "We can be 95% confident this int"
-          }
-        ]
-      }
-    ],
-    "document": {
-      "title": [
-        "Chapter 13 Inference with mathematical models | Introduction to Modern Statistics"
-      ]
-    }
-  },
-  {
-    "id": "IixdaDX-Ee2kQrfL3pAKKg",
-    "authority": "hypothes.is",
-    "url": "https://openintro-ims.netlify.app/foundations-mathematical.html",
-    "created": "2022-09-16T20:28:32",
-    "updated": "2022-09-16T20:28:32",
-    "title": "Chapter 13 Inference with mathematical models | Introduction to Modern Statistics",
-    "refs": [],
-    "isReply": false,
-    "isPagenote": false,
-    "user": "andymatuschak",
-    "displayName": null,
-    "text": "Q. Which quantity do confidence intervals describe the confidence of capturing—individual observations, population parameters, proportions of observations, point estimates? \nA. population parameters",
-    "prefix": "pture the population parameter.\n",
-    "exact": "Our intervals say nothing about the confidence of capturing individual observations, a proportion of the observations, or about capturing point estimates.\nConfidence intervals provide an interval estimate for and attempt to capture population parameters.",
-    "suffix": "\n\n\n\n\n\n13.7 Chapter review\n\n\n\n13.",
-    "start": 41485,
-    "end": 41739,
-    "tags": [
-      "sr"
-    ],
-    "group": "VdL8yv9V",
-    "target": [
-      {
-        "source": "https://openintro-ims.netlify.app/foundations-mathematical.html",
-        "selector": [
-          {
-            "type": "RangeSelector",
-            "endOffset": 380,
-            "startOffset": 126,
-            "endContainer": "/div[2]/div[1]/main[1]/div[1]/div[7]/div[6]/p[2]",
-            "startContainer": "/div[2]/div[1]/main[1]/div[1]/div[7]/div[6]/p[2]"
-          },
-          {
-            "end": 41739,
-            "type": "TextPositionSelector",
-            "start": 41485
-          },
-          {
-            "type": "TextQuoteSelector",
-            "exact": "Our intervals say nothing about the confidence of capturing individual observations, a proportion of the observations, or about capturing point estimates.\nConfidence intervals provide an interval estimate for and attempt to capture population parameters.",
-            "prefix": "pture the population parameter.\n",
-            "suffix": "\n\n\n\n\n\n13.7 Chapter review\n\n\n\n13."
-          }
-        ]
-      }
-    ],
-    "document": {
-      "title": [
-        "Chapter 13 Inference with mathematical models | Introduction to Modern Statistics"
-      ]
-    }
-  },
-  {
     "id": "44ZZiDX9Ee2KQavjBiN77A",
     "authority": "hypothes.is",
     "url": "https://openintro-ims.netlify.app/foundations-mathematical.html",
@@ -734,59 +1427,6 @@
             "exact": "The margin of error describes how far away observations are from their mean.",
             "prefix": "d error is the margin of error.\n",
             "suffix": "\nFor example, to describe where "
-          }
-        ]
-      }
-    ],
-    "document": {
-      "title": [
-        "Chapter 13 Inference with mathematical models | Introduction to Modern Statistics"
-      ]
-    }
-  },
-  {
-    "id": "PmmTkDX2Ee2aHg95xKxo4w",
-    "authority": "hypothes.is",
-    "url": "https://openintro-ims.netlify.app/foundations-mathematical.html",
-    "created": "2022-09-16T19:32:04",
-    "updated": "2022-09-16T20:04:37",
-    "title": "Chapter 13 Inference with mathematical models | Introduction to Modern Statistics",
-    "refs": [],
-    "isReply": false,
-    "isPagenote": false,
-    "user": "andymatuschak",
-    "displayName": null,
-    "text": "Q. How is the standard error defined?\nA. It's the standard deviation of the sampling distribution.\n\nQ. How does the standard error differ from the standard deviation of the observations?\nA. The standard error describes the variability of point estimates of some sample statistic, rather than the variability of observed data.",
-    "prefix": "called the standard error (SE).\n",
-    "exact": "The standard error is equal to the standard deviation associated with the statistic",
-    "suffix": ".\nSo, for example, to quantify t",
-    "start": 25888,
-    "end": 25971,
-    "tags": [
-      "sr"
-    ],
-    "group": "VdL8yv9V",
-    "target": [
-      {
-        "source": "https://openintro-ims.netlify.app/foundations-mathematical.html",
-        "selector": [
-          {
-            "type": "RangeSelector",
-            "endOffset": 205,
-            "startOffset": 122,
-            "endContainer": "/div[2]/div[1]/main[1]/div[1]/div[4]/div[2]/p[1]",
-            "startContainer": "/div[2]/div[1]/main[1]/div[1]/div[4]/div[2]/p[1]"
-          },
-          {
-            "end": 25971,
-            "type": "TextPositionSelector",
-            "start": 25888
-          },
-          {
-            "type": "TextQuoteSelector",
-            "exact": "The standard error is equal to the standard deviation associated with the statistic",
-            "prefix": "called the standard error (SE).\n",
-            "suffix": ".\nSo, for example, to quantify t"
           }
         ]
       }
@@ -1011,60 +1651,6 @@
     }
   },
   {
-    "id": "FkTBXDX0Ee2ezS_lHfGywg",
-    "authority": "hypothes.is",
-    "url": "https://openintro-ims.netlify.app/foundations-mathematical.html",
-    "created": "2022-09-16T19:16:37",
-    "updated": "2022-09-16T19:16:37",
-    "title": "Chapter 13 Inference with mathematical models | Introduction to Modern Statistics",
-    "refs": [],
-    "isReply": false,
-    "isPagenote": false,
-    "user": "andymatuschak",
-    "displayName": null,
-    "text": "Q. What's the geometric interpretation of a normally distributed observation's percentile?\nA. The area under the normal curve to the left of that value.\n\nQ. What's the probabilistic interpretation of a normally distributed observation's percentile?\nA. The probability that a sample drawn from the distribution will be at or below that value.\n\nQ. What's the total area under the normal curve?\nA. 1",
-    "prefix": " in among all SAT test-takers.\n\n",
-    "exact": "Nel’s percentile is the percentage of people who earned a lower SAT score than Nel.\nWe shade the area representing those individuals in Figure 13.6.\nThe total area under the normal curve is always equal to 1, and the proportion of people who scored below Nel on the SAT is equal to the area shaded in Figure 13.6: 0.8413.\nIn other words, Nel is in the 84th84th84^{th} percentile of SAT takers.",
-    "suffix": "\n\n\n\n\nFigure 13.6: The normal mod",
-    "start": 14582,
-    "end": 14975,
-    "tags": [
-      "sr",
-      "no-anchor"
-    ],
-    "group": "VdL8yv9V",
-    "target": [
-      {
-        "source": "https://openintro-ims.netlify.app/foundations-mathematical.html",
-        "selector": [
-          {
-            "type": "RangeSelector",
-            "endOffset": 393,
-            "startOffset": 0,
-            "endContainer": "/div[2]/div[1]/main[1]/div[1]/div[3]/div[4]/div[1]/p[2]",
-            "startContainer": "/div[2]/div[1]/main[1]/div[1]/div[3]/div[4]/div[1]/p[2]"
-          },
-          {
-            "end": 14975,
-            "type": "TextPositionSelector",
-            "start": 14582
-          },
-          {
-            "type": "TextQuoteSelector",
-            "exact": "Nel’s percentile is the percentage of people who earned a lower SAT score than Nel.\nWe shade the area representing those individuals in Figure 13.6.\nThe total area under the normal curve is always equal to 1, and the proportion of people who scored below Nel on the SAT is equal to the area shaded in Figure 13.6: 0.8413.\nIn other words, Nel is in the 84th84th84^{th} percentile of SAT takers.",
-            "prefix": " in among all SAT test-takers.\n\n",
-            "suffix": "\n\n\n\n\nFigure 13.6: The normal mod"
-          }
-        ]
-      }
-    ],
-    "document": {
-      "title": [
-        "Chapter 13 Inference with mathematical models | Introduction to Modern Statistics"
-      ]
-    }
-  },
-  {
     "id": "lf5E-jXzEe2dcYMYLGVtDQ",
     "authority": "hypothes.is",
     "url": "https://openintro-ims.netlify.app/foundations-mathematical.html",
@@ -1162,60 +1748,6 @@
             "exact": "Shannon is a randomly selected SAT taker, and nothing is known about Shannon’s SAT aptitude.\nWhat is the probability that Shannon scores at least 1630 on their SATs?",
             "prefix": "=300).N(\\mu=1500, \\sigma=300).\n\n",
             "suffix": "\n\nFirst, always draw and label a"
-          }
-        ]
-      }
-    ],
-    "document": {
-      "title": [
-        "Chapter 13 Inference with mathematical models | Introduction to Modern Statistics"
-      ]
-    }
-  },
-  {
-    "id": "ylJzTjXyEe2HzGNut9b9Qw",
-    "authority": "hypothes.is",
-    "url": "https://openintro-ims.netlify.app/foundations-mathematical.html",
-    "created": "2022-09-16T19:07:21",
-    "updated": "2022-09-16T19:08:44",
-    "title": "Chapter 13 Inference with mathematical models | Introduction to Modern Statistics",
-    "refs": [],
-    "isReply": false,
-    "isPagenote": false,
-    "user": "andymatuschak",
-    "displayName": null,
-    "text": "Q. Assuming height is normally distributed, how would you find what height corresponds to the 20th percentile?\nA. Find the corresponding Z score (using a table or software); solve $Z = \\frac{x-\\mu}{\\sigma}$ for $x$.",
-    "prefix": "ile.\n(b) 96.55th percentile.\n\n\n\n",
-    "exact": "The last several problems have focused on finding the probability or percentile for a particular observation.\nWhat if you would like to know the observation corresponding to a particular percentile?",
-    "suffix": "\n\nYousef’s height is at the 40th",
-    "start": 20601,
-    "end": 20799,
-    "tags": [
-      "sr",
-      "no-anchor"
-    ],
-    "group": "VdL8yv9V",
-    "target": [
-      {
-        "source": "https://openintro-ims.netlify.app/foundations-mathematical.html",
-        "selector": [
-          {
-            "type": "RangeSelector",
-            "endOffset": 198,
-            "startOffset": 0,
-            "endContainer": "/div[2]/div[1]/main[1]/div[1]/div[3]/div[5]/p[3]",
-            "startContainer": "/div[2]/div[1]/main[1]/div[1]/div[3]/div[5]/p[3]"
-          },
-          {
-            "end": 20799,
-            "type": "TextPositionSelector",
-            "start": 20601
-          },
-          {
-            "type": "TextQuoteSelector",
-            "exact": "The last several problems have focused on finding the probability or percentile for a particular observation.\nWhat if you would like to know the observation corresponding to a particular percentile?",
-            "prefix": "ile.\n(b) 96.55th percentile.\n\n\n\n",
-            "suffix": "\n\nYousef’s height is at the 40th"
           }
         ]
       }
@@ -1440,60 +1972,6 @@
     }
   },
   {
-    "id": "ILhZDjXcEe2jjNO7cn3Obg",
-    "authority": "hypothes.is",
-    "url": "https://openintro-ims.netlify.app/foundations-mathematical.html",
-    "created": "2022-09-16T16:25:07",
-    "updated": "2022-09-16T16:25:07",
-    "title": "Chapter 13 Inference with mathematical models | Introduction to Modern Statistics",
-    "refs": [],
-    "isReply": false,
-    "isPagenote": false,
-    "user": "andymatuschak",
-    "displayName": null,
-    "text": "Q. Visualize $N(\\mu = 0, \\sigma = 1)$ and $N(\\mu = 19, \\sigma = 4)$ plotted on the same axes.\nA. <img src=\"./13-foundations-mathematical_files/figure-html/twoSampleNormalsStacked-1.png\" />",
-    "prefix": "9 and standard deviation 4.\n\n\n\n\n",
-    "exact": "\nFigure 13.4: The two normal models shown in Figure 13.3 but plotted together on the same scale.",
-    "suffix": "\n\n\n\nIf a normal distribution has",
-    "start": 9956,
-    "end": 10052,
-    "tags": [
-      "sr",
-      "no-anchor"
-    ],
-    "group": "VdL8yv9V",
-    "target": [
-      {
-        "source": "https://openintro-ims.netlify.app/foundations-mathematical.html",
-        "selector": [
-          {
-            "type": "RangeSelector",
-            "endOffset": 96,
-            "startOffset": 0,
-            "endContainer": "/div[2]/div[1]/main[1]/div[1]/div[3]/div[2]/div[2]/p[1]",
-            "startContainer": "/div[2]/div[1]/main[1]/div[1]/div[3]/div[2]/div[2]/p[1]"
-          },
-          {
-            "end": 10052,
-            "type": "TextPositionSelector",
-            "start": 9956
-          },
-          {
-            "type": "TextQuoteSelector",
-            "exact": "\nFigure 13.4: The two normal models shown in Figure 13.3 but plotted together on the same scale.",
-            "prefix": "9 and standard deviation 4.\n\n\n\n\n",
-            "suffix": "\n\n\n\nIf a normal distribution has"
-          }
-        ]
-      }
-    ],
-    "document": {
-      "title": [
-        "Chapter 13 Inference with mathematical models | Introduction to Modern Statistics"
-      ]
-    }
-  },
-  {
     "id": "ckVG_DXbEe2E7q-cvvaPIA",
     "authority": "hypothes.is",
     "url": "https://openintro-ims.netlify.app/foundations-mathematical.html",
@@ -1590,537 +2068,6 @@
             "exact": "normal distribution",
             "prefix": " normal curve, normal model, or ",
             "suffix": ".137\nUnder certain conditions, s"
-          }
-        ]
-      }
-    ],
-    "document": {
-      "title": [
-        "Chapter 13 Inference with mathematical models | Introduction to Modern Statistics"
-      ]
-    }
-  },
-  {
-    "id": "JLasvjXbEe2jhm_LMv7p8g",
-    "authority": "hypothes.is",
-    "url": "https://openintro-ims.netlify.app/foundations-mathematical.html",
-    "created": "2022-09-16T16:18:04",
-    "updated": "2022-09-16T16:18:04",
-    "title": "Chapter 13 Inference with mathematical models | Introduction to Modern Statistics",
-    "refs": [],
-    "isReply": false,
-    "isPagenote": false,
-    "user": "andymatuschak",
-    "displayName": null,
-    "text": "Q. Roughly how many observations do you need for the central limit theorem to apply to a sample proportion?\nA. At least 10 successes and 10 failures.",
-    "prefix": "ervations\n\nLarge enough sample: ",
-    "exact": "For proportions, at least 10 expected successes and 10 expected failures in the sample",
-    "suffix": ".\n\n\n\n\n\n13.2 Normal Distribution\n",
-    "start": 7493,
-    "end": 7579,
-    "tags": [
-      "sr"
-    ],
-    "group": "VdL8yv9V",
-    "target": [
-      {
-        "source": "https://openintro-ims.netlify.app/foundations-mathematical.html",
-        "selector": [
-          {
-            "type": "RangeSelector",
-            "endOffset": 108,
-            "startOffset": 22,
-            "endContainer": "/div[2]/div[1]/main[1]/div[1]/div[2]/div[6]/ol[1]/li[2]",
-            "startContainer": "/div[2]/div[1]/main[1]/div[1]/div[2]/div[6]/ol[1]/li[2]"
-          },
-          {
-            "end": 7579,
-            "type": "TextPositionSelector",
-            "start": 7493
-          },
-          {
-            "type": "TextQuoteSelector",
-            "exact": "For proportions, at least 10 expected successes and 10 expected failures in the sample",
-            "prefix": "ervations\n\nLarge enough sample: ",
-            "suffix": ".\n\n\n\n\n\n13.2 Normal Distribution\n"
-          }
-        ]
-      }
-    ],
-    "document": {
-      "title": [
-        "Chapter 13 Inference with mathematical models | Introduction to Modern Statistics"
-      ]
-    }
-  },
-  {
-    "id": "pl2ASjXaEe24njtmOxM5pA",
-    "authority": "hypothes.is",
-    "url": "https://openintro-ims.netlify.app/foundations-mathematical.html",
-    "created": "2022-09-16T16:14:32",
-    "updated": "2022-09-16T16:14:32",
-    "title": "Chapter 13 Inference with mathematical models | Introduction to Modern Statistics",
-    "refs": [],
-    "isReply": false,
-    "isPagenote": false,
-    "user": "andymatuschak",
-    "displayName": null,
-    "text": "Q. What two conditions must be met for the central limit theorem to hold for sample proportions?\nA. Observations must be independent; there can't be too few of them.",
-    "prefix": "ufficiently large sample size.\n\n",
-    "exact": "Observations in the sample are independent.\nIndependence is guaranteed when we take a random sample from a population.\nIndependence can also be guaranteed if we randomly divide individuals into treatment and control groups.\nThe sample is large enough.\nThe sample size cannot be too small.\nWhat qualifies as “small” differs from one context to the next, and we’ll provide suitable guidelines for proportions in Chapter 16.",
-    "suffix": "\n\nSo far we have had no need for",
-    "start": 6079,
-    "end": 6500,
-    "tags": [
-      "sr",
-      "no-anchor"
-    ],
-    "group": "VdL8yv9V",
-    "target": [
-      {
-        "source": "https://openintro-ims.netlify.app/foundations-mathematical.html",
-        "selector": [
-          {
-            "type": "RangeSelector",
-            "endOffset": 197,
-            "startOffset": 0,
-            "endContainer": "/div[2]/div[1]/main[1]/div[1]/div[2]/ol[1]/li[2]/p[1]",
-            "startContainer": "/div[2]/div[1]/main[1]/div[1]/div[2]/ol[1]/li[1]/p[1]"
-          },
-          {
-            "end": 6500,
-            "type": "TextPositionSelector",
-            "start": 6079
-          },
-          {
-            "type": "TextQuoteSelector",
-            "exact": "Observations in the sample are independent.\nIndependence is guaranteed when we take a random sample from a population.\nIndependence can also be guaranteed if we randomly divide individuals into treatment and control groups.\nThe sample is large enough.\nThe sample size cannot be too small.\nWhat qualifies as “small” differs from one context to the next, and we’ll provide suitable guidelines for proportions in Chapter 16.",
-            "prefix": "ufficiently large sample size.\n\n",
-            "suffix": "\n\nSo far we have had no need for"
-          }
-        ]
-      }
-    ],
-    "document": {
-      "title": [
-        "Chapter 13 Inference with mathematical models | Introduction to Modern Statistics"
-      ]
-    }
-  },
-  {
-    "id": "iheTcjXZEe25gj-gXxtw3A",
-    "authority": "hypothes.is",
-    "url": "https://openintro-ims.netlify.app/foundations-mathematical.html",
-    "created": "2022-09-16T16:06:35",
-    "updated": "2022-09-16T16:09:09",
-    "title": "Chapter 13 Inference with mathematical models | Introduction to Modern Statistics",
-    "refs": [],
-    "isReply": false,
-    "isPagenote": false,
-    "user": "andymatuschak",
-    "displayName": null,
-    "text": "Q. What claim does the Central Limit Theorem make of sample proportions?\nA. Sample proportions, and differences of sample proportions, will approximate a normal distribution (subject to certain conditions).",
-    "prefix": "isfies certain conditions, then ",
-    "exact": "the sample proportion (or difference in proportions) will appear to follow a bell-shaped curve called the normal distribution",
-    "suffix": ".\n\nAn example of a perfect norma",
-    "start": 5125,
-    "end": 5250,
-    "tags": [
-      "sr"
-    ],
-    "group": "VdL8yv9V",
-    "target": [
-      {
-        "source": "https://openintro-ims.netlify.app/foundations-mathematical.html",
-        "selector": [
-          {
-            "type": "RangeSelector",
-            "endOffset": 19,
-            "startOffset": 110,
-            "endContainer": "/div[2]/div[1]/main[1]/div[1]/div[2]/div[4]/p[2]/em[1]",
-            "startContainer": "/div[2]/div[1]/main[1]/div[1]/div[2]/div[4]/p[2]"
-          },
-          {
-            "end": 5250,
-            "type": "TextPositionSelector",
-            "start": 5125
-          },
-          {
-            "type": "TextQuoteSelector",
-            "exact": "the sample proportion (or difference in proportions) will appear to follow a bell-shaped curve called the normal distribution",
-            "prefix": "isfies certain conditions, then ",
-            "suffix": ".\n\nAn example of a perfect norma"
-          }
-        ]
-      }
-    ],
-    "document": {
-      "title": [
-        "Chapter 13 Inference with mathematical models | Introduction to Modern Statistics"
-      ]
-    }
-  },
-  {
-    "id": "MgrGaDXUEe2OmsdrkR1ATg",
-    "authority": "hypothes.is",
-    "url": "https://openintro-ims.netlify.app/foundations-mathematical.html",
-    "created": "2022-09-16T15:28:20",
-    "updated": "2022-09-16T15:28:20",
-    "title": "Chapter 13 Inference with mathematical models | Introduction to Modern Statistics",
-    "refs": [],
-    "isReply": false,
-    "isPagenote": false,
-    "user": "andymatuschak",
-    "displayName": null,
-    "text": "Q. I flip a coin many times to see if it's fair. What value is the null distribution centered around?\nA. 0.5",
-    "prefix": " hypothesis is true.\nTherefore, ",
-    "exact": "the null distribution will always be centered at the value of the parameter given by the null hypothesis",
-    "suffix": ".\nIn the case of the opportunity",
-    "start": 3982,
-    "end": 4086,
-    "tags": [
-      "sr"
-    ],
-    "group": "VdL8yv9V",
-    "target": [
-      {
-        "source": "https://openintro-ims.netlify.app/foundations-mathematical.html",
-        "selector": [
-          {
-            "type": "RangeSelector",
-            "endOffset": 361,
-            "startOffset": 257,
-            "endContainer": "/div[2]/div[1]/main[1]/div[1]/div[2]/p[2]",
-            "startContainer": "/div[2]/div[1]/main[1]/div[1]/div[2]/p[2]"
-          },
-          {
-            "end": 4086,
-            "type": "TextPositionSelector",
-            "start": 3982
-          },
-          {
-            "type": "TextQuoteSelector",
-            "exact": "the null distribution will always be centered at the value of the parameter given by the null hypothesis",
-            "prefix": " hypothesis is true.\nTherefore, ",
-            "suffix": ".\nIn the case of the opportunity"
-          }
-        ]
-      }
-    ],
-    "document": {
-      "title": [
-        "Chapter 13 Inference with mathematical models | Introduction to Modern Statistics"
-      ]
-    }
-  },
-  {
-    "id": "3BSoFDXTEe2TH7uanygMKQ",
-    "authority": "hypothes.is",
-    "url": "https://openintro-ims.netlify.app/foundations-mathematical.html",
-    "created": "2022-09-16T15:25:56",
-    "updated": "2022-09-16T15:25:56",
-    "title": "Chapter 13 Inference with mathematical models | Introduction to Modern Statistics",
-    "refs": [],
-    "isReply": false,
-    "isPagenote": false,
-    "user": "andymatuschak",
-    "displayName": null,
-    "text": "Q. What values does the null distribution describe?\nA. The sample statistics you'd observe if the null hypothesis were true.",
-    "prefix": "n 10,000 simulations.\nNote that ",
-    "exact": "the null distribution is the sampling distribution of the statistic created under the setting where the null hypothesis is true",
-    "suffix": ".\nTherefore, the null distributi",
-    "start": 3842,
-    "end": 3969,
-    "tags": [
-      "sr"
-    ],
-    "group": "VdL8yv9V",
-    "target": [
-      {
-        "source": "https://openintro-ims.netlify.app/foundations-mathematical.html",
-        "selector": [
-          {
-            "type": "RangeSelector",
-            "endOffset": 244,
-            "startOffset": 117,
-            "endContainer": "/div[2]/div[1]/main[1]/div[1]/div[2]/p[2]",
-            "startContainer": "/div[2]/div[1]/main[1]/div[1]/div[2]/p[2]"
-          },
-          {
-            "end": 3969,
-            "type": "TextPositionSelector",
-            "start": 3842
-          },
-          {
-            "type": "TextQuoteSelector",
-            "exact": "the null distribution is the sampling distribution of the statistic created under the setting where the null hypothesis is true",
-            "prefix": "n 10,000 simulations.\nNote that ",
-            "suffix": ".\nTherefore, the null distributi"
-          }
-        ]
-      }
-    ],
-    "document": {
-      "title": [
-        "Chapter 13 Inference with mathematical models | Introduction to Modern Statistics"
-      ]
-    }
-  },
-  {
-    "id": "s33j_DXTEe2T2_fG4WKsMw",
-    "authority": "hypothes.is",
-    "url": "https://openintro-ims.netlify.app/foundations-mathematical.html",
-    "created": "2022-09-16T15:24:48",
-    "updated": "2022-09-16T15:24:48",
-    "title": "Chapter 13 Inference with mathematical models | Introduction to Modern Statistics",
-    "refs": [],
-    "isReply": false,
-    "isPagenote": false,
-    "user": "andymatuschak",
-    "displayName": null,
-    "text": "Q. Since we usually have only one sample statistic, how can we ever work with sampling distributions?\nA. We can estimate them from their expected mathematical structure.",
-    "prefix": "from a single dataset.\nInstead, ",
-    "exact": "we use either computational or mathematical structures to estimate the sampling distribution",
-    "suffix": " and hence to describe the expec",
-    "start": 3539,
-    "end": 3631,
-    "tags": [
-      "sr"
-    ],
-    "group": "VdL8yv9V",
-    "target": [
-      {
-        "source": "https://openintro-ims.netlify.app/foundations-mathematical.html",
-        "selector": [
-          {
-            "type": "RangeSelector",
-            "endOffset": 786,
-            "startOffset": 694,
-            "endContainer": "/div[2]/div[1]/main[1]/div[1]/div[2]/div[1]/p[2]",
-            "startContainer": "/div[2]/div[1]/main[1]/div[1]/div[2]/div[1]/p[2]"
-          },
-          {
-            "end": 3631,
-            "type": "TextPositionSelector",
-            "start": 3539
-          },
-          {
-            "type": "TextQuoteSelector",
-            "exact": "we use either computational or mathematical structures to estimate the sampling distribution",
-            "prefix": "from a single dataset.\nInstead, ",
-            "suffix": " and hence to describe the expec"
-          }
-        ]
-      }
-    ],
-    "document": {
-      "title": [
-        "Chapter 13 Inference with mathematical models | Introduction to Modern Statistics"
-      ]
-    }
-  },
-  {
-    "id": "Sm5_EjXSEe2InlOzIxqCoA",
-    "authority": "hypothes.is",
-    "url": "https://openintro-ims.netlify.app/foundations-mathematical.html",
-    "created": "2022-09-16T15:14:42",
-    "updated": "2022-09-16T15:14:42",
-    "title": "Chapter 13 Inference with mathematical models | Introduction to Modern Statistics",
-    "refs": [],
-    "isReply": false,
-    "isPagenote": false,
-    "user": "andymatuschak",
-    "displayName": null,
-    "text": "Q. Why is it difficult to visualize a sampling distribution directly from a single dataset?\nA. A single dataset yields only one sample statistic. Plotting one point won't show you a distribution.",
-    "prefix": "om the observations themselves.\n",
-    "exact": "However, because a sampling distribution describes sample statistics computed from many studies, it cannot be visualized directly from a single dataset.",
-    "suffix": "\nInstead, we use either computat",
-    "start": 3377,
-    "end": 3529,
-    "tags": [
-      "sr"
-    ],
-    "group": "VdL8yv9V",
-    "target": [
-      {
-        "source": "https://openintro-ims.netlify.app/foundations-mathematical.html",
-        "selector": [
-          {
-            "type": "RangeSelector",
-            "endOffset": 684,
-            "startOffset": 532,
-            "endContainer": "/div[2]/div[1]/main[1]/div[1]/div[2]/div[1]/p[2]",
-            "startContainer": "/div[2]/div[1]/main[1]/div[1]/div[2]/div[1]/p[2]"
-          },
-          {
-            "end": 3529,
-            "type": "TextPositionSelector",
-            "start": 3377
-          },
-          {
-            "type": "TextQuoteSelector",
-            "exact": "However, because a sampling distribution describes sample statistics computed from many studies, it cannot be visualized directly from a single dataset.",
-            "prefix": "om the observations themselves.\n",
-            "suffix": "\nInstead, we use either computat"
-          }
-        ]
-      }
-    ],
-    "document": {
-      "title": [
-        "Chapter 13 Inference with mathematical models | Introduction to Modern Statistics"
-      ]
-    }
-  },
-  {
-    "id": "qB_nEDXQEe2z6gv3znOicA",
-    "authority": "hypothes.is",
-    "url": "https://openintro-ims.netlify.app/foundations-mathematical.html",
-    "created": "2022-09-16T15:03:00",
-    "updated": "2022-09-16T15:12:16",
-    "title": "Chapter 13 Inference with mathematical models | Introduction to Modern Statistics",
-    "refs": [],
-    "isReply": false,
-    "isPagenote": false,
-    "user": "andymatuschak",
-    "displayName": null,
-    "text": "Q. To decide if a coin is fair, I flip it ten times. What does this experiment's sampling distribution describe?\nA. The sample proportion: how many times the coin came up \"heads\" in those ten flips.",
-    "prefix": "ibing as how sample statistics (",
-    "exact": "e.g. the sample proportion ^pp^\\hat{p} or the sample mean ¯x",
-    "suffix": "x¯\\bar{x}) varies from one study",
-    "start": 3078,
-    "end": 3138,
-    "tags": [
-      "sr"
-    ],
-    "group": "VdL8yv9V",
-    "target": [
-      {
-        "source": "https://openintro-ims.netlify.app/foundations-mathematical.html",
-        "selector": [
-          {
-            "type": "RangeSelector",
-            "endOffset": 1,
-            "startOffset": 233,
-            "endContainer": "/div[2]/div[1]/main[1]/div[1]/div[2]/div[1]/p[2]/span[2]/span[2]/span[1]/span[1]/span[1]/span[1]/span[1]/span[1]/span[2]/span[1]/span[1]",
-            "startContainer": "/div[2]/div[1]/main[1]/div[1]/div[2]/div[1]/p[2]"
-          },
-          {
-            "end": 3138,
-            "type": "TextPositionSelector",
-            "start": 3078
-          },
-          {
-            "type": "TextQuoteSelector",
-            "exact": "e.g. the sample proportion ^pp^\\hat{p} or the sample mean ¯x",
-            "prefix": "ibing as how sample statistics (",
-            "suffix": "x¯\\bar{x}) varies from one study"
-          }
-        ]
-      }
-    ],
-    "document": {
-      "title": [
-        "Chapter 13 Inference with mathematical models | Introduction to Modern Statistics"
-      ]
-    }
-  },
-  {
-    "id": "IFW3pjXQEe2uoL-qvUgcrA",
-    "authority": "hypothes.is",
-    "url": "https://openintro-ims.netlify.app/foundations-mathematical.html",
-    "created": "2022-09-16T14:59:12",
-    "updated": "2022-09-16T15:11:32",
-    "title": "Chapter 13 Inference with mathematical models | Introduction to Modern Statistics",
-    "refs": [],
-    "isReply": false,
-    "isPagenote": false,
-    "user": "andymatuschak",
-    "displayName": null,
-    "text": "Q. What values does a sampling distribution describe?\nA. Sample statistics (of some population, at some sample size)",
-    "prefix": "shaped.\n\nSampling distribution.\n",
-    "exact": "A sampling distribution is the distribution of all possible values of a sample statistic from samples of a given sample size from a given population",
-    "suffix": ".\nWe can think about the sample ",
-    "start": 2845,
-    "end": 2993,
-    "tags": [
-      "sr"
-    ],
-    "group": "VdL8yv9V",
-    "target": [
-      {
-        "source": "https://openintro-ims.netlify.app/foundations-mathematical.html",
-        "selector": [
-          {
-            "type": "RangeSelector",
-            "endOffset": 148,
-            "startOffset": 0,
-            "endContainer": "/div[2]/div[1]/main[1]/div[1]/div[2]/div[1]/p[2]",
-            "startContainer": "/div[2]/div[1]/main[1]/div[1]/div[2]/div[1]/p[2]"
-          },
-          {
-            "end": 2993,
-            "type": "TextPositionSelector",
-            "start": 2845
-          },
-          {
-            "type": "TextQuoteSelector",
-            "exact": "A sampling distribution is the distribution of all possible values of a sample statistic from samples of a given sample size from a given population",
-            "prefix": "shaped.\n\nSampling distribution.\n",
-            "suffix": ".\nWe can think about the sample "
-          }
-        ]
-      }
-    ],
-    "document": {
-      "title": [
-        "Chapter 13 Inference with mathematical models | Introduction to Modern Statistics"
-      ]
-    }
-  },
-  {
-    "id": "ZxFJPjXREe2jA3PAPGIVDg",
-    "authority": "hypothes.is",
-    "url": "https://openintro-ims.netlify.app/foundations-mathematical.html",
-    "created": "2022-09-16T15:08:21",
-    "updated": "2022-09-16T15:08:21",
-    "title": "Chapter 13 Inference with mathematical models | Introduction to Modern Statistics",
-    "refs": [],
-    "isReply": false,
-    "isPagenote": false,
-    "user": "andymatuschak",
-    "displayName": null,
-    "text": "Q. What's the difference between a data distribution and a sampling distribution?\nA. The data distribution describes observed values (e.g. individuals' heights); the sampling distribution describes sample statistics (e.g. average height of a population sample); ",
-    "prefix": "ries from one study to another.\n",
-    "exact": "A sampling distribution is contrasted with a data distribution which shows the variability of the observed data values",
-    "suffix": ".\nThe data distribution can be v",
-    "start": 3183,
-    "end": 3301,
-    "tags": [
-      "sr"
-    ],
-    "group": "VdL8yv9V",
-    "target": [
-      {
-        "source": "https://openintro-ims.netlify.app/foundations-mathematical.html",
-        "selector": [
-          {
-            "type": "RangeSelector",
-            "endOffset": 456,
-            "startOffset": 338,
-            "endContainer": "/div[2]/div[1]/main[1]/div[1]/div[2]/div[1]/p[2]",
-            "startContainer": "/div[2]/div[1]/main[1]/div[1]/div[2]/div[1]/p[2]"
-          },
-          {
-            "end": 3301,
-            "type": "TextPositionSelector",
-            "start": 3183
-          },
-          {
-            "type": "TextQuoteSelector",
-            "exact": "A sampling distribution is contrasted with a data distribution which shows the variability of the observed data values",
-            "prefix": "ries from one study to another.\n",
-            "suffix": ".\nThe data distribution can be v"
           }
         ]
       }

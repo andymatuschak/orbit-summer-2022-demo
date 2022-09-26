@@ -204,6 +204,7 @@ export const PromptText = forwardRef(function (
             ? 1.0
             : 0.696};
           outline: none;
+          hyphens: auto;
 
           ::selection {
             background: var(--editSelection);
