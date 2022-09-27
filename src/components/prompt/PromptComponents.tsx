@@ -47,17 +47,22 @@ export enum PromptContext {
   List = "list",
 }
 
-export const isContextFloatingCollapsed = function(context: PromptContext){
+export const isContextFloatingCollapsed = function (context: PromptContext) {
   return context === PromptContext.FloatingCollapsed;
-}
+};
 
-export const isContextBulk = function(context: PromptContext){
-  return context === PromptContext.BulkCollapsed || context === PromptContext.Bulk;
-}
+export const isContextBulk = function (context: PromptContext) {
+  return (
+    context === PromptContext.BulkCollapsed || context === PromptContext.Bulk
+  );
+};
 
-export const isContextCollapsed = function(context: PromptContext){
-  return context === PromptContext.FloatingCollapsed || context === PromptContext.BulkCollapsed;
-}
+export const isContextCollapsed = function (context: PromptContext) {
+  return (
+    context === PromptContext.FloatingCollapsed ||
+    context === PromptContext.BulkCollapsed
+  );
+};
 
 export enum CollapsedPromptDirection {
   LTR = "left_to_right",
@@ -99,6 +104,7 @@ const IconBase = styled.div<
     margin-top: ${isStarburst ? "-0.5px" : "-2px"};
     margin-left: ${isStarburst ? "0.5px" : "0px"};
     margin-right: ${isStarburst ? "-0.5px" : "0px"};
+    margin-bottom: -4px; // HACK: Make the effective laid-out height of the icon not reach below the associated text.
     background-repeat: no-repeat;
     background-size: contain;
     flex: 0 0 auto;
