@@ -19,12 +19,19 @@ if (document.location.pathname.includes("shape-up")) {
     { once: true },
   );
 } else if (document.location.pathname.includes("ims")) {
-  // Give the LaTeX a chance to resolve...
-  setTimeout(() => {
-    const chapterName =
-      window.location.pathname.match(/\/ims\/(.+?).html$/)![1];
-    loadPageData(<IMSApp />, `ims/${chapterName}`);
-  }, 2000);
+  window.addEventListener(
+    "load",
+    () => {
+      // Give the LaTeX a chance to resolve...
+      // @ts-ignore
+      MathJax.Hub.Register.StartupHook("End", () => {
+        const chapterName =
+          window.location.pathname.match(/\/ims\/(.+?).html$/)![1];
+        loadPageData(<IMSApp />, `ims/${chapterName}`);
+      });
+    },
+    { once: true },
+  );
 }
 
 async function loadPageData(page: ReactNode, subpath: string) {
