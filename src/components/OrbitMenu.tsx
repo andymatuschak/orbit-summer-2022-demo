@@ -32,6 +32,7 @@ function OrbitMenuButton({
           border: "none",
           padding: 0,
           cursor: "pointer",
+          pointerEvents: "all",
 
           // Dodge the bottom chrome border when the menu is open.
           clipPath: menuIsOpen ? "inset(3px 0 0 0)" : undefined,

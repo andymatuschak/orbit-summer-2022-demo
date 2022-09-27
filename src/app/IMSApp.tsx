@@ -7,7 +7,7 @@ export default function IMSApp() {
     useCallback(() => {
       const main = document.getElementById("content")!;
       const rect = main.children.item(0)!.getBoundingClientRect();
-      return rect.right + 16;
+      return rect.right + 12;
     }, []),
   );
 

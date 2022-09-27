@@ -204,6 +204,7 @@ export default function App({ marginX, textRoot, promptLists }: AppProps) {
           right: 48,
           bottom: 40,
           zIndex: zIndices.orbitMenu,
+          pointerEvents: "none",
         }}
       >
         <OrbitMenu

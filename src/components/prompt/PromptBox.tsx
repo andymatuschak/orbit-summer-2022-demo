@@ -92,9 +92,9 @@ const Container = styled.div<
         : "8px"}
     10px
     ${({ context, direction }) =>
-      isContextFloatingCollapsed(context) ||
-      (context === PromptContext.BulkCollapsed &&
-        direction === CollapsedPromptDirection.RTL)
+      direction === CollapsedPromptDirection.RTL &&
+      (isContextFloatingCollapsed(context) ||
+        context === PromptContext.BulkCollapsed)
         ? "13px"
         : "9px"};
   gap: 8px;
