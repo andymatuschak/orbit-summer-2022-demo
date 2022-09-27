@@ -969,7 +969,7 @@
     "isPagenote": false,
     "user": "andymatuschak",
     "displayName": null,
-    "text": "Q. Visualize $N(\\mu = 0, \\sigma = 1)$ and $N(\\mu = 19, \\sigma = 4)$ plotted on the same axes.\nA. &ltimg src=\"./13-foundations-mathematical_files/figure-html/twoSampleNormalsStacked-1.png\" />",
+    "text": "Q. Visualize $N(\\mu = 0, \\sigma = 1)$ and $N(\\mu = 19, \\sigma = 4)$ plotted on the same axes.\nA. <img src=\"./13-foundations-mathematical_files/figure-html/twoSampleNormalsStacked-1.png\" />",
     "prefix": "9 and standard deviation 4.\n\n\n\n\n",
     "exact": "\nFigure 13.4: The two normal models shown in Figure 13.3 but plotted together on the same scale.",
     "suffix": "\n\n\n\nIf a normal distribution has",
