@@ -19,7 +19,7 @@ function getInitialPromptVisibility(): PromptVisibilitySetting {
   if (document.location.pathname.includes("/shapeup")) {
     return PromptVisibilitySetting.All;
   } else if (document.location.pathname.includes("/ims")) {
-    return PromptVisibilitySetting.Saved;
+    return PromptVisibilitySetting.All;
   } else {
     throw new Error("Unsupported path");
   }
