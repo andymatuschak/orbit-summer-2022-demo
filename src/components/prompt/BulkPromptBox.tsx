@@ -157,7 +157,11 @@ export default function BulkPromptBox({
         <PromptBox
           prompt={prompt}
           key={id}
-          context={collapsedDirection ? PromptContext.BulkCollapsed : PromptContext.Bulk}
+          context={
+            collapsedDirection
+              ? PromptContext.BulkCollapsed
+              : PromptContext.Bulk
+          }
           collapsedDirection={collapsedDirection}
           savePrompt={() => {
             if (addToSaves) addToSaves(id);
@@ -210,10 +214,12 @@ export default function BulkPromptBox({
   function createUnhoveredButton() {
     if (collapsedDirection) {
       return (
-        <div 
+        <div
           css={css`
             position: relative;
-            left: ${collapsedDirection === CollapsedPromptDirection.RTL ? '276px' : '-4px'};
+            left: ${collapsedDirection === CollapsedPromptDirection.RTL
+              ? "276px"
+              : "-4px"};
           `}
         >
           <ButtonContainer>
@@ -289,7 +295,9 @@ export default function BulkPromptBox({
         pointer-events: ${isOpen ? "auto" : "none"};
         top: ${-layoutOffset - 12}px;
         position: relative;
-        left: ${(collapsedDirection === CollapsedPromptDirection.RTL) ? -280 : 4}px;
+        left: ${collapsedDirection === CollapsedPromptDirection.RTL
+          ? -280
+          : 0}px;
       `}
       onMouseEnter={() => {
         setIsBulkPromptHovered(true);
@@ -311,7 +319,7 @@ export default function BulkPromptBox({
         {layoutOffset !== 0 && createPromptsContainer()}
         <div
           css={css`
-            width: ${collapsedDirection ? '160px' : '100%'};
+            width: ${collapsedDirection ? "160px" : "100%"};
             height: 12px;
           `}
         />
@@ -331,29 +339,32 @@ export default function BulkPromptBox({
           display: flex;
           flex-direction: column;
           pointer-events: all;
-          top: -12px;
+          position: relative;
+          top: ${isOpen ? "-2px" : "0px"};
           width: ${(() => {
-            if(!isOpen && collapsedDirection){ 
-              return '32px'
-            } else if (collapsedDirection){
-              return '160px'
+            if (!isOpen && collapsedDirection) {
+              return "32px";
+            } else if (collapsedDirection) {
+              return "160px";
             } else {
-              return 'auto'
+              return "auto";
             }
           })()};
           ${(() => {
-            return (collapsedDirection === CollapsedPromptDirection.RTL && isOpen) ? {marginLeft: 'auto'} : null;
+            return collapsedDirection === CollapsedPromptDirection.RTL && isOpen
+              ? { marginLeft: "auto" }
+              : null;
           })()}
         `}
         ref={buttonRef}
       >
         {!isOpen ? createUnhoveredButton() : createHoveredButton()}
       </div>
-      {/* ---- Bottom layout prompts container + 12 px spacer ---- */}
+      {/* ---- Bottom layout prompts container + spacer ---- */}
       <div
         css={css`
-          width: ${collapsedDirection ? '160px' : '100%'};
-          height: 12px;
+          width: ${collapsedDirection ? "160px" : "100%"};
+          height: 6px;
         `}
       />
       <AnimatePresence>
