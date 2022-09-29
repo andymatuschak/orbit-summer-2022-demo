@@ -40,7 +40,7 @@ type PromptAbsoluteLocation = { top: number; bottom: number };
 type PromptBoundingBoxes = { [id: PromptId]: PromptAbsoluteLocation };
 
 const ShadowContainer = styled.div`
-  opacity: 0.0;
+  opacity: 0;
   pointer-events: none;
 `;
 
@@ -187,8 +187,7 @@ export function PromptLayoutManager({
           // Saved elements not in the bulk saved state are not eligible for bulk prompts, Add to its own run
           currRunStartIdx += 1;
           runs[currRunStartIdx] = [nextId];
-          // TODO: merge threshold
-        } else if (nextTop < currBottom) {
+        } else if (nextTop < currBottom + 24) {
           // Lookback - add to current run if the run is eligible for merge (is not a saved prompt or in the bulk queue)
           if (!prompts[runStartId].isSaved || bulkSaves.has(runStartId)) {
             runs[currRunStartIdx].push(nextId);
@@ -413,7 +412,9 @@ const ShadowPrompts = React.memo(function ({
               prompt={prompts[id]}
               context={PromptContext.Floating}
               savePrompt={() => null}
-              forceHover={prompts[id].isSaved && !collapsedDirection ? true : false}
+              forceHover={
+                prompts[id].isSaved && !collapsedDirection ? true : false
+              }
               forceHideBack={collapsedDirection !== undefined}
               updatePromptFront={(newPrompt) => null}
               updatePromptBack={(newPrompt) => null}
@@ -459,7 +460,7 @@ export const BulkPromptBoxMemo = React.memo(BulkPromptBox, (prev, curr) => {
   if (prev.saves !== curr.saves) {
     return false;
   }
-  if(prev.collapsedDirection !== curr.collapsedDirection){
+  if (prev.collapsedDirection !== curr.collapsedDirection) {
     return false;
   }
   if (prev.addToSaves !== curr.addToSaves) {
