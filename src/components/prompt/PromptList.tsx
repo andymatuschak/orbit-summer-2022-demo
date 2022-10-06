@@ -60,7 +60,7 @@ function AutosaveBanner({ onUndo }: AutosaveBannerProps) {
             cursor: "pointer",
           }}
         >
-          <LabelSmall text="Undo" color={LabelColor.AccentPrimary} />
+          <LabelSmall text="Unsave" color={LabelColor.AccentPrimary} />
         </button>
       </div>
     </div>

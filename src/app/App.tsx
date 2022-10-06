@@ -153,7 +153,7 @@ export default function App({ marginX, textRoot, promptLists }: AppProps) {
               ...(suggestedPromptIDs.length > 0
                 ? [
                     {
-                      title: `Add Suggested Prompt${
+                      title: `Save Suggested Prompt${
                         suggestedPromptIDs.length > 1 ? "s" : ""
                       }`,
                       onClick: () => {
