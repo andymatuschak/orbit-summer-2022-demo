@@ -1,0 +1,53 @@
+[[
+  {
+    "id": "_b1V7EmmEe2LTl_RJdUl3w",
+    "authority": "hypothes.is",
+    "url": "https://bounded-regret.ghost.io/more-is-different-for-ai/",
+    "created": "2022-10-11T20:55:08",
+    "updated": "2022-10-11T20:55:08",
+    "title": "More Is Different for AI",
+    "refs": [],
+    "isReply": false,
+    "isPagenote": false,
+    "user": "andymatuschak",
+    "displayName": null,
+    "text": "Q. Test question\nA. Test answer",
+    "prefix": "h and the Philosophy approach:\n\n",
+    "exact": "The Engineering approach tends to be empirically-driven",
+    "suffix": ", drawing experience from existi",
+    "start": 976,
+    "end": 1031,
+    "tags": [],
+    "group": "VdL8yv9V",
+    "target": [
+      {
+        "source": "https://bounded-regret.ghost.io/more-is-different-for-ai/",
+        "selector": [
+          {
+            "type": "RangeSelector",
+            "endOffset": 55,
+            "startOffset": 0,
+            "endContainer": "/div[1]/div[1]/div[1]/main[1]/article[1]/div[1]/ul[1]/li[1]",
+            "startContainer": "/div[1]/div[1]/div[1]/main[1]/article[1]/div[1]/ul[1]/li[1]"
+          },
+          {
+            "end": 1031,
+            "type": "TextPositionSelector",
+            "start": 976
+          },
+          {
+            "type": "TextQuoteSelector",
+            "exact": "The Engineering approach tends to be empirically-driven",
+            "prefix": "h and the Philosophy approach:\n\n",
+            "suffix": ", drawing experience from existi"
+          }
+        ]
+      }
+    ],
+    "document": {
+      "title": [
+        "More Is Different for AI"
+      ]
+    }
+  }
+]]
