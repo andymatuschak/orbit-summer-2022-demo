@@ -3,6 +3,11 @@ const { override, addBabelPreset } = require("customize-cra");
 /* Generate a Reactified index.html for each page of the books we're augmenting. */
 const shapeUpChapters = ["1.1-chapter-02", "1.2-chapter-03"];
 const IMSChapters = ["foundations-mathematical"];
+const SHChapters = [
+  "br/more-is-different-for-ai",
+  "br/future-ml-systems-will-be-qualitatively-different",
+  "br/thought-experiments-provide-a-third-anchor",
+];
 const multipleEntry = require("react-app-rewire-multiple-entry")([
   ...shapeUpChapters.map((c) => ({
     entry: "src/index.tsx",
@@ -13,6 +18,11 @@ const multipleEntry = require("react-app-rewire-multiple-entry")([
     entry: "src/index.tsx",
     template: `public/ims/${c}.html`,
     outPath: `/ims/${c}.html`,
+  })),
+  ...SHChapters.map((c) => ({
+    entry: "src/index.tsx",
+    template: `public/sh/${c}/index.html`,
+    outPath: `/sh/${c}/index.html`,
   })),
 ]);
 const overrides = override(
@@ -29,5 +39,6 @@ module.exports = (webpackConfig, env, args) => {
     }
   }
   webpackConfig.optimization.minimize = false;
+  webpackConfig.optimization.minimizer = [];
   return webpackConfig;
 };

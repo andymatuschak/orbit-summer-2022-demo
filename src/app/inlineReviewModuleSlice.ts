@@ -219,6 +219,8 @@ function getAttachmentURL(text: string): string | null {
       return `https://basecamp.com/${inDomainSubpath}`;
     } else if (resolved.startsWith("/ims")) {
       return `https://openintro-ims.netlify.app/${inDomainSubpath}`;
+    } else if (resolved.startsWith("/sh/br")) {
+      return `https://bounded-regret.ghost.io/${inDomainSubpath}`;
     } else {
       throw new Error("Unsupported image URL");
     }

@@ -7,6 +7,8 @@ export async function downloadAnkiDeck() {
     siteName = "Intro to Modern Statistics";
   } else if (sitePathComponent === "shape-up") {
     siteName = "Shape Up";
+  } else if (window.location.pathname.startsWith("/sh/br")) {
+    siteName = "Bounded Regret";
   } else {
     throw new Error(`Unknown site name ${sitePathComponent}`);
   }
