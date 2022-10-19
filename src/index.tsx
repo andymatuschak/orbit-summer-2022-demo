@@ -2,7 +2,7 @@ import React, { ReactNode } from "react";
 import ReactDOM from "react-dom/client";
 import { Provider } from "react-redux";
 import { PersistGate } from "redux-persist/integration/react";
-import BRApp from "./app/BRApp";
+import BRApp, { getBoundedRegretChapterName } from "./app/BRApp";
 import IMSApp from "./app/IMSApp";
 import { autopopulateReviewAreas } from "./app/inlineReviewModuleSlice";
 import { loadPrompts } from "./app/promptSlice";
@@ -23,9 +23,7 @@ if (document.location.pathname.includes("shape-up")) {
   window.addEventListener(
     "load",
     () => {
-      const chapterName = window.location.pathname.match(
-        /\/sh\/br\/(.+?)(\/.*)?$/,
-      )![1];
+      const chapterName = getBoundedRegretChapterName();
       loadPageData(<BRApp />, `sh/br/${chapterName}`);
     },
     { once: true },

@@ -1,45 +1,657 @@
 [[
   {
-    "id": "_b1V7EmmEe2LTl_RJdUl3w",
+    "id": "r_A1MkqgEe27Eif_Py2ROg",
     "authority": "hypothes.is",
     "url": "https://bounded-regret.ghost.io/more-is-different-for-ai/",
-    "created": "2022-10-11T20:55:08",
-    "updated": "2022-10-11T20:55:08",
+    "created": "2022-10-13T02:42:32",
+    "updated": "2022-10-13T02:42:32",
     "title": "More Is Different for AI",
     "refs": [],
     "isReply": false,
     "isPagenote": false,
-    "user": "andymatuschak",
+    "user": "sidhire",
     "displayName": null,
-    "text": "Q. Test question\nA. Test answer",
-    "prefix": "h and the Philosophy approach:\n\n",
-    "exact": "The Engineering approach tends to be empirically-driven",
-    "suffix": ", drawing experience from existi",
-    "start": 976,
-    "end": 1031,
+    "text": "Q. In Steinhardt's dichotomy, if the Engineering worldview the intersection of AI and law, what is one problem it might focus on?\nA. (1) How to regulate self driving cars. [My interpretation:] Because it seems concretely possible that it may be an issue in the future, given where we are today.\n\nQ. In Steinhardt's dichotomy, if the Philosophy worldview the intersection of AI and law, what is one problem it might focus on?\nA. (1) Whether using AI in judicial decision-making could undermine liberal democracy. [My interpretation:] Here the view is taking AI+law to the extreme without regard for whether current trends exhibit harbingers of such a future.",
+    "prefix": "inction applies in other areas. ",
+    "exact": "For instance",
+    "suffix": ", an Engineering approach to AI ",
+    "start": 1946,
+    "end": 1958,
     "tags": [],
-    "group": "VdL8yv9V",
+    "group": "vyaVWEbp",
     "target": [
       {
         "source": "https://bounded-regret.ghost.io/more-is-different-for-ai/",
         "selector": [
           {
             "type": "RangeSelector",
-            "endOffset": 55,
+            "endOffset": 127,
+            "startOffset": 115,
+            "endContainer": "/div[1]/div[1]/div[1]/main[1]/article[1]/div[1]/p[3]",
+            "startContainer": "/div[1]/div[1]/div[1]/main[1]/article[1]/div[1]/p[3]"
+          },
+          {
+            "end": 1958,
+            "type": "TextPositionSelector",
+            "start": 1946
+          },
+          {
+            "type": "TextQuoteSelector",
+            "exact": "For instance",
+            "prefix": "inction applies in other areas. ",
+            "suffix": ", an Engineering approach to AI "
+          }
+        ]
+      }
+    ],
+    "document": {
+      "title": [
+        "More Is Different for AI"
+      ]
+    }
+  },
+  {
+    "id": "cr9QvEqgEe2Fnq93kKiIuA",
+    "authority": "hypothes.is",
+    "url": "https://bounded-regret.ghost.io/more-is-different-for-ai/",
+    "created": "2022-10-13T02:40:49",
+    "updated": "2022-10-13T02:40:49",
+    "title": "More Is Different for AI",
+    "refs": [],
+    "isReply": false,
+    "isPagenote": false,
+    "user": "sidhire",
+    "displayName": null,
+    "text": "Q. How can you use Steinhardt's dichotomy in a conversation with someone who is new to AI safety?\nA. [My opinion:] Think about whether they're viewing the problem from an Engineering worldview or a Philosophical worldview.",
+    "prefix": "either—is the \"right\" approach.\n",
+    "exact": "Coming in",
+    "suffix": ", I was mostly on the Engineerin",
+    "start": 3988,
+    "end": 3997,
+    "tags": [],
+    "group": "vyaVWEbp",
+    "target": [
+      {
+        "source": "https://bounded-regret.ghost.io/more-is-different-for-ai/",
+        "selector": [
+          {
+            "type": "RangeSelector",
+            "endOffset": 9,
             "startOffset": 0,
+            "endContainer": "/div[1]/div[1]/div[1]/main[1]/article[1]/div[1]/p[6]",
+            "startContainer": "/div[1]/div[1]/div[1]/main[1]/article[1]/div[1]/p[6]"
+          },
+          {
+            "end": 3997,
+            "type": "TextPositionSelector",
+            "start": 3988
+          },
+          {
+            "type": "TextQuoteSelector",
+            "exact": "Coming in",
+            "prefix": "either—is the \"right\" approach.\n",
+            "suffix": ", I was mostly on the Engineerin"
+          }
+        ]
+      }
+    ],
+    "document": {
+      "title": [
+        "More Is Different for AI"
+      ]
+    }
+  },
+  {
+    "id": "W9HpbkqgEe2VgLsVyjuIQg",
+    "authority": "hypothes.is",
+    "url": "https://bounded-regret.ghost.io/more-is-different-for-ai/",
+    "created": "2022-10-13T02:40:11",
+    "updated": "2022-10-13T02:40:11",
+    "title": "More Is Different for AI",
+    "refs": [],
+    "isReply": false,
+    "isPagenote": false,
+    "user": "sidhire",
+    "displayName": null,
+    "text": "Q. Give an example of something the Engineering worldview might say in Steinhardt's dichotomy\nA. [My opinion:] Tons of possible answers, for example: (1) We barely understand the brain, we're not re-creating it any time soon. (2) We always have time to adjust to new technologies. (3) This time is not different.\n\nQ. Give an example of something the Philosophy worldview might say in Steinhardt's dichotomy\nA. [My opinion:] Tons of possible answers, for example: (1) Orthogonality thesis. (2) Fast takeoff. (3) Digital people.",
+    "prefix": "ermine liberal democracy.\nWhile ",
+    "exact": "Engineering and Philosophy",
+    "suffix": " agree on some things, for the m",
+    "start": 2159,
+    "end": 2185,
+    "tags": [],
+    "group": "vyaVWEbp",
+    "target": [
+      {
+        "source": "https://bounded-regret.ghost.io/more-is-different-for-ai/",
+        "selector": [
+          {
+            "type": "RangeSelector",
+            "endOffset": 32,
+            "startOffset": 6,
+            "endContainer": "/div[1]/div[1]/div[1]/main[1]/article[1]/div[1]/p[4]",
+            "startContainer": "/div[1]/div[1]/div[1]/main[1]/article[1]/div[1]/p[4]"
+          },
+          {
+            "end": 2185,
+            "type": "TextPositionSelector",
+            "start": 2159
+          },
+          {
+            "type": "TextQuoteSelector",
+            "exact": "Engineering and Philosophy",
+            "prefix": "ermine liberal democracy.\nWhile ",
+            "suffix": " agree on some things, for the m"
+          }
+        ]
+      }
+    ],
+    "document": {
+      "title": [
+        "More Is Different for AI"
+      ]
+    }
+  },
+  {
+    "id": "HonPBEqgEe27i_slUod76A",
+    "authority": "hypothes.is",
+    "url": "https://bounded-regret.ghost.io/more-is-different-for-ai/",
+    "created": "2022-10-13T02:38:28",
+    "updated": "2022-10-13T02:38:28",
+    "title": "More Is Different for AI",
+    "refs": [],
+    "isReply": false,
+    "isPagenote": false,
+    "user": "sidhire",
+    "displayName": null,
+    "text": "Q. Name one way Steinhardt thinks adherents of the Philosophy worldview could improve (per his Engineering/Philosophy dichotomy)\nA. Currently they significantly underrate the value of empirical data.",
+    "prefix": " other hand, I also feel that:\n\n",
+    "exact": "Philosophy continues to significantly underrate the value of empirical data.",
+    "suffix": "\nNeither of these approaches is ",
+    "start": 4393,
+    "end": 4469,
+    "tags": [],
+    "group": "vyaVWEbp",
+    "target": [
+      {
+        "source": "https://bounded-regret.ghost.io/more-is-different-for-ai/",
+        "selector": [
+          {
+            "type": "RangeSelector",
+            "endOffset": 76,
+            "startOffset": 0,
+            "endContainer": "/div[1]/div[1]/div[1]/main[1]/article[1]/div[1]/ul[4]/li[1]",
+            "startContainer": "/div[1]/div[1]/div[1]/main[1]/article[1]/div[1]/ul[4]/li[1]"
+          },
+          {
+            "end": 4469,
+            "type": "TextPositionSelector",
+            "start": 4393
+          },
+          {
+            "type": "TextQuoteSelector",
+            "exact": "Philosophy continues to significantly underrate the value of empirical data.",
+            "prefix": " other hand, I also feel that:\n\n",
+            "suffix": "\nNeither of these approaches is "
+          }
+        ]
+      }
+    ],
+    "document": {
+      "title": [
+        "More Is Different for AI"
+      ]
+    }
+  },
+  {
+    "id": "FmuGtEqgEe2S8V8mjBIZ_g",
+    "authority": "hypothes.is",
+    "url": "https://bounded-regret.ghost.io/more-is-different-for-ai/",
+    "created": "2022-10-13T02:38:14",
+    "updated": "2022-10-13T02:38:14",
+    "title": "More Is Different for AI",
+    "refs": [],
+    "isReply": false,
+    "isPagenote": false,
+    "user": "sidhire",
+    "displayName": null,
+    "text": "Q. Steinhardt on which worldview (in his AI dichotomy) is underrated by most ML researchers\nA. The Philosophy worldview",
+    "prefix": "hy). However, I now feel that:\n\n",
+    "exact": "Philosophy is significantly underrated by most ML researchers.",
+    "suffix": "\nThe Engineering worldview, take",
+    "start": 4177,
+    "end": 4239,
+    "tags": [],
+    "group": "vyaVWEbp",
+    "target": [
+      {
+        "source": "https://bounded-regret.ghost.io/more-is-different-for-ai/",
+        "selector": [
+          {
+            "type": "RangeSelector",
+            "endOffset": 62,
+            "startOffset": 0,
+            "endContainer": "/div[1]/div[1]/div[1]/main[1]/article[1]/div[1]/ul[3]/li[1]",
+            "startContainer": "/div[1]/div[1]/div[1]/main[1]/article[1]/div[1]/ul[3]/li[1]/strong[1]"
+          },
+          {
+            "end": 4239,
+            "type": "TextPositionSelector",
+            "start": 4177
+          },
+          {
+            "type": "TextQuoteSelector",
+            "exact": "Philosophy is significantly underrated by most ML researchers.",
+            "prefix": "hy). However, I now feel that:\n\n",
+            "suffix": "\nThe Engineering worldview, take"
+          }
+        ]
+      }
+    ],
+    "document": {
+      "title": [
+        "More Is Different for AI"
+      ]
+    }
+  },
+  {
+    "id": "wqvQfkqfEe2xpwN1BBMySw",
+    "authority": "hypothes.is",
+    "url": "https://bounded-regret.ghost.io/more-is-different-for-ai/",
+    "created": "2022-10-13T02:35:54",
+    "updated": "2022-10-13T02:35:54",
+    "title": "More Is Different for AI",
+    "refs": [],
+    "isReply": false,
+    "isPagenote": false,
+    "user": "sidhire",
+    "displayName": null,
+    "text": "Q. Per Steinhardt, give an argument that might appeal to the Philosophy worldview for why misaligned objectives are an important problem with ML systems\nA. (1) Conceptual arguments like those in Superintelligence (e.g. orthogonality).",
+    "prefix": "ilosophy believes this based on ",
+    "exact": "conceptual arguments",
+    "suffix": " like those in Superintelligence",
+    "start": 2660,
+    "end": 2680,
+    "tags": [],
+    "group": "vyaVWEbp",
+    "target": [
+      {
+        "source": "https://bounded-regret.ghost.io/more-is-different-for-ai/",
+        "selector": [
+          {
+            "type": "RangeSelector",
+            "endOffset": 329,
+            "startOffset": 309,
+            "endContainer": "/div[1]/div[1]/div[1]/main[1]/article[1]/div[1]/ul[2]/li[1]",
+            "startContainer": "/div[1]/div[1]/div[1]/main[1]/article[1]/div[1]/ul[2]/li[1]"
+          },
+          {
+            "end": 2680,
+            "type": "TextPositionSelector",
+            "start": 2660
+          },
+          {
+            "type": "TextQuoteSelector",
+            "exact": "conceptual arguments",
+            "prefix": "ilosophy believes this based on ",
+            "suffix": " like those in Superintelligence"
+          }
+        ]
+      }
+    ],
+    "document": {
+      "title": [
+        "More Is Different for AI"
+      ]
+    }
+  },
+  {
+    "id": "sMoGKEqfEe2TBUfBH19Byg",
+    "authority": "hypothes.is",
+    "url": "https://bounded-regret.ghost.io/more-is-different-for-ai/",
+    "created": "2022-10-13T02:35:24",
+    "updated": "2022-10-13T02:35:24",
+    "title": "More Is Different for AI",
+    "refs": [],
+    "isReply": false,
+    "isPagenote": false,
+    "user": "sidhire",
+    "displayName": null,
+    "text": "Q. Per Steinhardt, give an argument that might appeal to the Engineering worldview for why misaligned objectives are an important problem with ML systems\nA. (1) We're already seeing this be an issue with Facebook's (or Youtube's) recommender system.",
+    "prefix": "is because of examples like the ",
+    "exact": "Facebook recommender system",
+    "suffix": ", while Philosophy believes this",
+    "start": 2591,
+    "end": 2618,
+    "tags": [],
+    "group": "vyaVWEbp",
+    "target": [
+      {
+        "source": "https://bounded-regret.ghost.io/more-is-different-for-ai/",
+        "selector": [
+          {
+            "type": "RangeSelector",
+            "endOffset": 267,
+            "startOffset": 240,
+            "endContainer": "/div[1]/div[1]/div[1]/main[1]/article[1]/div[1]/ul[2]/li[1]",
+            "startContainer": "/div[1]/div[1]/div[1]/main[1]/article[1]/div[1]/ul[2]/li[1]"
+          },
+          {
+            "end": 2618,
+            "type": "TextPositionSelector",
+            "start": 2591
+          },
+          {
+            "type": "TextQuoteSelector",
+            "exact": "Facebook recommender system",
+            "prefix": "is because of examples like the ",
+            "suffix": ", while Philosophy believes this"
+          }
+        ]
+      }
+    ],
+    "document": {
+      "title": [
+        "More Is Different for AI"
+      ]
+    }
+  },
+  {
+    "id": "nR6d0kqfEe2-AQfkYl3O5Q",
+    "authority": "hypothes.is",
+    "url": "https://bounded-regret.ghost.io/more-is-different-for-ai/",
+    "created": "2022-10-13T02:34:51",
+    "updated": "2022-10-13T02:34:51",
+    "title": "More Is Different for AI",
+    "refs": [],
+    "isReply": false,
+    "isPagenote": false,
+    "user": "sidhire",
+    "displayName": null,
+    "text": "Q. Per Steinhardt, what types of failure modes in current ML systems might the Philosophy worldview find worth focusing on?\nA. (1) Ones that have some abstract property that seems important, e.g. imitative deception (i.e. that language models lie a lot).",
+    "prefix": "hy focuses on tasks that have a ",
+    "exact": "certain abstract property",
+    "suffix": " that seems important, such as i",
+    "start": 3487,
+    "end": 3512,
+    "tags": [],
+    "group": "vyaVWEbp",
+    "target": [
+      {
+        "source": "https://bounded-regret.ghost.io/more-is-different-for-ai/",
+        "selector": [
+          {
+            "type": "RangeSelector",
+            "endOffset": 192,
+            "startOffset": 167,
+            "endContainer": "/div[1]/div[1]/div[1]/main[1]/article[1]/div[1]/ul[2]/li[3]",
+            "startContainer": "/div[1]/div[1]/div[1]/main[1]/article[1]/div[1]/ul[2]/li[3]"
+          },
+          {
+            "end": 3512,
+            "type": "TextPositionSelector",
+            "start": 3487
+          },
+          {
+            "type": "TextQuoteSelector",
+            "exact": "certain abstract property",
+            "prefix": "hy focuses on tasks that have a ",
+            "suffix": " that seems important, such as i"
+          }
+        ]
+      }
+    ],
+    "document": {
+      "title": [
+        "More Is Different for AI"
+      ]
+    }
+  },
+  {
+    "id": "EUfKwkqfEe2UdWu6X-kXDA",
+    "authority": "hypothes.is",
+    "url": "https://bounded-regret.ghost.io/more-is-different-for-ai/",
+    "created": "2022-10-13T02:30:56",
+    "updated": "2022-10-13T02:32:25",
+    "title": "More Is Different for AI",
+    "refs": [],
+    "isReply": false,
+    "isPagenote": false,
+    "user": "sidhire",
+    "displayName": null,
+    "text": "Q. In Steinhardt's dichotomy, which worldview thinks about future problems by extrapolating from past or current systems, anchored and attuned to the current state of the art, not to sci-fi?\nA. The Engineering worldview.\n\nQ. In Steinhardt's dichotomy, what types of ML systems does the Engineering worldview tend to focus on?\nA. Past or current systems, or extrapolations from those.\n\nQ. In Steinhardt's dichotomy, how does the Engineering worldview think about future ML systems relative to current ones?\nA. It extrapolates from current systems to hypothesize about future ones. It is attuned to the current state of the art.",
+    "prefix": "ds to be both in touch with and ",
+    "exact": "anchored on current state-of-the-art systems.",
+    "suffix": "\nThe Philosophy approach tends t",
+    "start": 1300,
+    "end": 1345,
+    "tags": [],
+    "group": "vyaVWEbp",
+    "target": [
+      {
+        "source": "https://bounded-regret.ghost.io/more-is-different-for-ai/",
+        "selector": [
+          {
+            "type": "RangeSelector",
+            "endOffset": 369,
+            "startOffset": 324,
             "endContainer": "/div[1]/div[1]/div[1]/main[1]/article[1]/div[1]/ul[1]/li[1]",
             "startContainer": "/div[1]/div[1]/div[1]/main[1]/article[1]/div[1]/ul[1]/li[1]"
           },
           {
-            "end": 1031,
+            "end": 1345,
             "type": "TextPositionSelector",
-            "start": 976
+            "start": 1300
           },
           {
             "type": "TextQuoteSelector",
-            "exact": "The Engineering approach tends to be empirically-driven",
-            "prefix": "h and the Philosophy approach:\n\n",
-            "suffix": ", drawing experience from existi"
+            "exact": "anchored on current state-of-the-art systems.",
+            "prefix": "ds to be both in touch with and ",
+            "suffix": "\nThe Philosophy approach tends t"
+          }
+        ]
+      }
+    ],
+    "document": {
+      "title": [
+        "More Is Different for AI"
+      ]
+    }
+  },
+  {
+    "id": "OySYPkqfEe29-X-Ioa6HKQ",
+    "authority": "hypothes.is",
+    "url": "https://bounded-regret.ghost.io/more-is-different-for-ai/",
+    "created": "2022-10-13T02:32:06",
+    "updated": "2022-10-13T02:32:06",
+    "title": "More Is Different for AI",
+    "refs": [],
+    "isReply": false,
+    "isPagenote": false,
+    "user": "sidhire",
+    "displayName": null,
+    "text": "Q. In Steinhardt's dichotomy, which worldview thinks about very advanced systems, almost sci-fi, unanchored to current tech?\nA. The Philosophy worldview.\n\nQ. In Steinhardt's dichotomy, what types of ML systems does the Philosophy worldview tend to focus on?\nA. Theoretical, very advanced systems, with less regard for past or present systems.\n\nQ. In Steinhardt's dichotomy, how does the Philosophy worldview think about future ML systems relative to current ones?\nA. It draws some inspiration from current ML systems, but often only in broad strokes, and tends to understand them more at a broad strokes level. It's more about what theoretically could exist.",
+    "prefix": "phy than like computer science. ",
+    "exact": "It draws some inspiration from current ML systems, but often only in broad strokes.",
+    "suffix": "\n\nI'll discuss these approaches ",
+    "start": 1746,
+    "end": 1829,
+    "tags": [],
+    "group": "vyaVWEbp",
+    "target": [
+      {
+        "source": "https://bounded-regret.ghost.io/more-is-different-for-ai/",
+        "selector": [
+          {
+            "type": "RangeSelector",
+            "endOffset": 483,
+            "startOffset": 400,
+            "endContainer": "/div[1]/div[1]/div[1]/main[1]/article[1]/div[1]/ul[1]/li[2]",
+            "startContainer": "/div[1]/div[1]/div[1]/main[1]/article[1]/div[1]/ul[1]/li[2]"
+          },
+          {
+            "end": 1829,
+            "type": "TextPositionSelector",
+            "start": 1746
+          },
+          {
+            "type": "TextQuoteSelector",
+            "exact": "It draws some inspiration from current ML systems, but often only in broad strokes.",
+            "prefix": "phy than like computer science. ",
+            "suffix": "\n\nI'll discuss these approaches "
+          }
+        ]
+      }
+    ],
+    "document": {
+      "title": [
+        "More Is Different for AI"
+      ]
+    }
+  },
+  {
+    "id": "J0FVQkqeEe2UZ2NlCOnYPQ",
+    "authority": "hypothes.is",
+    "url": "https://bounded-regret.ghost.io/more-is-different-for-ai/",
+    "created": "2022-10-13T02:24:24",
+    "updated": "2022-10-13T02:31:27",
+    "title": "More Is Different for AI",
+    "refs": [],
+    "isReply": false,
+    "isPagenote": false,
+    "user": "sidhire",
+    "displayName": null,
+    "text": "Q. Describe the Philosophy worldview in Steinhardt's dichotomy\nA. It thinks about very advanced systems, almost sci-fi, unanchored to current tech. Describes things at a higher level.",
+    "prefix": "t state-of-the-art systems.\nThe ",
+    "exact": "Philosophy approach",
+    "suffix": " tends to think more about the l",
+    "start": 1350,
+    "end": 1369,
+    "tags": [],
+    "group": "vyaVWEbp",
+    "target": [
+      {
+        "source": "https://bounded-regret.ghost.io/more-is-different-for-ai/",
+        "selector": [
+          {
+            "type": "RangeSelector",
+            "endOffset": 23,
+            "startOffset": 4,
+            "endContainer": "/div[1]/div[1]/div[1]/main[1]/article[1]/div[1]/ul[1]/li[2]",
+            "startContainer": "/div[1]/div[1]/div[1]/main[1]/article[1]/div[1]/ul[1]/li[2]"
+          },
+          {
+            "end": 1369,
+            "type": "TextPositionSelector",
+            "start": 1350
+          },
+          {
+            "type": "TextQuoteSelector",
+            "exact": "Philosophy approach",
+            "prefix": "t state-of-the-art systems.\nThe ",
+            "suffix": " tends to think more about the l"
+          }
+        ]
+      }
+    ],
+    "document": {
+      "title": [
+        "More Is Different for AI"
+      ]
+    }
+  },
+  {
+    "id": "F8uagkqeEe2TW8No4FNl0g",
+    "authority": "hypothes.is",
+    "url": "https://bounded-regret.ghost.io/more-is-different-for-ai/",
+    "created": "2022-10-13T02:23:58",
+    "updated": "2022-10-13T02:30:39",
+    "title": "More Is Different for AI",
+    "refs": [],
+    "isReply": false,
+    "isPagenote": false,
+    "user": "sidhire",
+    "displayName": null,
+    "text": "Q. Describe the Engineering worldview in Steinhardt's dichotomy\nA. It thinks about future problems by extrapolating from past or current systems, anchored and attuned to the current state of the art, not to sci-fi.",
+    "prefix": "d the Philosophy approach:\n\nThe ",
+    "exact": "Engineering approach",
+    "suffix": " tends to be empirically-driven,",
+    "start": 980,
+    "end": 1000,
+    "tags": [],
+    "group": "vyaVWEbp",
+    "target": [
+      {
+        "source": "https://bounded-regret.ghost.io/more-is-different-for-ai/",
+        "selector": [
+          {
+            "type": "RangeSelector",
+            "endOffset": 24,
+            "startOffset": 4,
+            "endContainer": "/div[1]/div[1]/div[1]/main[1]/article[1]/div[1]/ul[1]/li[1]",
+            "startContainer": "/div[1]/div[1]/div[1]/main[1]/article[1]/div[1]/ul[1]/li[1]"
+          },
+          {
+            "end": 1000,
+            "type": "TextPositionSelector",
+            "start": 980
+          },
+          {
+            "type": "TextQuoteSelector",
+            "exact": "Engineering approach",
+            "prefix": "d the Philosophy approach:\n\nThe ",
+            "suffix": " tends to be empirically-driven,"
+          }
+        ]
+      }
+    ],
+    "document": {
+      "title": [
+        "More Is Different for AI"
+      ]
+    }
+  },
+  {
+    "id": "b9YEIEqdEe2d5htWj2XUQQ",
+    "authority": "hypothes.is",
+    "url": "https://bounded-regret.ghost.io/more-is-different-for-ai/",
+    "created": "2022-10-13T02:19:16",
+    "updated": "2022-10-13T02:22:07",
+    "title": "More Is Different for AI",
+    "refs": [],
+    "isReply": false,
+    "isPagenote": false,
+    "user": "sidhire",
+    "displayName": null,
+    "text": "Q. Name two approaches Steinhardt says people take when thinking about safety risks from ML\nA. Engineering approach and Philosophy approach",
+    "prefix": "safety risks from ML, there are ",
+    "exact": "two common approaches",
+    "suffix": ", which I'll call the Engineerin",
+    "start": 882,
+    "end": 903,
+    "tags": [],
+    "group": "vyaVWEbp",
+    "target": [
+      {
+        "source": "https://bounded-regret.ghost.io/more-is-different-for-ai/",
+        "selector": [
+          {
+            "type": "RangeSelector",
+            "endOffset": 73,
+            "startOffset": 52,
+            "endContainer": "/div[1]/div[1]/div[1]/main[1]/article[1]/div[1]/p[2]",
+            "startContainer": "/div[1]/div[1]/div[1]/main[1]/article[1]/div[1]/p[2]"
+          },
+          {
+            "end": 903,
+            "type": "TextPositionSelector",
+            "start": 882
+          },
+          {
+            "type": "TextQuoteSelector",
+            "exact": "two common approaches",
+            "prefix": "safety risks from ML, there are ",
+            "suffix": ", which I'll call the Engineerin"
           }
         ]
       }
@@ -51,3 +663,4 @@
     }
   }
 ]]
+
