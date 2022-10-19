@@ -1,4 +1,4 @@
-import { Prompt, PromptSelector } from "../app/promptSlice";
+import { Prompt, PromptSelector, PromptsState } from "../app/promptSlice";
 
 export type HypothesisJSONData = [
   entries: {
@@ -47,4 +47,16 @@ export function readPromptsFromHypothesisJSON(json: HypothesisJSONData): {
     }
   }
   return prompts;
+}
+
+export function writePromptsToHypothesisJSON(
+  prompts: PromptsState,
+): HypothesisJSONData {
+  return [
+    Object.values(prompts).map((prompt) => ({
+      text: `Q. ${prompt.content.front}\nA. ${prompt.content.back}`,
+      tags: prompt.showAnchors ? ["no-anchor"] : [],
+      target: [{ selector: prompt.selectors }],
+    })),
+  ];
 }

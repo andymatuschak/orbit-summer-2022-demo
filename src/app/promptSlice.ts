@@ -1,5 +1,8 @@
 import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { readPromptsFromHypothesisJSON } from "../util/readPromptsFromHypothesisJSON";
+import {
+  HypothesisJSONData,
+  readPromptsFromHypothesisJSON,
+} from "../util/hypothesisJSON";
 
 export type PromptId = string;
 
@@ -124,6 +127,9 @@ const promptSlice = createSlice({
       // This hacky predicate corresponds to the data we'll see if they marked the prompt as forgotten (i.e. so it's still due).
       prompt.isDue = newInterval === 0 && !wasSkipped;
     },
+    reloadPromptsFromJSON(state, action: PayloadAction<HypothesisJSONData>) {
+      return readPromptsFromHypothesisJSON(action.payload);
+    },
   },
   extraReducers(builder) {
     builder.addCase(loadPrompts.fulfilled, (_state, action) => {
@@ -146,7 +152,7 @@ export const loadPrompts = createAsyncThunk(
       );
       return readPromptsFromHypothesisJSON(json);
     } catch (e) {
-      console.error(e);
+      // console.error(e);
       return {};
     }
   },
@@ -161,5 +167,6 @@ export const {
   updatePromptBack,
   createNewPrompt,
   syncPromptFromReview,
+  reloadPromptsFromJSON,
 } = promptSlice.actions;
 export const promptsReducer = promptSlice.reducer;

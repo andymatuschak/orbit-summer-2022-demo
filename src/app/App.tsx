@@ -1,9 +1,9 @@
 import React, {
   useCallback,
   useEffect,
-  useState,
-  useRef,
   useMemo,
+  useRef,
+  useState,
 } from "react";
 import uuidBase64 from "../components/common/uuid";
 import zIndices from "../components/common/zIndices";
@@ -51,11 +51,7 @@ export default function App({ marginX, textRoot, promptLists }: AppProps) {
       // noinspection JSUnusedLocalSymbols
       // eslint-disable-next-line @typescript-eslint/no-unused-vars
       const unused = promptRelayoutTime;
-      if (Object.keys(prompts).length > 0) {
-        return await resolvePromptLocations(prompts);
-      } else {
-        return null;
-      }
+      return await resolvePromptLocations(prompts);
       // TODO: We don't really want to rerun this every time `prompts` changes. Think more carefully about this...
     }, [prompts, promptRelayoutTime]),
   );
@@ -82,11 +78,10 @@ export default function App({ marginX, textRoot, promptLists }: AppProps) {
   // Listen to mouse events for context menu
   useEffect(() => {
     const onMouseMove = function (e: MouseEvent) {
-      const newMousePosition = {
+      mousePosition.current = {
         x: e.clientX + window.scrollX,
         y: e.clientY + window.scrollY,
       };
-      mousePosition.current = newMousePosition;
     };
     document.addEventListener("mousemove", onMouseMove);
     return () => document.removeEventListener("mousemove", onMouseMove);
@@ -102,7 +97,7 @@ export default function App({ marginX, textRoot, promptLists }: AppProps) {
     setModalReviewState(nextState);
   }
 
-  if (!promptLocations) return null;
+  if (promptLocations === null) return null;
   return (
     <>
       <div

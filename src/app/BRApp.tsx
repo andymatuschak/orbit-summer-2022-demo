@@ -1,5 +1,6 @@
 import React, { useCallback } from "react";
 import { PromptListSpec } from "../components/prompt/PromptList";
+import { useAuthorSaveDataFeature } from "../hooks/useAuthorSaveDataFeature";
 import { useLayoutDependentValue } from "../hooks/useLayoutDependentValue";
 import App from "./App";
 
@@ -26,11 +27,11 @@ export default function BRApp() {
   );
 
   const promptList = promptListSpecs[getBoundedRegretChapterName()];
-  // const promptList = null;
+  useAuthorSaveDataFeature(getBoundedRegretChapterName());
   return (
     <App
       marginX={markerX}
-      textRoot={document.getElementById("content")!}
+      textRoot={document.getElementsByTagName("article").item(0)!}
       promptLists={promptList ? { promptList } : {}}
     />
   );
