@@ -55,7 +55,7 @@ function compareDOMy(
 }
 
 // const MERGE_THRESHOLD_PIXELS = 0.0;
-const PROMPT_SPACING = 12.0;
+const PROMPT_SPACING = 8;
 const PROMPT_SPACE_THRESHOLD = 4.0;
 const TRANSITION = { duration: 0.3, ease: "easeOut" };
 const COLLAPSED_THRESHOLD = 20;
