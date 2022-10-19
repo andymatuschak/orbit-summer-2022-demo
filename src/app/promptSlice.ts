@@ -140,8 +140,15 @@ const promptSlice = createSlice({
 export const loadPrompts = createAsyncThunk(
   "prompts/loadPrompts",
   async (promptDataSubpath: string): Promise<PromptsState> => {
-    const json = await import(`../static/promptData/${promptDataSubpath}.json`);
-    return readPromptsFromHypothesisJSON(json);
+    try {
+      const json = await import(
+        `../static/promptData/${promptDataSubpath}.json`
+      );
+      return readPromptsFromHypothesisJSON(json);
+    } catch (e) {
+      console.error(e);
+      return {};
+    }
   },
 );
 
