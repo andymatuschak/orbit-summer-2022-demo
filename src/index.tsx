@@ -3,6 +3,7 @@ import ReactDOM from "react-dom/client";
 import { Provider } from "react-redux";
 import { PersistGate } from "redux-persist/integration/react";
 import BRApp, { getBoundedRegretChapterName } from "./app/BRApp";
+import DAApp, { getDeltaAcademyChapterName } from "./app/DAApp";
 import IMSApp from "./app/IMSApp";
 import { autopopulateReviewAreas } from "./app/inlineReviewModuleSlice";
 import { loadPrompts } from "./app/promptSlice";
@@ -25,6 +26,24 @@ if (document.location.pathname.includes("shape-up")) {
     () => {
       const chapterName = getBoundedRegretChapterName();
       loadPageData(<BRApp />, `sh/br/${chapterName}`);
+    },
+    { once: true },
+  );
+} else if (document.location.pathname.startsWith("/sh/da")) {
+  window.addEventListener(
+    "load",
+    () => {
+      const reactRoot = document.createElement("DIV");
+      reactRoot.id = "demo-root";
+      document.body.prepend(reactRoot);
+
+      const orbitScript = document.createElement("SCRIPT") as HTMLScriptElement;
+      orbitScript.type = "module";
+      orbitScript.src = "/orbit-web-component.js";
+      document.head.prepend(orbitScript);
+
+      const chapterName = getDeltaAcademyChapterName();
+      loadPageData(<DAApp />, `sh/da/${chapterName}`);
     },
     { once: true },
   );

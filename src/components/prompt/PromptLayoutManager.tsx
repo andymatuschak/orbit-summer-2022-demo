@@ -129,7 +129,10 @@ export function PromptLayoutManager({
 
         const hasSpace = hasWindowSpace();
         // If IMS
-        if (document.location.pathname.includes("ims")) {
+        if (
+          document.location.pathname.includes("ims") ||
+          document.location.pathname.includes("sh/da")
+        ) {
           if (hasSpace) return CollapsedPromptDirection.LTR;
           return CollapsedPromptDirection.RTL;
         }

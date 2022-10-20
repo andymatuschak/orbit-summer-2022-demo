@@ -9,6 +9,8 @@ export async function downloadAnkiDeck() {
     siteName = "Shape Up";
   } else if (window.location.pathname.startsWith("/sh/br")) {
     siteName = "Bounded Regret";
+  } else if (window.location.pathname.startsWith("/sh/da")) {
+    siteName = "Delta Academy";
   } else {
     throw new Error(`Unknown site name ${sitePathComponent}`);
   }
