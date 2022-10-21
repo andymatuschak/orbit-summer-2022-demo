@@ -1,6 +1,5 @@
 import React, { useCallback, useEffect, useMemo, useState } from "react";
 import {
-  removePrompt,
   savePrompt,
   unsavePrompt,
   updatePromptBack,
@@ -142,7 +141,7 @@ export function PromptList({
 
   function onUndoAutosave() {
     setCompletedModalReviewID(null);
-    autosavedPromptIDs.forEach((id) => dispatch(removePrompt(id)));
+    autosavedPromptIDs.forEach((id) => dispatch(unsavePrompt(id)));
   }
 
   const PromptListColumn = ({

@@ -92,14 +92,10 @@ const promptSlice = createSlice({
       const prompt = state[action.payload];
       prompt.isSaved = false;
       prompt.isDue = false;
+      prompt.sourceReviewAreaID = undefined;
     },
     deletePrompt(state, action: IdAction) {
       delete state[action.payload];
-    },
-    removePrompt(state, action: IdAction) {
-      const prompt = state[action.payload];
-      prompt.isSaved = false;
-      prompt.sourceReviewAreaID = undefined;
     },
     updatePromptFront(state, action: UpdatePromptText) {
       const prompt = state[action.payload[0]];
@@ -162,7 +158,6 @@ export const {
   savePrompt,
   unsavePrompt,
   deletePrompt,
-  removePrompt,
   updatePromptFront,
   updatePromptBack,
   createNewPrompt,
