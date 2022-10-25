@@ -84,9 +84,9 @@ const promptSlice = createSlice({
     savePrompt(state, action: IdAction) {
       const prompt = state[action.payload];
       if (!prompt.isSaved) {
-        prompt.isSaved = true;
         prompt.isDue = true;
       }
+      prompt.isSaved = true;
     },
     unsavePrompt(state, action: IdAction) {
       const prompt = state[action.payload];

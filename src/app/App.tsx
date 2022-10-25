@@ -229,7 +229,7 @@ export default function App({ marginX, textRoot, promptLists }: AppProps) {
           ...Object.entries(inlineReviewModules)
             // Include inline review modules which have been "turned into" prompt lists.
             .filter(
-              ([id, inlineReviewModule]) => !!inlineReviewModule.promptListID,
+              ([, inlineReviewModule]) => !!inlineReviewModule.promptListID,
             )
             .map(
               ([id, inlineReviewModule]) =>

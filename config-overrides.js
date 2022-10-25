@@ -1,4 +1,4 @@
-const { override, addBabelPreset } = require("customize-cra");
+const { override, addBabelPreset, addBabelPlugin } = require("customize-cra");
 
 /* Generate a Reactified index.html for each page of the books we're augmenting. */
 const shapeUpChapters = ["1.1-chapter-02", "1.2-chapter-03"];
@@ -33,12 +33,19 @@ const multipleEntry = require("react-app-rewire-multiple-entry")([
 ]);
 const overrides = override(
   addBabelPreset("@emotion/babel-preset-css-prop"),
+  // addBabelPlugin("babel-plugin-add-import-extension"),
   multipleEntry.addMultiEntry,
 );
 
 /* Hypothes.is prompts are resolved based on article DOM structure; we don't want any minification interfering with that. */
 module.exports = (webpackConfig, env, args) => {
   webpackConfig = overrides(webpackConfig, env, args);
+
+  // HACK: make Webpack willing to resolve Node-style resolutions (i.e. without extensions) in packages
+  webpackConfig.module.rules[1].oneOf[4].resolve = { fullySpecified: false };
+  // console.dir(webpackConfig.module.rules[1].oneOf);
+  // process.exit(0);
+
   for (const plugin of webpackConfig.plugins) {
     if (plugin.constructor.name === "HtmlWebpackPlugin") {
       plugin.userOptions.minify = false;

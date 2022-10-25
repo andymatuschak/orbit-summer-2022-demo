@@ -6,6 +6,7 @@ import BRApp, { getBoundedRegretChapterName } from "./app/BRApp";
 import DAApp, { getDeltaAcademyChapterName } from "./app/DAApp";
 import IMSApp from "./app/IMSApp";
 import { autopopulateReviewAreas } from "./app/inlineReviewModuleSlice";
+import { performInitialSync } from "./app/orbitSyncMiddleware";
 import { loadPrompts } from "./app/promptSlice";
 import ShapeUpApp, { getShapeUpChapterName } from "./app/ShapeUpApp";
 import { persistor, store } from "./app/store";
@@ -66,6 +67,7 @@ if (document.location.pathname.includes("shape-up")) {
 async function loadPageData(page: ReactNode, subpath: string) {
   await store.dispatch(loadPrompts(subpath));
   await store.dispatch(autopopulateReviewAreas(store.getState().prompts));
+  await performInitialSync(store);
 
   if (page) {
     const root = ReactDOM.createRoot(document.getElementById("demo-root")!);
