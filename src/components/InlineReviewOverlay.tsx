@@ -11,7 +11,7 @@ export interface InlineReviewOverlayProps {
 
 interface ReviewArea extends HTMLElement {
   onExitReview?: () => void;
-  onReviewComplete?: () => void;
+  onReviewComplete?: (wasInitiallyComplete: boolean) => void;
 }
 
 export function InlineReviewOverlay({
@@ -50,12 +50,20 @@ export function InlineReviewOverlay({
   }, [dispatch, reviewArea, reviewModuleID]);
 
   useEffect(() => {
-    reviewArea.onReviewComplete = () => {
-      setShowReviewCompleteOverlay(true);
-      if (duePromptCount === 0) {
+    reviewArea.onReviewComplete = (wasInitiallyComplete: boolean) => {
+      console.log("ON REVIEW COMPLETE", wasInitiallyComplete);
+      if (wasInitiallyComplete) {
+        // HACK: wait for animation to finish in review area
         setTimeout(() => {
           insertPromptList();
-        }, 2000);
+        }, 1000);
+      } else {
+        setShowReviewCompleteOverlay(true);
+        if (duePromptCount === 0) {
+          setTimeout(() => {
+            insertPromptList();
+          }, 2000);
+        }
       }
     };
     reviewArea.onExitReview = insertPromptList;

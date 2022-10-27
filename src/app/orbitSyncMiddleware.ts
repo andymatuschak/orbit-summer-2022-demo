@@ -26,6 +26,7 @@ import {
   PromptID,
   reloadPromptsFromJSON,
   savePrompt,
+  syncPromptFromReview,
   syncPromptStateFromRemoteTasks,
   unsavePrompt,
   updatePromptBack,
@@ -73,9 +74,9 @@ function connectAuthFlow(store: AppStore) {
       const eventQueue = listenerAPI.getState().auth.queue;
       console.log("Queue has grown", eventQueue);
       if (syncManager) {
-        listenerAPI.unsubscribe();
+        listenerAPI.cancelActiveListeners();
+        await listenerAPI.delay(1000);
         await storeEvents(syncManager, eventQueue, listenerAPI.dispatch);
-        listenerAPI.subscribe();
       } else {
         openLoginPopup();
       }
@@ -146,6 +147,17 @@ function connectAuthFlow(store: AppStore) {
         listenerAPI.dispatch(
           addUpdatePromptContentEvent({ id, prompt: newPrompt }),
         );
+      }
+    },
+  });
+
+  startListening({
+    actionCreator: syncPromptFromReview,
+    effect: async (action, listenerAPI) => {
+      if (listenerAPI.getState().auth.status === "signedOut") {
+        openLoginPopup();
+      } else if (syncManager) {
+        await syncManager.storeAndSync([]);
       }
     },
   });

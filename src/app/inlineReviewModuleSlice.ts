@@ -1,4 +1,5 @@
 import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { generateUniqueID } from "@withorbit/core";
 import shuffle from "knuth-shuffle-seeded";
 import {
   PromptLocation,
@@ -164,7 +165,7 @@ function populateReviewArea(
   shuffle(reviewAreaPromptIDs, 314159265);
 
   const reviewAreaElement = document.createElement("orbit-reviewarea");
-  reviewAreaElement.id = `reviewArea-${element.id || Date.now()}`;
+  reviewAreaElement.id = `reviewArea-${element.id || generateUniqueID()}`;
   reviewAreaElement.setAttribute("color", "brown");
   for (const [id, prompt] of reviewAreaPromptIDs) {
     usedPromptIDs.add(id);
