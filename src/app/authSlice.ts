@@ -45,9 +45,7 @@ const orbitSyncSlice = createSlice({
 
     signOut(state) {
       if (state.status === "signedIn") {
-        // TODO: how should the queue actually be handled here?
-        // TODO: invalidate sync manager in orbitSyncMiddleware when this happens
-        return { queue: state.queue, status: "signedOut" };
+        return { queue: [], status: "signedOut" };
       } else {
         return state;
       }

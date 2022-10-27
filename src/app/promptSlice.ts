@@ -172,6 +172,7 @@ const promptSlice = createSlice({
     },
 
     // Used by the Ctrl+D author shortcut to "reset" the page state after serializing prompt JSON.
+    // Also used when the user signs out.
     reloadPromptsFromJSON(state, action: PayloadAction<HypothesisJSONData>) {
       return readPromptsFromHypothesisJSON(action.payload);
     },

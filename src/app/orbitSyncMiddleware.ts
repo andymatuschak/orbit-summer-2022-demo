@@ -16,6 +16,7 @@ import {
   addUpdatePromptContentEvent,
   drainEventQueue,
   signIn,
+  signOut,
   updateTokens,
 } from "./authSlice";
 import { OrbitSyncManager } from "./orbitSync";
@@ -23,6 +24,7 @@ import {
   createNewPrompt,
   deletePrompt,
   PromptID,
+  reloadPromptsFromJSON,
   savePrompt,
   syncPromptStateFromRemoteTasks,
   unsavePrompt,
@@ -52,6 +54,16 @@ async function storeEvents(
   dispatch(drainEventQueue(eventQueue.map(({ id }) => id)));
 }
 
+function openLoginPopup() {
+  window.open(
+    `${orbitWebappBaseURL}/login?tokenTarget=opener&origin=${encodeURIComponent(
+      window.location.origin,
+    )}`,
+    "Sign in",
+    "width=375,height=550",
+  );
+}
+
 function connectAuthFlow(store: AppStore) {
   // When the event queue grows, drain it (if signed in) or pop an auth dialog (if not).
   startListening({
@@ -65,13 +77,7 @@ function connectAuthFlow(store: AppStore) {
         await storeEvents(syncManager, eventQueue, listenerAPI.dispatch);
         listenerAPI.subscribe();
       } else {
-        window.open(
-          `${orbitWebappBaseURL}/login?tokenTarget=opener&origin=${encodeURIComponent(
-            window.location.origin,
-          )}`,
-          "Sign in",
-          "width=375,height=500",
-        );
+        openLoginPopup();
       }
     },
   });
@@ -205,6 +211,14 @@ function connectAuthFlow(store: AppStore) {
       }
     }
   });
+
+  startListening({
+    actionCreator: signOut,
+    effect: (action, listenerAPI) => {
+      listenerAPI.dispatch(reloadPromptsFromJSON);
+      syncManager = null;
+    },
+  });
 }
 
 async function performInitialSync(store: AppStore) {
@@ -218,7 +232,15 @@ async function performInitialSync(store: AppStore) {
   }
   syncManager = new OrbitSyncManager(
     state.auth.user.id,
-    authenticateRequest(store),
+    () => authenticateRequest(store),
+    async (retry) => {
+      const newToken = await refreshIDToken(store);
+      if (newToken) {
+        await retry();
+      } else {
+        console.warn("Giving up; couldn't refresh ID token");
+      }
+    },
   );
 
   // Drain any pending events
@@ -249,46 +271,58 @@ export async function initializeOrbitSyncMiddleware(store: AppStore) {
   await performInitialSync(store);
 }
 
-function authenticateRequest(store: AppStore) {
-  return async () => {
-    const { auth } = store.getState();
-    if (auth.status === "signedOut") {
-      throw new Error("Can't authenticate request: user is signed out");
-    }
+async function refreshIDToken(store: AppStore): Promise<string | null> {
+  const { auth } = store.getState();
+  if (auth.status === "signedOut") {
+    throw new Error("Can't refresh ID token: user is signed out");
+  }
 
-    let idToken = auth.user.idToken;
-    if (Date.now() >= auth.user.expirationTimestamp) {
-      console.log("ID token has expired; attempting to refresh...");
-      const requestTimestamp = Date.now();
-      try {
-        const response = await fetch(orbitRefreshTokenURL, {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            refresh_token: auth.user.refreshToken,
-            grant_type: "refresh_token",
-          }),
-        });
-        const responseJSON = await response.json();
-        idToken = responseJSON["id_token"];
-        store.dispatch(
-          updateTokens({
-            id: responseJSON["user_id"],
-            refreshToken: responseJSON["refresh_token"],
-            idToken: idToken,
-            expirationTimestamp:
-              requestTimestamp +
-              Number.parseInt(responseJSON["expires_in"]) * 1000,
-          }),
-        );
-      } catch (e) {
-        // TODO: sign out user, handle error
-        alert(`Couldn't sign in: ${e}`);
-      }
-    }
+  console.log("ID token has expired; attempting to refresh...");
+  const requestTimestamp = Date.now();
+  try {
+    const response = await fetch(orbitRefreshTokenURL, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        refresh_token: auth.user.refreshToken,
+        grant_type: "refresh_token",
+      }),
+    });
+    const responseJSON = await response.json();
+    const idToken = responseJSON["id_token"];
+    store.dispatch(
+      updateTokens({
+        id: responseJSON["user_id"],
+        refreshToken: responseJSON["refresh_token"],
+        idToken,
+        expirationTimestamp:
+          requestTimestamp + Number.parseInt(responseJSON["expires_in"]) * 1000,
+      }),
+    );
+    return idToken;
+  } catch (e) {
+    store.dispatch(signOut());
+    alert(`We're unable to sign you in. Try again?`);
+    openLoginPopup();
+    return null;
+  }
+}
 
-    return { idToken };
-  };
+async function authenticateRequest(store: AppStore) {
+  const { auth } = store.getState();
+  if (auth.status === "signedOut") {
+    throw new Error("Can't authenticate request: user is signed out");
+  }
+
+  if (Date.now() >= auth.user.expirationTimestamp) {
+    const newIDToken = await refreshIDToken(store);
+    if (!newIDToken) {
+      throw new Error("Aborting--credentials invalid");
+    }
+    return { idToken: newIDToken };
+  } else {
+    return { idToken: auth.user.idToken };
+  }
 }

@@ -12,12 +12,15 @@ export class OrbitSyncManager {
   private store: OrbitStoreWeb;
   private apiClient: OrbitAPIClient;
   private apiSyncAdapter: APISyncAdapter;
+  private refreshIDToken: (retry: () => Promise<unknown>) => Promise<unknown>;
 
   constructor(
     userID: string,
     authenticateRequest: () => Promise<{ idToken: string }>,
+    refreshIDToken: (retry: () => unknown) => Promise<unknown>,
   ) {
     this.store = new OrbitStoreWeb({ databaseName: userID });
+    this.refreshIDToken = refreshIDToken;
 
     // TODO: switch API destination depending on development environment
     this.apiClient = new OrbitAPIClient(authenticateRequest, apiConfig);
@@ -28,7 +31,11 @@ export class OrbitSyncManager {
   async getRemoteTaskStates(
     matchingURL: string = normalizeURL(document.location.href),
   ): Promise<{ [key: PromptID]: Task }> {
-    await this.sync();
+    const didSync = await this.sync();
+    if (!didSync) {
+      return {};
+    }
+
     const output: { [key: PromptID]: Task } = {};
     // This is obviously super dumb; we should add a query for provenance URLs.
     let afterID: TaskID | undefined;
@@ -55,9 +62,20 @@ export class OrbitSyncManager {
   }
 
   private async sync() {
-    await syncOrbitStore({
-      source: this.store,
-      destination: this.apiSyncAdapter,
-    });
+    let didSync = false;
+    const _sync = async () => {
+      await syncOrbitStore({
+        source: this.store,
+        destination: this.apiSyncAdapter,
+      });
+      didSync = true;
+    };
+    try {
+      await _sync();
+    } catch (e) {
+      console.error("Sync failed; attempting to refresh credential", e);
+      await this.refreshIDToken(_sync);
+    }
+    return didSync;
   }
 }
