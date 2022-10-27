@@ -1,22 +1,24 @@
-import { combineReducers, configureStore, Middleware } from "@reduxjs/toolkit";
+import { combineReducers, configureStore } from "@reduxjs/toolkit";
 import {
   TypedUseSelectorHook,
   useDispatch,
   useSelector,
   useStore,
 } from "react-redux";
+import { persistReducer, persistStore } from "redux-persist";
+import storage from "redux-persist/lib/storage"; // defaults to localStorage for web
 import { authReducer } from "./authSlice";
 import { inlineReviewModuleReducer } from "./inlineReviewModuleSlice";
-import { orbitSyncMiddleware } from "./orbitSyncMiddleware";
+import { forceLocalMode, orbitSyncMiddleware } from "./orbitSyncMiddleware";
 import { promptsReducer } from "./promptSlice";
 import { promptVisibilityReducer } from "./promptVisibilitySlice";
-import { persistStore, persistReducer } from "redux-persist";
-import storage from "redux-persist/lib/storage"; // defaults to localStorage for web
 
 const persistConfig = {
-  key: document.location.pathname.replace(/\/(index.html)?$/, ""),
+  key: forceLocalMode
+    ? document.location.pathname.replace(/\/(index.html)?$/, "")
+    : "orbit-summer-2022",
   storage,
-  whitelist: ["prompts"],
+  whitelist: forceLocalMode ? ["prompts"] : ["auth"],
   throttle: 1000,
 };
 

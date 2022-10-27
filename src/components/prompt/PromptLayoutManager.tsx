@@ -9,7 +9,7 @@ import React, {
   useState,
 } from "react";
 import {
-  PromptId,
+  PromptID,
   PromptsState,
   savePrompt,
   unsavePrompt,
@@ -31,13 +31,13 @@ export interface PromptLayoutManagerProps {
   prompts: PromptsState;
   promptLocations: { [id: string]: PromptLocation };
   marginX: number;
-  suggestedPromptIDs: PromptId[];
-  newPromptId?: PromptId;
+  suggestedPromptIDs: PromptID[];
+  newPromptId?: PromptID;
   clearNewPrompt?: () => any;
 }
 
 type PromptAbsoluteLocation = { top: number; bottom: number };
-type PromptBoundingBoxes = { [id: PromptId]: PromptAbsoluteLocation };
+type PromptBoundingBoxes = { [id: PromptID]: PromptAbsoluteLocation };
 
 const ShadowContainer = styled.div`
   opacity: 0;
@@ -45,8 +45,8 @@ const ShadowContainer = styled.div`
 `;
 
 function compareDOMy(
-  a: { id: PromptId; loc: PromptAbsoluteLocation },
-  b: { id: PromptId; loc: PromptAbsoluteLocation },
+  a: { id: PromptID; loc: PromptAbsoluteLocation },
+  b: { id: PromptID; loc: PromptAbsoluteLocation },
 ): number {
   if (a.loc.top > b.loc.top) return 1;
   else if (a.loc.top < b.loc.top) return -1;
@@ -70,7 +70,7 @@ export function PromptLayoutManager({
 }: PromptLayoutManagerProps) {
   const dispatch = useAppDispatch();
   const promptVisibility = useAppSelector((state) => state.promptVisibility);
-  const visiblePromptIDs: PromptId[] = useMemo(() => {
+  const visiblePromptIDs: PromptID[] = useMemo(() => {
     switch (promptVisibility) {
       case PromptVisibilitySetting.All:
         return Object.keys(prompts);
@@ -83,20 +83,20 @@ export function PromptLayoutManager({
     }
   }, [prompts, promptVisibility]);
 
-  var [promptRuns, setPromptRuns] = useState<PromptId[][]>(
+  var [promptRuns, setPromptRuns] = useState<PromptID[][]>(
     visiblePromptIDs.map((id) => [id]),
   );
-  var [promptOffset, setPromptOffset] = useState<{ [id: PromptId]: number }>(
+  var [promptOffset, setPromptOffset] = useState<{ [id: PromptID]: number }>(
     {},
   );
-  const promptMeasureRefs = useRef<{ [id: PromptId]: HTMLDivElement | null }>(
+  const promptMeasureRefs = useRef<{ [id: PromptID]: HTMLDivElement | null }>(
     {},
   );
 
-  const bulkPromptLocations = useRef<{ [id: PromptId]: number }>({});
-  const [bulkSaves, setBulkSaves] = useState<Set<PromptId>>(new Set());
+  const bulkPromptLocations = useRef<{ [id: PromptID]: number }>({});
+  const [bulkSaves, setBulkSaves] = useState<Set<PromptID>>(new Set());
   const addToSaves = useCallback(
-    (id: PromptId) => {
+    (id: PromptID) => {
       setBulkSaves(new Set(bulkSaves.add(id)));
     },
     [bulkSaves, setBulkSaves],
@@ -107,9 +107,9 @@ export function PromptLayoutManager({
     }
   }, [bulkSaves, setBulkSaves]);
 
-  const [currHoverPrompts, setHoverPrompts] = useState<PromptId[]>();
-  const [currEditPrompt, setEditPrompt] = useState<PromptId>();
-  const [currAnchorHovers, setCurrAnchorHovers] = useState<PromptId[]>();
+  const [currHoverPrompts, setHoverPrompts] = useState<PromptID[]>();
+  const [currEditPrompt, setEditPrompt] = useState<PromptID>();
+  const [currAnchorHovers, setCurrAnchorHovers] = useState<PromptID[]>();
   // We have to let the shadow container mount and render for sizing
   const [delayOneRender, setDelayOneRender] = useState<boolean>(true);
   const collapsedDirection: CollapsedPromptDirection | undefined =
@@ -141,8 +141,8 @@ export function PromptLayoutManager({
       }, []),
     );
 
-  function clonePromptLocations(locs: { [id: PromptId]: PromptLocation }) {
-    const clone: { [id: PromptId]: PromptLocation } = {};
+  function clonePromptLocations(locs: { [id: PromptID]: PromptLocation }) {
+    const clone: { [id: PromptID]: PromptLocation } = {};
     Object.entries(locs).forEach(([id, loc]) => {
       const locClone = { ...loc };
       clone[id] = locClone;
@@ -353,7 +353,7 @@ export function PromptLayoutManager({
                   updatePromptBack={(id, newPrompt) =>
                     dispatch(updatePromptBack([id, newPrompt]))
                   }
-                  setHoverPrompts={(ids: PromptId[] | undefined) =>
+                  setHoverPrompts={(ids: PromptID[] | undefined) =>
                     setHoverPrompts(ids)
                   }
                   setEditPrompt={(id) => setEditPrompt(id)}

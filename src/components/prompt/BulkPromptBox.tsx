@@ -6,7 +6,7 @@ import React, {
   useEffect,
 } from "react";
 import styled from "@emotion/styled";
-import { Prompt, PromptId } from "../../app/promptSlice";
+import { Prompt, PromptID } from "../../app/promptSlice";
 import Button from "../Button";
 import PromptBox from "./PromptBox";
 import {
@@ -21,18 +21,18 @@ import CollapsedPromptIcon from "./CollapsedPromptIcon";
 export interface BulkPromptBoxProps {
   // Prompts and ids must be same order
   prompts: Prompt[];
-  ids: PromptId[];
+  ids: PromptID[];
   collapsedDirection?: CollapsedPromptDirection;
-  savePrompt: (id: PromptId) => any;
-  updatePromptFront: (id: PromptId, newPrompt: string) => any;
-  updatePromptBack: (id: PromptId, newPrompt: string) => any;
+  savePrompt: (id: PromptID) => any;
+  updatePromptFront: (id: PromptID, newPrompt: string) => any;
+  updatePromptBack: (id: PromptID, newPrompt: string) => any;
   // A parent can provide a mechanism to keep track of all items saved while the bulk prompt hovers, when the hover exits, the saves are cleared
-  addToSaves?: (id: PromptId) => any;
+  addToSaves?: (id: PromptID) => any;
   clearSaves?: () => any;
-  saves?: Set<PromptId>;
-  setHoverPrompts?: (ids: PromptId[] | undefined) => any;
-  setEditPrompt?: (id: PromptId | undefined) => any;
-  setTops?: (id: PromptId, top: number) => any;
+  saves?: Set<PromptID>;
+  setHoverPrompts?: (ids: PromptID[] | undefined) => any;
+  setEditPrompt?: (id: PromptID | undefined) => any;
+  setTops?: (id: PromptID, top: number) => any;
 }
 
 const ButtonContainer = styled.div`

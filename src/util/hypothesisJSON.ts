@@ -1,4 +1,11 @@
-import { Prompt, PromptSelector, PromptsState } from "../app/promptSlice";
+import { encodeUUIDBytesToWebSafeBase64ID, TaskID } from "@withorbit/core";
+import {
+  Prompt,
+  PromptID,
+  PromptSelector,
+  PromptsState,
+} from "../app/promptSlice";
+import { v5 as uuidV5, parse as uuidParse } from "uuid";
 
 export type HypothesisJSONData = [
   entries: {
@@ -7,6 +14,18 @@ export type HypothesisJSONData = [
     tags: string[];
   }[],
 ];
+
+let _orbitPrototypeTaskNamespaceUUID: ArrayLike<number> | null = null;
+function generateTaskIDForString(input: string): PromptID {
+  if (!_orbitPrototypeTaskNamespaceUUID) {
+    _orbitPrototypeTaskNamespaceUUID = uuidParse(
+      "432a94d7-56d3-4d17-adbd-685c97b5c67a",
+    );
+  }
+  const bytes = new Uint8Array(16);
+  uuidV5(input, _orbitPrototypeTaskNamespaceUUID, bytes);
+  return encodeUUIDBytesToWebSafeBase64ID(bytes) as TaskID;
+}
 
 export function readPromptsFromHypothesisJSON(json: HypothesisJSONData): {
   [id: string]: Prompt;
@@ -32,8 +51,11 @@ export function readPromptsFromHypothesisJSON(json: HypothesisJSONData): {
       }
 
       const front = lines[0].substring(3);
-      // We'll use the question as an ID.
-      prompts[front] = {
+
+      // Prompt IDs are generated from a hash of their front content.
+      const id = generateTaskIDForString(front);
+
+      prompts[id] = {
         content: {
           front,
           back: lines[1].substring(3),

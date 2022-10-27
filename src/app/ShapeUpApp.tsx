@@ -1,12 +1,11 @@
 import React, { useCallback } from "react";
-import { PromptListSpec } from "../components/prompt/PromptList";
 import { useLayoutDependentValue } from "../hooks/useLayoutDependentValue";
 import "../static/styles/ShapeUp.css";
-import App from "./App";
+import App, { PromptListSpec } from "./App";
 
 const promptListSpecs: { [chapterName: string]: PromptListSpec } = {
   "1.1-chapter-02": {
-    promptIDs: [
+    promptsByFrontText: [
       "Why might over-specifying a design make it harder to estimate?",
       "Three key properties of shaped work introduced in this chapter? (one word each)",
       `Why do under-specified projects naturally grow out of control?`,
@@ -15,7 +14,7 @@ const promptListSpecs: { [chapterName: string]: PromptListSpec } = {
     ],
   },
   "1.2-chapter-03": {
-    promptIDs: [
+    promptsByFrontText: [
       "What's the first step of shaping?",
       'What\'s meant by "appetite"?',
       'To plan based on appetite, we use this principle: "??? time, ??? scope".',

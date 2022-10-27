@@ -1,19 +1,8 @@
 import { saveAs } from "file-saver";
+import { getSiteName } from "./getSiteName";
 
 export async function downloadAnkiDeck() {
-  const sitePathComponent = window.location.pathname.split("/")[1];
-  let siteName: string;
-  if (sitePathComponent === "ims") {
-    siteName = "Intro to Modern Statistics";
-  } else if (sitePathComponent === "shape-up") {
-    siteName = "Shape Up";
-  } else if (window.location.pathname.startsWith("/sh/br")) {
-    siteName = "Bounded Regret";
-  } else if (window.location.pathname.startsWith("/sh/da")) {
-    siteName = "Delta Academy";
-  } else {
-    throw new Error(`Unknown site name ${sitePathComponent}`);
-  }
+  const siteName = getSiteName();
   const sitePrompts: any = { siteName, prompts: {}, baseURI: document.baseURI };
 
   // HACK: accessing redux-persist's data directly because we need to save all prompts for this book, not just the current page's
@@ -22,12 +11,13 @@ export async function downloadAnkiDeck() {
     const key = localStorage.key(i);
     if (!key || !key.startsWith("persist:")) continue;
     const path = key.split("persist:")[1];
-    if (path.split("/")[1] === sitePathComponent) {
+    if (path.split("/")[1] === window.location.pathname.split("/")[1]) {
       sitePrompts.prompts[path] = JSON.parse(
         JSON.parse(localStorage.getItem(key)!).prompts,
       );
     }
   }
+
   const response = await fetch(
     `${
       process.env["NODE_ENV"] === "production"

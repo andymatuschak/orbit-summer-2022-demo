@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { PromptId, PromptsState } from "../../app/promptSlice";
+import { PromptID, PromptsState } from "../../app/promptSlice";
 import { PromptLocation } from "../../util/resolvePromptLocations";
 import { highlightRange } from "./highlightRange";
 
@@ -11,9 +11,9 @@ export interface AnchorHighlightProps {
   prompts: PromptsState;
   promptLocations: { [id: string]: PromptLocation };
   visiblePromptIDs: Set<string>;
-  hoverPrompts: PromptId[] | undefined;
-  editPrompt: PromptId | undefined;
-  setHoverPrompts: (id: PromptId[] | undefined) => any;
+  hoverPrompts: PromptID[] | undefined;
+  editPrompt: PromptID | undefined;
+  setHoverPrompts: (id: PromptID[] | undefined) => any;
 }
 
 function areRangesSame(rangeA: Range, rangeB: Range): boolean {
@@ -23,7 +23,7 @@ function areRangesSame(rangeA: Range, rangeB: Range): boolean {
   );
 }
 
-function classNameForPromptID(id: PromptId): string {
+function classNameForPromptID(id: PromptID): string {
   return `orbitanchor-${id.replace(/ /g, "-")}`;
 }
 
@@ -46,13 +46,13 @@ export function AnchorHighlight({
   // If two prompts share a functional range, then one prompt is the "drawn" prompt and the other does not need to be redrawn
   // A prompt can have itself as the drawn promptId
   const [promptIdToDrawnPromptId, setPromptIdToDrawnPromptId] = useState<
-    Map<PromptId, PromptId>
-  >(new Map<PromptId, PromptId>());
+    Map<PromptID, PromptID>
+  >(new Map<PromptID, PromptID>());
   const [drawnPromptIdToIds, setDrawnPromptIdToIds] = useState<
     Map<string, string[]>
-  >(new Map<PromptId, PromptId[]>());
+  >(new Map<PromptID, PromptID[]>());
   const [existingPromptIds, setExistingPromptIds] = useState<Set<string>>(
-    new Set<PromptId>(),
+    new Set<PromptID>(),
   );
 
   // TODO: refactor all instances of this logic to use this instead. It's getting DRY
@@ -194,8 +194,8 @@ export function AnchorHighlight({
   }, [promptIdToDrawnPromptId, promptLocations, prompts, existingPromptIds]);
 
   useEffect(() => {
-    const interruptibleDebounces = new Set<PromptId>();
-    const onMouseEnter = function (id: PromptId) {
+    const interruptibleDebounces = new Set<PromptID>();
+    const onMouseEnter = function (id: PromptID) {
       interruptibleDebounces.clear();
       if (prompts[id]?.isSaved) {
         // Get other prompts this one may be drawing for
@@ -208,7 +208,7 @@ export function AnchorHighlight({
     // Lagging edge debounce to prevent scroll-flicker, with interruption
     function debounce(func: Function, timeout = 50) {
       let timeoutId: number;
-      return function (this: any, id: PromptId) {
+      return function (this: any, id: PromptID) {
         clearTimeout(timeoutId);
         interruptibleDebounces.add(id);
         timeoutId = window.setTimeout(() => {
@@ -220,11 +220,11 @@ export function AnchorHighlight({
       };
     }
 
-    const onMouseLeave = debounce(function (id: PromptId) {
+    const onMouseLeave = debounce(function (id: PromptID) {
       setHoverPrompts(undefined);
     });
 
-    const callbacks: { [id: PromptId]: (() => void)[] } = {};
+    const callbacks: { [id: PromptID]: (() => void)[] } = {};
     existingPromptIds.forEach((id) => {
       callbacks[id] = [() => onMouseEnter(id), () => onMouseLeave(id)];
     });

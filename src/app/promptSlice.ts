@@ -1,10 +1,18 @@
 import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
 import {
+  getReviewQueueFuzzyDueTimestampThreshold,
+  mainTaskComponentID,
+  Task,
+  TaskContentType,
+  TaskProvenance,
+  TaskProvenanceSelectorType,
+} from "@withorbit/core";
+import {
   HypothesisJSONData,
   readPromptsFromHypothesisJSON,
 } from "../util/hypothesisJSON";
 
-export type PromptId = string;
+export type PromptID = string;
 
 export interface Prompt {
   content: {
@@ -60,16 +68,16 @@ export interface TextQuoteSelector {
 //---
 
 export interface PromptsState {
-  [id: PromptId]: Prompt;
+  [id: PromptID]: Prompt;
 }
 
-export type IdAction = PayloadAction<PromptId>;
+export type IdAction = PayloadAction<PromptID>;
 export type UpdatePromptText = PayloadAction<
-  [id: PromptId, promptText: string]
+  [id: PromptID, promptText: string]
 >;
-export type CreateNewPrompt = PayloadAction<{ id: PromptId; prompt: Prompt }>;
+export type CreateNewPrompt = PayloadAction<{ id: PromptID; prompt: Prompt }>;
 export type SyncPromptFromReview = PayloadAction<{
-  id: PromptId;
+  id: PromptID;
   wasSkipped: boolean;
   newInterval: number;
   sourceReviewAreaID: string;
@@ -123,6 +131,47 @@ const promptSlice = createSlice({
       // This hacky predicate corresponds to the data we'll see if they marked the prompt as forgotten (i.e. so it's still due).
       prompt.isDue = newInterval === 0 && !wasSkipped;
     },
+
+    syncPromptStateFromRemoteTasks(
+      state,
+      action: PayloadAction<{ [id: PromptID]: Task }>,
+    ) {
+      for (const [id, task] of Object.entries(action.payload)) {
+        const { content } = task.spec;
+        if (content.type !== TaskContentType.QA) {
+          console.warn("Ignoring non-QA task", task);
+          continue;
+        }
+        // TODO: attachments
+        const promptContent = {
+          front: content.body.text,
+          back: content.answer.text,
+        };
+        const isSaved = !task.isDeleted;
+        const isDue =
+          isSaved &&
+          task.componentStates[mainTaskComponentID].dueTimestampMillis <=
+            getReviewQueueFuzzyDueTimestampThreshold(Date.now());
+
+        const prompt = state[id];
+        if (prompt) {
+          prompt.isSaved = isSaved;
+          prompt.isDue = isDue;
+          prompt.content = promptContent;
+        } else if (isSaved && task.provenance) {
+          state[id] = {
+            content: promptContent,
+            isSaved,
+            isDue,
+            isByAuthor: false,
+            showAnchors: true,
+            selectors: getHypothesisSelectors(task.provenance),
+          };
+        }
+      }
+    },
+
+    // Used by the Ctrl+D author shortcut to "reset" the page state after serializing prompt JSON.
     reloadPromptsFromJSON(state, action: PayloadAction<HypothesisJSONData>) {
       return readPromptsFromHypothesisJSON(action.payload);
     },
@@ -154,6 +203,54 @@ export const loadPrompts = createAsyncThunk(
   },
 );
 
+function getHypothesisSelectors(provenance: TaskProvenance): PromptSelector[] {
+  return (provenance.selectors ?? []).map((selector) => {
+    switch (selector.type) {
+      case TaskProvenanceSelectorType.Range:
+        const { startSelector, endSelector } = selector;
+        if (startSelector.type !== TaskProvenanceSelectorType.XPath) {
+          throw new Error(`Unsupported startSelector ${startSelector.type}`);
+        }
+        if (endSelector.type !== TaskProvenanceSelectorType.XPath) {
+          throw new Error(`Unsupported endSelector ${endSelector.type}`);
+        }
+        if (!startSelector.refinedBy) {
+          throw new Error(`Missing startSelector.refinedBy`);
+        }
+        if (!endSelector.refinedBy) {
+          throw new Error(`Missing endSelector.refinedBy`);
+        }
+        const startPosition = startSelector.refinedBy;
+        if (startPosition.type !== TaskProvenanceSelectorType.TextPosition) {
+          throw new Error(`Unsupported startSelector.refinedBy`);
+        }
+        const endPosition = endSelector.refinedBy;
+        if (endPosition.type !== TaskProvenanceSelectorType.TextPosition) {
+          throw new Error(`Unsupported endSelector.refinedBy`);
+        }
+        return {
+          type: PromptSelectorType.RangeSelector,
+          startContainer: startSelector.value,
+          startOffset: startSelector.refinedBy.start,
+          endContainer: endSelector.value,
+          endOffset: endSelector.refinedBy.end,
+        };
+      case TaskProvenanceSelectorType.TextPosition:
+        return {
+          ...selector,
+          type: PromptSelectorType.TextPositionSelector,
+        };
+      case TaskProvenanceSelectorType.TextQuote:
+        return {
+          ...selector,
+          type: PromptSelectorType.TextQuoteSelector,
+        };
+      default:
+        throw new Error(`Unexpected Orbit provenance type ${selector.type}`);
+    }
+  });
+}
+
 export const {
   savePrompt,
   unsavePrompt,
@@ -162,6 +259,7 @@ export const {
   updatePromptBack,
   createNewPrompt,
   syncPromptFromReview,
+  syncPromptStateFromRemoteTasks,
   reloadPromptsFromJSON,
 } = promptSlice.actions;
 export const promptsReducer = promptSlice.reducer;

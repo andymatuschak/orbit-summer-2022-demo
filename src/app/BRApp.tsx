@@ -1,12 +1,11 @@
 import React, { useCallback } from "react";
-import { PromptListSpec } from "../components/prompt/PromptList";
 import { useAuthorSaveDataFeature } from "../hooks/useAuthorSaveDataFeature";
 import { useLayoutDependentValue } from "../hooks/useLayoutDependentValue";
-import App from "./App";
+import App, { PromptListSpec } from "./App";
 
 const promptListSpecs: { [chapterName: string]: PromptListSpec } = {
   "more-is-different-for-ai": {
-    promptIDs: [
+    promptsByFrontText: [
       "Name two approaches Steinhardt says people take when thinking about safety risks from ML",
       "Describe the Engineering worldview in Steinhardt's dichotomy",
       "Describe the Philosophy worldview in Steinhardt's dichotomy",

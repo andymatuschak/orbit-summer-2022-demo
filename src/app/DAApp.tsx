@@ -1,8 +1,7 @@
 import React, { useCallback } from "react";
-import { PromptListSpec } from "../components/prompt/PromptList";
 import { useAuthorSaveDataFeature } from "../hooks/useAuthorSaveDataFeature";
 import { useLayoutDependentValue } from "../hooks/useLayoutDependentValue";
-import App from "./App";
+import App, { PromptListSpec } from "./App";
 
 const promptListSpecs: { [chapterName: string]: PromptListSpec } = {};
 

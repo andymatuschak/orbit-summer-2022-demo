@@ -1,3 +1,4 @@
+import { generateUniqueID } from "@withorbit/core";
 import React, {
   useCallback,
   useEffect,
@@ -5,14 +6,13 @@ import React, {
   useRef,
   useState,
 } from "react";
-import uuidBase64 from "../components/common/uuid";
 import zIndices from "../components/common/zIndices";
 import ContextualMenu from "../components/ContextualMenu";
 import { InlineReviewOverlay } from "../components/InlineReviewOverlay";
 import { ModalReview, ModalReviewState } from "../components/ModalReview";
 import { OrbitMenu } from "../components/OrbitMenu";
 import { PromptLayoutManager } from "../components/prompt/PromptLayoutManager";
-import { PromptList, PromptListSpec } from "../components/prompt/PromptList";
+import { PromptList } from "../components/prompt/PromptList";
 import { useAsyncLayoutDependentValue } from "../hooks/useLayoutDependentValue";
 import { useReviewAreaIntegration } from "../hooks/useReviewAreaIntegration";
 import { useSelectionBounds } from "../hooks/useSelectionBounds";
@@ -21,13 +21,24 @@ import {
   resolvePromptLocations,
 } from "../util/resolvePromptLocations";
 import { describe } from "../vendor/hypothesis-annotator/html";
-import { createNewPrompt, Prompt, savePrompt } from "./promptSlice";
+import { InlineReviewModuleState } from "./inlineReviewModuleSlice";
+import {
+  createNewPrompt,
+  Prompt,
+  PromptID,
+  PromptsState,
+  savePrompt,
+} from "./promptSlice";
 import { useAppDispatch, useAppSelector } from "./store";
 
 export interface AppProps {
   marginX: number;
   textRoot: Element;
   promptLists: { [elementID: string]: PromptListSpec };
+}
+
+export interface PromptListSpec {
+  promptsByFrontText: string[];
 }
 
 export default function App({ marginX, textRoot, promptLists }: AppProps) {
@@ -97,6 +108,10 @@ export default function App({ marginX, textRoot, promptLists }: AppProps) {
     setModalReviewState(nextState);
   }
 
+  const promptListData = useMemo(() => {
+    return computePromptListData(promptLists, prompts, inlineReviewModules);
+  }, [promptLists, inlineReviewModules, prompts]);
+
   if (promptLocations === null) return null;
   return (
     <>
@@ -137,7 +152,7 @@ export default function App({ marginX, textRoot, promptLists }: AppProps) {
                       isDue: true,
                       showAnchors: true,
                     };
-                    const newId = uuidBase64();
+                    const newId = generateUniqueID();
                     dispatch(createNewPrompt({ id: newId, prompt: newPrompt }));
                     setNewPromptId(newId);
                   }
@@ -223,41 +238,61 @@ export default function App({ marginX, textRoot, promptLists }: AppProps) {
           {...modalReviewState}
         />
       )}
-      {promptLists &&
-        [
-          ...Object.entries(promptLists),
-          ...Object.entries(inlineReviewModules)
-            // Include inline review modules which have been "turned into" prompt lists.
-            .filter(
-              ([, inlineReviewModule]) => !!inlineReviewModule.promptListID,
-            )
-            .map(
-              ([id, inlineReviewModule]) =>
-                [
-                  inlineReviewModule.promptListID!,
-                  {
-                    promptIDs: inlineReviewModule.promptIDs,
-                    inlineReviewID: id,
-                  },
-                ] as const,
-            ),
-        ].map(([id, spec]) => (
-          <PromptList
-            key={`promptList-${id}`}
-            targetElementID={id}
-            promptLocations={promptLocations}
-            onStartReview={(onReviewExit) =>
-              setModalReviewState({
-                mode: "list",
-                promptIDs: spec.promptIDs,
-                onReviewExit,
-              })
-            }
-            {...spec}
-          />
-        ))}
+      {promptListData.map((promptList) => (
+        <PromptList
+          key={`promptList-${promptList.promptListID}`}
+          targetElementID={promptList.promptListID}
+          promptLocations={promptLocations}
+          onStartReview={(onReviewExit) =>
+            setModalReviewState({
+              mode: "list",
+              promptIDs: promptList.promptIDs,
+              onReviewExit,
+            })
+          }
+          promptIDs={promptList.promptIDs}
+          inlineReviewID={promptList.inlineReviewID}
+        />
+      ))}
     </>
   );
+}
+
+function computePromptListData(
+  promptLists: { [promptListID: string]: PromptListSpec },
+  prompts: PromptsState,
+  inlineReviewModules: InlineReviewModuleState,
+): {
+  promptListID: string;
+  promptIDs: PromptID[];
+  inlineReviewID?: string;
+}[] {
+  const promptIDsByFrontText: { [frontText: string]: PromptID } = {};
+  for (const [id, prompt] of Object.entries(prompts)) {
+    promptIDsByFrontText[prompt.content.front] = id;
+  }
+  return [
+    ...Object.entries(promptLists).map(
+      ([promptListID, { promptsByFrontText }]) => ({
+        promptListID,
+        promptIDs: promptsByFrontText.map((frontText) => {
+          const id = promptIDsByFrontText[frontText];
+          if (!id) {
+            throw new Error(`No prompt with front text: ${frontText}`);
+          }
+          return id;
+        }),
+      }),
+    ),
+    ...Object.entries(inlineReviewModules)
+      // Include inline review modules which have been "turned into" prompt lists.
+      .filter(([, inlineReviewModule]) => !!inlineReviewModule.promptListID)
+      .map(([id, inlineReviewModule]) => ({
+        promptListID: inlineReviewModule.promptListID!,
+        promptIDs: inlineReviewModule.promptIDs,
+        inlineReviewID: id,
+      })),
+  ];
 }
 
 function findIntersectingPrompts(

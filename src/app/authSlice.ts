@@ -6,11 +6,14 @@ import {
   generateUniqueID,
   TaskContentType,
   TaskID,
-  TaskIngestEvent,
   TaskProvenance,
+  TaskProvenanceSelector,
+  TaskProvenanceSelectorType,
   TaskSpecType,
 } from "@withorbit/core";
-import { Prompt, PromptId } from "./promptSlice";
+import { getSiteName } from "../util/getSiteName";
+import { normalizeURL } from "../util/normalizeURL";
+import { Prompt, PromptID, PromptSelectorType } from "./promptSlice";
 
 type OrbitSyncState = { queue: Event[] } & (
   | { status: "signedOut" }
@@ -42,9 +45,33 @@ const orbitSyncSlice = createSlice({
     signOut(state) {
       if (state.status === "signedIn") {
         // TODO: how should the queue actually be handled here?
+        // TODO: invalidate sync manager in orbitSyncMiddleware when this happens
         return { queue: state.queue, status: "signedOut" };
       } else {
         return state;
+      }
+    },
+
+    updateTokens(
+      state,
+      action: PayloadAction<{
+        id: string;
+        idToken: string;
+        refreshToken: string;
+        expirationTimestamp: number;
+      }>,
+    ) {
+      const { id, idToken, refreshToken, expirationTimestamp } = action.payload;
+      if (state.status === "signedOut") {
+        throw new Error("Can't update tokens when signed out");
+      } else if (state.user.id !== id) {
+        throw new Error(
+          `Updating tokens for mismatched user (${id} vs ${state.user.id})`,
+        );
+      } else {
+        state.user.idToken = idToken;
+        state.user.refreshToken = refreshToken;
+        state.user.expirationTimestamp = expirationTimestamp;
       }
     },
 
@@ -56,24 +83,23 @@ const orbitSyncSlice = createSlice({
 
     addIngestPromptEvent(
       state,
-      action: PayloadAction<{ id: PromptId; prompt: Prompt }>,
+      action: PayloadAction<{ id: PromptID; prompt: Prompt }>,
     ) {
       const { id, prompt } = action.payload;
-      const event: TaskIngestEvent = {
+      state.queue.push({
         id: generateUniqueID(),
         type: EventType.TaskIngest,
         entityID: id as TaskID,
-        provenance: getProvenance(),
+        provenance: getOrbitProvenance(prompt),
         timestampMillis: Date.now(),
         metadata: {
-          // TODO: include selectors
-          // TODO: include info about whether it was by the author
+          // TODO: include some flag indicating whether it was by the author
         },
         spec: {
           type: TaskSpecType.Memory,
           content: {
             type: TaskContentType.QA,
-            // TODO: attachments
+            // TODO: handle attachments
             body: {
               text: prompt.content.front,
               attachments: [],
@@ -84,20 +110,89 @@ const orbitSyncSlice = createSlice({
             },
           },
         },
-      };
-      state.queue.push(event);
+      });
+    },
+
+    addDeletePromptEvent(state, action: PayloadAction<PromptID>) {
+      state.queue.push({
+        id: generateUniqueID(),
+        type: EventType.TaskUpdateDeleted,
+        entityID: action.payload as TaskID,
+        timestampMillis: Date.now(),
+        isDeleted: true,
+      });
+    },
+
+    addUpdatePromptContentEvent(
+      state,
+      action: PayloadAction<{ id: PromptID; prompt: Prompt }>,
+    ) {
+      // const {id, prompt} = action.payload;
+      console.error("UNIMPLEMENTED");
+      // TODO
     },
   },
 });
 
-export const { signIn, signOut, drainEventQueue, addIngestPromptEvent } =
-  orbitSyncSlice.actions;
+export const {
+  signIn,
+  signOut,
+  updateTokens,
+  drainEventQueue,
+  addIngestPromptEvent,
+  addDeletePromptEvent,
+  addUpdatePromptContentEvent,
+} = orbitSyncSlice.actions;
 export const authReducer = orbitSyncSlice.reducer;
 
-function getProvenance(): TaskProvenance {
+function getOrbitSelectors(prompt: Prompt): TaskProvenanceSelector[] {
+  return prompt.selectors.map((selector) => {
+    switch (selector.type) {
+      case PromptSelectorType.RangeSelector:
+        return {
+          type: TaskProvenanceSelectorType.Range,
+          startSelector: {
+            type: TaskProvenanceSelectorType.XPath,
+            value: selector.startContainer,
+            refinedBy: {
+              type: TaskProvenanceSelectorType.TextPosition,
+              start: selector.startOffset,
+              end: selector.startOffset,
+            },
+          },
+          endSelector: {
+            type: TaskProvenanceSelectorType.XPath,
+            value: selector.endContainer,
+            refinedBy: {
+              type: TaskProvenanceSelectorType.TextPosition,
+              start: selector.endOffset,
+              end: selector.endOffset,
+            },
+          },
+        };
+      case PromptSelectorType.TextQuoteSelector:
+        return {
+          ...selector,
+          type: TaskProvenanceSelectorType.TextQuote,
+        };
+      case PromptSelectorType.TextPositionSelector:
+        return {
+          ...selector,
+          type: TaskProvenanceSelectorType.TextPosition,
+        };
+      default:
+        throw new Error("Unexpected selector type");
+    }
+  });
+}
+
+function getOrbitProvenance(prompt: Prompt): TaskProvenance {
+  const normalizedURL = normalizeURL(window.location.href);
   return {
-    identifier: window.location.href,
-    url: window.location.href,
-    title: document.title, // TODO improve, use siteName, etc.
+    identifier: normalizedURL,
+    url: normalizedURL,
+    title: document.title,
+    containerTitle: getSiteName(),
+    selectors: getOrbitSelectors(prompt),
   };
 }
