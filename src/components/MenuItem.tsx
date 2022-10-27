@@ -32,13 +32,13 @@ export default function MenuItem({
   const [isHovered, setIsHovered] = useState<boolean>(false);
 
   useEffect(() => {
-    const onShortcutKey = function(e: KeyboardEvent){
+    const onShortcutKey = function (e: KeyboardEvent) {
       if (shortcutKey && e.key === shortcutKey.toLowerCase() && isEnabled) {
         e.preventDefault();
         onClick();
       }
-    }
-    
+    };
+
     document.addEventListener("keydown", onShortcutKey);
     return () => document.removeEventListener("keydown", onShortcutKey);
   }, [shortcutKey, isEnabled]);
@@ -49,7 +49,7 @@ export default function MenuItem({
         !disabled && hoverAndActiveStyles,
         {
           padding: 12,
-          height: 36,
+          height: subtitle ? 56 : 36,
           margin: 0,
           backgroundColor: "var(--bgPrimary)",
           border: "none",
@@ -76,7 +76,12 @@ export default function MenuItem({
       {subtitle && (
         <>
           <div css={{ height: 8 }} />
-          <LabelSmall text={subtitle} color={LabelColor.FGSecondaryLarge} />
+          <LabelSmall
+            text={subtitle}
+            color={
+              disabled ? LabelColor.FGDisabled : LabelColor.FGSecondaryLarge
+            }
+          />
         </>
       )}
       {shortcutKey && (

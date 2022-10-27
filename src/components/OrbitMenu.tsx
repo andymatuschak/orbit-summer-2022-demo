@@ -1,4 +1,11 @@
-import React, { useCallback, useEffect, useRef, useState } from "react";
+import React, {
+  ReactNode,
+  useCallback,
+  useEffect,
+  useRef,
+  useState,
+} from "react";
+import { forceLocalMode, openLoginPopup } from "../app/orbitSyncMiddleware";
 import { setPromptVisibility } from "../app/promptVisibilitySlice";
 import { useAppDispatch, useAppSelector } from "../app/store";
 import X from "../static/images/Icons/X.png";
@@ -169,20 +176,30 @@ export function OrbitMenu(props: OrbitMenuProps) {
     ({ prompts }) =>
       Object.keys(prompts).filter((id) => prompts[id].isSaved).length > 0,
   );
+  const userEmail = useAppSelector(({ auth }) =>
+    auth.status === "signedIn" ? auth.user.emailAddress : null,
+  );
   const containerRef = useRef<HTMLDivElement | null>(null);
+  const interiorRef = useRef<HTMLDivElement | null>(null);
 
   const [contentsSize, setContentsSize] = useState<[number, number] | null>(
     null,
   );
-  const calculateLayout = useCallback((node: HTMLDivElement | null) => {
+  const calculateLayout = useCallback(() => {
     // NOTE: this strategy assumes the menu contents do not change size after initial layout
-    if (node) {
-      const rect = node.getBoundingClientRect();
+    if (interiorRef.current) {
+      const rect = interiorRef.current.getBoundingClientRect();
       setContentsSize([rect.width, rect.height]);
     } else {
       setContentsSize(null);
     }
   }, []);
+  // When the user signs in/out, recalculate.
+  useEffect(() => {
+    // eslint-disable-next-line @typescript-eslint/no-unused-expressions
+    userEmail;
+    calculateLayout();
+  }, [calculateLayout, userEmail]);
 
   useEffect(() => {
     if (isOpen) {
@@ -201,13 +218,85 @@ export function OrbitMenu(props: OrbitMenuProps) {
     }
   }, [isOpen]);
 
+  const startReviewMenuItem = (
+    <div
+      css={{
+        position: "relative",
+        display: "flex",
+        flexDirection: "column",
+      }}
+    >
+      <MenuItem
+        title="Start Review"
+        subtitle={userEmail ?? undefined}
+        onClick={() => {
+          props.onStartReview();
+          setOpen(false);
+        }}
+        disabled={duePromptCount === 0}
+      />
+      {duePromptCount > 0 && (
+        <div
+          css={{
+            position: "absolute",
+            top: 8,
+            right: 10, // sorry, grid!!!
+          }}
+        >
+          <DueCount
+            count={duePromptCount}
+            menuIsOpen={isOpen}
+            context="menuItem"
+          />
+        </div>
+      )}
+    </div>
+  );
+
+  let items: ReactNode;
+  if (forceLocalMode) {
+    items = (
+      <>
+        <PromptVisibilityMenuItem />
+        <MenuItem
+          title="Export as Anki Deck"
+          onClick={() => downloadAnkiDeck()}
+          disabled={!anyPromptsSaved}
+        />
+        {startReviewMenuItem}
+      </>
+    );
+  } else {
+    if (userEmail) {
+      items = (
+        <>
+          <PromptVisibilityMenuItem />
+          {startReviewMenuItem}
+        </>
+      );
+    } else {
+      items = (
+        <>
+          <PromptVisibilityMenuItem />
+          <MenuItem title="Sign in" onClick={openLoginPopup} />
+        </>
+      );
+    }
+  }
+
   return (
     <div ref={containerRef}>
       {contentsSize && (
         <OrbitMenuBackground menuIsOpen={isOpen} contentsSize={contentsSize} />
       )}
       <div
-        ref={calculateLayout}
+        ref={useCallback(
+          (node: HTMLDivElement) => {
+            interiorRef.current = node;
+            calculateLayout();
+          },
+          [calculateLayout],
+        )}
         css={{
           display: "flex",
           flexDirection: "column",
@@ -226,43 +315,7 @@ export function OrbitMenu(props: OrbitMenuProps) {
             "clip-path 0.3s var(--expoTiming), opacity 0s 0.3s linear",
         }}
       >
-        <PromptVisibilityMenuItem />
-        <MenuItem
-          title="Export as Anki Deck"
-          onClick={() => downloadAnkiDeck()}
-          disabled={!anyPromptsSaved}
-        />
-        <div
-          css={{
-            position: "relative",
-            display: "flex",
-            flexDirection: "column",
-          }}
-        >
-          <MenuItem
-            title="Start Review"
-            onClick={() => {
-              props.onStartReview();
-              setOpen(false);
-            }}
-            disabled={duePromptCount === 0}
-          />
-          {duePromptCount > 0 && (
-            <div
-              css={{
-                position: "absolute",
-                top: 8,
-                right: 10, // sorry, grid!!!
-              }}
-            >
-              <DueCount
-                count={duePromptCount}
-                menuIsOpen={isOpen}
-                context="menuItem"
-              />
-            </div>
-          )}
-        </div>
+        {items}
 
         {/* Bottom bar */}
         <div

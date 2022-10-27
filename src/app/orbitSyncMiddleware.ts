@@ -55,7 +55,7 @@ async function storeEvents(
   dispatch(drainEventQueue(eventQueue.map(({ id }) => id)));
 }
 
-function openLoginPopup() {
+export function openLoginPopup() {
   window.open(
     `${orbitWebappBaseURL}/login?tokenTarget=opener&origin=${encodeURIComponent(
       window.location.origin,
