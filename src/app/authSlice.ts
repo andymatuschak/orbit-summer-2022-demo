@@ -9,6 +9,7 @@ import {
   TaskProvenance,
   TaskProvenanceSelector,
   TaskProvenanceSelectorType,
+  TaskSpec,
   TaskSpecType,
 } from "@withorbit/core";
 import { getSiteName } from "../util/getSiteName";
@@ -95,21 +96,7 @@ const orbitSyncSlice = createSlice({
         metadata: {
           // TODO: include some flag indicating whether it was by the author
         },
-        spec: {
-          type: TaskSpecType.Memory,
-          content: {
-            type: TaskContentType.QA,
-            // TODO: handle attachments
-            body: {
-              text: prompt.content.front,
-              attachments: [],
-            },
-            answer: {
-              text: prompt.content.back,
-              attachments: [],
-            },
-          },
-        },
+        spec: getOrbitSpec(prompt),
       });
     },
 
@@ -127,9 +114,14 @@ const orbitSyncSlice = createSlice({
       state,
       action: PayloadAction<{ id: PromptID; prompt: Prompt }>,
     ) {
-      // const {id, prompt} = action.payload;
-      console.error("UNIMPLEMENTED");
-      // TODO
+      const { id, prompt } = action.payload;
+      state.queue.push({
+        id: generateUniqueID(),
+        type: EventType.TaskUpdateSpecEvent,
+        entityID: id as TaskID,
+        timestampMillis: Date.now(),
+        spec: getOrbitSpec(prompt),
+      });
     },
   },
 });
@@ -184,6 +176,24 @@ function getOrbitSelectors(prompt: Prompt): TaskProvenanceSelector[] {
         throw new Error("Unexpected selector type");
     }
   });
+}
+
+function getOrbitSpec(prompt: Prompt): TaskSpec {
+  return {
+    type: TaskSpecType.Memory,
+    content: {
+      type: TaskContentType.QA,
+      // TODO: handle attachments
+      body: {
+        text: prompt.content.front,
+        attachments: [],
+      },
+      answer: {
+        text: prompt.content.back,
+        attachments: [],
+      },
+    },
+  };
 }
 
 function getOrbitProvenance(prompt: Prompt): TaskProvenance {
