@@ -92,7 +92,7 @@ const orbitSyncSlice = createSlice({
         provenance: getOrbitProvenance(prompt),
         timestampMillis: Date.now(),
         metadata: {
-          // TODO: include some flag indicating whether it was by the author
+          author: prompt.isByAuthor ? "__provenanceAuthor" : "__user",
         },
         spec: getOrbitSpec(prompt),
       });

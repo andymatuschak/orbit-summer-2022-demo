@@ -22,7 +22,6 @@ export class OrbitSyncManager {
     this.store = new OrbitStoreWeb({ databaseName: userID });
     this.refreshIDToken = refreshIDToken;
 
-    // TODO: switch API destination depending on development environment
     this.apiClient = new OrbitAPIClient(authenticateRequest, apiConfig);
     const apiClient = this.apiClient;
     this.apiSyncAdapter = new APISyncAdapter(apiClient, apiConfig.baseURL);
