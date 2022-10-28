@@ -43,6 +43,48 @@ if (document.location.pathname.includes("shape-up")) {
       orbitScript.src = "/orbit-web-component.js";
       document.head.prepend(orbitScript);
 
+      // Iframes don't export properly from Notion.
+      const iframeLinks =
+        document.querySelectorAll<HTMLAnchorElement>("figure .source a");
+      for (const link of iframeLinks) {
+        const iframe = document.createElement("iframe");
+        iframe.style.border = "none";
+
+        const ytMatch = link.href.match(/youtube\.com\/watch\?v=(.+)$/);
+        if (ytMatch) {
+          iframe.src = `https://youtube.com/embed/${ytMatch[1]}`;
+          iframe.width = "666";
+          iframe.height = "400";
+        } else {
+          iframe.src = link.href;
+          iframe.width = "0";
+          iframe.height = "0";
+        }
+        link.parentElement!.replaceWith(iframe);
+      }
+
+      // Narrow the page.
+      document.head.innerHTML = document.head.innerHTML.replace(
+        "max-width: 900px",
+        "max-width: 650px",
+      );
+
+      // Replace orbit review placeholders with the placeholders we'll fill in.
+      const reviews = document.evaluate(
+        "//p[contains(., 'ORBIT REVIEW')]",
+        document.body,
+        null,
+        XPathResult.UNORDERED_NODE_SNAPSHOT_TYPE,
+        null,
+      );
+      for (let i = 0; i < reviews.snapshotLength; i++) {
+        const review = reviews.snapshotItem(i) as Element;
+        const reviewAreaPlaceholder = document.createElement("div");
+        reviewAreaPlaceholder.className = "orbit-reviewarea";
+        reviewAreaPlaceholder.style.marginTop = "16px";
+        review.replaceWith(reviewAreaPlaceholder);
+      }
+
       const chapterName = getDeltaAcademyChapterName();
       loadPageData(<DAApp />, `sh/da/${chapterName}`);
     },

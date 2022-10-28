@@ -1,4 +1,4 @@
-const { override, addBabelPreset, addBabelPlugin } = require("customize-cra");
+const { override, addBabelPreset } = require("customize-cra");
 
 /* Generate a Reactified index.html for each page of the books we're augmenting. */
 const shapeUpChapters = ["1.1-chapter-02", "1.2-chapter-03"];
@@ -8,7 +8,7 @@ const BRChapters = [
   "future-ml-systems-will-be-qualitatively-different",
   "thought-experiments-provide-a-third-anchor",
 ];
-const DAChapters = ["Motivation"];
+const DAChapters = ["1", "2"];
 const multipleEntry = require("react-app-rewire-multiple-entry")([
   ...shapeUpChapters.map((c) => ({
     entry: "src/index.tsx",
@@ -33,7 +33,6 @@ const multipleEntry = require("react-app-rewire-multiple-entry")([
 ]);
 const overrides = override(
   addBabelPreset("@emotion/babel-preset-css-prop"),
-  // addBabelPlugin("babel-plugin-add-import-extension"),
   multipleEntry.addMultiEntry,
 );
 
@@ -43,8 +42,23 @@ module.exports = (webpackConfig, env, args) => {
 
   // HACK: make Webpack willing to resolve Node-style resolutions (i.e. without extensions) in packages
   webpackConfig.module.rules[1].oneOf[4].resolve = { fullySpecified: false };
-  // console.dir(webpackConfig.module.rules[1].oneOf);
-  // process.exit(0);
+
+  // HACK: Add HTML5 doctype to documents which don't have it (Notion exports!)
+  webpackConfig.module.rules.push({
+    test: /\.html$/i,
+    loader: "html-loader",
+    options: {
+      sources: false,
+      minimize: false,
+      preprocessor: (content) => {
+        if (!content.startsWith("<!DOCTYPE html>")) {
+          return `<!DOCTYPE html>\n${content}`;
+        } else {
+          return content;
+        }
+      },
+    },
+  });
 
   for (const plugin of webpackConfig.plugins) {
     if (plugin.constructor.name === "HtmlWebpackPlugin") {

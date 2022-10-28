@@ -77,7 +77,7 @@ export function writePromptsToHypothesisJSON(
   return [
     Object.values(prompts).map((prompt) => ({
       text: `Q. ${prompt.content.front}\nA. ${prompt.content.back}`,
-      tags: prompt.showAnchors ? ["no-anchor"] : [],
+      tags: prompt.showAnchors ? [] : ["no-anchor"],
       target: [{ selector: prompt.selectors }],
     })),
   ];
