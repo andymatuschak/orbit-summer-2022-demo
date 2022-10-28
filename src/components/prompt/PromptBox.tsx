@@ -271,17 +271,18 @@ const PromptBox = forwardRef(function (
     const sel = window.getSelection();
     const range = document.createRange();
     if (el && sel && range) {
+      // Replace rendered LaTeX markup with raw text.
+      el.innerHTML = editingFront ? prompt.content.front : prompt.content.back;
       range.selectNodeContents(el);
       sel.removeAllRanges();
       sel.addRange(range);
     }
   };
 
-  const endEditing = function () {
-    if (promptFrontRef.current?.innerText) {
+  const endEditing = function (editingFront: boolean) {
+    if (editingFront && promptFrontRef.current?.innerText) {
       updatePromptFront(promptFrontRef.current.innerText);
-    }
-    if (promptBackRef.current?.innerText) {
+    } else if (!editingFront && promptBackRef.current?.innerText) {
       updatePromptBack(promptBackRef.current.innerText);
     }
     setIsEditing(false);
@@ -358,7 +359,7 @@ const PromptBox = forwardRef(function (
             isEditing={isEditing}
             context={context}
             onFocus={() => startEditing(true)}
-            onBlur={() => endEditing()}
+            onBlur={() => endEditing(true)}
             ref={promptFrontRef}
             placeholder="Type a prompt here."
           >
@@ -379,7 +380,7 @@ const PromptBox = forwardRef(function (
                 context={context}
                 isEditing={isEditing}
                 onFocus={() => startEditing(false)}
-                onBlur={() => endEditing()}
+                onBlur={() => endEditing(false)}
                 ref={promptBackRef}
                 placeholder="Type a response here."
               >
