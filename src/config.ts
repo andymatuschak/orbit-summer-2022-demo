@@ -9,11 +9,11 @@ export const apiConfig = shouldUseLocalBackend
 
 export const orbitWebappBaseURL = shouldUseLocalBackend
   ? "http://localhost:19006"
-  : "https://withorbit.com";
+  : "https://orbit-app--fall-2022-yzhqe6jr.web.app";
 
 export const orbitAuthAPIKey = shouldUseLocalBackend
   ? "fake-api-key"
-  : process.env["FIREBASE_API_KEY"];
+  : process.env["REACT_APP_FIREBASE_API_KEY"];
 
 export const orbitAuthAPIBaseURL = shouldUseLocalBackend
   ? "http://localhost:9099/identitytoolkit.googleapis.com"

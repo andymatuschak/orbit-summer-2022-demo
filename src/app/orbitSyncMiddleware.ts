@@ -187,6 +187,10 @@ function connectAuthFlow(store: AppStore) {
             }),
           },
         );
+        if (!loginResponse.ok) {
+          // noinspection ExceptionCaughtLocallyJS
+          throw new Error(`Couldn't sign in: ${await loginResponse.text()}`);
+        }
         const loginResponseJSON = await loginResponse.json();
         const { idToken, refreshToken, expiresIn } = loginResponseJSON;
         const expirationTimestamp = requestTimestamp + expiresIn * 1000;
@@ -204,6 +208,12 @@ function connectAuthFlow(store: AppStore) {
             }),
           },
         );
+        if (!userDataResponse.ok) {
+          // noinspection ExceptionCaughtLocallyJS
+          throw new Error(
+            `Couldn't get user data: ${await userDataResponse.text()}`,
+          );
+        }
         const userDataJSON = await userDataResponse.json();
         const { localId: id, email: emailAddress } = userDataJSON.users[0];
         console.log("Got user data", id, emailAddress);
@@ -302,6 +312,10 @@ async function refreshIDToken(store: AppStore): Promise<string | null> {
         grant_type: "refresh_token",
       }),
     });
+    if (!response.ok) {
+      // noinspection ExceptionCaughtLocallyJS
+      throw new Error(`Couldn't refresh token ${await response.text()}`);
+    }
     const responseJSON = await response.json();
     const idToken = responseJSON["id_token"];
     store.dispatch(

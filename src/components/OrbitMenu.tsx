@@ -198,7 +198,9 @@ export function OrbitMenu(props: OrbitMenuProps) {
   useEffect(() => {
     // eslint-disable-next-line @typescript-eslint/no-unused-expressions
     userEmail;
-    calculateLayout();
+    setTimeout(() => {
+      calculateLayout();
+    }, 100); // HACK--not sure why this is necessary.
   }, [calculateLayout, userEmail]);
 
   useEffect(() => {
