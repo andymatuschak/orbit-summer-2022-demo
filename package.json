@@ -36,7 +36,7 @@
     "start": "rm -f public/orbit-web-component.js*; ln -s ../../orbit/packages/web-component/build/orbit-web-component.js ./public/orbit-web-component.js; ln -s ../../orbit/packages/web-component/build/orbit-web-component.js.map ./public/orbit-web-component.js.map; react-app-rewired start",
     "build": "react-app-rewired build",
     "test": "react-app-rewired test",
-    "deploy": "rm -f public/orbit-web-component.js*; cp ../orbit/packages/web-component/build/orbit-web-component.js* ./public/; yarn run build; vercel",
+    "deploy": "rm -f public/orbit-web-component.js*; cp ../orbit/packages/web-component/build/orbit-web-component.js* ./public/; yarn run build; vercel --prod",
     "storybook": "start-storybook -p 6006 -s public",
     "backend": "cd backend; yarn start"
   },
