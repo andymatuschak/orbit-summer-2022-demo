@@ -13,12 +13,13 @@ For your private testing and development purposes, you can [acquire an evaluatio
 
 ### Preparing your local copy
 
-This repo expects you to have [the main Orbit repo](https://github.com/andymatuschak/orbit) checked out as a sibling folder, and fully built. e.g.:
+This repo expects you to have [the main Orbit repo](https://github.com/andymatuschak/orbit) checked out as a sibling folder, and fully built. You'll need to be on the `orbit-summer-2022-demo` branch of that repo. e.g.:
 ```
 # From the root of this repo...
 cd ..
 git clone https://github.com/andymatuschak/orbit
 cd orbit
+git switch orbit-summer-2022-demo
 yarn install
 yarn build
 # web-component requires a separate build step; this is an oversight.
@@ -35,5 +36,5 @@ yarn install
 ## Development
 
 * To run a local development server: `yarn start`
-  * Then visit e.g. http://localhost:3000/shape-up/shapeup/1.1-chapter-02/index.html or http://localhost:3000/ims/foundations-mathematical.html
+  * Then visit e.g. http://localhost:3000/shape-up/shapeup/1.1-chapter-02/index.html or http://localhost:3000/ims/foundations-mathematical.html or http://localhost:3000/sh/da/1.html``
 * To run the Storybook UI: `yarn storybook`
