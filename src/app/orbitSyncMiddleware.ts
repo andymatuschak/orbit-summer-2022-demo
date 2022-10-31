@@ -65,6 +65,17 @@ export function openLoginPopup() {
   );
 }
 
+function broadcastLoginTokenToOrbitIframes(loginToken: string) {
+  // HACK: People's browser settings will sometimes prevent the iframes from signing in, since we're using a weird Orbit webapp channel. We'll broadcast our token to them.
+  const reviewAreas = document.getElementsByTagName("orbit-reviewarea");
+  for (const reviewArea of reviewAreas) {
+    const { iframe } = reviewArea as any;
+    if (iframe.src.startsWith(orbitWebappBaseURL)) {
+      iframe.contentWindow?.postMessage({ loginToken: { _token: loginToken } });
+    }
+  }
+}
+
 function connectAuthFlow(store: AppStore) {
   // When the event queue grows, drain it (if signed in) or pop an auth dialog (if not).
   startListening({
@@ -172,6 +183,10 @@ function connectAuthFlow(store: AppStore) {
       typeof data.loginToken._token === "string"
     ) {
       console.log("Received login token");
+
+      const token = data.loginToken._token;
+      broadcastLoginTokenToOrbitIframes(token);
+
       try {
         const requestTimestamp = Date.now();
         const loginResponse = await fetch(
@@ -182,7 +197,7 @@ function connectAuthFlow(store: AppStore) {
               "Content-Type": "application/json",
             },
             body: JSON.stringify({
-              token: data.loginToken._token,
+              token: token,
               returnSecureToken: true,
             }),
           },
