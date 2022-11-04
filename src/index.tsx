@@ -53,12 +53,15 @@ if (document.location.pathname.includes("shape-up")) {
         const ytMatch = link.href.match(/youtube\.com\/watch\?v=(.+)$/);
         if (ytMatch) {
           iframe.src = `https://youtube.com/embed/${ytMatch[1]}`;
-          iframe.width = "666";
-          iframe.height = "400";
         } else {
           iframe.src = link.href;
+        }
+        if (link.href.includes("notionlytics")) {
           iframe.width = "0";
           iframe.height = "0";
+        } else {
+          iframe.width = "666";
+          iframe.height = "400";
         }
         link.parentElement!.replaceWith(iframe);
       }
