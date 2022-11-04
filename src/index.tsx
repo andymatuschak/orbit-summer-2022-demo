@@ -38,6 +38,18 @@ if (document.location.pathname.includes("shape-up")) {
       reactRoot.id = "demo-root";
       document.body.prepend(reactRoot);
 
+      const favicon1 = document.createElement("LINK") as HTMLLinkElement;
+      favicon1.rel = "icon";
+      favicon1.type = "image/png";
+      favicon1.href = "/sh/da/delta_logo.png";
+      document.head.prepend(favicon1);
+
+      const favicon2 = document.createElement("LINK") as HTMLLinkElement;
+      favicon2.rel = "apple-touch-icon";
+      favicon2.type = "image/png";
+      favicon2.href = "/sh/da/delta_logo.png";
+      document.head.prepend(favicon2);
+
       const orbitScript = document.createElement("SCRIPT") as HTMLScriptElement;
       orbitScript.type = "module";
       orbitScript.src = "/orbit-web-component.js";
