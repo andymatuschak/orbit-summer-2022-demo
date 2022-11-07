@@ -5,6 +5,7 @@ import {
 } from "@reduxjs/toolkit";
 import { Event } from "@withorbit/core";
 import {
+  apiConfig,
   orbitAuthAPIBaseURL,
   orbitAuthAPIKey,
   orbitRefreshTokenURL,
@@ -18,6 +19,7 @@ import {
   signIn,
   signOut,
   updateTokens,
+  UserState,
 } from "./authSlice";
 import { OrbitSyncManager } from "./orbitSync";
 import {
@@ -71,7 +73,10 @@ function broadcastLoginTokenToOrbitIframes(loginToken: string) {
   for (const reviewArea of reviewAreas) {
     const { iframe } = reviewArea as any;
     if (iframe.src.startsWith(orbitWebappBaseURL)) {
-      iframe.contentWindow?.postMessage({ loginToken: { _token: loginToken } });
+      iframe.contentWindow?.postMessage(
+        { loginToken: { _token: loginToken } },
+        orbitWebappBaseURL,
+      );
     }
   }
 }
@@ -306,6 +311,33 @@ export async function initializeOrbitSyncMiddleware(store: AppStore) {
     return;
   }
   await performInitialSync(store);
+
+  // HACK: There are a lot of rules about third party iframe storage, particularly in Safari. In many cases this means that the host frame may have a valid token while the iframe does not. We'll pass one down.
+  const postSyncState = store.getState();
+  if (postSyncState.auth.status === "signedIn") {
+    try {
+      const authenticationResult = await authenticateRequest(store);
+      const loginToken = await fetchLoginToken(authenticationResult.idToken);
+      broadcastLoginTokenToOrbitIframes(loginToken);
+    } catch (e) {
+      console.warn("Couldn't broadcast initial login token to iframes", e);
+    }
+  }
+}
+
+async function fetchLoginToken(idToken: string) {
+  const fetchResult = await fetch(
+    `${apiConfig.baseURL}/internal/auth/createLoginToken?idToken=${idToken}`,
+  );
+  if (fetchResult.ok) {
+    return await fetchResult.text();
+  } else {
+    throw new Error(
+      `Sign in failed with status code ${
+        fetchResult.status
+      }: ${await fetchResult.text()}`,
+    );
+  }
 }
 
 async function refreshIDToken(store: AppStore): Promise<string | null> {
