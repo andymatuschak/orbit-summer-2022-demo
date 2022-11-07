@@ -1,5 +1,6 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import {
+  AttachmentID,
   Event,
   EventID,
   EventType,
@@ -14,6 +15,7 @@ import {
 } from "@withorbit/core";
 import { getSiteName } from "../util/getSiteName";
 import { normalizeURL } from "../util/normalizeURL";
+import { getOrbitPromptProps } from "./inlineReviewModuleSlice";
 import { Prompt, PromptID, PromptSelectorType } from "./promptSlice";
 
 type OrbitSyncState = { queue: Event[] } & (
@@ -177,18 +179,19 @@ function getOrbitSelectors(prompt: Prompt): TaskProvenanceSelector[] {
 }
 
 function getOrbitSpec(prompt: Prompt): TaskSpec {
+  const promptProps = getOrbitPromptProps(prompt);
   return {
     type: TaskSpecType.Memory,
     content: {
       type: TaskContentType.QA,
       // TODO: handle attachments
       body: {
-        text: prompt.content.front,
+        text: promptProps.question,
         attachments: [],
       },
       answer: {
-        text: prompt.content.back,
-        attachments: [],
+        text: promptProps.answer,
+        attachments: promptProps["answer-attachments"] as AttachmentID[],
       },
     },
   };

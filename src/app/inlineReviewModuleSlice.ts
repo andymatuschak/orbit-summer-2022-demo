@@ -173,10 +173,10 @@ function populateReviewArea(
     const props = getOrbitPromptProps(prompt);
     promptElement.setAttribute("question", props.question);
     promptElement.setAttribute("answer", props.answer);
-    if (props["answer-attachments"]) {
+    if (props["answer-attachments"].length) {
       promptElement.setAttribute(
         "answer-attachments",
-        props["answer-attachments"],
+        props["answer-attachments"][0],
       );
     }
     promptElement.id = id;
@@ -213,7 +213,9 @@ function rangeCompareNode(range: Range, node: Node) {
 // HACK: The embedded iframe (which uses the "real" Orbit bits) can't access local URLs. So we convert relative URLs of these images back to absolute paths on the original publication servers.
 function getAttachmentURL(text: string): string | null {
   const imageMatch = text.match(/<img src="(.+?)".+$/);
+
   if (imageMatch) {
+    if (text.indexOf('<img src="data:') >= 0) return text;
     const resolved = new URL(imageMatch[1], document.baseURI).pathname;
     const inDomainSubpath = resolved.split("/").slice(2).join("/");
     if (resolved.startsWith("/shape-up")) {
@@ -233,12 +235,24 @@ function getAttachmentURL(text: string): string | null {
 export function getOrbitPromptProps({ content: { front, back } }: Prompt): {
   question: string;
   answer: string;
-  "answer-attachments": string | null;
+  "answer-attachments": string[];
 } {
   const attachmentURL = getAttachmentURL(back);
+
+  let answer = back;
+  let attachments: string[] = [];
+  if (attachmentURL) {
+    answer = "";
+    attachments = [attachmentURL];
+    // attachments = attachmentURL
+    //   ? [attachmentURL]
+    //   : backAttachments?.length
+    //   ? backAttachments
+    //   : [];
+  }
   return {
     question: front,
-    answer: attachmentURL ? "" : back,
-    "answer-attachments": attachmentURL,
+    answer,
+    "answer-attachments": attachments,
   };
 }
