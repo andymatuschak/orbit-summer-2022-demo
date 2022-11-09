@@ -8,7 +8,7 @@ const BRChapters = [
   "future-ml-systems-will-be-qualitatively-different",
   "thought-experiments-provide-a-third-anchor",
 ];
-const DAChapters = ["1", "2", "3", "4", "5", "6"];
+const DAChapters = ["1", "2", "3", "4", "5", "6", "7"];
 const multipleEntry = require("react-app-rewire-multiple-entry")([
   ...shapeUpChapters.map((c) => ({
     entry: "src/index.tsx",
