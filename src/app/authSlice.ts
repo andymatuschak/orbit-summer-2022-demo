@@ -1,6 +1,9 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { v5 as uuidV5 } from "uuid";
+
 import {
   AttachmentID,
+  encodeUUIDBytesToWebSafeBase64ID,
   Event,
   EventID,
   EventType,
@@ -178,20 +181,29 @@ function getOrbitSelectors(prompt: Prompt): TaskProvenanceSelector[] {
   });
 }
 
+const generateAttachmentIDForURL = (url: string): AttachmentID => {
+  const bytes = new Uint8Array(16);
+  uuidV5(url, uuidV5.URL, bytes);
+  return encodeUUIDBytesToWebSafeBase64ID(bytes) as AttachmentID;
+};
+
 function getOrbitSpec(prompt: Prompt): TaskSpec {
-  const promptProps = getOrbitPromptProps(prompt);
+  const promptProps = getOrbitPromptProps(prompt, true);
   return {
     type: TaskSpecType.Memory,
     content: {
       type: TaskContentType.QA,
-      // TODO: handle attachments
+      // TODO: handle body attachments
       body: {
-        text: promptProps.question,
+        text: prompt.content.front,
         attachments: [],
       },
       answer: {
         text: promptProps.answer,
-        attachments: promptProps["answer-attachments"] as AttachmentID[],
+        // the EmbeddedScreen converts the abs url to its ID, so that's what we need here
+        attachments: promptProps["answer-attachments"]
+          ? promptProps["answer-attachments"].map(generateAttachmentIDForURL)
+          : [],
       },
     },
   };

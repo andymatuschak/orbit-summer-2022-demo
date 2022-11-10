@@ -18,6 +18,7 @@ export interface Prompt {
   content: {
     front: string;
     back: string;
+    backAttachments?: string[];
   };
   selectors: PromptSelector[];
 
@@ -148,7 +149,6 @@ const promptSlice = createSlice({
         const promptContent = {
           front: content.body.text,
           // prioritize hard-coded image sources
-          // this could change if we allow for changing image sources or annotating them
           back: prompt?.content.back.match(/<img src="(.+?)".+$/)
             ? prompt?.content.back
             : content.answer.text,

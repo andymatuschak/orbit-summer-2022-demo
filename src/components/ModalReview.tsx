@@ -92,7 +92,7 @@ export function ModalReview(props: ModalReviewProps) {
         >
           {queuedPromptIDs.map((id) => (
             <orbit-prompt
-              {...getOrbitPromptProps(prompts[id])}
+              {...getOrbitPromptProps(prompts[id], true)}
               id={id}
               key={id}
             ></orbit-prompt>
