@@ -62,20 +62,29 @@ if (document.location.pathname.includes("shape-up")) {
         const iframe = document.createElement("iframe");
         iframe.style.border = "none";
 
-        const ytMatch = link.href.match(/youtube\.com\/watch\?v=(.+)$/);
-        if (ytMatch) {
-          iframe.src = `https://youtube.com/embed/${ytMatch[1]}`;
+        if (link.href.endsWith(".mp4")) {
+          const videoElement = document.createElement("video");
+          videoElement.style.width = "100%";
+          videoElement.controls = true;
+          videoElement.autoplay = false;
+          videoElement.src = link.href;
+          link.parentElement!.replaceWith(videoElement);
         } else {
-          iframe.src = link.href;
+          const ytMatch = link.href.match(/youtube\.com\/watch\?v=(.+)$/);
+          if (ytMatch) {
+            iframe.src = `https://youtube.com/embed/${ytMatch[1]}`;
+          } else {
+            iframe.src = link.href;
+          }
+          if (link.href.includes("notionlytics")) {
+            iframe.width = "0";
+            iframe.height = "0";
+          } else {
+            iframe.width = "666";
+            iframe.height = "400";
+          }
+          link.parentElement!.replaceWith(iframe);
         }
-        if (link.href.includes("notionlytics")) {
-          iframe.width = "0";
-          iframe.height = "0";
-        } else {
-          iframe.width = "666";
-          iframe.height = "400";
-        }
-        link.parentElement!.replaceWith(iframe);
       }
 
       // Narrow the page.
