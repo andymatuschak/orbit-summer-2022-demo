@@ -2,6 +2,7 @@
   "name": "orbit-summer-2022-demo",
   "version": "0.1.0",
   "license": "MIT",
+  "proxy": "http://127.0.0.1:3001/",
   "dependencies": {
     "@emotion/babel-preset-css-prop": "^11.10.0",
     "@emotion/react": "^11.10.4",
