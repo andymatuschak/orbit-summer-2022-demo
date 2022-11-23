@@ -35,13 +35,14 @@ export interface AppProps {
   marginX: number;
   textRoot: Element;
   pageID: string;
+  promptLists: { [k: string]: PromptListSpec }
 }
 
 export interface PromptListSpec {
   promptsByFrontText: string[];
 }
 
-export default function App({ marginX, textRoot, pageID }: AppProps) {
+export default function App({ marginX, textRoot, pageID, promptLists }: AppProps) {
   const prompts = useAppSelector((state) => state.prompts);
   const inlineReviewModules = useAppSelector(
     (state) => state.inlineReviewModules,
@@ -113,8 +114,8 @@ export default function App({ marginX, textRoot, pageID }: AppProps) {
 
   const promptListData = useMemo(() => {
     console.log("-- compute prompt list data", prompts);
-    return computePromptListData(pageID, prompts, inlineReviewModules);
-  }, [pageID, inlineReviewModules, prompts]);
+    return computePromptListData(promptLists, prompts, inlineReviewModules);
+  }, [promptLists, inlineReviewModules, prompts]);
 
   if (promptLocations === null) return null;
 
@@ -265,7 +266,7 @@ export default function App({ marginX, textRoot, pageID }: AppProps) {
 }
 
 function computePromptListData(
-  pageID: string,
+  promptLists: { [promptListID: string]: PromptListSpec },
   prompts: PromptsState,
   inlineReviewModules: InlineReviewModuleState,
 ): {
@@ -278,11 +279,18 @@ function computePromptListData(
     promptIDsByFrontText[prompt.content.front] = id;
   }
   return [
-    // previously we included multiple pages worth of ids/prompt, but now we only have one
-    {
-      promptListID: pageID,
-      promptIDs: Object.keys(prompts),
-    },
+        ...Object.entries(promptLists).map(
+      ([promptListID, { promptsByFrontText }]) => ({
+        promptListID,
+        promptIDs: promptsByFrontText.map((frontText) => {
+          const id = promptIDsByFrontText[frontText];
+          if (!id) {
+            throw new Error(`No prompt with front text: ${frontText}`);
+          }
+          return id;
+        }),
+      }),
+    ),
     ...Object.entries(inlineReviewModules)
       // Include inline review modules which have been "turned into" prompt lists.
       .filter(([, inlineReviewModule]) => !!inlineReviewModule.promptListID)

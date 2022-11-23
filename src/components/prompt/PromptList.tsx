@@ -91,6 +91,7 @@ export function PromptList({
 
   const targetElement = useMemo(() => {
     const element = document.getElementById(targetElementID);
+    console.log(targetElementID, element);
     // if (!element)
     //   throw new Error(`Missing prompt list target ID ${targetElementID}`);
     return element;
@@ -99,6 +100,7 @@ export function PromptList({
   const [left, top, width] = useLayoutDependentValue(
     useCallback(() => {
       const rect = targetElement?.getBoundingClientRect();
+      console.log("===> target element", rect);
       if (!rect) return [0, 0, 0];
       return [rect.x + window.scrollX, rect.y + window.scrollY, rect.width];
     }, [targetElement]),
@@ -112,6 +114,7 @@ export function PromptList({
     const observer = new ResizeObserver(() => {
       // hackily not bothering to read the observer entries
       const rect = listElement.getBoundingClientRect();
+      console.log("===> listElement to targetElement", rect);
       targetElement.style.height = `${rect.height}px`;
     });
     observer.observe(listElement);

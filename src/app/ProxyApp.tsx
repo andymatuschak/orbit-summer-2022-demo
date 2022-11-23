@@ -25,6 +25,19 @@ const PROXY_ROOT_PATH = "/api/proxy/";
 const getRealURL = (orbitProxyURL: string) =>
   orbitProxyURL.replace(PROXY_ROOT_PATH, "");
 
+const getPromptLists = async (
+  url: string,
+): Promise<{ [k: string]: PromptListSpec }> => {
+  const { promptLists } = await fetch("/api/prompt-lists/" + url)
+    .then((o) => o.json())
+    .catch((e) => {
+      console.warn("Error fetching remote json", e);
+      return {};
+    });
+
+  return promptLists;
+};
+
 export default () => {
   // ====[TODO] need to review how local state should change when page changes (e.g. don't full reload for url params, only path)
   const [pageID, setPageID] = useState(getRealURL(window.location.pathname));
@@ -32,12 +45,19 @@ export default () => {
     setPageID(getRealURL(window.location.pathname));
   }, [window.location.href]);
 
+  // key is div id on page for embedding
+  const [promptLists, setPromptLists] = useState<{
+    [k: string]: PromptListSpec;
+  }>({});
+
   useEffect(() => {
     const initWithPrompts = async () => {
-      console.log("===> pageId?", pageID);
       await store.dispatch(loadPrompts(pageID));
       await store.dispatch(autopopulateReviewAreas(store.getState().prompts));
       await initializeOrbitSyncMiddleware(store);
+
+      const promptLists = await getPromptLists(pageID);
+      setPromptLists(promptLists);
     };
     initWithPrompts();
   }, [pageID]);
@@ -54,7 +74,7 @@ export default () => {
   );
 
   useAuthorSaveDataFeature(pageID);
-  console.log(textRoot);
+  console.log(textRoot, promptLists);
 
   return (
     <>
@@ -63,6 +83,7 @@ export default () => {
           marginX={markerX}
           textRoot={textRoot.parentElement!}
           pageID={pageID}
+          promptLists={promptLists}
         />
       )}
       {!textRoot && (
