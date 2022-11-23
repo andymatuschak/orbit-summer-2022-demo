@@ -1,5 +1,7 @@
 import { useEffect, useState } from "react";
 
+const ORBIT_APP_ROOT_ID = process.env.ORBIT_APP_ROOT_ID || "proxy-root";
+
 export interface SelectionBounds {
   left: number;
   top: number;
@@ -10,17 +12,18 @@ export function useSelectionBounds(): {
   selectionPosition: SelectionBounds | null;
   clearSelectionPosition: () => void;
   selectionRange: Range | null;
-
 } {
   const [selectionPosition, setSelectionPosition] =
     useState<SelectionBounds | null>(null);
   const [selectionRange, setSelectionRange] = useState<Range | null>(null);
 
   useEffect(() => {
-
     const onEnd = (e: MouseEvent) => {
       const selection = document.getSelection();
-      if (e.target instanceof Node && document.getElementById("demo-root")!.contains(e.target)){
+      if (
+        e.target instanceof Node &&
+        document.getElementById(ORBIT_APP_ROOT_ID)!.contains(e.target)
+      ) {
         setSelectionPosition(null);
       } else if (selection && !selection.isCollapsed) {
         const range = selection.getRangeAt(0);
@@ -35,7 +38,7 @@ export function useSelectionBounds(): {
           top: window.scrollY + rect.top,
           bottom: window.scrollY + rect.bottom,
         });
-       setSelectionRange(range);
+        setSelectionRange(range);
       }
     };
 
@@ -50,7 +53,7 @@ export function useSelectionBounds(): {
     const onSelectStart = (e: Event) => {
       if (
         e.target instanceof Node &&
-        !document.getElementById("demo-root")!.contains(e.target)
+        !document.getElementById(ORBIT_APP_ROOT_ID)!.contains(e.target)
       ) {
         document.addEventListener("mouseup", onEnd);
         document.addEventListener("selectionchange", onChange);
@@ -64,7 +67,7 @@ export function useSelectionBounds(): {
       document.removeEventListener("selectionchange", onChange);
     };
   }, []);
-  
+
   return {
     selectionPosition,
     selectionRange,

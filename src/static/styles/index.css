@@ -5,7 +5,7 @@ html {
   width: 100vw;
 }
 
-#demo-root {
+#proxy-root {
   height: 0;
 }
 
@@ -35,7 +35,7 @@ body {
   overflow-x: hidden;
 }
 
-#demo-root *, .sb-show-main #root * {
+#proxy-root *, .sb-show-main #root * {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   -ms-overflow-style: scrollbar;

@@ -87,6 +87,7 @@ export const autopopulateReviewAreas = createAsyncThunk(
         ),
       );
     }
+    console.log("populated review area!", populatedReviewAreas);
     return populatedReviewAreas;
   },
 );

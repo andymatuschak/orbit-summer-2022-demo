@@ -1,4 +1,6 @@
 const { override, addBabelPreset } = require("customize-cra");
+const path = require("path");
+const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 
 const multipleEntry = require("react-app-rewire-multiple-entry")([
   {
@@ -20,21 +22,21 @@ module.exports = (webpackConfig, env, args) => {
   webpackConfig.module.rules[1].oneOf[4].resolve = { fullySpecified: false };
 
   // HACK: Add HTML5 doctype to documents which don't have it (Notion exports!)
-  webpackConfig.module.rules.push({
-    test: /\.html$/i,
-    loader: "html-loader",
-    options: {
-      sources: false,
-      minimize: false,
-      preprocessor: (content) => {
-        if (!content.startsWith("<!DOCTYPE html>")) {
-          return `<!DOCTYPE html>\n${content}`;
-        } else {
-          return content;
-        }
-      },
-    },
-  });
+  // webpackConfig.module.rules.push({
+  //   test: /\.html$/i,
+  //   loader: "html-loader",
+  //   options: {
+  //     sources: false,
+  //     minimize: false,
+  //     preprocessor: (content) => {
+  //       if (!content.startsWith("<!DOCTYPE html>")) {
+  //         return `<!DOCTYPE html>\n${content}`;
+  //       } else {
+  //         return content;
+  //       }
+  //     },
+  //   },
+  // });
 
   for (const plugin of webpackConfig.plugins) {
     if (plugin.constructor.name === "HtmlWebpackPlugin") {
@@ -43,5 +45,25 @@ module.exports = (webpackConfig, env, args) => {
   }
   webpackConfig.optimization.minimize = false;
   webpackConfig.optimization.minimizer = [];
+
+  webpackConfig.mode = "development";
+  webpackConfig.entry = { main: "./src/index.tsx" };
+  webpackConfig.output.path = path.resolve(
+    __dirname,
+    "../orbit-proxy-server/public",
+  );
+
+  // TODO: optimize chunking
+  // webpackConfig.optimization.runtimeChunk = "single";
+  webpackConfig.output.filename = "orbit-proxy-embed.js";
+  // webpackConfig.output.chunkFilename = "[name]-orbit-proxy-embed.chunk.js";
+  webpackConfig.plugins = [
+    ...webpackConfig.plugins,
+    new MiniCssExtractPlugin({
+      filename: "orbit-proxy-embed.css",
+      chunkFilename: "orbit-proxy-embed.chunk.css",
+    }),
+  ];
+
   return webpackConfig;
 };

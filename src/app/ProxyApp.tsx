@@ -1,107 +1,83 @@
-import { m } from "framer-motion";
 import React, { useCallback, useEffect, useState } from "react";
 import { useAuthorSaveDataFeature } from "../hooks/useAuthorSaveDataFeature";
 import { useLayoutDependentValue } from "../hooks/useLayoutDependentValue";
 import App, { PromptListSpec } from "./App";
+import { persistor, store } from "../app/store";
+import { initializeOrbitSyncMiddleware } from "./orbitSyncMiddleware";
+import { autopopulateReviewAreas } from "./inlineReviewModuleSlice";
+import { loadPrompts } from "./promptSlice";
 
-type Script = {
-  rawAttrs: string;
-  childNode: string;
+const SEARCH_PRIORITY = ["article", "main", "content", "body"];
+
+// ====[TODO] flexible way of doing this + prompt provenance?
+const getTextRoot = () => {
+  for (const tag of SEARCH_PRIORITY) {
+    // const root = document.getElementsByTagName(tag)?.item(0);
+    const root = document.getElementById(tag);
+    if (root) return root;
+  }
+  return;
 };
 
-type ProxyData = {
-  full: string;
-  scripts: Script[];
-  head: string;
-  body: string;
-};
-
-const SRC_REGEXP = new RegExp(/src="([^"]*)"/);
-
-function dynamicallyAddScript(content: string) {
-  var script = document.createElement("script");
-  script.innerHTML = content;
-
-  document.head.appendChild(script);
-}
-
-function dynamicallyLoadScript(url: string) {
-  var script = document.createElement("script"); // create a script DOM node
-  script.src = url; // set its src to the provided URL
-
-  document.head.appendChild(script); // add it to the end of the head section of the page (could change 'head' to 'body' to add it to the end of the body section instead)
-}
+// ====[TODO] will need a flexible way of doing this
+const RIGHT_MARKER_OFFSET = -25;
+const PROXY_ROOT_PATH = "/api/proxy/";
+const getRealURL = (orbitProxyURL: string) =>
+  orbitProxyURL.replace(PROXY_ROOT_PATH, "");
 
 export default () => {
-  const [flush, setFlush] = useState(false);
-
-  const [data, setData] = useState<ProxyData>();
+  // ====[TODO] need to review how local state should change when page changes (e.g. don't full reload for url params, only path)
+  const [pageID, setPageID] = useState(getRealURL(window.location.pathname));
   useEffect(() => {
-    const test = new Function('console.log("===== HELLO FROM SCRIPT")');
-    test();
-    const getData = async () => {
-      const data: ProxyData = await fetch(
-        "/api/proxy/https://basecamp.com/shapeup/1.2-chapter-03",
-      )
-        .then((o) => o.json())
-        .catch((e) => {
-          return {};
-        });
-      console.log("return!", data.scripts);
-      setData(data);
+    setPageID(getRealURL(window.location.pathname));
+  }, [window.location.href]);
+
+  useEffect(() => {
+    const initWithPrompts = async () => {
+      console.log("===> pageId?", pageID);
+      await store.dispatch(loadPrompts(pageID));
+      await store.dispatch(autopopulateReviewAreas(store.getState().prompts));
+      await initializeOrbitSyncMiddleware(store);
     };
-    getData();
-  }, []);
+    initWithPrompts();
+  }, [pageID]);
 
-  useEffect(() => {
-    if (data?.scripts) {
-      for (const script of data.scripts) {
-        const { rawAttrs, childNode } = script;
-        if (childNode) {
-          //   const fn = new Function(childNode);
-          //   fn();
-          dynamicallyAddScript(childNode);
-        }
-        if (rawAttrs) {
-          console.log(rawAttrs);
-          const match = rawAttrs.match(SRC_REGEXP);
-          if (match) {
-            console.log("match", match);
-            fetch(match[1])
-              .then((o) => o.text())
-              .then((o) => {
-                console.log("script src:", o);
-                const fn = new Function(o);
-                fn();
-              })
-              .catch((e) => console.warn(e));
-            dynamicallyLoadScript(match[1]);
-          }
-        }
-        setFlush(true);
+  const textRoot = useLayoutDependentValue(getTextRoot);
+  const markerX = useLayoutDependentValue(
+    useCallback(() => {
+      if (textRoot) {
+        const rect = textRoot.children.item(3)!.getBoundingClientRect();
+        return rect.right + RIGHT_MARKER_OFFSET;
       }
-    }
-  }, [data]);
+      return 0;
+    }, [textRoot]),
+  );
 
-  useEffect(() => {
-    if (flush) setFlush(false);
-  }, [flush]);
+  useAuthorSaveDataFeature(pageID);
+  console.log(textRoot);
 
   return (
-    <div
-      style={{
-        position: "absolute",
-        bottom: 0,
-        right: 0,
-        border: "1px solid black",
-        padding: 2,
-      }}
-    >
-      {/* {!data && <h1>Invalid URL</h1>}
-      {!flush && data && (
-        <div dangerouslySetInnerHTML={{ __html: data.full }} />
-      )} */}
-      <div>Orbit!</div>
-    </div>
+    <>
+      {textRoot && pageID && (
+        <App
+          marginX={markerX}
+          textRoot={textRoot.parentElement!}
+          pageID={pageID}
+        />
+      )}
+      {!textRoot && (
+        <div
+          style={{
+            position: "absolute",
+            bottom: 0,
+            right: 0,
+            border: "1px solid black",
+            padding: 2,
+          }}
+        >
+          <div>No Valid Text Root Found</div>
+        </div>
+      )}
+    </>
   );
 };

@@ -34,14 +34,14 @@ import { useAppDispatch, useAppSelector } from "./store";
 export interface AppProps {
   marginX: number;
   textRoot: Element;
-  promptLists: { [elementID: string]: PromptListSpec };
+  pageID: string;
 }
 
 export interface PromptListSpec {
   promptsByFrontText: string[];
 }
 
-export default function App({ marginX, textRoot, promptLists }: AppProps) {
+export default function App({ marginX, textRoot, pageID }: AppProps) {
   const prompts = useAppSelector((state) => state.prompts);
   const inlineReviewModules = useAppSelector(
     (state) => state.inlineReviewModules,
@@ -71,15 +71,18 @@ export default function App({ marginX, textRoot, promptLists }: AppProps) {
 
   const { selectionPosition, selectionRange, clearSelectionPosition } =
     useSelectionBounds();
+
   const selectedPromptIDs = useMemo(() => {
     return selectionRange && promptLocations
       ? findIntersectingPrompts(selectionRange, promptLocations)
       : [];
   }, [selectionRange, promptLocations]);
+
   const suggestedPromptIDs = useMemo(
     () => selectedPromptIDs.filter((id) => !prompts[id].isSaved),
     [prompts, selectedPromptIDs],
   );
+
   const [modalReviewState, setModalReviewState] =
     useState<ModalReviewState | null>(null);
 
@@ -109,10 +112,13 @@ export default function App({ marginX, textRoot, promptLists }: AppProps) {
   }
 
   const promptListData = useMemo(() => {
-    return computePromptListData(promptLists, prompts, inlineReviewModules);
-  }, [promptLists, inlineReviewModules, prompts]);
+    console.log("-- compute prompt list data", prompts);
+    return computePromptListData(pageID, prompts, inlineReviewModules);
+  }, [pageID, inlineReviewModules, prompts]);
 
   if (promptLocations === null) return null;
+
+  console.log("====promptListData", promptListData);
   return (
     <>
       <div
@@ -259,7 +265,7 @@ export default function App({ marginX, textRoot, promptLists }: AppProps) {
 }
 
 function computePromptListData(
-  promptLists: { [promptListID: string]: PromptListSpec },
+  pageID: string,
   prompts: PromptsState,
   inlineReviewModules: InlineReviewModuleState,
 ): {
@@ -272,18 +278,11 @@ function computePromptListData(
     promptIDsByFrontText[prompt.content.front] = id;
   }
   return [
-    ...Object.entries(promptLists).map(
-      ([promptListID, { promptsByFrontText }]) => ({
-        promptListID,
-        promptIDs: promptsByFrontText.map((frontText) => {
-          const id = promptIDsByFrontText[frontText];
-          if (!id) {
-            throw new Error(`No prompt with front text: ${frontText}`);
-          }
-          return id;
-        }),
-      }),
-    ),
+    // previously we included multiple pages worth of ids/prompt, but now we only have one
+    {
+      promptListID: pageID,
+      promptIDs: Object.keys(prompts),
+    },
     ...Object.entries(inlineReviewModules)
       // Include inline review modules which have been "turned into" prompt lists.
       .filter(([, inlineReviewModule]) => !!inlineReviewModule.promptListID)

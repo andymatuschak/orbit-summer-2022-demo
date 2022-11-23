@@ -91,14 +91,15 @@ export function PromptList({
 
   const targetElement = useMemo(() => {
     const element = document.getElementById(targetElementID);
-    if (!element)
-      throw new Error(`Missing prompt list target ID ${targetElementID}`);
+    // if (!element)
+    //   throw new Error(`Missing prompt list target ID ${targetElementID}`);
     return element;
   }, [targetElementID]);
 
   const [left, top, width] = useLayoutDependentValue(
     useCallback(() => {
-      const rect = targetElement.getBoundingClientRect();
+      const rect = targetElement?.getBoundingClientRect();
+      if (!rect) return [0, 0, 0];
       return [rect.x + window.scrollX, rect.y + window.scrollY, rect.width];
     }, [targetElement]),
   );
@@ -106,7 +107,7 @@ export function PromptList({
   // Apply this component's height to the target element.
   const [listElement, setListElement] = useState<HTMLElement | null>(null);
   useEffect(() => {
-    if (!listElement) return;
+    if (!listElement || !targetElement) return;
     targetElement.style.transition = "height 300ms var(--expoTiming)";
     const observer = new ResizeObserver(() => {
       // hackily not bothering to read the observer entries

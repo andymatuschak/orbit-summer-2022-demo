@@ -189,14 +189,37 @@ const promptSlice = createSlice({
   },
 });
 
+const ORBIT_JSON_ID = "orbit-json-data";
+const searchForPrompts = async (url: string): Promise<HypothesisJSONData> => {
+  // check local script tag first, then remote
+  const localJSON = document.getElementById(ORBIT_JSON_ID)?.innerHTML;
+  if (localJSON) {
+    try {
+      const json = JSON.parse(localJSON);
+      return json;
+    } catch (e) {
+      console.warn("Error parsing local json, checking for remote!", e);
+    }
+  }
+
+  const { prompts } = await fetch("/api/prompts/" + url)
+    .then((o) => o.json())
+    .catch((e) => {
+      console.warn("Error fetching remote json", e);
+      return [];
+    });
+
+  return prompts;
+};
+
 export const loadPrompts = createAsyncThunk(
   "prompts/loadPrompts",
-  async (promptDataSubpath: string): Promise<PromptsState> => {
+  async (url: string): Promise<PromptsState> => {
     try {
-      const json = await import(
-        `../static/promptData/${promptDataSubpath}.json`
-      );
-      return readPromptsFromHypothesisJSON(json);
+      const json = await searchForPrompts(url);
+      const prompts = readPromptsFromHypothesisJSON(json);
+      console.log("===> the prompts!", json, prompts);
+      return prompts;
     } catch (e) {
       // console.error(e);
       return {};
