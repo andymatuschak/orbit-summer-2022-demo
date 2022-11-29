@@ -215,17 +215,7 @@ function rangeCompareNode(range: Range, node: Node) {
 function getAttachmentURL(text: string): string | null {
   const imageMatch = text.match(/<img src="(.+?)".+$/);
   if (imageMatch) {
-    const resolved = new URL(imageMatch[1], document.baseURI).pathname;
-    const inDomainSubpath = resolved.split("/").slice(2).join("/");
-    if (resolved.startsWith("/shape-up")) {
-      return `https://basecamp.com/${inDomainSubpath}`;
-    } else if (resolved.startsWith("/ims")) {
-      return `https://openintro-ims.netlify.app/${inDomainSubpath}`;
-    } else if (resolved.startsWith("/sh/br")) {
-      return `https://bounded-regret.ghost.io/${inDomainSubpath}`;
-    } else {
-      throw new Error("Unsupported image URL");
-    }
+    return imageMatch[1];
   } else {
     return null;
   }

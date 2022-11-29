@@ -19,7 +19,8 @@ const getTextRoot = () => {
 
 // ====[TODO] will need a flexible way of doing this
 const RIGHT_MARKER_OFFSET = -350;
-const PROXY_ROOT_PATH = "/api/proxy/";
+const PROXY_ROOT_PATH = "/proxy/html/";
+
 const getTargetURL = (orbitProxyURL: string) =>
   orbitProxyURL.replace(PROXY_ROOT_PATH, "");
 
