@@ -1,6 +1,6 @@
 var zIndices = {
-  displayOverContent: 10000,
-  orbitMenu: 20000,
-  modalReview: 50000,
+  displayOverContent: 100000000,
+  orbitMenu: 200000000,
+  modalReview: 500000000,
 };
 export default zIndices;

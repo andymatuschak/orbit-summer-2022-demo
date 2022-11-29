@@ -202,7 +202,7 @@ const searchForPrompts = async (url: string): Promise<HypothesisJSONData> => {
     }
   }
 
-  const { prompts } = await fetch("/api/prompts/" + url)
+  const { prompts } = await fetch("/prompts/page/" + url)
     .then((o) => o.json())
     .catch((e) => {
       console.warn("Error fetching remote json", e);

@@ -12,7 +12,6 @@ import {
   TaskSpec,
   TaskSpecType,
 } from "@withorbit/core";
-import { getSiteName } from "../util/getSiteName";
 import { normalizeURL } from "../util/normalizeURL";
 import { Prompt, PromptID, PromptSelectorType } from "./promptSlice";
 
@@ -200,7 +199,7 @@ function getOrbitProvenance(prompt: Prompt): TaskProvenance {
     identifier: normalizedURL,
     url: normalizedURL,
     title: document.title,
-    containerTitle: getSiteName(),
+    containerTitle: normalizedURL,
     selectors: getOrbitSelectors(prompt),
   };
 }

@@ -56,6 +56,7 @@ export function ModalReview(props: ModalReviewProps) {
     props.mode === "list" ? props.promptIDs : shuffle(duePromptIDs, 314159265),
   );
 
+  console.log("===> review modal", queuedPromptIDs);
   return (
     <ScrollLock>
       <div

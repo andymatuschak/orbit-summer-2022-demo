@@ -1,9 +1,13 @@
 import { saveAs } from "file-saver";
-import { getSiteName } from "./getSiteName";
+import { normalizeURL } from "./normalizeURL";
 
 export async function downloadAnkiDeck() {
-  const siteName = getSiteName();
-  const sitePrompts: any = { siteName, prompts: {}, baseURI: document.baseURI };
+  const siteName = normalizeURL(window.location.href);
+  const sitePrompts: any = {
+    siteName,
+    prompts: {},
+    baseURI: document.baseURI,
+  };
 
   // HACK: accessing redux-persist's data directly because we need to save all prompts for this book, not just the current page's
   const localStorage = window.localStorage;

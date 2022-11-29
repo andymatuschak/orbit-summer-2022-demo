@@ -1,15 +1,16 @@
 @import "../../../node_modules/katex/dist/katex.css";
 @import "fonts.css";
 
-html {
-  width: 100vw;
+
+
+.orbit-container {
+  padding-right: 250px;
 }
+
 
 #proxy-root {
-  height: 0;
-}
-
-body {
+  height:0;
+  width: 100vw;
   --accentPrimary: #D60909;
   --accentSecondary: #A06813;
   --fgPrimary: rgba(0,0,0,0.8);
@@ -34,6 +35,11 @@ body {
   width: 100vw;
   overflow-x: hidden;
 }
+
+#proxy-root > iframe {
+    aspect-ratio: 1280 / 720;
+}
+
 
 #proxy-root *, .sb-show-main #root * {
   -webkit-font-smoothing: antialiased;

@@ -35,14 +35,14 @@ export interface AppProps {
   marginX: number;
   textRoot: Element;
   pageID: string;
-  promptLists: { [k: string]: PromptListSpec }
+  promptLists: { [k: string]: PromptListSpec };
 }
 
 export interface PromptListSpec {
   promptsByFrontText: string[];
 }
 
-export default function App({ marginX, textRoot, pageID, promptLists }: AppProps) {
+export default function App({ marginX, textRoot, promptLists }: AppProps) {
   const prompts = useAppSelector((state) => state.prompts);
   const inlineReviewModules = useAppSelector(
     (state) => state.inlineReviewModules,
@@ -113,13 +113,13 @@ export default function App({ marginX, textRoot, pageID, promptLists }: AppProps
   }
 
   const promptListData = useMemo(() => {
-    console.log("-- compute prompt list data", prompts);
+    console.log("-- compute prompt list data", promptLists, prompts);
     return computePromptListData(promptLists, prompts, inlineReviewModules);
   }, [promptLists, inlineReviewModules, prompts]);
 
   if (promptLocations === null) return null;
 
-  console.log("====promptListData", promptListData);
+  console.log("====promptListData", suggestedPromptIDs);
   return (
     <>
       <div
@@ -279,7 +279,7 @@ function computePromptListData(
     promptIDsByFrontText[prompt.content.front] = id;
   }
   return [
-        ...Object.entries(promptLists).map(
+    ...Object.entries(promptLists).map(
       ([promptListID, { promptsByFrontText }]) => ({
         promptListID,
         promptIDs: promptsByFrontText.map((frontText) => {

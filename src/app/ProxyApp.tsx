@@ -2,33 +2,31 @@ import React, { useCallback, useEffect, useState } from "react";
 import { useAuthorSaveDataFeature } from "../hooks/useAuthorSaveDataFeature";
 import { useLayoutDependentValue } from "../hooks/useLayoutDependentValue";
 import App, { PromptListSpec } from "./App";
-import { persistor, store } from "../app/store";
+import { store } from "../app/store";
 import { initializeOrbitSyncMiddleware } from "./orbitSyncMiddleware";
 import { autopopulateReviewAreas } from "./inlineReviewModuleSlice";
 import { loadPrompts } from "./promptSlice";
 
 const SEARCH_PRIORITY = ["article", "main", "content", "body"];
 
-// ====[TODO] flexible way of doing this + prompt provenance?
 const getTextRoot = () => {
   for (const tag of SEARCH_PRIORITY) {
-    // const root = document.getElementsByTagName(tag)?.item(0);
-    const root = document.getElementById(tag);
+    const root = document.getElementsByTagName(tag)?.item(0);
     if (root) return root;
   }
   return;
 };
 
 // ====[TODO] will need a flexible way of doing this
-const RIGHT_MARKER_OFFSET = -25;
+const RIGHT_MARKER_OFFSET = -350;
 const PROXY_ROOT_PATH = "/api/proxy/";
-const getRealURL = (orbitProxyURL: string) =>
+const getTargetURL = (orbitProxyURL: string) =>
   orbitProxyURL.replace(PROXY_ROOT_PATH, "");
 
 const getPromptLists = async (
   url: string,
 ): Promise<{ [k: string]: PromptListSpec }> => {
-  const { promptLists } = await fetch("/api/prompt-lists/" + url)
+  const { promptLists } = await fetch("/prompts/inline/" + url)
     .then((o) => o.json())
     .catch((e) => {
       console.warn("Error fetching remote json", e);
@@ -38,12 +36,12 @@ const getPromptLists = async (
   return promptLists;
 };
 
-export default () => {
+const ProxyApp = () => {
   // ====[TODO] need to review how local state should change when page changes (e.g. don't full reload for url params, only path)
-  const [pageID, setPageID] = useState(getRealURL(window.location.pathname));
+  const [pageID, setPageID] = useState(getTargetURL(window.location.pathname));
   useEffect(() => {
-    setPageID(getRealURL(window.location.pathname));
-  }, [window.location.href]);
+    setPageID(getTargetURL(window.location.pathname));
+  }, []);
 
   // key is div id on page for embedding
   const [promptLists, setPromptLists] = useState<{
@@ -57,16 +55,21 @@ export default () => {
       await initializeOrbitSyncMiddleware(store);
 
       const promptLists = await getPromptLists(pageID);
-      setPromptLists(promptLists);
+      setPromptLists(promptLists || {});
     };
     initWithPrompts();
   }, [pageID]);
 
   const textRoot = useLayoutDependentValue(getTextRoot);
+  useEffect(() => {
+    if (textRoot) {
+      textRoot.className += " orbit-container";
+    }
+  }, [textRoot]);
   const markerX = useLayoutDependentValue(
     useCallback(() => {
       if (textRoot) {
-        const rect = textRoot.children.item(3)!.getBoundingClientRect();
+        const rect = textRoot.getBoundingClientRect();
         return rect.right + RIGHT_MARKER_OFFSET;
       }
       return 0;
@@ -74,7 +77,7 @@ export default () => {
   );
 
   useAuthorSaveDataFeature(pageID);
-  console.log(textRoot, promptLists);
+  console.log("textRoot, markerX", textRoot, markerX, promptLists);
 
   return (
     <>
@@ -102,3 +105,5 @@ export default () => {
     </>
   );
 };
+
+export default ProxyApp;
