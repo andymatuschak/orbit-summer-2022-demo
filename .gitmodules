@@ -1,9 +1,0 @@
-[submodule "public/shape-up"]
-	path = public/shape-up
-	url = git@github.com:andymatuschak/orbit-summer-2022-demo-data-shape-up.git
-[submodule "public/ims"]
-	path = public/ims
-	url = git@github.com:andymatuschak/orbit-summer-2022-demo-data-ims.git
-[submodule "public/sh"]
-	path = public/sh
-	url = git@github.com:andymatuschak/orbit-summer-2022-demo-data-sh.git
