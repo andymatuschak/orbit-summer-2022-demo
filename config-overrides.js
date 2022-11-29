@@ -25,10 +25,6 @@ module.exports = (webpackConfig, env, args) => {
 
   webpackConfig.entry = "./src/index.tsx"
   webpackConfig.output.filename = "orbit-proxy-embed.js";
-  webpackConfig.output.path = path.resolve(
-    __dirname,
-    "../orbit-proxy-server/public",
-  );
   webpackConfig.output.clean = true
 
   webpackConfig.plugins = [
