@@ -1,7 +1,24 @@
+type EmbedPath = {
+  before: boolean;
+  cssSelector: string;
+};
+
+export type PromptConfig = {
+  promptLists: {
+    [k: string]: { embedPath: EmbedPath; promptsByFrontText: string[] };
+  };
+  prompts: any[][];
+};
+
 export default {
   "https://basecamp.com/shapeup/1.1-chapter-02": {
     promptLists: {
-      promptList: {
+      endOfChapterReview: {
+        embedPath: {
+          before: true,
+          cssSelector:
+            "html body main#main.wb div.content nav.pagination.hidden-print",
+        },
         promptsByFrontText: [
           "Why might over-specifying a design make it harder to estimate?",
           "Three key properties of shaped work introduced in this chapter? (one word each)",
@@ -931,7 +948,11 @@ export default {
   },
   "https://basecamp.com/shapeup/1.2-chapter-03": {
     promptLists: {
-      promptList: {
+      endOfChapterReview: {
+        embedPath: {
+          before: true,
+          cssSelector: ".pagination",
+        },
         promptsByFrontText: [
           "What's the first step of shaping?",
           'What\'s meant by "appetite"?',
@@ -1914,7 +1935,11 @@ export default {
   },
   "https://bounded-regret.ghost.io/more-is-different-for-ai": {
     promptLists: {
-      promptList: {
+      endOfChapterReview: {
+        embedPath: {
+          before: true,
+          cssSelector: ".post-content > p:nth-child(14)",
+        },
         promptsByFrontText: [
           "Name two approaches Steinhardt says people take when thinking about safety risks from ML",
           "Describe the Engineering worldview in Steinhardt's dichotomy",
@@ -2613,8 +2638,5 @@ export default {
     ],
   },
 } as {
-  [k: string]: {
-    promptLists: { [k: string]: { promptsByFrontText: string[] } };
-    prompts: any[][];
-  };
+  [k: string]: PromptConfig;
 };

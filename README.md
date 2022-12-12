@@ -38,3 +38,16 @@ yarn install
 * To run a local development server: `yarn start`
   * Then visit e.g. http://localhost:3000/shape-up/shapeup/1.1-chapter-02/index.html or http://localhost:3000/ims/foundations-mathematical.html or http://localhost:3000/sh/da/1.html``
 * To run the Storybook UI: `yarn storybook`
+
+## Proxy Server
+
+Built app files are served from `/build` (via `express.static`), so to pickup changes it needs to be built:
+
+* `yarn build`
+* `cd proxy-server && yarn dev`
+
+For easier development, use the environment configuration `USE_LOCAL_REACT_APP` to access the local webpack server and things like hot-module replacement, so:
+
+* `cd proxy-server && env USE_LOCAL_REACT_APP=true yarn dev`
+
+Prompts can be edited directly from `./proxy-server/prompt-data.ts` or included in the url parameter `promptURL` (e.g. `http://localhost:3001/proxy/html/https://basecamp.com/shapeup/1.1-chapter-02?promptURL=https://gist.githubusercontent.com/Goondrious/823620d8f28c41b90a6599becbe7a58c/raw/acff1daac87fa6cafe63026e294c041c841ed996/prompts.json`)

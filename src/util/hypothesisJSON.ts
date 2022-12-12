@@ -68,7 +68,6 @@ export function readPromptsFromHypothesisJSON(json: HypothesisJSONData): {
       };
     }
   }
-  console.log("====> readPromptsFromHypothesisJSON", prompts);
   return prompts;
 }
 

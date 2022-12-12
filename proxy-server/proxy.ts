@@ -1,14 +1,12 @@
 import express, { Express, Request, Response } from "express";
 import fetch from "node-fetch";
 import { parse } from "node-html-parser";
-import { PROMPT_LIST_EMBED_PATHS } from "./constants";
+import { getStoredPromptConfig } from "./prompts";
 
 const port = process.env.PORT || 3001;
 const BASE_URL = (process.env.BASE_URL || "http://localhost:") + port;
 const USE_LOCAL_REACT_APP = process.env.USE_LOCAL_REACT_APP;
 const EMBED_PREFIX = USE_LOCAL_REACT_APP ? "http://localhost:3000" : "";
-
-// test
 
 const PROXY_PREFIX = "proxy";
 const PROXY_ROUTE = "html";
@@ -19,6 +17,8 @@ const REACT_APP_FILE_NAME = "orbit-proxy-embed.js";
 const REACT_APP_STYLES_FILE_NAME = "orbit-styles.css";
 const ORBIT_WEB_COMPONENT_FILE_NAME = "orbit-web-component.js";
 const REACT_APP_ROOT_ID = "proxy-root";
+const ORBIT_PROMPT_CONFIG_SCRIPT_ID = "orbit-json-data";
+const ORBIT_PROMPT_OVERRIDE_SOURCE_URL_KEY = "promptURL";
 
 const scripts = `
       <script defer src="${EMBED_PREFIX}/${REACT_APP_FILE_NAME}"></script>
@@ -99,6 +99,11 @@ const convertURLsOnHTMLPage = (html: string, proxiedURL: string) => {
   return parsedHTML;
 };
 
+const filterSearchParams = (query: Record<string, string>) =>
+  Object.entries(query)
+    .filter(([k]) => k !== ORBIT_PROMPT_OVERRIDE_SOURCE_URL_KEY)
+    .reduce((agg, [k, v]) => ({ ...agg, [k]: v }), {});
+
 app.get(`/${PROXY_ROUTE}/*`, async (req: Request, res: Response) => {
   const reqURL = req.params[0];
   if (!reqURL)
@@ -108,7 +113,7 @@ app.get(`/${PROXY_ROUTE}/*`, async (req: Request, res: Response) => {
 
   try {
     const searchParams = new URLSearchParams(
-      req.query as Record<string, string>,
+      filterSearchParams(req.query as Record<string, string>),
     );
     const urlResponse = await fetch(reqURL + "?" + searchParams);
     const contentType = urlResponse.headers.get("Content-Type");
@@ -118,23 +123,37 @@ app.get(`/${PROXY_ROUTE}/*`, async (req: Request, res: Response) => {
     const data: ResponseData = await urlResponse.text();
     const url = new URL(reqURL);
     const convertedParsedHTML = convertURLsOnHTMLPage(data, url.origin);
-    const promptLists = PROMPT_LIST_EMBED_PATHS[reqURL];
+    const promptConfig = getStoredPromptConfig(reqURL);
 
-    if (promptLists) {
-      promptLists.forEach(({ before, cssSelector, promptListID }) => {
-        const node = convertedParsedHTML.querySelector(cssSelector);
-        if (node) {
-          node.insertAdjacentHTML(
-            before ? "beforebegin" : "afterend",
-            `<div id="${promptListID}" />`,
-          );
-        }
-      });
+    // embed prompt lists
+    if (promptConfig && promptConfig.promptLists) {
+      Object.entries(promptConfig.promptLists).forEach(
+        ([
+          promptListID,
+          {
+            embedPath: { before, cssSelector },
+          },
+        ]) => {
+          const node = convertedParsedHTML.querySelector(cssSelector);
+          if (node) {
+            node.insertAdjacentHTML(
+              before ? "beforebegin" : "afterend",
+              `<div id="${promptListID}" />`,
+            );
+          }
+        },
+      );
     }
 
     let finalHTML = convertedParsedHTML.toString();
     finalHTML += scripts;
     finalHTML += appDiv;
+
+    if (promptConfig) {
+      finalHTML += `<script id="${ORBIT_PROMPT_CONFIG_SCRIPT_ID}>${JSON.stringify(
+        promptConfig,
+      )}</script>`;
+    }
 
     return res.status(200).send(finalHTML);
   } catch (e) {
@@ -151,7 +170,7 @@ app.get(`/${ASSET_PROXY_ROUTE}/*`, async (req: Request, res: Response) => {
 
   try {
     const searchParams = new URLSearchParams(
-      req.query as Record<string, string>,
+      filterSearchParams(req.query as Record<string, string>),
     );
     const urlResponse = await fetch(reqURL + "?" + searchParams);
     const contentType = urlResponse.headers.get("Content-Type");
