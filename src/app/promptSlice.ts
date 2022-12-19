@@ -18,6 +18,7 @@ export interface Prompt {
   content: {
     front: string;
     back: string;
+    backAttachments?: string[];
   };
   selectors: PromptSelector[];
 
@@ -142,18 +143,23 @@ const promptSlice = createSlice({
           console.warn("Ignoring non-QA task", task);
           continue;
         }
-        // TODO: attachments
+
+        const prompt = state[id];
+
         const promptContent = {
           front: content.body.text,
-          back: content.answer.text,
+          // prioritize hard-coded image sources
+          back: prompt?.content.back.match(/<img src="(.+?)".+$/)
+            ? prompt?.content.back
+            : content.answer.text,
         };
+
         const isSaved = !task.isDeleted;
         const isDue =
           isSaved &&
           task.componentStates[mainTaskComponentID].dueTimestampMillis <=
             getReviewQueueFuzzyDueTimestampThreshold(Date.now());
 
-        const prompt = state[id];
         if (prompt) {
           prompt.isSaved = isSaved;
           prompt.isDue = isDue;

@@ -21,15 +21,11 @@ export async function resolvePromptLocations(prompts: {
             },
           ];
         } catch (e) {
-          throw new Error(
-            `Prompt resolution error: ${e}\n${JSON.stringify(
-              prompt,
-              null,
-              "\t",
-            )}`,
-          );
+          return [id, false];
         }
       }),
+    ).then((promptEntries) =>
+      promptEntries.filter(([, promptLocation]) => promptLocation),
     ),
   );
 }

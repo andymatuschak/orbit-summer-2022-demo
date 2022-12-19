@@ -1,13 +1,31 @@
 import OrbitAPIClient from "@withorbit/api-client";
-import { EntityType, Event, Task, TaskID } from "@withorbit/core";
+import {
+  AttachmentID,
+  AttachmentMIMEType,
+  encodeUUIDBytesToWebSafeBase64ID,
+  EntityType,
+  Event,
+  EventType,
+  generateUniqueID,
+  getAttachmentMIMETypeForFilename,
+  Task,
+  TaskID,
+  TaskIngestEvent,
+} from "@withorbit/core";
 import OrbitStoreWeb from "@withorbit/store-web";
 import { APISyncAdapter, syncOrbitStore } from "@withorbit/sync";
 import { apiConfig } from "../config";
 import { normalizeURL } from "../util/normalizeURL";
 import { PromptID } from "./promptSlice";
 
-// NOTE: Explicitly ignoring race conditions throughout this file. It's a prototype!
+const getAttachmentURLFromID = async (
+  store: OrbitStoreWeb,
+  id: AttachmentID,
+) => {
+  return await store.attachmentStore.getURLForStoredAttachment(id);
+};
 
+// NOTE: Explicitly ignoring race conditions throughout this file. It's a prototype!
 export class OrbitSyncManager {
   private store: OrbitStoreWeb;
   private apiClient: OrbitAPIClient;

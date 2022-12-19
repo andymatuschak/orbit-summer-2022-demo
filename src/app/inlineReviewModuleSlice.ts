@@ -170,14 +170,13 @@ function populateReviewArea(
   for (const [id, prompt] of reviewAreaPromptIDs) {
     usedPromptIDs.add(id);
     const promptElement = document.createElement("orbit-prompt");
-    const props = getOrbitPromptProps(prompt);
+    const props = getOrbitPromptProps(prompt, true);
     promptElement.setAttribute("question", props.question);
     promptElement.setAttribute("answer", props.answer);
-    if (props["answer-attachments"]) {
-      promptElement.setAttribute(
-        "answer-attachments",
-        props["answer-attachments"],
-      );
+    const answerURL = getAbsoluteAttachmentURL(props.answer);
+    // only supply the attribute if there's an actual value
+    if (answerURL) {
+      promptElement.setAttribute("answer-attachments", answerURL);
     }
     promptElement.id = id;
     reviewAreaElement.appendChild(promptElement);
@@ -211,9 +210,15 @@ function rangeCompareNode(range: Range, node: Node) {
 }
 
 // HACK: The embedded iframe (which uses the "real" Orbit bits) can't access local URLs. So we convert relative URLs of these images back to absolute paths on the original publication servers.
-function getAttachmentURL(text: string): string | null {
+function getAttachmentURL(
+  text: string,
+  forEmbeddedView: boolean,
+): string | null {
   const imageMatch = text.match(/<img src="(.+?)".+$/);
+
   if (imageMatch) {
+    if (!forEmbeddedView) return imageMatch[1];
+    if (text.indexOf('<img src="data:') >= 0) return text;
     const resolved = new URL(imageMatch[1], document.baseURI).pathname;
     const inDomainSubpath = resolved.split("/").slice(2).join("/");
     if (resolved.startsWith("/shape-up")) {
@@ -223,6 +228,7 @@ function getAttachmentURL(text: string): string | null {
     } else if (resolved.startsWith("/sh/br")) {
       return `https://bounded-regret.ghost.io/${inDomainSubpath}`;
     } else {
+      // absolute URLs to arbitrary images with: return imageMatch[1];
       throw new Error("Unsupported image URL");
     }
   } else {
@@ -230,15 +236,27 @@ function getAttachmentURL(text: string): string | null {
   }
 }
 
-export function getOrbitPromptProps({ content: { front, back } }: Prompt): {
+export function getOrbitPromptProps(
+  { content: { front, back } }: Prompt,
+  forEmbeddedView = false,
+): {
   question: string;
   answer: string;
-  "answer-attachments": string | null;
+  "answer-attachments"?: string[] | null;
 } {
-  const attachmentURL = getAttachmentURL(back);
+  let attachmentURL = getAttachmentURL(back, forEmbeddedView);
+
+  let answer = back;
+  let attachments: string[] | null = null;
+
+  if (attachmentURL?.length) {
+    answer = "";
+    attachments = [attachmentURL];
+  }
+
   return {
     question: front,
-    answer: attachmentURL ? "" : back,
-    "answer-attachments": attachmentURL,
+    answer,
+    "answer-attachments": attachments,
   };
 }

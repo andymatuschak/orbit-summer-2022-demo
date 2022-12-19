@@ -1,5 +1,9 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { v5 as uuidV5 } from "uuid";
+
 import {
+  AttachmentID,
+  encodeUUIDBytesToWebSafeBase64ID,
   Event,
   EventID,
   EventType,
@@ -14,6 +18,7 @@ import {
 } from "@withorbit/core";
 import { getSiteName } from "../util/getSiteName";
 import { normalizeURL } from "../util/normalizeURL";
+import { getOrbitPromptProps } from "./inlineReviewModuleSlice";
 import { Prompt, PromptID, PromptSelectorType } from "./promptSlice";
 
 type OrbitSyncState = { queue: Event[] } & (
@@ -176,19 +181,29 @@ function getOrbitSelectors(prompt: Prompt): TaskProvenanceSelector[] {
   });
 }
 
+const generateAttachmentIDForURL = (url: string): AttachmentID => {
+  const bytes = new Uint8Array(16);
+  uuidV5(url, uuidV5.URL, bytes);
+  return encodeUUIDBytesToWebSafeBase64ID(bytes) as AttachmentID;
+};
+
 function getOrbitSpec(prompt: Prompt): TaskSpec {
+  const promptProps = getOrbitPromptProps(prompt, true);
   return {
     type: TaskSpecType.Memory,
     content: {
       type: TaskContentType.QA,
-      // TODO: handle attachments
+      // TODO: handle body attachments
       body: {
         text: prompt.content.front,
         attachments: [],
       },
       answer: {
-        text: prompt.content.back,
-        attachments: [],
+        text: promptProps.answer,
+        // the EmbeddedScreen converts the abs url to its ID, so that's what we need here
+        attachments: promptProps["answer-attachments"]
+          ? promptProps["answer-attachments"].map(generateAttachmentIDForURL)
+          : [],
       },
     },
   };
