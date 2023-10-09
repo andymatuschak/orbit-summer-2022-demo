@@ -1,7 +1,13 @@
 import React, { DOMAttributes, useState } from "react";
 import ScrollLock from "react-scrolllock";
 import { getOrbitPromptProps } from "../app/inlineReviewModuleSlice";
-import { useAppSelector } from "../app/store";
+import {
+  endModalReview,
+  ModalReviewState,
+  startReviewForAllDuePrompts,
+  viewSourceForPromptID,
+} from "../app/modalReviewSlice";
+import { useAppDispatch, useAppSelector } from "../app/store";
 import zIndices from "./common/zIndices";
 import { CompletedReviewOverlay } from "./CompletedReviewOverlay";
 import shuffle from "knuth-shuffle-seeded";
@@ -13,7 +19,12 @@ declare global {
     // noinspection JSUnusedGlobalSymbols
     interface IntrinsicElements {
       ["orbit-reviewarea"]: CustomElement<
-        HTMLElement & { height?: string; ref: any; modal: boolean }
+        HTMLElement & {
+          height?: string;
+          ref: any;
+          modal: boolean;
+          color: string;
+        }
       >;
       ["orbit-prompt"]: CustomElement<{
         question: string;
@@ -25,24 +36,8 @@ declare global {
   }
 }
 
-export type ModalReviewState =
-  | {
-      // i.e. we're reviewing a list of prompts specified by the author
-      mode: "list";
-      promptIDs: string[];
-      onReviewExit: (reviewAreaID: string) => void;
-    }
-  | {
-      // i.e. we're reviewing all the due prompts the user has saved
-      mode: "user";
-    };
-
-export type ModalReviewProps = {
-  onClose: (reviewAreaID: string) => void;
-  onContinueReview: (reviewAreaID: string) => void; // i.e. when the user is successfully upsold from author list to review their due prompts
-} & ModalReviewState;
-
-export function ModalReview(props: ModalReviewProps) {
+export function ModalReview(props: NonNullable<ModalReviewState>) {
+  const dispatch = useAppDispatch();
   const prompts = useAppSelector((state) => state.prompts);
   const duePromptIDs = useAppSelector((state) =>
     Object.keys(state.prompts).filter((id) => state.prompts[id].isDue),
@@ -56,6 +51,14 @@ export function ModalReview(props: ModalReviewProps) {
     props.mode === "list" ? props.promptIDs : shuffle(duePromptIDs, 314159265),
   );
 
+  function onExitReview() {
+    dispatch(endModalReview());
+  }
+
+  function onViewSource(taskID: string) {
+    dispatch(viewSourceForPromptID(taskID));
+  }
+
   return (
     <ScrollLock>
       <div
@@ -65,23 +68,25 @@ export function ModalReview(props: ModalReviewProps) {
           left: 0,
           bottom: 0,
           right: 0,
-          backgroundColor: "#ff5252",
+          backgroundColor: "var(--bgPrimary)",
           zIndex: zIndices.modalReview,
+          display: props.viewingSourceID ? "none" : "block",
         }}
       >
         <orbit-reviewarea
           id={reviewAreaID}
+          color="brown"
           modal
           ref={(
             element: {
               onExitReview: () => void;
               onReviewComplete: () => void;
+              onViewSource: (taskID: string) => void;
             } | null,
           ) => {
             if (element) {
-              element.onExitReview = () => {
-                props.onClose(reviewAreaID);
-              };
+              element.onExitReview = onExitReview;
+              element.onViewSource = onViewSource;
 
               element.onReviewComplete = function () {
                 setReviewComplete(true);
@@ -103,8 +108,8 @@ export function ModalReview(props: ModalReviewProps) {
           mode={props.mode}
           context="modal"
           isVisible={isReviewComplete}
-          onClose={() => props.onClose(reviewAreaID)}
-          onContinueReview={() => props.onContinueReview(reviewAreaID)}
+          onClose={onExitReview}
+          onContinueReview={() => dispatch(startReviewForAllDuePrompts())}
         />
       </div>
     </ScrollLock>

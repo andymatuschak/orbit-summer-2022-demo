@@ -1,35 +1,32 @@
+import { css } from "@emotion/react";
 import { generateUniqueID } from "@withorbit/core";
-import React, {
-  useCallback,
-  useEffect,
-  useMemo,
-  useRef,
-  useState,
-} from "react";
+import React, { useEffect, useMemo, useRef, useState } from "react";
+import Button from "../components/Button";
 import zIndices from "../components/common/zIndices";
 import ContextualMenu from "../components/ContextualMenu";
 import { InlineReviewOverlay } from "../components/InlineReviewOverlay";
-import { ModalReview, ModalReviewState } from "../components/ModalReview";
+import { ModalReview } from "../components/ModalReview";
 import { OrbitMenu } from "../components/OrbitMenu";
 import { PromptLayoutManager } from "../components/prompt/PromptLayoutManager";
 import { PromptList } from "../components/prompt/PromptList";
-import { useAsyncLayoutDependentValue } from "../hooks/useLayoutDependentValue";
+import { LabelColor } from "../components/Type";
+import { usePromptLocations } from "../hooks/usePromptLocations";
 import { useReviewAreaIntegration } from "../hooks/useReviewAreaIntegration";
 import { useSelectionBounds } from "../hooks/useSelectionBounds";
-import {
-  PromptLocation,
-  resolvePromptLocations,
-} from "../util/resolvePromptLocations";
+import { PromptLocation } from "../util/resolvePromptLocations";
+import { getScrollingContainer, viewportToRoot } from "../util/viewportToRoot";
 import { describe } from "../vendor/hypothesis-annotator/html";
 import { InlineReviewModuleState } from "./inlineReviewModuleSlice";
+import { resumeReview, startReviewForAllDuePrompts } from "./modalReviewSlice";
 import {
   createNewPrompt,
+  deletePrompt,
   Prompt,
   PromptID,
   PromptsState,
   savePrompt,
 } from "./promptSlice";
-import { useAppDispatch, useAppSelector } from "./store";
+import { store, useAppDispatch, useAppSelector } from "./store";
 
 export interface AppProps {
   marginX: number;
@@ -46,31 +43,22 @@ export default function App({ marginX, textRoot, promptLists }: AppProps) {
   const inlineReviewModules = useAppSelector(
     (state) => state.inlineReviewModules,
   );
+  const modalReviewState = useAppSelector((state) => state.modalReview);
   useReviewAreaIntegration();
+  const { locations: promptLocations, updateLocations } =
+    usePromptLocations(prompts);
 
   // HACK HACK: when orbit-reviewarea lays out, it'll move prompts down the page. Lay out again a couple seconds after load...
-  const [promptRelayoutTime, setPromptRelayoutTime] = useState(0);
   useEffect(() => {
     setTimeout(() => {
-      setPromptRelayoutTime(Date.now());
+      updateLocations();
     }, 2000);
-  }, []);
-
-  const promptLocations = useAsyncLayoutDependentValue(
-    null,
-    useCallback(async () => {
-      // noinspection JSUnusedLocalSymbols
-      // eslint-disable-next-line @typescript-eslint/no-unused-vars
-      const unused = promptRelayoutTime;
-      return await resolvePromptLocations(prompts);
-      // TODO: We don't really want to rerun this every time `prompts` changes. Think more carefully about this...
-    }, [prompts, promptRelayoutTime]),
-  );
+  }, [updateLocations]);
 
   const dispatch = useAppDispatch();
 
   const { selectionPosition, selectionRange, clearSelectionPosition } =
-    useSelectionBounds();
+    useSelectionBounds(textRoot);
   const selectedPromptIDs = useMemo(() => {
     return selectionRange && promptLocations
       ? findIntersectingPrompts(selectionRange, promptLocations)
@@ -80,39 +68,61 @@ export default function App({ marginX, textRoot, promptLists }: AppProps) {
     () => selectedPromptIDs.filter((id) => !prompts[id].isSaved),
     [prompts, selectedPromptIDs],
   );
-  const [modalReviewState, setModalReviewState] =
-    useState<ModalReviewState | null>(null);
 
   const [newPromptId, setNewPromptId] = useState<string | undefined>();
   const mousePosition = useRef<{ x: number; y: number }>();
 
+  const viewingSourceID = modalReviewState?.viewingSourceID;
+  const scrollTarget = viewingSourceID
+    ? promptLocations?.[viewingSourceID]?.top ?? null
+    : null;
+  useEffect(() => {
+    if (scrollTarget !== null) {
+      getScrollingContainer().scrollTo({
+        left: window.scrollX,
+        top: scrollTarget - window.innerHeight / 2,
+        behavior: "smooth",
+      });
+    }
+  }, [scrollTarget]);
+
   // Listen to mouse events for context menu
   useEffect(() => {
     const onMouseMove = function (e: MouseEvent) {
+      const offset = viewportToRoot();
       mousePosition.current = {
-        x: e.clientX + window.scrollX,
-        y: e.clientY + window.scrollY,
+        x: e.clientX + offset.x,
+        y: e.clientY + offset.y,
       };
     };
     document.addEventListener("mousemove", onMouseMove);
     return () => document.removeEventListener("mousemove", onMouseMove);
   }, []);
 
-  function onModalReviewComplete(
-    reviewAreaID: string,
-    nextState: ModalReviewState | null,
-  ) {
-    if (modalReviewState?.mode === "list") {
-      modalReviewState.onReviewExit(reviewAreaID);
-    }
-    setModalReviewState(nextState);
-  }
-
   const promptListData = useMemo(() => {
     return computePromptListData(promptLists, prompts, inlineReviewModules);
   }, [promptLists, inlineReviewModules, prompts]);
 
   if (promptLocations === null) return null;
+
+  function onNewPrompt(range: Range) {
+    const newPrompt: Prompt = {
+      content: {
+        front: "",
+        back: "",
+      },
+      selectors: describe(textRoot, range),
+      isByAuthor: false,
+      isSaved: true,
+      isDue: true,
+      showAnchors: true,
+      creationTimestampMillis: Date.now(),
+    };
+    const newId = generateUniqueID();
+    dispatch(createNewPrompt({ id: newId, prompt: newPrompt }));
+    setNewPromptId(newId);
+  }
+
   return (
     <>
       <div
@@ -141,20 +151,7 @@ export default function App({ marginX, textRoot, promptLists }: AppProps) {
                 onClick: () => {
                   clearSelectionPosition();
                   if (selectionRange) {
-                    const newPrompt: Prompt = {
-                      content: {
-                        front: "",
-                        back: "",
-                      },
-                      selectors: describe(textRoot, selectionRange),
-                      isByAuthor: false,
-                      isSaved: true,
-                      isDue: true,
-                      showAnchors: true,
-                    };
-                    const newId = generateUniqueID();
-                    dispatch(createNewPrompt({ id: newId, prompt: newPrompt }));
-                    setNewPromptId(newId);
+                    onNewPrompt(selectionRange);
                   }
                 },
                 shortcutKey: "N",
@@ -185,9 +182,18 @@ export default function App({ marginX, textRoot, promptLists }: AppProps) {
           promptLocations={promptLocations}
           marginX={marginX}
           newPromptId={newPromptId}
-          clearNewPrompt={() => setNewPromptId(undefined)}
+          clearNewPrompt={() => {
+            if (newPromptId) {
+              const prompt = store.getState().prompts[newPromptId];
+              if (prompt.content.front === "" && prompt.content.back === "") {
+                dispatch(deletePrompt(newPromptId));
+              }
+            }
+            setNewPromptId(undefined);
+          }}
           suggestedPromptIDs={suggestedPromptIDs}
         />
+        {modalReviewState?.viewingSourceID && <ContinueModalReviewButton />}
         <>
           {Object.entries(inlineReviewModules).map(([id, reviewModule]) => (
             <div
@@ -202,7 +208,7 @@ export default function App({ marginX, textRoot, promptLists }: AppProps) {
               <InlineReviewOverlay
                 reviewModuleID={id}
                 promptIDs={reviewModule.promptIDs}
-                onContinueReview={() => setModalReviewState({ mode: "user" })}
+                onContinueReview={() => dispatch(startReviewForAllDuePrompts())}
               />
             </div>
           ))}
@@ -217,24 +223,11 @@ export default function App({ marginX, textRoot, promptLists }: AppProps) {
           pointerEvents: "none",
         }}
       >
-        <OrbitMenu
-          onStartReview={() =>
-            setModalReviewState(
-              { mode: "user" },
-              // To test the list mode upsell behavior:
-              /*{
-              mode: "list",
-              promptIDs: ["Why keep shaped work rough?"],
-            }*/
-            )
-          }
-        />
+        <OrbitMenu />
       </div>
       {modalReviewState && (
         <ModalReview
           key={modalReviewState.mode} /* remount when mode changes */
-          onClose={(id) => onModalReviewComplete(id, null)}
-          onContinueReview={(id) => onModalReviewComplete(id, { mode: "user" })}
           {...modalReviewState}
         />
       )}
@@ -243,13 +236,6 @@ export default function App({ marginX, textRoot, promptLists }: AppProps) {
           key={`promptList-${promptList.promptListID}`}
           targetElementID={promptList.promptListID}
           promptLocations={promptLocations}
-          onStartReview={(onReviewExit) =>
-            setModalReviewState({
-              mode: "list",
-              promptIDs: promptList.promptIDs,
-              onReviewExit,
-            })
-          }
           promptIDs={promptList.promptIDs}
           inlineReviewID={promptList.inlineReviewID}
         />
@@ -308,4 +294,28 @@ function findIntersectingPrompts(
       promptRange.compareBoundaryPoints(Range.START_TO_END, range) >= 0
     );
   });
+}
+
+function ContinueModalReviewButton() {
+  const dispatch = useAppDispatch();
+  const y = (getScrollingContainer() as HTMLDivElement).offsetTop + 16;
+  return (
+    <div
+      css={css`
+        position: fixed;
+        top: ${y}px;
+        right: 16px;
+      `}
+    >
+      <Button
+        onClick={() => dispatch(resumeReview())}
+        icon="rightArrow"
+        isFloating
+        backgroundColor="var(--accentPrimary)"
+        color={LabelColor.White}
+      >
+        Continue Review
+      </Button>
+    </div>
+  );
 }

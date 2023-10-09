@@ -1,11 +1,11 @@
 /* global PDFViewerApplication */
 
-import { warnOnce } from '../../shared/warn-once';
-import { translateOffsets } from '../util/normalize';
-import { matchQuote } from './match-quote';
-import { createPlaceholder } from './placeholder';
-import { TextPosition, TextRange } from './text-range';
-import { TextQuoteAnchor } from './types';
+import { warnOnce } from "./warn-once";
+import { translateOffsets } from "./normalize";
+import { matchQuote } from "./match-quote";
+import { createPlaceholder } from "./placeholder";
+import { TextPosition, TextRange } from "./text-range";
+import { TextQuoteAnchor } from "./types";
 
 /**
  * @typedef {import('../../types/api').TextPositionSelector} TextPositionSelector
@@ -90,8 +90,8 @@ function getSiblingIndex(node) {
  * @return {Element|null}
  */
 function getNodeTextLayer(node) {
-  const el = 'closest' in node ? node : node.parentElement;
-  return el?.closest('.textLayer') ?? null;
+  const el = "closest" in node ? node : node.parentElement;
+  return el?.closest(".textLayer") ?? null;
 }
 
 /**
@@ -126,22 +126,22 @@ async function getPageView(pageIndex) {
     // "pagesinit" event, the page view exists but it does not have a `pdfPage`
     // property set, then finally after the "pagesloaded" event, it will have
     // a "pdfPage" property.
-    pageView = await new Promise(resolve => {
+    pageView = await new Promise((resolve) => {
       const onPagesLoaded = () => {
         if (pdfViewer.eventBus) {
-          pdfViewer.eventBus.off('pagesloaded', onPagesLoaded);
+          pdfViewer.eventBus.off("pagesloaded", onPagesLoaded);
         } else {
-          document.removeEventListener('pagesloaded', onPagesLoaded);
+          document.removeEventListener("pagesloaded", onPagesLoaded);
         }
 
         resolve(pdfViewer.getPageView(pageIndex));
       };
 
       if (pdfViewer.eventBus) {
-        pdfViewer.eventBus.on('pagesloaded', onPagesLoaded);
+        pdfViewer.eventBus.on("pagesloaded", onPagesLoaded);
       } else {
         // Old PDF.js versions (< 1.6.210) use DOM events.
-        document.addEventListener('pagesloaded', onPagesLoaded);
+        document.addEventListener("pagesloaded", onPagesLoaded);
       }
     });
   }
@@ -189,7 +189,7 @@ function getPageTextContent(pageIndex) {
       // Deprecated option, set for compatibility with older PDF.js releases.
       normalizeWhitespace: true,
     });
-    return textContent.items.map(it => it.str).join('');
+    return textContent.items.map((it) => it.str).join("");
   };
 
   // This function synchronously populates the cache with a promise so that
@@ -209,7 +209,7 @@ async function getPageOffset(pageIndex) {
   const viewer = getPDFViewer();
   if (pageIndex >= viewer.pagesCount) {
     /* istanbul ignore next - This should never be triggered */
-    throw new Error('Invalid page index');
+    throw new Error("Invalid page index");
   }
   let offset = 0;
   for (let i = 0; i < pageIndex; i++) {
@@ -240,7 +240,7 @@ async function findPageByOffset(offset) {
 
   let pageStartOffset = 0;
   let pageEndOffset = 0;
-  let text = '';
+  let text = "";
 
   for (let i = 0; i < viewer.pagesCount; i++) {
     text = await getPageTextContent(i);
@@ -267,13 +267,13 @@ async function findPageByOffset(offset) {
  */
 function isSpace(char) {
   switch (char) {
-    case ' ':
-    case '\f':
-    case '\n':
-    case '\r':
-    case '\t':
-    case '\v':
-    case '\u00a0': // nbsp
+    case " ":
+    case "\f":
+    case "\n":
+    case "\r":
+    case "\t":
+    case "\v":
+    case "\u00a0": // nbsp
       return true;
     default:
       return false;
@@ -281,7 +281,7 @@ function isSpace(char) {
 }
 
 /** @param {string} char */
-const isNotSpace = char => !isSpace(char);
+const isNotSpace = (char) => !isSpace(char);
 
 /**
  * Locate the DOM Range which a position selector refers to.
@@ -314,7 +314,7 @@ async function anchorByPosition(pageIndex, start, end) {
     // `getPageTextContent` and the text layer content. Any other differences
     // will cause mis-anchoring.
 
-    const root = page.textLayer.textLayerDiv;
+    const root = page.textLayer.textLayerDiv ?? page.textLayer.div;
     const textLayerStr = /** @type {string} */ (root.textContent);
 
     const [textLayerStart, textLayerEnd] = translateOffsets(
@@ -322,16 +322,16 @@ async function anchorByPosition(pageIndex, start, end) {
       textLayerStr,
       start,
       end,
-      isNotSpace
+      isNotSpace,
     );
 
     const textLayerQuote = stripSpaces(
-      textLayerStr.slice(textLayerStart, textLayerEnd)
+      textLayerStr.slice(textLayerStart, textLayerEnd),
     );
     const pageTextQuote = stripSpaces(pageText.slice(start, end));
     if (textLayerQuote !== pageTextQuote) {
       warnOnce(
-        'Text layer text does not match page text. Highlights will be mis-aligned.'
+        "Text layer text does not match page text. Highlights will be mis-aligned.",
       );
     }
 
@@ -359,7 +359,7 @@ async function anchorByPosition(pageIndex, start, end) {
  * @param {string} str
  */
 function stripSpaces(str) {
-  let stripped = '';
+  let stripped = "";
   for (let i = 0; i < str.length; i++) {
     const char = str[i];
     if (isSpace(char)) {
@@ -438,7 +438,7 @@ async function anchorQuote(quoteSelector, positionHint) {
           strippedText,
           expectedOffsetInPage,
           expectedOffsetInPage,
-          isNotSpace
+          isNotSpace,
         );
       } else {
         strippedHint = 0; // Prefer matches closer to start of page.
@@ -463,7 +463,7 @@ async function anchorQuote(quoteSelector, positionHint) {
         text,
         match.start,
         match.end,
-        isNotSpace
+        isNotSpace,
       );
       bestMatch = {
         page,
@@ -490,7 +490,7 @@ async function anchorQuote(quoteSelector, positionHint) {
         strippedPrefix !== undefined &&
         strippedText.slice(
           Math.max(0, match.start - strippedPrefix.length),
-          match.start
+          match.start,
         ) === strippedPrefix;
 
       const exactSuffixMatch =
@@ -526,7 +526,7 @@ async function anchorQuote(quoteSelector, positionHint) {
     return anchorByPosition(page, match.start, match.end);
   }
 
-  throw new Error('Quote not found');
+  throw new Error("Quote not found");
 }
 
 /**
@@ -541,17 +541,17 @@ async function anchorQuote(quoteSelector, positionHint) {
  */
 export async function anchor(root, selectors) {
   const quote = /** @type {TextQuoteSelector|undefined} */ (
-    selectors.find(s => s.type === 'TextQuoteSelector')
+    selectors.find((s) => s.type === "TextQuoteSelector")
   );
 
   // The quote selector is required in order to check that text position
   // selector results are still valid.
   if (!quote) {
-    throw new Error('No quote selector found');
+    throw new Error("No quote selector found");
   }
 
   const position = /** @type {TextPositionSelector|undefined} */ (
-    selectors.find(s => s.type === 'TextPositionSelector')
+    selectors.find((s) => s.type === "TextPositionSelector")
   );
 
   if (position) {
@@ -564,7 +564,7 @@ export async function anchor(root, selectors) {
 
       const matchedText = text.substring(start, end);
       if (quote.exact !== matchedText) {
-        throw new Error('quote mismatch');
+        throw new Error("quote mismatch");
       }
 
       const range = await anchorByPosition(index, start, end);
@@ -583,7 +583,7 @@ export async function anchor(root, selectors) {
         const range = await anchorByPosition(
           pageIndex,
           anchor.start,
-          anchor.end
+          anchor.end,
         );
         return range;
       }
@@ -608,18 +608,18 @@ function getTextLayerForRange(range) {
   try {
     range = TextRange.fromRange(range).toRange();
   } catch {
-    throw new Error('Selection does not contain text');
+    throw new Error("Selection does not contain text");
   }
 
   const startTextLayer = getNodeTextLayer(range.startContainer);
   const endTextLayer = getNodeTextLayer(range.endContainer);
 
   if (!startTextLayer || !endTextLayer) {
-    throw new Error('Selection is outside page text');
+    throw new Error("Selection is outside page text");
   }
 
   if (startTextLayer !== endTextLayer) {
-    throw new Error('Selecting across page breaks is not supported');
+    throw new Error("Selecting across page breaks is not supported");
   }
 
   return [range, startTextLayer];
@@ -658,22 +658,22 @@ export async function describe(root, range) {
 
   const startPos = TextPosition.fromPoint(
     textRange.startContainer,
-    textRange.startOffset
+    textRange.startOffset,
   ).relativeTo(textLayer);
 
   const endPos = TextPosition.fromPoint(
     textRange.endContainer,
-    textRange.endOffset
+    textRange.endOffset,
   ).relativeTo(textLayer);
 
   const startPageIndex = getSiblingIndex(
-    /** @type {Node} */ (textLayer.parentNode)
+    /** @type {Node} */ (textLayer.parentNode),
   );
   const pageOffset = await getPageOffset(startPageIndex);
 
   /** @type {TextPositionSelector} */
   const position = {
-    type: 'TextPositionSelector',
+    type: "TextPositionSelector",
     start: pageOffset + startPos.offset,
     end: pageOffset + endPos.offset,
   };

@@ -7,10 +7,12 @@ import DAApp, { getDeltaAcademyChapterName } from "./app/DAApp";
 import IMSApp from "./app/IMSApp";
 import { autopopulateReviewAreas } from "./app/inlineReviewModuleSlice";
 import { initializeOrbitSyncMiddleware } from "./app/orbitSyncMiddleware";
+import PDFApp from "./app/PDFApp";
 import { loadPrompts } from "./app/promptSlice";
 import ShapeUpApp, { getShapeUpChapterName } from "./app/ShapeUpApp";
 import { persistor, store } from "./app/store";
 import "./static/styles/index.css";
+import { prototypeBackendBaseURL } from "./config";
 
 if (document.location.pathname.includes("shape-up")) {
   window.addEventListener(
@@ -30,6 +32,46 @@ if (document.location.pathname.includes("shape-up")) {
     },
     { once: true },
   );
+} else if (document.location.pathname.startsWith("/pdfjs")) {
+  document.addEventListener("DOMContentLoaded", () => {
+    setTimeout(async () => {
+      // Force all the PDF pages to be rendered to the DOM.
+      // @ts-ignore
+      const app = PDFViewerApplication;
+      await app.pdfLoadingTask.promise;
+      const pdfViewer = app.pdfViewer;
+      await pdfViewer.pagesPromise;
+      console.log("DONE loading PDF");
+
+      const url = new URL(document.location.href);
+      const file = url.searchParams.get("file");
+
+      const reactRoot = document.createElement("DIV");
+      reactRoot.id = "demo-root";
+      document.getElementById("viewerContainer")!.prepend(reactRoot);
+
+      const orbitScript = document.createElement("SCRIPT") as HTMLScriptElement;
+      orbitScript.type = "module";
+      orbitScript.src = "/orbit-web-component.js";
+      document.head.prepend(orbitScript);
+
+      // HACK: Lazily assuming that file always begins with /
+      loadPageData(<PDFApp />, `pdf/${file!.slice(1)}`);
+    }, 1000); // HACK
+  });
+} else if (document.location.pathname.startsWith("/pdf")) {
+  const url = new URL(document.location.href);
+  const pdfURL = url.searchParams.get("url");
+  if (!pdfURL) {
+    alert("Provide a PDF URL via /pdf?url=...");
+    throw new Error("No PDF URL");
+  }
+  const fileParam = `${prototypeBackendBaseURL}/pdf?url=${encodeURIComponent(
+    pdfURL,
+  )}`;
+  document.location.href = `/pdfjs/web/viewer.html?file=${encodeURIComponent(
+    fileParam,
+  )}`;
 } else if (document.location.pathname.startsWith("/sh/da")) {
   window.addEventListener(
     "load",
@@ -132,7 +174,7 @@ if (document.location.pathname.includes("shape-up")) {
 
 async function loadPageData(page: ReactNode, subpath: string) {
   await store.dispatch(loadPrompts(subpath));
-  await store.dispatch(autopopulateReviewAreas(store.getState().prompts));
+  // await store.dispatch(autopopulateReviewAreas(store.getState().prompts));
   await initializeOrbitSyncMiddleware(store);
 
   if (page) {

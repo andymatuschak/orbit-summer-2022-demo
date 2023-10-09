@@ -7,6 +7,7 @@ import React, {
 } from "react";
 import styled from "@emotion/styled";
 import { Prompt, PromptID } from "../../app/promptSlice";
+import { viewportToRoot } from "../../util/viewportToRoot";
 import Button from "../Button";
 import PromptBox from "./PromptBox";
 import {
@@ -179,7 +180,7 @@ export default function BulkPromptBox({
           ref={(el) => {
             if (setTops && el) {
               const rect = el.getBoundingClientRect();
-              const top = window.scrollY + rect.top;
+              const top = viewportToRoot().y + rect.top;
               setTops(id, top);
             }
           }}

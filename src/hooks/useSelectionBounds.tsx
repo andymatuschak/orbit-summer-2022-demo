@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { viewportToRoot } from "../util/viewportToRoot";
 
 export interface SelectionBounds {
   left: number;
@@ -6,25 +7,28 @@ export interface SelectionBounds {
   bottom: number;
 }
 
-export function useSelectionBounds(): {
+export function useSelectionBounds(textRoot?: Element): {
   selectionPosition: SelectionBounds | null;
   clearSelectionPosition: () => void;
   selectionRange: Range | null;
-
 } {
   const [selectionPosition, setSelectionPosition] =
     useState<SelectionBounds | null>(null);
   const [selectionRange, setSelectionRange] = useState<Range | null>(null);
 
   useEffect(() => {
-
     const onEnd = (e: MouseEvent) => {
       const selection = document.getSelection();
-      if (e.target instanceof Node && document.getElementById("demo-root")!.contains(e.target)){
+      if (
+        e.target instanceof Node &&
+        document.getElementById("demo-root")!.contains(e.target) &&
+        (!textRoot || !textRoot.contains(e.target))
+      ) {
         setSelectionPosition(null);
       } else if (selection && !selection.isCollapsed) {
         const range = selection.getRangeAt(0);
         const rect = range.getBoundingClientRect();
+        const offset = viewportToRoot();
         setSelectionPosition({
           left:
             e.pageX > rect.right
@@ -32,10 +36,10 @@ export function useSelectionBounds(): {
               : e.pageX < rect.left
               ? rect.left
               : e.pageX,
-          top: window.scrollY + rect.top,
-          bottom: window.scrollY + rect.bottom,
+          top: offset.y + rect.top,
+          bottom: offset.y + rect.bottom,
         });
-       setSelectionRange(range);
+        setSelectionRange(range);
       }
     };
 
@@ -50,7 +54,8 @@ export function useSelectionBounds(): {
     const onSelectStart = (e: Event) => {
       if (
         e.target instanceof Node &&
-        !document.getElementById("demo-root")!.contains(e.target)
+        (!document.getElementById("demo-root")!.contains(e.target) ||
+          textRoot?.contains(e.target))
       ) {
         document.addEventListener("mouseup", onEnd);
         document.addEventListener("selectionchange", onChange);
@@ -63,8 +68,8 @@ export function useSelectionBounds(): {
       document.removeEventListener("mouseup", onEnd);
       document.removeEventListener("selectionchange", onChange);
     };
-  }, []);
-  
+  }, [textRoot]);
+
   return {
     selectionPosition,
     selectionRange,

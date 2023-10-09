@@ -6,19 +6,28 @@ import {
   useStore,
 } from "react-redux";
 import { persistReducer, persistStore } from "redux-persist";
-import storage from "redux-persist/lib/storage"; // defaults to localStorage for web
-import { authReducer } from "./authSlice";
+import storage from "redux-persist/lib/storage";
 import { inlineReviewModuleReducer } from "./inlineReviewModuleSlice";
-import { forceLocalMode, orbitSyncMiddleware } from "./orbitSyncMiddleware";
+import { modalReviewReducer } from "./modalReviewSlice"; // defaults to localStorage for web
+import { orbitSyncMiddleware } from "./orbitSyncMiddleware";
+import { orbitSyncReducer } from "./orbitSyncSlice";
 import { promptsReducer } from "./promptSlice";
 import { promptVisibilityReducer } from "./promptVisibilitySlice";
 
+export function getPersistenceKey() {
+  if (document.location.pathname.startsWith("/pdfjs")) {
+    const url = new URL(document.location.href);
+    const pdfFileURL = url.searchParams.get("file");
+    return `pdf-${pdfFileURL}`;
+  } else {
+    return document.location.pathname.replace(/\/(index.html)?$/, "");
+  }
+}
+
 const persistConfig = {
-  key: forceLocalMode
-    ? document.location.pathname.replace(/\/(index.html)?$/, "")
-    : "orbit-summer-2022",
+  key: getPersistenceKey(),
   storage,
-  whitelist: forceLocalMode ? ["prompts"] : ["auth"],
+  whitelist: ["prompts", "auth"],
   throttle: 1000,
 };
 
@@ -28,7 +37,8 @@ const reducer = persistReducer(
     prompts: promptsReducer,
     inlineReviewModules: inlineReviewModuleReducer,
     promptVisibility: promptVisibilityReducer,
-    auth: authReducer,
+    auth: orbitSyncReducer,
+    modalReview: modalReviewReducer,
   }),
 );
 

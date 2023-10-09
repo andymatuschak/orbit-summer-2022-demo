@@ -1,10 +1,12 @@
 import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { generateUniqueID } from "@withorbit/core";
+import { generateUniqueID, TaskContentType } from "@withorbit/core";
 import shuffle from "knuth-shuffle-seeded";
 import {
   PromptLocation,
   resolvePromptLocations,
 } from "../util/resolvePromptLocations";
+import { viewportToRoot } from "../util/viewportToRoot";
+import { parsePrompt } from "./orbitSyncSlice";
 import { loadPrompts, Prompt, PromptsState } from "./promptSlice";
 
 export interface Rect {
@@ -138,9 +140,10 @@ function indexReviewModules(prompts: PromptsState): InlineReviewModuleState {
 
 function getFrame(element: HTMLElement): Rect {
   const { left, top, width, height } = element.getBoundingClientRect();
+  const offset = viewportToRoot();
   return {
-    left: left + window.scrollX,
-    top: top + window.scrollY,
+    left: left + offset.x,
+    top: top + offset.y,
     width,
     height,
   };
@@ -173,6 +176,12 @@ function populateReviewArea(
     const props = getOrbitPromptProps(prompt);
     promptElement.setAttribute("question", props.question);
     promptElement.setAttribute("answer", props.answer);
+    if (props["question-attachments"]) {
+      promptElement.setAttribute(
+        "question-attachments",
+        props["question-attachments"],
+      );
+    }
     if (props["answer-attachments"]) {
       promptElement.setAttribute(
         "answer-attachments",
@@ -210,35 +219,29 @@ function rangeCompareNode(range: Range, node: Node) {
   return 3;
 }
 
-// HACK: The embedded iframe (which uses the "real" Orbit bits) can't access local URLs. So we convert relative URLs of these images back to absolute paths on the original publication servers.
-function getAttachmentURL(text: string): string | null {
-  const imageMatch = text.match(/<img src="(.+?)".+$/);
-  if (imageMatch) {
-    const resolved = new URL(imageMatch[1], document.baseURI).pathname;
-    const inDomainSubpath = resolved.split("/").slice(2).join("/");
-    if (resolved.startsWith("/shape-up")) {
-      return `https://basecamp.com/${inDomainSubpath}`;
-    } else if (resolved.startsWith("/ims")) {
-      return `https://openintro-ims.netlify.app/${inDomainSubpath}`;
-    } else if (resolved.startsWith("/sh/br")) {
-      return `https://bounded-regret.ghost.io/${inDomainSubpath}`;
-    } else {
-      throw new Error("Unsupported image URL");
-    }
-  } else {
-    return null;
-  }
-}
-
-export function getOrbitPromptProps({ content: { front, back } }: Prompt): {
+export function getOrbitPromptProps(prompt: Prompt): {
   question: string;
   answer: string;
+  "question-attachments": string | null;
   "answer-attachments": string | null;
 } {
-  const attachmentURL = getAttachmentURL(back);
+  const { spec, attachments } = parsePrompt(prompt);
+  const { content } = spec;
+  if (content.type !== TaskContentType.QA) {
+    throw new Error(`Unsupported content type ${content.type}`);
+  }
+
+  const question = content.body.text;
+  const answer = content.answer.text;
+
   return {
-    question: front,
-    answer: attachmentURL ? "" : back,
-    "answer-attachments": attachmentURL,
+    question,
+    answer,
+    "question-attachments":
+      attachments.find(({ id }) => id === content.body.attachments[0])?.url ??
+      null,
+    "answer-attachments":
+      attachments.find(({ id }) => id === content.answer.attachments[0])?.url ??
+      null,
   };
 }

@@ -1,5 +1,6 @@
 import styled from "@emotion/styled";
 import { motion } from "framer-motion";
+import shuffle from "knuth-shuffle-seeded";
 import React, {
   useCallback,
   useEffect,
@@ -8,24 +9,32 @@ import React, {
   useRef,
   useState,
 } from "react";
+import { startReviewForInlineReviewModule } from "../../app/modalReviewSlice";
 import {
+  deletePrompt,
+  isPromptSectionReviewButton,
+  Prompt,
   PromptID,
   PromptsState,
   savePrompt,
   unsavePrompt,
-  deletePrompt,
   updatePromptBack,
   updatePromptFront,
 } from "../../app/promptSlice";
 import { useAppDispatch, useAppSelector } from "../../app/store";
 import { useLayoutDependentValue } from "../../hooks/useLayoutDependentValue";
 import { PromptLocation } from "../../util/resolvePromptLocations";
+import { viewportToRoot } from "../../util/viewportToRoot";
 import zIndices from "../common/zIndices";
 import { PromptVisibilitySetting } from "../OrbitMenuPromptVisibilityControl";
 import { AnchorHighlight } from "./AnchorHighlights";
 import BulkPromptBox from "./BulkPromptBox";
 import PromptBox from "./PromptBox";
-import { CollapsedPromptDirection, PromptContext } from "./PromptComponents";
+import {
+  CollapsedPromptDirection,
+  PromptContext,
+  SectionReview,
+} from "./PromptComponents";
 
 export interface PromptLayoutManagerProps {
   prompts: PromptsState;
@@ -45,13 +54,22 @@ const ShadowContainer = styled.div`
 `;
 
 function compareDOMy(
-  a: { id: PromptID; loc: PromptAbsoluteLocation },
-  b: { id: PromptID; loc: PromptAbsoluteLocation },
+  a: { prompt: Prompt; loc: PromptAbsoluteLocation },
+  b: { prompt: Prompt; loc: PromptAbsoluteLocation },
 ): number {
   if (a.loc.top > b.loc.top) return 1;
   else if (a.loc.top < b.loc.top) return -1;
-  // Stable sort on tiebreaks
-  else return a.id > b.id ? 1 : -1;
+  else {
+    if (!a.prompt.isByAuthor && b.prompt.isByAuthor) {
+      return -1;
+    } else if (a.prompt.isByAuthor && !b.prompt.isByAuthor) {
+      return 1;
+    } else {
+      return (
+        a.prompt.creationTimestampMillis - b.prompt.creationTimestampMillis
+      );
+    }
+  }
 }
 
 // const MERGE_THRESHOLD_PIXELS = 0.0;
@@ -82,6 +100,9 @@ export function PromptLayoutManager({
           .map(([id]) => id);
     }
   }, [prompts, promptVisibility]);
+  const viewingSourceID = useAppSelector(
+    (state) => state.modalReview?.viewingSourceID,
+  );
 
   var [promptRuns, setPromptRuns] = useState<PromptID[][]>(
     visiblePromptIDs.map((id) => [id]),
@@ -162,15 +183,19 @@ export function PromptLayoutManager({
         const el = promptMeasureRefs.current[id];
         if (el) {
           const rect = el.getBoundingClientRect();
-          const top = rect.top + window.scrollY;
-          const bottom = rect.bottom + window.scrollY;
+          const offset = viewportToRoot();
+          const top = rect.top + offset.y;
+          const bottom = rect.bottom + offset.y;
           boundingBoxes[id] = { top, bottom };
         }
       });
 
       const sortedIds = Object.entries(boundingBoxes)
         .sort((a, b) =>
-          compareDOMy({ id: a[0], loc: a[1] }, { id: b[0], loc: b[1] }),
+          compareDOMy(
+            { prompt: prompts[a[0]], loc: a[1] },
+            { prompt: prompts[b[0]], loc: b[1] },
+          ),
         )
         .map((a) => a[0]);
       const runs: string[][] = sortedIds.length > 0 ? [[sortedIds[0]]] : [];
@@ -192,13 +217,13 @@ export function PromptLayoutManager({
           runs[currRunStartIdx] = [nextId];
         } else if (nextTop < currBottom + 24) {
           // Lookback - add to current run if the run is eligible for merge (is not a saved prompt or in the bulk queue)
-          if (!prompts[runStartId].isSaved || bulkSaves.has(runStartId)) {
-            runs[currRunStartIdx].push(nextId);
-          } else {
-            // Lookback is ineligable for merge - create new run
-            currRunStartIdx += 1;
-            runs[currRunStartIdx] = [nextId];
-          }
+          // if (!prompts[runStartId].isSaved || bulkSaves.has(runStartId)) {
+          //   runs[currRunStartIdx].push(nextId);
+          // } else {
+          // Lookback is ineligable for merge - create new run
+          currRunStartIdx += 1;
+          runs[currRunStartIdx] = [nextId];
+          // }
         } else {
           // Create new run
           currRunStartIdx += 1;
@@ -238,6 +263,30 @@ export function PromptLayoutManager({
   useEffect(() => {
     setDelayOneRender(false);
   }, []);
+
+  function onStartSectionReview(id: PromptID) {
+    const orderedPromptIDs = promptRuns.flat().reverse();
+
+    const reviewPromptIDs: PromptID[] = [];
+    for (
+      let sectionReviewIndex = orderedPromptIDs.indexOf(id) - 1;
+      sectionReviewIndex >= 0 &&
+      !isPromptSectionReviewButton(
+        prompts[orderedPromptIDs[sectionReviewIndex]],
+      );
+      sectionReviewIndex--
+    ) {
+      reviewPromptIDs.push(orderedPromptIDs[sectionReviewIndex]);
+    }
+    shuffle(reviewPromptIDs, 314159);
+
+    dispatch(
+      startReviewForInlineReviewModule({
+        promptIDs: reviewPromptIDs,
+        modalReviewID: `${id}-modal`,
+      }),
+    );
+  }
 
   return (
     <>
@@ -279,39 +328,46 @@ export function PromptLayoutManager({
                 }}
                 transition={TRANSITION}
               >
-                <PromptBoxMemo
-                  prompt={prompts[id]}
-                  isNew={id === newPromptId}
-                  isAnchorHovered={
-                    currAnchorHovers?.includes(id) ||
-                    // HACK: When a prompt is suggested (i.e. because your selection range intersects its anchor, we pretend its anchor is highlighted. Semantically, it'd be better to separate this into a different prop--not really appropriate to force this value like this.
-                    suggestedPromptIDs.includes(id)
-                  }
-                  forceHover={suggestedPromptIDs.includes(id)}
-                  context={
-                    collapsedDirection
-                      ? PromptContext.FloatingCollapsed
-                      : PromptContext.Floating
-                  }
-                  collapsedDirection={collapsedDirection}
-                  savePrompt={() => dispatch(savePrompt(id))}
-                  unsavePrompt={() =>
-                    prompts[id].isByAuthor
-                      ? dispatch(unsavePrompt(id))
-                      : dispatch(deletePrompt(id))
-                  }
-                  updatePromptFront={(newPrompt) =>
-                    dispatch(updatePromptFront([id, newPrompt]))
-                  }
-                  updatePromptBack={(newPrompt) =>
-                    dispatch(updatePromptBack([id, newPrompt]))
-                  }
-                  clearNew={clearNewPrompt}
-                  onMouseEnter={() => setHoverPrompts([id])}
-                  onMouseLeave={() => setHoverPrompts(undefined)}
-                  onEditStart={() => setEditPrompt(id)}
-                  onEditEnd={() => setEditPrompt(undefined)}
-                />
+                {isPromptSectionReviewButton(prompts[id]) ? (
+                  <SectionReview
+                    onStartSectionReview={() => onStartSectionReview(id)}
+                  />
+                ) : (
+                  <PromptBoxMemo
+                    prompt={prompts[id]}
+                    isNew={id === newPromptId}
+                    isAnchorHovered={
+                      currAnchorHovers?.includes(id) ||
+                      // HACK: When a prompt is suggested (i.e. because your selection range intersects its anchor, we pretend its anchor is highlighted. Semantically, it'd be better to separate this into a different prop--not really appropriate to force this value like this.
+                      suggestedPromptIDs.includes(id)
+                    }
+                    isViewingAsSource={id === viewingSourceID}
+                    forceHover={suggestedPromptIDs.includes(id)}
+                    context={
+                      collapsedDirection && !prompts[id].isSaved
+                        ? PromptContext.FloatingCollapsed
+                        : PromptContext.Floating
+                    }
+                    collapsedDirection={collapsedDirection}
+                    savePrompt={() => dispatch(savePrompt(id))}
+                    unsavePrompt={() =>
+                      prompts[id].isByAuthor
+                        ? dispatch(unsavePrompt(id))
+                        : dispatch(deletePrompt(id))
+                    }
+                    updatePromptFront={(newPrompt) =>
+                      dispatch(updatePromptFront([id, newPrompt]))
+                    }
+                    updatePromptBack={(newPrompt) =>
+                      dispatch(updatePromptBack([id, newPrompt]))
+                    }
+                    clearNew={clearNewPrompt}
+                    onMouseEnter={() => setHoverPrompts([id])}
+                    onMouseLeave={() => setHoverPrompts(undefined)}
+                    onEditStart={() => setEditPrompt(id)}
+                    onEditEnd={() => setEditPrompt(undefined)}
+                  />
+                )}
               </motion.div>
             );
           } else {
@@ -372,7 +428,12 @@ export function PromptLayoutManager({
           [visiblePromptIDs],
         )}
         promptLocations={promptLocations}
-        hoverPrompts={currHoverPrompts}
+        // HACK
+        hoverPrompts={
+          viewingSourceID
+            ? [...(currHoverPrompts ?? []), viewingSourceID]
+            : currHoverPrompts
+        }
         editPrompt={currEditPrompt}
         setHoverPrompts={setCurrAnchorHovers}
       />
@@ -415,10 +476,10 @@ const ShadowPrompts = React.memo(function ({
               prompt={prompts[id]}
               context={PromptContext.Floating}
               savePrompt={() => null}
-              forceHover={
-                prompts[id].isSaved && !collapsedDirection ? true : false
+              forceHover={prompts[id].isSaved}
+              forceHideBack={
+                !prompts[id].isSaved && collapsedDirection !== undefined
               }
-              forceHideBack={collapsedDirection !== undefined}
               updatePromptFront={(newPrompt) => null}
               updatePromptBack={(newPrompt) => null}
             />
@@ -450,6 +511,9 @@ export const PromptBoxMemo = React.memo(PromptBox, (prev, curr) => {
     return false;
   }
   if (prev.collapsedDirection !== curr.collapsedDirection) {
+    return false;
+  }
+  if (prev.isViewingAsSource !== curr.isViewingAsSource) {
     return false;
   }
   return true;

@@ -1,18 +1,29 @@
 import OrbitAPIClient from "@withorbit/api-client";
-import { EntityType, Event, Task, TaskID } from "@withorbit/core";
+import {
+  AttachmentMIMEType,
+  EntityType,
+  Event,
+  EventType,
+  Task,
+  TaskID,
+} from "@withorbit/core";
+import { OrbitStore } from "@withorbit/store-shared";
 import OrbitStoreWeb from "@withorbit/store-web";
 import { APISyncAdapter, syncOrbitStore } from "@withorbit/sync";
 import { apiConfig } from "../config";
 import { normalizeURL } from "../util/normalizeURL";
+import { AttachmentEntry } from "./orbitSyncSlice";
 import { PromptID } from "./promptSlice";
 
 // NOTE: Explicitly ignoring race conditions throughout this file. It's a prototype!
 
 export class OrbitSyncManager {
-  private store: OrbitStoreWeb;
-  private apiClient: OrbitAPIClient;
-  private apiSyncAdapter: APISyncAdapter;
-  private refreshIDToken: (retry: () => Promise<unknown>) => Promise<unknown>;
+  private readonly store: OrbitStore;
+  private readonly apiClient: OrbitAPIClient;
+  private readonly apiSyncAdapter: APISyncAdapter;
+  private readonly refreshIDToken: (
+    retry: () => Promise<unknown>,
+  ) => Promise<unknown>;
 
   constructor(
     userID: string,
@@ -48,14 +59,57 @@ export class OrbitSyncManager {
       });
       for (const task of tasks) {
         if (task.provenance?.identifier === matchingURL) {
-          output[task.id] = task;
+          if (task.provenance?.selectors) {
+            output[task.id] = task;
+          } else {
+            console.warn(
+              `Missing selectors for task ${task.id}: ${JSON.stringify(
+                task.spec,
+                null,
+                "\t",
+              )}`,
+            );
+          }
         }
       }
     } while (tasks.length > 0);
     return output;
   }
 
-  async storeAndSync(events: Event[]) {
+  async storeAndSync(events: Event[], attachments: AttachmentEntry[]) {
+    for (const event of events) {
+      if (event.type !== EventType.AttachmentIngest) continue;
+
+      const id = event.entityID;
+      const attachment = attachments.find((a) => a.id === id);
+      if (!attachment) {
+        throw new Error(
+          `Have attachment ingest event for id ${id} but no URL for that attachment`,
+        );
+      }
+      const fetchResult = await fetch(attachment.url);
+      if (!fetchResult.ok) {
+        throw new Error(
+          `Couldn't fetch pending attachment at ${attachment.url}`,
+        );
+      }
+      const contentType = fetchResult.headers.get("Content-Type");
+      if (
+        !contentType ||
+        !Object.values(AttachmentMIMEType).includes(contentType as any)
+      ) {
+        throw new Error(
+          `Invalid content type ${contentType} for attachment ${attachment.id} at ${attachment.url}`,
+        );
+      }
+
+      const content = await fetchResult.arrayBuffer();
+      await this.store.attachmentStore.storeAttachment(
+        new Uint8Array(content),
+        attachment.id,
+        contentType as AttachmentMIMEType,
+      );
+    }
     await this.store.database.putEvents(events);
     await this.sync();
   }

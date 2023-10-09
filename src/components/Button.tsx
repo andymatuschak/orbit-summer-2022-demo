@@ -73,7 +73,7 @@ export default function Button({
           marginRight: isFlipped ? 0 : 6, // forgive me, gods of the grid--this is what it needs!
           backgroundColor: disabled
             ? "var(--fgDisabled)"
-            : "var(--accentPrimary)",
+            : colorsByEnumValue[color],
           maskPosition: "center",
           maskRepeat: "no-repeat",
           maskImage: `url(${iconsByIconName[icon]})`,
@@ -91,7 +91,11 @@ export default function Button({
       </div>
     ) : (
       <div
-        css={[largeTitleStyle, { color: colorsByEnumValue[effectiveColor] }, {marginRight: isFlipped ? 6 : 0 }]}
+        css={[
+          largeTitleStyle,
+          { color: colorsByEnumValue[effectiveColor] },
+          { marginRight: isFlipped ? 6 : 0 },
+        ]}
       >
         {children}
       </div>
@@ -127,8 +131,9 @@ export default function Button({
         <>
           {createText()}
           {createIcon()}
-        </>) :
-        (<>
+        </>
+      ) : (
+        <>
           {createIcon()}
           {createText()}
         </>

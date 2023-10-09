@@ -3,10 +3,12 @@ import {
   getReviewQueueFuzzyDueTimestampThreshold,
   mainTaskComponentID,
   Task,
+  TaskContentField,
   TaskContentType,
   TaskProvenance,
   TaskProvenanceSelectorType,
 } from "@withorbit/core";
+import { prototypeBackendBaseURL } from "../config";
 import {
   HypothesisJSONData,
   readPromptsFromHypothesisJSON,
@@ -21,6 +23,7 @@ export interface Prompt {
   };
   selectors: PromptSelector[];
 
+  creationTimestampMillis: number;
   isByAuthor: boolean;
   isSaved: boolean;
   isDue: boolean;
@@ -91,7 +94,7 @@ const promptSlice = createSlice({
   reducers: {
     savePrompt(state, action: IdAction) {
       const prompt = state[action.payload];
-      if (!prompt.isSaved) {
+      if (!prompt.isSaved && !isPromptSectionReviewButton(prompt)) {
         prompt.isDue = true;
       }
       prompt.isSaved = true;
@@ -108,6 +111,9 @@ const promptSlice = createSlice({
     updatePromptFront(state, action: UpdatePromptText) {
       const prompt = state[action.payload[0]];
       prompt.content.front = action.payload[1];
+      if (isPromptSectionReviewButton(prompt)) {
+        prompt.isDue = false;
+      }
     },
     updatePromptBack(state, action: UpdatePromptText) {
       const prompt = state[action.payload[0]];
@@ -142,10 +148,10 @@ const promptSlice = createSlice({
           console.warn("Ignoring non-QA task", task);
           continue;
         }
-        // TODO: attachments
+
         const promptContent = {
-          front: content.body.text,
-          back: content.answer.text,
+          front: formatPromptTextWithAttachments(content.body),
+          back: formatPromptTextWithAttachments(content.answer),
         };
         const isSaved = !task.isDeleted;
         const isDue =
@@ -166,6 +172,7 @@ const promptSlice = createSlice({
             isByAuthor: false,
             showAnchors: true,
             selectors: getHypothesisSelectors(task.provenance),
+            creationTimestampMillis: task.createdAtTimestampMillis,
           };
         }
       }
@@ -252,6 +259,10 @@ function getHypothesisSelectors(provenance: TaskProvenance): PromptSelector[] {
   });
 }
 
+export function isPromptSectionReviewButton(prompt: Prompt) {
+  return prompt.content.front.startsWith("SECTION REVIEW");
+}
+
 export const {
   savePrompt,
   unsavePrompt,
@@ -264,3 +275,13 @@ export const {
   reloadPromptsFromJSON,
 } = promptSlice.actions;
 export const promptsReducer = promptSlice.reducer;
+
+function formatPromptTextWithAttachments(field: TaskContentField) {
+  let output = field.text;
+  for (const id of field.attachments) {
+    // TODO think this through!
+    // HACK HACK HACK assuming it's PNG here. The trouble here is that our data model refers to images by ID alone, but <img> tags want URLs with extensions (e.g. Anki expects this; some browsers struggle with extension-less images)
+    output += ` <img src="${prototypeBackendBaseURL}/images/${id}.png" data-attachmentID="${id}">`;
+  }
+  return output;
+}
