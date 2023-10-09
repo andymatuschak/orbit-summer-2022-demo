@@ -1,15 +1,19 @@
 import { css } from "@emotion/react";
 import styled from "@emotion/styled";
+import { generateUniqueID } from "@withorbit/core";
 import React, {
+  ClipboardEvent,
   ForwardedRef,
   forwardRef,
   useEffect,
   useRef,
   useState,
 } from "react";
+import { uploadImage } from "../../app/orbitSyncMiddleware";
 import { Prompt } from "../../app/promptSlice";
 import zIndices from "../common/zIndices";
 import ContextualMenu from "../ContextualMenu";
+import CollapsedPromptIcon from "./CollapsedPromptIcon";
 import {
   AnchorHoverProps,
   ANIMATION_TIME_MSEC,
@@ -23,21 +27,11 @@ import {
   isContextCollapsed,
   isContextFloatingCollapsed,
   PromptContext,
+  promptPlaintextToHTML,
   PromptText,
   SavedProps,
 } from "./PromptComponents";
 import PromptEllipses from "./PromptEllipses";
-import CollapsedPromptIcon from "./CollapsedPromptIcon";
-
-// HACKy regex for seeing if prompt is image
-const IMAGE_REGEX = /<img.+src="(.+)".+>/;
-
-function getPromptImageSrc(promptContent: string): string | undefined {
-  const res = promptContent.match(IMAGE_REGEX);
-  if (res && res.length > 0) {
-    return res[1];
-  }
-}
 
 export interface PromptProps {
   prompt: Prompt;
@@ -58,18 +52,14 @@ export interface PromptProps {
   onEditStart?: () => any;
   onEditEnd?: () => any;
   isAnchorHovered?: boolean;
+  isViewingAsSource?: boolean;
 }
-
-const PromptImage = styled.img`
-  width: 50%;
-  border-radius: 0px;
-`;
 
 const PromptContainer = styled.div`
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  padding: 0px;
+  padding: 0;
   gap: 8px;
 `;
 
@@ -79,7 +69,7 @@ const Container = styled.div<
     EditingProps &
     ContextProps &
     AnchorHoverProps &
-    CollapsedPromptDirectionProps
+    CollapsedPromptDirectionProps & { isViewingAsSource: boolean }
 >`
   display: flex;
   flex-direction: row;
@@ -126,8 +116,15 @@ const Container = styled.div<
       props.isHovered
     ) {
       return "3px solid var(--accentSecondary)";
+    } else if (props.context === PromptContext.Floating) {
+      return "3px solid var(--fgTertiary)";
+    }
+  }};
+  border: ${(props) => {
+    if (props.isViewingAsSource && !isContextFloatingCollapsed(props.context)) {
+      return "3px solid var(--accentPrimary)";
     } else {
-      return "3px solid transparent";
+      return undefined;
     }
   }};
   box-shadow: ${(props) => {
@@ -141,13 +138,7 @@ const Container = styled.div<
     }
   }};
   background: ${(props) => {
-    if (
-      props.isSaved &&
-      props.isAnchorHovered &&
-      !isContextFloatingCollapsed(props.context)
-    ) {
-      return "var(--selectionHover)";
-    } else if (props.isSaved && !isContextFloatingCollapsed(props.context)) {
+    if (props.isSaved && !isContextFloatingCollapsed(props.context)) {
       return "var(--bgPrimary)";
     } else if (
       props.isHovered &&
@@ -163,6 +154,8 @@ const Container = styled.div<
       (props.isHovered || props.isEditing)
     ) {
       return "var(--bgPrimary)";
+    } else if (props.context === PromptContext.Floating) {
+      return "var(--bgContent)";
     }
   }};
 
@@ -231,6 +224,7 @@ const PromptBox = forwardRef(function (
     onEditStart,
     onEditEnd,
     isAnchorHovered = false,
+    isViewingAsSource = false,
   }: PromptProps,
   ref: ForwardedRef<HTMLDivElement>,
 ) {
@@ -242,7 +236,6 @@ const PromptBox = forwardRef(function (
   const [contextMenuOpen, setContextMenuOpen] = useState<boolean>(false);
   const [contextMenuRightLayout, setContextMenuRightLayout] =
     useState<boolean>(true);
-  const [imageSrc, setImageSrc] = useState<string | undefined>();
   const isSaved = prompt.isSaved;
 
   const containerRef = useRef<HTMLDivElement | null>(null);
@@ -272,7 +265,7 @@ const PromptBox = forwardRef(function (
     const range = document.createRange();
     if (el && sel && range) {
       // Replace rendered LaTeX markup with raw text.
-      el.innerHTML = editingFront ? prompt.content.front : prompt.content.back;
+      el.innerText = editingFront ? prompt.content.front : prompt.content.back;
       range.selectNodeContents(el);
       sel.removeAllRanges();
       sel.addRange(range);
@@ -288,22 +281,63 @@ const PromptBox = forwardRef(function (
     setIsEditing(false);
     savePrompt();
     setContextMenuOpen(false);
-    if (clearNew) clearNew();
-    if (onEditEnd) onEditEnd();
+
+    setTimeout(() => {
+      const activeElement = document.activeElement;
+      if (
+        activeElement !== promptFrontRef.current &&
+        activeElement !== promptBackRef.current
+      ) {
+        if (onEditEnd) onEditEnd();
+        if (clearNew) clearNew();
+      }
+    }, 0); // HACK onblur is fired when moving between fields, before any field data is stored
   };
 
+  async function onPaste(
+    event: ClipboardEvent<HTMLDivElement>,
+    editingFront: boolean,
+  ) {
+    const items = event.clipboardData?.items || [];
+    const imageItem = Array.from(items).find((item) =>
+      item.type.startsWith("image"),
+    );
+    if (!imageItem) return;
+
+    const file = imageItem.getAsFile();
+    if (!file) return;
+
+    const target = event.currentTarget;
+    event.preventDefault();
+    const contents = await file.arrayBuffer();
+    const id = generateUniqueID();
+    const url = await uploadImage(id, contents, file.type);
+
+    if (url) {
+      target.blur();
+      const imageTag = `<img src="${url}" data-attachmentID="${id}" />`;
+      if (editingFront) {
+        updatePromptFront((promptFrontRef.current?.innerText ?? "") + imageTag);
+      } else {
+        updatePromptBack((promptBackRef.current?.innerText ?? "") + imageTag);
+      }
+    }
+  }
+
   // Focus if new
+  const focusEligible = useRef(false);
   useEffect(() => {
-    if (isNew && promptFrontRef.current) {
+    if (isNew) {
+      focusEligible.current = true;
+    }
+  }, [isNew]);
+  useEffect(() => {
+    if (isNew && focusEligible.current && promptFrontRef.current) {
       promptFrontRef.current.focus({ preventScroll: true });
+      focusEligible.current = false;
       if (onEditStart) onEditStart();
     }
   }, [isNew, promptFrontRef, onEditStart]);
-
-  // Check if image
-  useEffect(() => {
-    setImageSrc(getPromptImageSrc(prompt.content.back));
-  }, [prompt]);
 
   // Set up context menu items
   const contextMenuItems = [
@@ -360,6 +394,7 @@ const PromptBox = forwardRef(function (
             context={context}
             onFocus={() => startEditing(true)}
             onBlur={() => endEditing(true)}
+            onPaste={(e) => onPaste(e, true)}
             ref={promptFrontRef}
             placeholder="Type a prompt here."
           >
@@ -369,10 +404,7 @@ const PromptBox = forwardRef(function (
             (showPromptBack ||
               isContextBulk(context) ||
               forceHover ||
-              isSaved) &&
-            (imageSrc ? (
-              <PromptImage src={imageSrc} />
-            ) : (
+              isSaved) && (
               <PromptText
                 side="back"
                 isHovered={isHovered}
@@ -381,12 +413,13 @@ const PromptBox = forwardRef(function (
                 isEditing={isEditing}
                 onFocus={() => startEditing(false)}
                 onBlur={() => endEditing(false)}
+                onPaste={(e) => onPaste(e, false)}
                 ref={promptBackRef}
                 placeholder="Type a response here."
               >
                 {prompt.content.back}
               </PromptText>
-            ))}
+            )}
         </PromptContainer>
       )
     );
@@ -410,6 +443,7 @@ const PromptBox = forwardRef(function (
       isAnchorHovered={isAnchorHovered}
       isSaved={isSaved}
       isEditing={isEditing}
+      isViewingAsSource={isViewingAsSource}
       context={context}
       direction={collapsedDirection}
       onMouseEnter={(event) => {

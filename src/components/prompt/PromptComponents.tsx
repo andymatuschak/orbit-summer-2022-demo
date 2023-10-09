@@ -1,11 +1,18 @@
 import { css } from "@emotion/react";
 import styled from "@emotion/styled";
 import renderMathInElement from "katex/contrib/auto-render";
-import { ForwardedRef, forwardRef, useEffect, useState } from "react";
+import React, {
+  ClipboardEventHandler,
+  ForwardedRef,
+  forwardRef,
+  useEffect,
+  useState,
+} from "react";
 import plus from "../../static/images/Icons/Plus.png";
 import starburst_active from "../../static/images/Icons/Starburst-Active.png";
 import starburst_editing from "../../static/images/Icons/Starburst-Edit.png";
 import startburst_null from "../../static/images/Icons/Starburst-Null.png";
+import Button from "../Button";
 
 export const ANIMATION_TIME_MSEC = 48.0;
 
@@ -33,6 +40,7 @@ export interface EditableTextProps {
   placeholder: string;
   onFocus?: () => void;
   onBlur?: () => void;
+  onPaste?: ClipboardEventHandler<HTMLDivElement>;
 }
 
 export interface ContextProps {
@@ -108,6 +116,18 @@ const IconBase = styled.div<
     background-repeat: no-repeat;
     background-size: contain;
     flex: 0 0 auto;
+
+    ::before {
+      position: absolute;
+      width: 32px;
+      height: 32px;
+      background-color: white;
+      border-radius: 16px;
+      content: " ";
+      z-index: -1;
+      margin-left: -4.5px;
+      margin-top: -5px;
+    }
   `;
 });
 
@@ -168,7 +188,7 @@ export const PromptText = forwardRef(function (
   useEffect(() => {
     if (localRef && children) {
       if (localRef.innerText !== children) {
-        localRef.innerHTML = children;
+        localRef.innerHTML = promptPlaintextToHTML(children);
       }
       renderMathInElement(localRef, {
         delimiters: [
@@ -178,6 +198,21 @@ export const PromptText = forwardRef(function (
       });
     }
   }, [localRef, children]);
+
+  function onBlur() {
+    props.onBlur?.();
+    // TODO dedupe with above... necessary to re-render LaTeX if focus/blur without changing. Bluh.
+    // HACK
+    setTimeout(() => {
+      if (!localRef) return;
+      renderMathInElement(localRef, {
+        delimiters: [
+          { left: "$$", right: "$$", display: true },
+          { left: "$", right: "$", display: false },
+        ],
+      });
+    }, 50);
+  }
 
   return (
     <div
@@ -191,7 +226,8 @@ export const PromptText = forwardRef(function (
         }
       }}
       onFocus={props.onFocus}
-      onBlur={props.onBlur}
+      onBlur={onBlur}
+      onPaste={props.onPaste}
       spellCheck={props.isEditing}
       contentEditable={props.isSaved}
       suppressContentEditableWarning
@@ -224,6 +260,12 @@ export const PromptText = forwardRef(function (
             color: var(--fgDisabled);
           }
 
+          img {
+            max-width: 100%;
+            max-height: 275px;
+            border-radius: 0;
+          }
+
           word-break: break-word;
         `,
         props.side === "back" &&
@@ -251,3 +293,32 @@ export const PromptText = forwardRef(function (
     />
   );
 });
+
+export function promptPlaintextToHTML(plaintext: string) {
+  return plaintext.replace(/\n\n/g, "<br /><br />");
+}
+
+export interface SectionReviewProps {
+  onStartSectionReview: () => void;
+}
+
+export const SectionReview = forwardRef(
+  (props: SectionReviewProps, ref: ForwardedRef<HTMLDivElement>) => (
+    <div
+      ref={ref}
+      css={css`
+        border-left: 3px solid var(--accentPrimary);
+        display: flex;
+        flex-direction: column;
+      `}
+    >
+      <Button
+        backgroundColor="var(--bgPrimary)"
+        onClick={props.onStartSectionReview}
+        icon="rightArrow"
+      >
+        Start section review
+      </Button>
+    </div>
+  ),
+);

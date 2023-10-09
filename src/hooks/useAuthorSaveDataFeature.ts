@@ -9,7 +9,12 @@ export function useAuthorSaveDataFeature(basename: string) {
   const dispatch = useAppDispatch();
   useEffect(() => {
     const onKeydown = (event: KeyboardEvent) => {
-      if (event.key === "d" && event.ctrlKey) {
+      if (
+        event.code === "KeyD" &&
+        event.ctrlKey &&
+        event.shiftKey &&
+        event.altKey
+      ) {
         const json = writePromptsToHypothesisJSON(store.getState().prompts);
         const blob = new Blob([JSON.stringify(json)], {
           type: "application/json",

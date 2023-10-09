@@ -5,6 +5,7 @@ import { highlightRange } from "./highlightRange";
 
 const SAVED_COLOR = "#F9EBD9";
 const TRANSPARENT = "#FFFFFF00";
+const UNSAVED_COLOR = TRANSPARENT;
 const HOVER_COLOR = "#D6090926";
 
 export interface AnchorHighlightProps {
@@ -60,7 +61,7 @@ export function AnchorHighlight({
     const color = HighlightColors[type];
     const els = document.getElementsByClassName(classNameForPromptID(id));
     for (const el of els) {
-      el.setAttribute("style", `background-color:${color};`);
+      (el as HTMLElement).style.backgroundColor = color;
     }
   }
 
@@ -77,21 +78,23 @@ export function AnchorHighlight({
       if (drawnId) {
         const els = document.getElementsByClassName(
           classNameForPromptID(drawnId),
-        );
+        ) as HTMLCollectionOf<HTMLElement>;
         for (const el of els) {
           var color =
             prompt.isSaved && visiblePromptIDs.has(id)
               ? SAVED_COLOR
-              : TRANSPARENT;
-          el.setAttribute("style", `background-color:${color};`);
+              : UNSAVED_COLOR;
+          el.style.backgroundColor = color;
         }
 
         // Check if perhaps drawn has a dep that is saved
         drawnPromptIdToIds.get(drawnId)?.forEach((candidateId) => {
-          if (prompts[drawnId].isSaved || prompts[candidateId].isSaved) {
-            for (const el of els) {
-              el.setAttribute("style", `background-color:${SAVED_COLOR};`);
-            }
+          var color =
+            prompts[drawnId].isSaved || prompts[candidateId]?.isSaved
+              ? SAVED_COLOR
+              : UNSAVED_COLOR;
+          for (const el of els) {
+            el.style.backgroundColor = color;
           }
         });
       }
@@ -112,7 +115,7 @@ export function AnchorHighlight({
           classNameForPromptID(drawnId),
         );
         for (const el of els) {
-          el.setAttribute("style", `background-color:${HOVER_COLOR};`);
+          (el as HTMLElement).style.backgroundColor = HOVER_COLOR;
         }
       }
     });
@@ -129,6 +132,7 @@ export function AnchorHighlight({
     visiblePromptIDs,
     promptIdToDrawnPromptId,
     drawnPromptIdToIds,
+    promptLocations,
   ]);
 
   useEffect(() => {
@@ -177,11 +181,20 @@ export function AnchorHighlight({
     // draw all "drawn" prompt ids
     for (const [, idB] of promptIdToDrawnPromptId) {
       // we haven't drawn this before
-      if (!newExistingPromptIds.has(idB)) {
+      const className = classNameForPromptID(idB);
+      if (
+        !newExistingPromptIds.has(idB) ||
+        document.getElementsByClassName(className).length === 0
+      ) {
         const copy = promptLocations[idB].range.cloneRange();
+        const prompt = prompts[idB];
         highlightRange(copy, "span", {
-          class: classNameForPromptID(idB),
-          style: `background-color:${TRANSPARENT};`,
+          class: className,
+          style: `background-color:${
+            prompt.isSaved && visiblePromptIDs.has(idB)
+              ? SAVED_COLOR
+              : UNSAVED_COLOR
+          };`,
         });
         newExistingPromptIds.add(idB);
         updated = true;

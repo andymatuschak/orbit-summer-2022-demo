@@ -10,18 +10,19 @@ import {
   orbitAuthAPIKey,
   orbitRefreshTokenURL,
   orbitWebappBaseURL,
+  prototypeBackendBaseURL,
 } from "../config";
+import { OrbitSyncManager } from "./orbitSync";
 import {
   addDeletePromptEvent,
   addIngestPromptEvent,
   addUpdatePromptContentEvent,
+  AttachmentEntry,
   drainEventQueue,
   signIn,
   signOut,
   updateTokens,
-  UserState,
-} from "./authSlice";
-import { OrbitSyncManager } from "./orbitSync";
+} from "./orbitSyncSlice";
 import {
   createNewPrompt,
   deletePrompt,
@@ -39,21 +40,19 @@ import { AppDispatch, AppStore, RootState } from "./store";
 
 let syncManager: OrbitSyncManager | null;
 
-export const forceLocalMode = window.location.hash === "#local";
-
 export const orbitSyncMiddleware = createListenerMiddleware();
 
-export type AppStartListening = TypedStartListening<RootState, AppDispatch>;
+type AppStartListening = TypedStartListening<RootState, AppDispatch>;
 
-export const startListening =
-  orbitSyncMiddleware.startListening as AppStartListening;
+const startListening = orbitSyncMiddleware.startListening as AppStartListening;
 
 async function storeEvents(
   syncManager: OrbitSyncManager,
   eventQueue: Event[],
+  attachments: AttachmentEntry[],
   dispatch: AppDispatch,
 ) {
-  await syncManager.storeAndSync(eventQueue);
+  await syncManager.storeAndSync(eventQueue, attachments);
   dispatch(drainEventQueue(eventQueue.map(({ id }) => id)));
 }
 
@@ -65,6 +64,24 @@ export function openLoginPopup() {
     "Sign in",
     "width=375,height=550",
   );
+}
+
+export async function uploadImage(
+  id: string,
+  contents: ArrayBuffer,
+  contentType: string,
+): Promise<string | null> {
+  const response = await fetch(`${prototypeBackendBaseURL}/images/${id}`, {
+    method: "POST",
+    headers: { "Content-Type": contentType },
+    body: contents,
+  });
+  if (response.ok) {
+    return await response.text();
+  } else {
+    alert(`Couldn't upload image`);
+    return null;
+  }
 }
 
 function broadcastLoginTokenToOrbitIframes(loginToken: string) {
@@ -87,14 +104,20 @@ function connectAuthFlow(store: AppStore) {
     predicate: (action, currentState, originalState) =>
       currentState.auth.queue.length > originalState.auth.queue.length,
     effect: async (action, listenerAPI) => {
-      const eventQueue = listenerAPI.getState().auth.queue;
-      console.log("Queue has grown", eventQueue);
+      const syncState = listenerAPI.getState().auth;
+      const { queue, attachments } = syncState;
+      console.log("Queue has grown", queue, attachments);
       if (syncManager) {
         listenerAPI.cancelActiveListeners();
         await listenerAPI.delay(1000);
-        await storeEvents(syncManager, eventQueue, listenerAPI.dispatch);
+        await storeEvents(
+          syncManager,
+          queue,
+          attachments,
+          listenerAPI.dispatch,
+        );
       } else {
-        openLoginPopup();
+        // openLoginPopup();
       }
     },
   });
@@ -171,9 +194,9 @@ function connectAuthFlow(store: AppStore) {
     actionCreator: syncPromptFromReview,
     effect: async (action, listenerAPI) => {
       if (listenerAPI.getState().auth.status === "signedOut") {
-        openLoginPopup();
+        // openLoginPopup();
       } else if (syncManager) {
-        await syncManager.storeAndSync([]);
+        await syncManager.storeAndSync([], []);
       }
     },
   });
@@ -268,12 +291,12 @@ async function performInitialSync(store: AppStore) {
     throw new Error("Sync manager shouldn't already exist");
   }
 
-  const state = store.getState();
-  if (state.auth.status === "signedOut") {
+  const syncState = store.getState().auth;
+  if (syncState.status === "signedOut") {
     throw new Error("Can't sync when user is signed out");
   }
   syncManager = new OrbitSyncManager(
-    state.auth.user.id,
+    syncState.user.id,
     () => authenticateRequest(store),
     async (retry) => {
       const newToken = await refreshIDToken(store);
@@ -286,8 +309,13 @@ async function performInitialSync(store: AppStore) {
   );
 
   // Drain any pending events
-  if (state.auth.queue.length > 0) {
-    await storeEvents(syncManager, state.auth.queue, store.dispatch);
+  if (syncState.queue.length > 0) {
+    await storeEvents(
+      syncManager,
+      syncState.queue,
+      syncState.attachments,
+      store.dispatch,
+    );
   }
 
   const tasks = await syncManager.getRemoteTaskStates();
@@ -296,11 +324,6 @@ async function performInitialSync(store: AppStore) {
 }
 
 export async function initializeOrbitSyncMiddleware(store: AppStore) {
-  if (forceLocalMode) {
-    console.log("Not loading Orbit sync middleware: forced local mode");
-    return;
-  }
-
   connectAuthFlow(store);
 
   const initialState = store.getState();

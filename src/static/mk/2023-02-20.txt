@@ -1,0 +1,455 @@
+Mackenzie Dion  00:00
+Oh, yeah, I think I think the doc would be good. A lot of these are rewritten in a lot of these are rewritten in the qubit. The other doctor wrote to sorry, I think I'm gonna move because there's like a loud machine outside my window and it's making it a little bit harder to focus. I'm just gonna go into the. I'm, let's see. I'm trying to think about where to start. But I think like, my main questions are related to kind of, maybe we could start with just going through like, do you see in the stock like the qubit? Because so when you and I reviewed Wagner's friend, the experiment, we we did it with two qubits and then looked at like a quantum circuit to talk through it. And when I had originally learned about the experiment, I did so in the context of a human observer. And so when I was thinking about kind of trying to map what we did with the qubit, onto the human observer, I got like a bit confused. And then that I think, elucidated where I still don't understand how the experiment works. And so I tried, I made this talk, which I linked in our agenda, where I tried to side by side, compare the qubit, qubit version, and then like, like a qubit friend version, for example, and then try to figure out where I was confused. And so if we could look at that, and then I have like, a couple questions that come up there.
+
+Unknown Speaker  02:11
+Sure. The doctor cubed version?
+
+Mackenzie Dion  02:13
+Yeah, I'm looking
+
+Unknown Speaker  02:15
+at it. Okay, cool.
+
+Mackenzie Dion  02:29
+So I guess where I get more confused, is around step four. So I was just starting with going through the quantum circuit version. So for to undo. To undo the entanglement, you apply this unit gate again. And then I was trying to,
+
+Unknown Speaker  02:49
+I don't understand why it's phrased this way. I don't think this is how we talked about it, which undoing the entanglement is one of the things that you want to do, right?
+
+Mackenzie Dion  02:59
+I guess. So how I thought of the Wagner's for an experiment with a like, human like observer or something, is that you want to try to figure out if the observer was ever and became entangled with your quantum system, and then enter the superposition of two states. And, and to be able to test that you have to undo the unitary evolution somehow and then perform some other type of measurement to see whether in a superposition, those are two separate sets. Okay. Okay. That's I think that's like where I'm confused is there's no there's no
+
+Unknown Speaker  03:34
+undoing step or reversing step or whatever, by itself. There's just a measurement that you perform. To do that, you will find a C naught Yeah, the CD MK eight and then eight. But that's those two together are those step were thinking or measures his friend and the system together to see whether they're entangled?
+
+Mackenzie Dion  03:55
+Okay, I think that's I kept thinking they were two different steps for some reason and then was getting confused because I
+
+Unknown Speaker  04:03
+know this isn't the picture I drew either remember, I had a dotted line down the middle separating the preparation from the measurement to emphasize that the two steps at the end go together
+
+Mackenzie Dion  04:19
+okay. So then I guess looking at the qubit plus Bob column, I just want to try to rewrite this to be correct. I guess for the hadamard gate, when I when I was reading like we talked about I think, this C NOT gate being is that the like measurement in a bell basis,
+
+Unknown Speaker  04:56
+the whole second half of the experiment, because the second C NOT gate. And the hadamard gate is the measure in a bell basis operation together with the final measurements that's implicit in the circuit diagram. That's that's measurement in a bell basis that figured out on the joint system of his friend and the qubit.
+
+Mackenzie Dion  05:17
+Okay, these two combined
+
+Unknown Speaker  05:25
+okay, we can go through it again. But we went through step by step. And we showed how exactly this setup these two gates together
+
+Unknown Speaker  05:33
+measure in the bell basis.
+
+Unknown Speaker  05:40
+Happy to go through it again. If that wasn't clear, or if that didn't say.
+
+Mackenzie Dion  05:49
+Okay, do you think we could talk about? So? You I think when we first talked about this, I had mentioned an interference experiment, because with a conscious observer, that's kind of how it had been introduced.
+
+Unknown Speaker  06:08
+I don't know what you are talking about in the dark. When you say interference experiment. I was I was gonna ask.
+
+Mackenzie Dion  06:13
+Yeah, like, I guess when I've heard other people talk about Wagner's friend and doing so in a way that could potentially be used to measure consciousness or something or test for violations of Bill inequalities. This is like, marquee as a point of where I'm confused. They talk about doing, like, some kind of interference experiment on the observer to test whether it's still in the superposition. And Sam writes about this, I can, I can link the excerpt.
+
+Unknown Speaker  06:48
+I don't know what that means, either.
+
+Mackenzie Dion  06:52
+Um, I think I was trying to map it onto the quantum circuit example. And I didn't know if that was like, the if you were to do this with an interference experiment, if that was the equivalent of like C naught and Hotmart. Or if I was just like, if it was something else, and I was missing a piece,
+
+Unknown Speaker  07:10
+you could do anything with an interference experiment. That's a very, that's just a that's a kind of technology. It's not a kind of experiment. Thing. Interference experiment doesn't single out any one particular setup or experiment. So it's a that's the kind of technology. So I just don't know what that phrase refers to. In this context. It sounds like you're not sure either. So if you want to look at it in context where someone else used it, we can try to figure out what it means in that particular context together.
+
+Mackenzie Dion  07:35
+Yeah, I have, I have a paragraph that I can put into our notes for today. And I'll paste it at the top it is for. It's from Sam's posts that I keep referencing but
+
+Unknown Speaker  08:00
+you're here doesn't mean anything other than I read the paragraph, it doesn't mean anything other than the measurements in the bell basis, we're talking about.
+
+Mackenzie Dion  08:06
+Okay. Okay. I think that's I think that was kind of the heart of my question is I was getting all of these mixed up.
+
+Unknown Speaker  08:17
+Yeah, interference is a completely generic physical effect. And you can make an interviewer metric measure measurement of all kinds of things for all kinds of reasons. It's a very, by itself, totally underdetermined trace, but here, he just needs this measurement in the bell basis that we've described, that will tell us if we do it a bunch of times, whether the friend and the system are actually entangled.
+
+Mackenzie Dion  08:52
+And I think when I think about an interference experiment, with, like a particle or something, like if I think about like the double slit experiment, and I think about like, be what I don't know what like the technical term is for it, but like the kind of pattern that is produced by the double slit Slit Experiment, like I
+
+Unknown Speaker  09:16
+get why people have an interference pattern, yeah.
+
+Mackenzie Dion  09:18
+Then Then I get held that would demonstrate that something is in a superposition, if that's like identically prepared particle and doing that 10s of times,
+
+Unknown Speaker  09:28
+it doesn't there's no superposition in a double slit experiment. Interference is a completely generic physical effect. It doesn't have anything to do with any one particular thing. It's just a thing that happens generically to the wavefunction. In all kinds of other ways. It's not, there's not a specific link between interference and testing whether something is entangled, or testing whether something is in a superposition or whatever else. Interference is a physical effect you can use to make certain kinds of measurements. If we were doing this with a literal quantum circuit, there would be no interference happening. If we were doing it with photons, then maybe we would have experienced interference But that's about the physical experimental apparatus and how it makes the measurement, not about the exact same number.
+
+Mackenzie Dion  10:10
+Okay, so then why, in the quote from Sam's, would this doing an interferometric measurement on the friend show if they're entangled or not?
+
+Unknown Speaker  10:21
+Because all I'm saying is I only understand him as saying he's talking about the bell measurement. And we already discussed why the bell basis measurement does test exactly that. I don't know why he's using the phrase interfere metric measurement. Maybe he has some particular I don't want to speculate about what he hasn't. I just don't know, you have to ask him what he has in mind when he says that. Maybe he's certainly, again, I want to stop myself from speculating. But I don't know what he has.
+
+Unknown Speaker  10:56
+I think he's just referring to the valid basis measurement. And He isn't saying anything else that I think is important. But you should ask him if if there's something above and beyond that measurement that he wants you to pay attention to, if there's something about the interferometric nature of its experimental aspects that he wants you to know about. But I expected.
+
+Mackenzie Dion  11:15
+And so when you think about doing this type of experiment, in the context that he described, a human like, observer. So this might be like, again, out of the bounds of the questions you like, want to answer, like speculate about, but would you see that doing a measurement in the bell basis in this experimental context is limited to doing like an interference experiment? Or?
+
+Unknown Speaker  11:42
+I don't know, what kind of actual experimental apparatus to possibly make this happen? I think? Well, yeah. I mean, we could speculate on that. And I don't think I know enough about the actual measurement technology to say whether there would be some kind of interference somewhere. But again, that's just a totally generic physical effect. Most quantum measurement technologies make use of interference somewhere. So some of its going to be interfering metric. And some of its, I don't think there's anything useful I can say about that.
+
+Unknown Speaker  12:19
+You have to ask Sam, what he means if you want to know what you need.
+
+Mackenzie Dion  12:29
+Okay, when we did review this experiment, I didn't follow the end of your explanation about interpreting the results, you said something like if we find this, and I don't remember what this was 100% of the time, then we have an entangled state. And then if we get any other result than the entanglement was broken, and there must have been some collapse. And I didn't, I just didn't remember and like couldn't figure out from my notes, like what that was, what the what if we were to get something 100% of the time, what how that would show that we have an entangled state. And then if you get any other result in the entanglement was broken, because I was like, if you're taking a measurement in the bell basis, then the outcomes are Bell states. So those are all entangled states.
+
+Unknown Speaker  13:26
+Sure, you can't generically just tell whether something's entangled or not, what we can test is whether the friend qubit system is in the particular entangled state we think they are in or not. So if they're literally they're in the state, we think they're in one of the results results of our measurements, because of the type of measurement basis we've chosen, then we'll get that results 100% of the time, that results being the actual entangled state that they're in, that's one of our belt. They're in any state other than that one Bell state, then we won't get that one measurement results 100% of the time. That's it. If they're in exactly the state, we think then we can measure it to be in that state 100% of the time. If they're in any other state, then we'll get different results. What you're asking, do you want the school burned again, I feel like if I just do exactly the same thing again, we'll have the same problem. But if there's another way I can explain it, I'm happy to try all if you just want me to do it again, I can but I
+
+Mackenzie Dion  14:27
+wanted I do think I wasn't really following your explanation fully the first time so probably going over it one more time would be helpful.
+
+Unknown Speaker  14:35
+Okay, but I feel like I was asking you if you understood before, and I was getting an ambivalent results, so I guess I can just interpret that that way in the future.
+
+Mackenzie Dion  14:45
+Yeah, that's probably correct to do. Um, okay. And I, I need to take I think also like, I wasn't following what was happening on the whiteboard, and I want to make sure I'm taking goodness this time. Okay, so
+
+Unknown Speaker  15:06
+what exactly is your question is like, what is the measurement that we're doing? And how are we interpreting the results?
+
+Mackenzie Dion  15:16
+Um, I think because like, Okay, so with a with the cubed example? We wouldn't, because we can like see the entire gate. And we know the state that we prepare Cuba and like there's not ambiguity about the results right? In
+
+Unknown Speaker  15:34
+about the results in the quantum circuit
+
+Mackenzie Dion  15:36
+and the qubit, qubit. Example. Yeah. And the quantum circuit.
+
+Unknown Speaker  15:41
+No, there's no ambiguity, because we've set everything up. And we've, we've said, what's going to happen? So we know that what's going to happen, assuming there's no collapse, we know what's going to happen. There's only ambiguity if we're uncertain about whether the physics will actually work out this way.
+
+Mackenzie Dion  15:54
+Okay. Okay. And then, but then in the like, the point is the in like the qubit, Bob example or something there, there is uncertainty, because we're trying to test if there has been gloves.
+
+Unknown Speaker  16:08
+I mean, you could argue with that way, I guess, if you wanted to, you could use a qubit qubit. situation as unambiguous in the cubit. Bob situation is ambiguous. If you had that prejudice that you were bringing to the table. You expect Bob to be different from some qubit system? And potentially Yes,
+
+Mackenzie Dion  16:24
+yeah. Or that would be like the reason for doing that experiment is because someone wants to test.
+
+Unknown Speaker  16:29
+Yes, yeah. For further kind of experiment.
+
+Unknown Speaker  16:35
+So what do you want me to do? Through the whole physical evolution from the beginning?
+
+Unknown Speaker  16:41
+What do you want me to start?
+
+Mackenzie Dion  16:44
+Sorry, I just need a second. I feel like I might actually be fine. Okay.
+
+Unknown Speaker  17:01
+Okay.
+
+Mackenzie Dion  17:06
+So you have one qubit, you put it into a superposition, and then you entangle it with the other qubit. You apply the C, NOT gate again. And then you take the qubit out of superposition. I mean,
+
+Unknown Speaker  17:26
+you shouldn't think of these two steps as separate this, these last two gate together, amount to measuring the system in the bell basis. Okay. Okay. I think, just to this at the level of like, machine code is irrelevant. Yeah. Okay. We can also write this as a different, more complicated combination of other gates if we wanted to, and it would be my lesson. Right. But that I wanted to emphasize that those two together are the measurements that and it's easiest to think of it as a projection onto the bell basis, instead of a combination of these two gates.
+
+Mackenzie Dion  18:00
+Okay, okay. That's fine. I think I might be fine on this for now. And then it's another question comes up as we're going through my other questions, I'll maybe redirect to it. But
+
+Unknown Speaker  18:15
+sounds good. I would I want to clarify in your notes in the dark for Sam, it's only the word interfere metric that there's any potential concern about if you that's the thing, you were asking me about everything else in there. It's totally clear to me, I don't know if the word and I would normally just assume interfere metric wasn't an important word. And that's just one of the generic measurement technologies that we use to do this kind of measurement about what it has to do with it. You should be clear and that's, that's the word that you're concerned about. What makes this measurement interfere? Why why is that word, the only thing in the effects. Okay, so what else can we do?
+
+Mackenzie Dion  18:56
+Okay, I'm looking through all the questions. One and two are basically what we were just talking about, just trying to resolve and then, I don't know four is something for us to like this. This is this is related to me not like the second part of four is related to my misunderstanding that we just talked about.
+
+Unknown Speaker  19:34
+Right, right. It's not it happens to be the case that we're undoing things, but there's, that's not an essential thing. And right, it's certainly not like we're like reversing time evolution to do that. It just happens to be that sinot Gates undo each other.
+
+Mackenzie Dion  19:50
+Um Okay, I guess we could talk about five So we had talked about like the partial trace being an epistemic operation rather than a physical one.
+
+Unknown Speaker  20:13
+We do. Could you say the quantum state, it doesn't correspond in realities anything?
+
+Mackenzie Dion  20:18
+Yeah. And Andre and I had talked about, like, Oh, if you were Wagner outside of the box, and your friend sends you a particle, like no matter what the particle will appear collapse, and this being kind of like, I just, I was trying to kind of like reconcile, is this the equivalent of a partial trace? But a partial trace is not a physical operation. I'm
+
+Unknown Speaker  20:50
+sorry, can you can you state the things that you're trying to reconcile with each other? I don't think I'm clear.
+
+Mackenzie Dion  20:55
+Yeah, let me just, uh, I can just paste the excerpt that I'm talking about into the agenda for today as well. Okay. And I'll do it at the top. Okay, so I was trying to think through like, Okay, if Bob is in a lab and Wagner's outside the lab, like convenor tasks, whether Bob is entangled with a qubit, or Clops, the qubits wavefunction. And like, you know, obviously, Wagner can't just like walk into the lab and check. And so is it. You know, this is like, not so So then, you know, there's speculation of like, okay, well, what if Bob just sent Vigna? The qubit. And then Wagner could check whether maybe this is. Okay, this also highlights,
+
+Unknown Speaker  21:50
+I am confused about the second paragraph already, before we move on to the third, if you want to go through this. I mean, taking the bigger will collapse, the superposition is assuming the thing that we're trying to figure out is whether any collapse happens, right? If people can collapse the system, then yes, you're going into the lab and looking will collapse the system. But isn't that begging the question? Because that's what we're trying to determine in the first place.
+
+Mackenzie Dion  22:15
+Yes, but I think there's still something to our assumption that any, like we cannot like, to our knowledge, humans have never observed like a non classical state. And so I mean, I could, I could rephrase it to like, we assume that a beginner like enters the lab, he would experience the lab, like classically,
+
+Unknown Speaker  22:41
+that's about fingers experience, you've made the states to even hear about what happens to the physical state, which is not justified, right? What happens is bigger becomes entangled with the qubits and the friends and from beginners perspective, collapses, the superposition. But whether that happens in real life is exactly what we're trying to determine. So it's question begging to say that it's bigger going into the lab collapses, the superposition and certainly Bob looking into position to.
+
+Unknown Speaker  23:16
+Okay, sorry, maybe I'm distracting you from your point in paragraph three. I was really confused by this. No, I
+
+Mackenzie Dion  23:20
+mean, that's so helpful. So I just crossed out the part that was related to not understanding we just talked about but I guess it's probably paragraph four that I'm asking about with a partial trace.
+
+Unknown Speaker  23:45
+Okay, so let's see. So what will work either,
+
+Mackenzie Dion  23:50
+like, Can BOD just send the ignor the cubit. And then Bob does some experiment to see. I don't I guess you I was gonna say if the qubit is in a superposition, but that might not be the correct way to think about it.
+
+Unknown Speaker  24:14
+Will the qubit won't be in its own state anymore, right? By the time Bob has looked at the qubit. Even if Bob sends the qubit to lidner, the qubit doesn't have its own state anymore. It's because it's entangled with Bob. So it's not exactly a matter of fact, whether the qubit is into superposition or not. It's not even in its own like tensor product state, separate from everything else. Okay.
+
+Mackenzie Dion  24:41
+I guess I think my question still holds, which is like, if you've
+
+Unknown Speaker  24:46
+started good good,
+
+Mackenzie Dion  24:49
+is if you have the entangled state state of Bob and the qubit. And you want to know the state of the qubit. And you take a partial trace, you trace out what I wrote as a query version four. Hold on, I don't know. Sorry. That's that's like a little bit hard without context. But yes,
+
+Unknown Speaker  25:07
+you really have to walk me through this for me to see what's going on here. So what it will tell tell me about equation four. I don't know what a single thing in
+
+Mackenzie Dion  25:17
+equation four is yet. Yeah. So this Okay, what I'm sensing as equation four is the partial trace of a qubit, of Bob being entangled with the qubit. So we could just start with like,
+
+Unknown Speaker  25:31
+Oh, that's a row S. Yeah. alpha squared. Oh, I see.
+
+Unknown Speaker  25:40
+This zero state plus beta squared times the one state
+
+Unknown Speaker  25:49
+though, that says, yeah. Okay. So this is a subject, this is a density matrix for some
+
+Mackenzie Dion  25:56
+some state. Yeah. So
+
+Unknown Speaker  25:59
+when you trace out?
+
+Mackenzie Dion  26:03
+Yeah. Okay. And so this state is a mixed state,
+
+Unknown Speaker  26:13
+probabilistic mixture of the zero state and the one state
+
+Mackenzie Dion  26:16
+right. And so
+
+Unknown Speaker  26:19
+I mean, it's half and half right? In the experiment, we don't need to be coy about what our alphas and betas are.
+
+Unknown Speaker  26:39
+So I mean, I follow so far, I think the reduced state of the qubit once, if we look at the entangled qubit friends system, and we trace out the friends a degree of freedom,
+
+Mackenzie Dion  26:49
+is that right? And so I guess what I'm asking is that, is this the same as if Bob looked at the qubit and sent it to Wagner? And Wagner had no access to Bob?
+
+Unknown Speaker  27:01
+Yes, this is then as far as the viewer could tell, without access to Bob, this would be all the information about the qubit state that he would have.
+
+Mackenzie Dion  27:09
+Okay, because then I would think that like the partial trace, then, is a physical action, right? Like, because, like, plausibly,
+
+Unknown Speaker  27:17
+there's no, there's no physical process or action in the world corresponding to taking the partial trace. The state just is what it is. The global state is what it is, the partial is describes vigorous acts that describes what it looks like, from beginners point of view to look at. What the global states is still, whatever pure state it is evolving unitarily however, it evolves. Okay. There's no, there's no time at which the taking of the trace happens. Yeah. Because it doesn't correspond to any any physical process.
+
+Mackenzie Dion  27:54
+Okay, I think I just under had been tried to think of it as like, the process of the trace is Bob sitting Victor, the, the qubit. But
+
+Unknown Speaker  28:05
+it's not out of that has its own unitary description, as its time evolution. It's not like sometimes the Schrodinger equation happens. And other times we take the partial trace somehow, over certain degrees of freedom instead about this. This isn't even a partial trace over the whole system, right? This is just taking the state of the qubit in the friend and partially and tracing over that. So it's not it's kind of a weird, a weird mathematical object. The status is tricky. Okay, that's fine.
+
+Unknown Speaker  28:43
+I can't tell if I addressed your question at all.
+
+Mackenzie Dion  28:46
+No, no, you did. I was just thinking. Okay, so I guess very next question. And this might this is more just I think missile trying to parse like different ways these experiments have been described. So this might fall into our earlier bucket of like, getting tossed Sam or, like, figure it out outside of the session, but I think I'd heard reference to trying to prove something by violating the bell inequality. So like showing that Bob became entangled with a qubit, for example, by doing something that violates a bell inequality.
+
+Unknown Speaker  29:46
+No Bell inequalities are only about locality. They don't have anything to do with entanglement versus non entanglement or superposition versus non superposition. Violation of Bell inequalities is an indication of non local behavior, which is irrelevant to the entire Have you ever tried to experiment from beginning to end? Okay?
+
+Mackenzie Dion  30:15
+Okay, um, so I think a couple of times or twice when I say I've mentioned this in his post is like, oh, one of the big challenges of doing this type of experiments are having to put a human in superposition. I guess my, my understanding of this was like, the implication that a human would be in superposition is kind of pointing to the the contradiction in, in quantum theory, or like Wagner's original source of confusion. And so, like, I felt like I was missing something when I was seeing these references that say, like, oh, one of the really hard things is figuring out how to put a human in superposition. And I was like, Well, if this is, what if this experiment is what some people think it is such that like, consciousness resists superpositions, or like consciousness or like, another, we're saying it'd be like, conscious systems class wave functions, then like, you wouldn't? Would you need to put a human in superposition or like, Am I missing something there?
+
+Unknown Speaker  31:17
+If it's impossible to put consciousness in a superposition, then it's impossible to put a human in a superposition, right? Yeah. But that's the that's that would be the very, very, very surprising conclusion that very few people think is likely. So we have to try to do to see if it's impossible. Yeah.
+
+Mackenzie Dion  31:35
+Is there Do you have a sense of this is kind of an abstract question, but like, some kind of generic argument about why something about the properties of consciousness would resist superposition?
+
+Unknown Speaker  31:47
+No, I don't think there's a good argument for it. But the it all stems from this idea that we don't observe things in superposition to state so that we don't find ourselves in superpositions of different states of consciousness.
+
+Mackenzie Dion  32:01
+And when you say there's not a good argument for it, just like none that you've seen, from there
+
+Unknown Speaker  32:06
+that I find is convincing. I think that, like Adrian is right to say that this is an interesting experiment to perform, just in case something interesting happens. And he even says, you know, it's very, very unlikely to happen. But that's basically how I feel I don't think there is a really strong argument, I think, there was working at the very, very early days, in very early days of quantum theory, we didn't understand the coherence, we didn't have a workout many worlds theory that tries to address this, like within sure quantum mechanics. So it was just like an idea that he came up with, that was not not a totally unreasonable thing when we didn't know anything. But I don't have any strong arguments that consciousness auto resists superposition. I don't think there's any problem with having a physical state of affairs, that is a superposition of two different states, each of which has its own description in terms of consciousness and qualia and whatever. And so each of those two pieces of the superposition would consist of observers noticing themselves in a non superposition. I don't have any of any good arguments for why consciousness strict was a superposition. It's not a it's not a convincing kind of claim.
+
+Mackenzie Dion  33:13
+And have you read the Chalmers McQueen paper? Yes.
+
+Unknown Speaker  33:17
+Okay. They don't give a very strong argument for either beyond what the argument for it is just what I said, we don't, we don't seem to ever be in Super positions of conscious states. So maybe that's just not a thing that ever happens.
+
+Mackenzie Dion  33:29
+And so what you were saying this kind of compatible with the many worlds interpretation?
+
+Unknown Speaker  33:34
+No, I'm saying in developing the many worlds interpretation, people had to think more about what being conscious in the quantum world would actually mean. Whereas previously, all attempts at understanding consciousness and sort of more than that, in the classical realm, we could say, you know, in a given branch, here's what some semi classical agent might experience, but actual questions about what the branching structure of the world means for conscious experience, which is something that people hadn't addressed at all in the theories. That was well, well before Everett, and really before, especially before the resurgence of interest in hybrid in closer to 2000, when people started to actually work out some of these issues.
+
+Mackenzie Dion  34:16
+And per Adrian's proposal you had kind of talked about I asked for like, oh, what would be an example of an experiment to test Adrian's proposal and you said something like, you know, if there's a photon flying around flying along and it enters an electric field that changes its dynamics. And you know, quantum mechanics as is formulated does not sufficiently describe the photons dynamics, but rather something that the photon having to account for some experience that the photon has, and then incorporate that into your like, formulation. Quantum Mechanics within fully describe it. And I think I followed that explanation as like trying to tell us what Adrian's describing, but I did.
+
+Unknown Speaker  35:12
+I'm, I'm really confused. I don't understand what what you're describing has to do with the situation with the human observer.
+
+Mackenzie Dion  35:19
+Oh, well, that's that was gonna be my next question. So like, you said something about how to test what Adrian propose would be something like a beginner's friend experiment. And I had trouble connecting that or like, what results would like generate, like, I think it just had the equation Adrian wrote in my head and it wasn't clear to me how that like connects to doing a beginner's friend experiment with a human
+
+Unknown Speaker  35:42
+what, which, which equation did even rice
+
+Mackenzie Dion  35:45
+the it's like p true, which is like true, p true, which equals like the true distribution of qualia equals C which is the normalization factor times
+
+Unknown Speaker  35:59
+I don't know if the equation in his in his paper that we read where we have this a factor that model
+
+Mackenzie Dion  36:05
+AMD which is like the weight factor
+
+Unknown Speaker  36:12
+um, yeah, in in Adrian's proposal is proposal I think is very different from the Chalmers between proposal and Chalmers McQueen, we have a resistance to superposition like you were talking about which people actually functions. Adrienne proposal doesn't have consciousness causes collapse at all. It has consciousness influences, which way the collapse happens. It's a very different situation where there is no consciousness all just relax.
+
+Mackenzie Dion  36:40
+Okay, I thought that I just thought you had said something. When we first talked about Adrian's paper around like an experimental test of it could play out in some fingers for an inspired scenario. And I was confused about that. But maybe I just misinterpreted what you said.
+
+Unknown Speaker  36:55
+I think it's lost in the Sands of Time forever. Okay.
+
+Mackenzie Dion  36:58
+But I guess for the record now. to reconvene the sounds it's your don't see a connection between these two experiments? Sorry, which which two experiments like a vigorous front experiment and then experiment to test Adrian's proposal?
+
+Unknown Speaker  37:16
+Oh, I see. Um, no, I don't I don't remember how Adrian's proposal is supposed to tie into Vignesh brand. I don't think he really talks about it in his paper, didn't he? Doesn't
+
+Mackenzie Dion  37:23
+he does it? And I think I don't I don't actually see how to do that.
+
+Unknown Speaker  37:28
+phrase is much more closely connected to the numbers, we kind of collapse scenario. And I think that's what I had in mind originally. Yeah, I, if I thought about it, maybe I could work out some way to connect Adrian's proposals with a new strategy. And I wouldn't be surprised if he thought about it and come up with a way but if there's not a clear connection to me, because the bigger strand, the thing we're just checking is, does the collapse the non unitary collapse occur or not? Whereas in Adrian's proposal, it's, it's about totally influencing probabilities for different events, rather than affecting the unitarity of the wavefunction. So there, there, those are two different kinds of proposals for how consciousness or experience somehow might affect affects the physical world. I think those are two significantly different classes of things that can happen with physically look very different. And we'd have different physical, we would have different experiments that you will use to test and I don't know what you would do for the for Adrian's proposal.
+
+Mackenzie Dion  38:34
+offhand? Yeah.
+
+Unknown Speaker  38:36
+It's an interesting idea.
+
+Mackenzie Dion  38:38
+I mean, do you think about anything on like the scale of neurons?
+
+Unknown Speaker  38:44
+I mean, I just I don't I don't know. How you would ever get, have a system that is something that you think is likely to be conscious, and something that you have such a thorough complete, like, down to the electron description of the you know what the standard quantum mechanics predictions are exactly, so that you can measure deviations? That's the tricky thing, if you're going to measure any deviations from actual quantum mechanics, and then you have to know exactly how your system is going to behave according to the standard theory to incredibly high precision, to to notice any small deviation. So it sounds very challenging. I will say, I think that Adrian's proposal is more plausible to me philosophically speaking, purely on like an intuitive bullshit level, this modification of Born rule of probabilities idea seems much more reasonable to me than the collapse. Idea. Collapse has lots of consequences that are kind of hard to hard to rule out or be hard to. Hard to accommodate. And modification to the probabilities might turn out to be much, much gentler, like easier for the physics to a candidate. But that's just offhand. Yeah. Yeah, I definitely struggle to imagine so far and good way of testing that kind of proposal. I think it's important that we think about it. I mean, people think about it in general, but, but it's not clear to me how, how that would play out experimentally. Yeah.
+
+Mackenzie Dion  40:08
+Yeah. And how do you? Actually so I'm taking some note of other questions I might ask. How do you then think about? Because like we've been reading like you when you read Sam Sposi said, like, it didn't, it didn't seem unreasonable to you, or like, kind of everything he said was like, kind of fine, or whatever it did. Do you disagree with this proposal? Are you like skeptical of it? How do you think about it?
+
+Unknown Speaker  40:41
+I'm sorry, Sam, and Sam. Yeah, sorry. I'm having trouble keeping track of these people. Which which one? It says
+
+Mackenzie Dion  40:48
+posle. Sam is the can we build a consciousness measuring machine?
+
+Unknown Speaker  40:53
+I have to look at it. So So remember, like,
+
+Mackenzie Dion  40:57
+it's the most recent link? Yeah.
+
+Unknown Speaker  41:04
+Okay, so sorry, what were you asking me about this?
+
+Mackenzie Dion  41:06
+Oh, you just said something about kind of questioning. The like, consciousness causes collapse. idea and then pointed to like, a set of other like, you were kind of like implying, like, Oh, this is messy, or this is like a really hard question to find or something. And then, I think just when we had originally discussed this blog post, you had said it was like reasonable or like Sam didn't say anything you disagreed with? Yeah,
+
+Unknown Speaker  41:33
+I think I think that's probably what I said. It looks reasonable.
+
+Mackenzie Dion  41:36
+Um, and so I was just asking for kind of like, how you think about consciousness? Clops theories are like, reasons you might be skeptical of them. Or like, maybe we're the frame is incorrect, or something or frame could be changed. Kind of like,
+
+Unknown Speaker  41:50
+maybe I don't have that much to say about it. I guess. It doesn't seem it doesn't seem like that. It doesn't seem like the kind of thing that makes sense to me. But it also seems like something that we could check the I don't I don't think I have anything to say about it. Beyond what I said. It's, it's a place we could look at doesn't strike me as an especially promising place to look. But there are so many places we could look anyway.
+
+Mackenzie Dion  42:17
+I guess is it like on an intuitive level that it doesn't seem promising? Or I'm just wondering,
+
+Unknown Speaker  42:22
+consciousness causes collapse doesn't really square with any of my understanding of the functional role consciousness play?
+
+Mackenzie Dion  42:28
+Why could you just explain more of that?
+
+Unknown Speaker  42:32
+If anything, not being allowed to be in Super positions would reduce your ability to do interesting stuff? Right, it's like saying, let's take this quantum computer, but to make it extra magical will make it unable to do anything Quantum. If anything, it seems like quantum like conscious systems make more use of superposition states and the larger state space available to quantum systems than non conscious systems. And effective collapse already happens. causing it to really happen doesn't doesn't do anything extra. Whereas changing which outcomes actually occur, can really affect the world more more directly. I just don't see what collapses do for living things or for neurons. Functionally, it's much more plausible to me to see a link between the between Adrian's proposal and something functional that there would be selection pressure for then the plasma. If I thought it was also something certainly something you could test for, but I just don't see what it would be for or how it would do the things that consciousness does, which is make better informed decisions about skeletal muscular movements. That's where we have conscious control, right? Yeah. But I just Oh, yeah. At the functional level in how it ties into evolutionary biology. I don't see how the collapse idea really helps that much.
+
+Mackenzie Dion  44:06
+Yeah. Yeah, I guess that might be like a good dovetail into there was this paper that I came across in the last week that I was interested in, but honestly, just like, didn't have enough understanding of the math outside of the quantum stuff to like, sanity check it. Which was I linked to in the dark, but it's called a free energy principle for generic quantum systems.
+
+Unknown Speaker  44:42
+So why are you interested?
+
+Mackenzie Dion  44:45
+Um, well, I think it just started with being confused about observation. As the more we learned about measurement, the more my preconceived Have notions of measure measurement and like definitions of observers changed. And I think I just had this feeling like it was genuine, not really grounded in anything, but just like wanting to revisit the free energy principle, which is like a theory of perception.
+
+Unknown Speaker  45:22
+Well, for what it's worth, I think the free energy principle is bullshit. Really, it's Carl first and very successful attempt to get superduper published a lot. But I don't think it has any substance of content. In any case, this paper is not doesn't actually connect to like the quantum measurement literature is just these people doing their own thing. It won't this this, this will lead you very far astray from any of the stuff that you want to connect to.
+
+Mackenzie Dion  45:46
+Are you? What do you think do you have we don't have to go into it if it's like too much of a diversion. But do you have any like summative comments on your criticisms of the free energy principle?
+
+Unknown Speaker  46:01
+I've linked to a blog post by an acquaintance of mine that I think does a nice job, I don't know, if you'll find it, I'm sure you're very well aware that it takes orders of magnitude more effort to refute bullshit and to come up with it. So like, I don't want to spend too much time on it. But just algebraische wrote at least a nice post explaining what what his problems with it are. It's one of those things where it looks like you set up a predictive model that like, actually functions. But in fact, the predictive model is so malleable, that you can set it up to do anything you want. And so it ends up having no real content. I think it is overwhelmingly a vehicle for for people to publish stuff and not not a substantive contribution. But I am open to engaging with it if you'd like but I will say this isn't a thing that people like quantum mechanics talk about. Nor does it nor does this tie into any of the second quantum foundations about what makes something an observer or not. This they're just doing some some statistics. Anyway, we can read it if you like. But I, I'm 100% sure that there's a lot of stuff in this paper irrelevant to the stuff that you're looking into. And I'm skeptical that it connects to the questions you want to answer in a useful way. In any case, these aren't these these these are going to be like new, speculative answers to questions about these things, rather than what people already actually think about measurements and observation and so on. Okay, I'm skeptical is that's a good use of our time of your time. It's a good use of our time if you think it's a good use of our time, so I'm happy to read it.
+
+Mackenzie Dion  47:45
+Um, we don't necessarily have to right now. So I feel like I have plenty of other questions. But
+
+Unknown Speaker  47:57
+remember, d'Orsay has a whole chapter on measurements. If you want to look at like undergraduate textbook accounts. It's it's pretty reasonable, but
+
+Mackenzie Dion  48:06
+are we done the measurement chapter?
+
+Unknown Speaker  48:11
+So yeah, I
+
+Unknown Speaker  48:13
+guess I can just keep answering your questions as they come up or whatever you want.
+
+Mackenzie Dion  48:20
+I realize this is not specific of a question. But I think there's been some papers about there's something I linked a while ago, I can put it back up at the top
+
+
+Transcribed by https://otter.ai

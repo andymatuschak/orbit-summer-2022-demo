@@ -1,0 +1,338 @@
+Unknown Speaker  00:00
+No circuit diagrams as introduced by like my in my Can I will pull those together correspond to the whole interference experiment of measuring the joint system friend system in the databases.
+
+Mackenzie Dion  00:14
+What is the third thing at the end?
+
+Unknown Speaker  00:18
+That's when you actually perform the measurements.
+
+Mackenzie Dion  00:22
+Okay, so
+
+Unknown Speaker  00:23
+on the two on the two qubits that you're given on the two wires that you have in the measurement basis, that's implicit in all circuit diagrams.
+
+Mackenzie Dion  00:31
+Okay, I don't think I knew that and that was the top question I asked in the doc was about is like, thinking I was missing something about your explanation of the qubit diagram. Or circuitry. Yeah.
+
+Unknown Speaker  00:44
+The end of the day, we have to actually do a measurement to find out the results of of this
+
+Mackenzie Dion  00:52
+interference experiment. Okay.
+
+Unknown Speaker  00:57
+Implicit in the circuit diagram as as described by Mike Knight, so that's that this whole thing is the measurement and you have to undo anything. It just happens to be the case that in this situation, doing the measurement involves undoing this evolution. But that's your like, kind of a generic measurement or anything that just happens to be one of the things that happens in this simplified version.
+
+Mackenzie Dion  01:18
+Okay, yeah, I see that in this case, but I guess I'm wondering then, when I've maybe this is just incorrect, but what I've seen Wagner's friend explained. In other contexts, without a qubit example but like a, you know, human like observer, they say, like, undo the measurement and then perform an interference experiment. Is that wrong is like, I don't these are
+
+Unknown Speaker  01:44
+not undo the measurement. I don't know what the other people you're referring to mine specifically.
+
+Mackenzie Dion  01:50
+Like if I want to perform an interference experiment on if I'm Victor and my friends in a box and I want to perform an interference experiment on them, for the purposes of seeing if they're in a superposition, I need to first reverse the unitary evolution between them and the qubit and then perform an interference experiment. And so
+
+Unknown Speaker  02:14
+I don't understand why that's why you're separating that out into two steps for what the significance of the first step is supposed to be.
+
+Mackenzie Dion  02:21
+Okay, what so what about that? Is there somehow like the undoing the unitary evolution implicit in doing an interference experiment, or
+
+Unknown Speaker  02:32
+it is in this particular case? Yeah. But but not
+
+Mackenzie Dion  02:35
+in this case. Like in the case of the human like observer, doing an interference experiment, not with it, because like, I get why it's implicit in this case, but I feel like you're missing something with the human like observer version.
+
+Unknown Speaker  02:46
+Yes, it doesn't. It doesn't matter whether these qubits are like electrons or observers or whatever else. In this case, the measurement step does undo the preparation step with this, this abstract setup, whether it's with qubits or anything else, if this is the experiment that we're running, then doing this measurement does involve undoing this, but then that's a coincidence. I don't want you to think that in general, when you measure something, there's some undo the unitary evolution step. That's just not a thing. That's the thing that happens. to happen in this situation. I don't I don't know what it means in the like, it's extremely it's, it's not, that's not a separate step somehow.
+
+Mackenzie Dion  03:25
+Okay. I think the way I had first encountered Victor's friend, I interpreted it as a separate step. And so then when I saw the cubit version, I got I felt like it was missing a step.
+
+Unknown Speaker  03:39
+There is going to be in vigorous friend a sense in which to do doing this measurement is going to involve kind of undoing this setup, but that's not a generic part of measurement in
+
+Mackenzie Dion  03:48
+quantum mechanics. Okay, yeah, no, no, I'm fine with that. That I think I understand. Okay,
+
+Unknown Speaker  03:53
+and the thing I wanted to talk about today, which is going to be going through the double slit experiment with a measuring device, so that you can see what that measurement looks like in quantum mechanics and not just in this like qubit system where measurement is sort of where we can only talk about the digital a super observer doing the measurement. That's what happens at the end here, in this set of figures, the super observer system, and he's the one doing the measurements according to the measurement axioms at the end. What I want to do is show you a quantum system, where we include the measurement device as part of the description of the system, and we can see an internal measurement take place, okay, so you can see what the what that looks like from the point of view and not not from, from the point of view of the person doing the measurement, but like in a more objective. So that's once we've once we took these questions,
+
+Mackenzie Dion  04:41
+okay, um, to talk a little bit more about the measurement that occurs at the end. I guess when I think about the thickness for an experiment like, I don't imagine is I think I'm confused about what the measurement at the end is because I imagined like the interference experiment being the providing the answer to the question Victor wants to ask, or like, yeah, those are
+
+Unknown Speaker  05:11
+gonna be the two bits that you measure when you do your measurement experience experience. When you actually do the measurements at the end, you'll end up with two bits worth of information, one for each wire and that those four different possibilities for the four bit for the for the two bits that you get correspond to the four different Bell bases, the bell basis vectors in this measurement. So you have to actually, like, do the measurement. That's this entire process. Yeah. But it's not there's not some way of indicating it. I don't think actually let me see him. I think maybe my connectivity is. I mean, it doesn't matter for now I guess. Unless you want unless you want to see how I can I can rotate this we can look
+
+Mackenzie Dion  05:59
+No, it's no big deal. I just
+
+Unknown Speaker  06:04
+I don't think that you're in a position to come back to this for the last time. There's way too many things in quantum mechanics that you still have ahead of you that will result in you coming back to this and learning new things and having a fresh perspective. I think we need to feel like you should already have complete understanding of this experiment and be ready to move on to something else. You shouldn't feel that way.
+
+Mackenzie Dion  06:28
+Oh, yeah, that's helpful. I guess it was more like seeking to reach a certain level of understanding that I was comfortable with before trying to learn new topics or something.
+
+Unknown Speaker  06:43
+Well, we're not. We're not moving on to new topics. We're looking at stuff that is required to understand this. We're like filling in the missing background necessary for understanding Okay. Um, the free energy principle stuff that would be new material, but all the stuff that we've looked at together, apart from the consciousness stuff has just been filling in background for this and not moving on from
+
+Mackenzie Dion  07:10
+this. Yeah. Okay.
+
+Unknown Speaker  07:13
+Your question? I'm not sure where we left off with the, like actual measurement results here. Yeah. Vigna the super super observer has to get two bits worth of information out of this whole whole setup, and that's where they when you do the actual measurement of these two quantum wires and these two systems and the
+
+Mackenzie Dion  07:38
+Okay, yeah, I feel okay about that. Um, I would be excited to talk through what you're thinking about going over today about using doing an internal measurement? Is that what you call it?
+
+Unknown Speaker  07:54
+Yeah, yeah, I think that's a good way to put it to see what a measurement looks like when we're not applying the measurement axioms to get an answer out, but we're actually just seeing what quantum mechanics says happens when you bring a measuring device and a system that you want to measure into contact with each other at the appropriate level. This is not a level of analysis that you usually see in a freshman class, but there's no reason you can't be it's just in classes that you would take at university they'll emphasize getting answers from problems and not answering conceptual questions. So I want to think about the double slit experiment. And I want to think about the usual simplified version of the double slit experiment that you're used to. I want to emphasize that it's idealized and simplified for one thing, it's, it's going to be a system in two dimensions. We want to ignore a third the third spatial dimension, we want to imagine this idealized two dimensional system and the setup, of course, is that we have a barrier with two slits in it. And we have a source of particles which I'll just indicate with an arrow like this. And the source is supposed to shoot out particles. We're not going to model the source at all. We're going to treat that as a black box outside of the system, particles are just going to come in that way. And then we have some kind of system of detectors out here, which is going to either record an interference pattern or not. We're also not going to model these detectors at all. That's not the measurements that we want to perform. The measurement we're going to perform is going to be about whether the particle goes through the top slit or the bottom slit. It's not going to be the interference pattern here that we will treat as something that a super observer looks at at the very end of the experiment. But we'll be able to see what quantum mechanics predicts that super observer to observe. No. So there's only one particle and it only moves in two dimensions. So the configuration space for this part for the setup is two dimensional. Since there's only one particle configuration space looks like a copy of real space, this is something we started endorsing. Right. Yeah, that basis section. Okay. So the wave function is going to live in this two dimensional space is going to be a complex valued function on this two dimensional space that evolves in time. That's where the wave function is. So we can draw pictures of the wave function moving here and that will make sense. And the important thing to remember is that the way that the abstract description in terms of the wave function makes contact with our actual experience is like the the Born rule. And the Born rule tells us that it's the squared amplitude of the wave function. And it each time that is going to be measurable in terms of the probability distribution he gets for the experiment. So we may as well basically think of this setup as having a fluid distributed across configuration space and some initial configuration, probably the most of the fluid concentrated here and moving this way. And then the Schrodinger equation tells us how this fluid whose density is given by the squared amplitude of the wave function moves around. And we think that that is an evolving probability distribution. For the particle. That's the kind of description on mechanics gives us. And we're actually going to do more than just ignore the particle source. We're going to ignore everything that happens to the left of the barrier, and we're going to ignore the details of the shape of the slits. We're going to make lots of idealizations to make things nice and simple. And we're just going to assume that we have like, outgoing spherical waves from each slit. So like, no diffraction is going to occur no weird, complicated things. We just have two independent sources like that. And so we again get to ignore all of this effectively. Our initial condition for this motion of the fluid is that we have these two sort of separated sources that yeah, and you're familiar with the interference pattern you get, it's not so hard to see how that interference pattern arises from these two flows. They sort of bumped into each other and produce interference, okay. And we will want to think actually a little bit about what happens to the left in our setup, because we're going to want to actually try to measure whether the particle goes through the top or bottom. And of course, some of the wavefunction just bounces off the middle of the slide, but we're mostly interested in the parts that do go through one one slit or the other. You know, from traditional descriptions of quantum mechanics that are too confusing to be helpful that there's some sense in which the particle goes through both slits. That sense is simply that the wavefunction literally does go through both slits. In other words, some of this fluid will flow through both slits, that's something we can sort of measure because there's an experimental fact about where the density of this fluid is high and where it's low. So that's something that that's directly experimentally available. Whether we can imagine that the particle really takes one path or another as a matter of interpretation. We won't worry about that. But okay, so you can see how the whole situation takes place in this one plane. And we have this interference pattern caused by fluid flowing out of here. I think that's very true. So now what I want to do is introduce a measuring device into the system that's going to respond to whether the particle goes through the top or the box, we can make up a force that connects it to the particle we imagined that maybe it's like the gravitational force so that when the particle goes through the top slit, let's actually do this. Let's place the measurement device. I think this is convenient, but please give me feedback. If this is not this is something I came up with. And so I think there's probably some room for adjustment here to make this clear, but imagine that we actually put the measuring device here in this inter slit region. So we have like a part of the bead on the string and inside of inside of this region, and basically if the particle that we're sending goes through the upper slit, this bead gets pulled up towards the particle, and if on the other hand, the particle goes through the bottom slit, then the bead will get the bead will get pulled down on the string. And so at the end of the experiment, we expect to be able to look at this bead and find that it's either at the top or the bottom, whereas it starts out in the middle and read off from that which slit the particle went through. So in NorSon, we actually get a nice treatment that we'll ignore because the technical details that will be too complicated to go into the doors and actually spells out what term to add to the Hamiltonian in order to create this kind of coupling in order to make it so that when the particle goes through the upper slip, this other particle will go up and vice versa. So you can look and we can look interesting together at the technical details, but I don't want to be distracted by that at the moment. I just wanted to tell you, it can be done and I think that's easy to buy because it's reasonable physical. But now let's talk about what happens and in particular, what I want to do is show you why, as the Super observer, I should expect doing this to delete the interference fringes because you know, that's what's supposed to happen, right? You do the measurement and somehow the interference fringes go away. I think it's usually kind of mysterious how that's supposed to happen. Exactly. And I'm hoping that this will demystify it. So now think about the configuration space for the new system. We've introduced a new particle, I've constrained that particle to only move along one dimension. So now we have three configuration variables, an X and a Y position for the particle. I'm shooting the cross and I can call it the z coordinate. For for this this particle, right? I mean, of course, it's moving up and down along the y direction and he gets it gets its own coordinate. And in classical mechanics, we do this routinely we use whatever coordinates are convenient, but we no matter how you slice it, we have a three dimensional configuration space now, I carefully designed this so that at this point we finally we still have something that you can visualize. And so I'm going to ask you to imagine that this third dimension goes in and out of the board. And in particular, the particle sliding up in correspond to into the board and the particle sliding down and correspondingly out of the board. For example, it wouldn't be vice versa, if that's easier for you to imagine. But that's the idea that that's the new dimension in our configuration space. And so here's the really cool thing about what happens to this fluid flow, which is now in three dimensions. And by the way, this barrier. This barrier exists and has exactly the same form, no matter no matter where we are in configuration space. So this if you imagine in the third dimension, this barrier becomes like a two dimensional slip like like this with two tables. So now what's going to happen is this, the configurations in which the particle goes through the top slit, are going to be pushed into the board. Because when the particle travels through the top slit, the measurement particle goes up. And so that pushes the configuration. Now the configuration is just one point moving around in three dimensional space, right? So we have a single point in three dimensional space. It starts out in this middle plane of the board, because this particle starts out in the middle. And so it's while the moving although the moving particle is on the left hand side of the screen here, the configuration tracks this particle, because the joints configuration is just wherever this particle is plus this thing being in the middle, which tells us we're in this plane, but as soon as we get here or here, something happens if the configuration space or the point is up here, then it's going to get pushed into the board by this particle moving up. And so the part of the fluid flow that comes out of this hole, the slit is going to be some ways into the board. The configurations that makes sense,
+
+Mackenzie Dion  17:26
+sort of can you you can keep going.
+
+Unknown Speaker  17:32
+Okay and and consider and correspondingly though configurations that go through the where the particle goes through the bottom slit are going to get pushed out of average the board. So the usual way of notating it is like this. You'll see this in your e&m class. By the way, this is supposed to look like an arrow that's pointed away from you. This is like the tail of the arrow and this is supposed to look like an arrow that's pointing towards you. Oh, cool. That's a that's a notation. You'll see it only in physics classes. So these these guys are pushed into the board along this arrow pointing in and these guys are pushed out of the board. So now,
+
+Mackenzie Dion  18:13
+the board and like I'm thinking about this in configuration space.
+
+Unknown Speaker  18:20
+Yeah, configuration space looks just like this but three dimensional. So there's a comment at every z coordinate where z is this direction. And what I'm saying is that when the when the moving particle goes through the upper slit, that causes the measuring particle to move
+
+Mackenzie Dion  18:38
+up and makes it go this way. So all
+
+Unknown Speaker  18:41
+the trajectories that have the moving particle go through the upper slit will get pushed backwards into the board by this interaction with this guy, and all of the trajectories that take the moving particles through the bottom slit are going to end up getting pushed this way out of the board, because the measuring particles didn't move down. Does it seem more more clear? I want to spend a bunch of time on this picture so I don't expect it to all be absorbed right away. Sure.
+
+Mackenzie Dion  19:10
+No but that is more clear. Okay.
+
+Unknown Speaker  19:13
+So now I hope it's not so confusing to see why there's no interference pattern. The two pieces of the fluid flow that used to bump up against each other and interfere are never going to bump into each other because the flow coming out of this upper hole is flowing down at negative and positive Z's into the board and the flow coming out of here as it negative z values out of the board. And so they just like to go right past each other because they're they're happening in different z values now, so this thing, this thing that these two things that used to happen in the same plane because that's all there was when the plane configuration space. Now they happen in different planes corresponding to different values of this z coordinate. And so they just literally don't bump into each other
+
+Mackenzie Dion  20:04
+and so then how do you maybe this is like a different like how do I then make sense of just seeing a single point on on the on like the detector at the back, or because like,
+
+Unknown Speaker  20:23
+for that we have to solve we have to pick a solution to the measurement problem. That's where we're making our super observer observation. And what happens there we get to make up by solving the measurement problem however we like. So there are several different answers depending on we want whether we want to do many worlds collapse or hidden variables, but by whatever means we solved the measurement problem. That's how we end up with just a single spot here. But the point is that when we repeat the experiment, we don't get a single spot we get a bunch of spots, and that gives us our distribution that allows us to spy we get a single spot it's because of whichever solution to the measurement problem.
+
+Mackenzie Dion  20:56
+So when I'm looking at where the detector is, in like the center of the figure, does this is this like implying that that that there is this like I feel like you might say no, but but like, it's just like an implied hidden variable interpretation. If like I already assumed like to get the this experience to behave the way that I want that it like we'll go through either the bottom or the top slit when the detector is present. Like
+
+Unknown Speaker  21:30
+no there's no there's no hidden variable anything. The top slit in the bottom slit literally existing physical space. And so the correspondingly the correspondingly existing configuration space and the fluid really is flowing along these different trajectories all at the same time. There's no There's no hidden variable theory would say that actually only one flow line in this fluid correspond to the real world okay, but we're not doing anything but ordinary unitary quantum mechanics without adding it.
+
+Mackenzie Dion  22:02
+But how does the fluid then only go through? Okay, so even with the detector present the fluid goes through both of the slides.
+
+Unknown Speaker  22:13
+Absolutely. It's just that it does so at different z values. Yeah, yeah, exactly. And so it's
+
+Mackenzie Dion  22:22
+like they're like orthogonal to each other, like they're, or they're like orthogonal to, you know, just parallel or parallel
+
+Unknown Speaker  22:29
+to each other in two different planes that are both parallel to this plane, but one in the board and went out of the board. And, in fact, everything that happens in this system that doesn't involve the measurement particle moving will happen in a plane parallel to this one. Because that's what it means for a configuration to not change its Z value. That means this guy is not moving. So the z value of a trajectory only changes in the brief moment while the particle is near the slits. So in other words, everything starts out in this middle plane, because the particle starts out in the middle and then gets split here into two two planes, one in and one out of the board. And then everything stays basically in those lanes to the extent that the measurement particle really does only move during this key portion. So to a good approximation, that's everything is happening in three different planes, the Z equals zero plane, and then we might say the Z equals plus one plane in the Z equals minus one plane.
+
+Mackenzie Dion  23:37
+Okay, and so then once we start tossing around here, once we start talking about the direction that the bead gets pulled, that's the measurement problem. Like we're like moving into like, what do we think about the measurement problem?
+
+Unknown Speaker  23:51
+No, no, there's there's no measurement problem doesn't come into play here. This is an internal measurement. The measurement problem is about external measurements when a super observer makes a measure, right? So we called the measurement problem to answer what do we see when we actually look at this at the end of the day, because we don't see you know, the particle having gone through both slits or whatever. We see the particle having gone through one slit because we can see where it is on the detector placement and here, but that does require us to the measurement, because that's where we're doing the observation from the outside. Here. This is a purely internal thing. And so, you know, if this were a degree of freedom of someone's mind, they might think of that as making a measurement of which slit the particle went through for them. But we're seeing we're viewing it from an objective perspective where this measurement is internal to our description of the quantum system. And we're not using the measurement axioms at all, or any solution to the measurement problem and being deliberately agnostic about the measurement problem here. This discussion applies in every version. Okay. So, the, the essence of this internal measurement is the splitting that happens. We have sort of one lump of fluid and configuration space describing our initial configuration. And at the end of the day, after this totally unitary process where nothing that requires solving the measurement processes happening, we have effectively have two lumps of fluid. Now, in reality, if we were to do this, everything would be a little bit imperfect. wavefunctions are kind of spread out everywhere. And so we wouldn't have everything perfectly split into these two planes. We would have most of the fluid in these two planes and a little bit leaking out. Basically, it's hard to stop things from leaking out because all our distributions but that's, that's what we end up with to a good approximation. And my claim is that this is the essence of measurement. And it's the essence of the world idea. In many worlds. The many worlds interpretation doesn't actually feature something called Worlds, except approximately, and the idea is that worlds approximately speaking correspond to separate lumps of wavefunction fluid. Once those lumps of wavefunction fluid get really really far away from each other and this is something I want to talk about here. We've affected a very small separation. But because because the measurement device is small, but I want to show you how to make it bigger. If we get two lumps of wavefunction fluid extremely far apart in configuration space. Remember, configuration space is extremely high dimensional, right? Yeah. And maybe you remember this if you do a random walk in a high dimensional space, you should you'll never expect to come back to where you started. Only in like two dimensions do you expect to ever come back at all. But in high dimensions, if you just started to wander off along random path, you won't come back to where you started typically, and if you have two very separated lumps of wavefunction fluid, they'll probably never interact or interfere with each other again, and they'll effectively act like separate independently evolving solutions to the Schrodinger equation. That's what happens to our system after this has has happened. We now have two lumps of wavefunction fluid and unless we do something to bring them back together, that's going to be the interference experiment that involves undoing the splitting. That's the that's the sense in which we have to undo something if we want to make a measurement that records another measurement essentially. Unless we conspire to bring them back together by difficult means we can expect that they will go on evolving into because they're so far apart, basically. So that's the idea of worlds in many worlds. The idea is just to say that, well, we don't need a separate solution to the measurement problem. All of the lumps of wavefunction fluid that we don't see ourselves ending up in are just out there but they weren't affected. That's very, very vaguely the idea in it as a solution to the measurement problem. It's not to say that those other ones that wavefunction fluid disappear somehow or aren't real somehow. It's just that whatever they do, it doesn't affect what happens to us here in our love of wavefunction. But I think this is really important to appreciate that that's what measurement really is when we do it inside the system. And that's this internal measurement thing is the real actual physical process that we're trying to schematically model with the Super observer measurements axioms. There are of course, some interpretations of quantum mechanics, none of which are very popular, and are subjectivist where they're supposed to be a super observer in the theory and the measurement axioms are supposed to be fundamental, but most of the interpretations that we take seriously are realist in the sense that they they only allow for a super observer as a practical measure, and not as an actual literal fundamental distinction in the physical system. So that's how I want to emphasize what measurement looks like. This is about the simplest case you could possibly consider. All but it's still I think, simple enough that you could actually visualize it. It's pretty much but I want to invite you to consider how we can make this measurement better. A better measurement means a sharper measurement means essentially a stronger separation between the lumps of wavefunction fluid. That way the tails of those lumps don't even barely affect each other. Yeah. So one thing we can do is literally make the measurement particle move very, very far in response to the moving party. That's one way to do it. That would that would certainly increase this distance because this separation here I said it was two he's literally just whatever the length of the string is that the beat is on. Mm. But here's another thing I could do I also if you look at the formulas, and you can see that if I make the mass of this particle really big that might help but much more interesting, much more interesting to ask, What if I make just make this not a single particle but a bunch of particles. In other words, I want to try to think about what happens if I introduced a macroscopic measuring device. This was a microscopic measuring device made of a single quantum degree of freedom. That was enough to actually affect the measurement right? We literally could do the split and we know that that works. But what happens if there are now you know, there's a mole of these particles or whatever. Here's the idea. It's very simple. We now have exactly the same situation except that we now have a mole of extra dimensions, not just one. And now, this distance, we said it was two because I went plus one or minus one Sure, why not? This distance, is the distance by which the two lumps of fluid are gonna get separated along all of those dimensions. And so basically, I get to multiply by the square root of the number of dimensions, right? That's like a long diagonal of a cube. So as I increase the number of particles here, even if I don't change anything else, yeah, I will increase the sharpness of this measurement. And in fact, even changing nothing else, just making your measuring device have more particles in it, that respond that all responds in the correct way to the system you're measuring will make the measurement better and sharper. So that's why macroscopic measuring systems are even a thing. It's because macroscopic systems are better suited than microscopic systems to effecting this large scale separation and configuration space, with a system with many many degrees of freedom. You have many dimensions to work with. And that's what makes it easier to achieve larger separations because you just have to separate the two things a tiny bit along a bunch of dimensions instead of a long distance in one dimension. It's sort of easier, less energy generally. So that's, this is yeah, this is the like new perspective and a measurement that I want to help give you because I think it's essential for understanding how to extend this sort of qubit model to something more realistic. And this is what the qubit model is supposed to be an approximation to anyway, the discrete quantum mechanics that we do for quantum computer science is, is an idealization of this theory, where we imagine that our systems really only have a finite like a discrete finite Saturdays, just like ordinary computer science is an idealization of classical physics, where we have systems with finite ly many states, right? There's no such thing as a bit in classical physics. classical physics is continuous if we had a system in classical physics that literally only had two states a light switch that can be on or off, but nothing in between. We could never flip it, because there we would need in classical mechanics of continuous transition from one state to another. So bits are a huge idealization in classical physics, but it doesn't really slow us down. And similarly, qubits and like finite dimensional systems are arguably an idealization of this kind of situation. So I think this is a more helpful way to think about measurement, especially since I think we barely get we basically get no picture of measurements in the in the finite dimensional world. I think that that it's really hard to look at the finite dimensional descriptions of measurement that you might find in something like Mike and egg and see that there is a splitting of the wave function fluid into separated lumps, because that again, is the essence of measurement. That's what it means for there to be multiple distinguishable measurement results for there to be different these distinct I'm just gonna shut up for a minute and let you stare at this and see if you have questions or follow up questions.
+
+Mackenzie Dion  33:24
+So is it that if you enlarge in your measurement device, then like the configuration, its space expands to all the dimensions in the measurement device?
+
+Unknown Speaker  33:38
+That's right, because by definition, the wave function for our system is going to live on the configuration space for our system, which yes, is going to be literally a different dimension depending on how many particles we include in it.
+
+Mackenzie Dion  33:51
+And I don't this is me kind of just like throwing out questions but like, does do like as you develop a larger measurement device, even if this is like an internal measurement and an isolated lab, just like decoherence matter, or, like what
+
+Unknown Speaker  34:07
+let's let's now turn so what decoherence is supposed to mean okay, suppose that we just have a single particle here in the measurement system, but instead of having this two particle system, this highly idealized, highly isolated two particle system, we have the moving particle, the measurement particle and a bunch of particles that we collectively call the environment. And the environment is maybe just like the air molecules in the room of the laboratory or something. Here's my point. Suppose that first we do this experiment in such a way that the two the two particles we have here are completely isolated. From the environment, then, we get exactly the same picture here, tensor with whatever the environment is doing. If we start out with the system's isolated that means that the initial state is an honest to goodness state for this two particle system tensor with an honest to goodness state for the environment. And if they are dynamically isolated, so they don't interact, then that tensor product split will just persist. And this system will evolve its own way, the way that we already described and the environment will describe in its own way as already. But now, realistically, what happens if this particle the measurement particle is lightly coupled to the environment is very realistic, because this bead is going to move along the string, and it's going to reflect light differently, right? It's going to literally bump into air molecules differently than it would otherwise. So what's going to happen? Well, basically what happens in the, in the chapter that that we've already seen, oh, in fact, we don't need to say we've already seen this. Remember, vigor sends the qubit that's in a superposition to his friend, the friend looks at it and gets entangled with the qubit and sucked into that superposition too. And then Victor, if ignor just looked at the friend qubit system, figure two would get sucked into the entangled system and there would be now a big superposition of you know, particle is spin down frenzies spin down vigorously spin down plus same thing with up right so in other words, when a particle interacts with an entangled state, it sort of gets pulled into that entanglement. And so what's going to happen effectively in a more disorganized way than we had before when the all the the many articles were in the measurement device, but effectively the the week even the rabbit relatively weak coupling between this measurement article in the environment is going to lead all those particles in the environment to effectively do the same thing by increasing this separation between these two months. Because the global system is still going to be in this really high dimensional space. And all we need is for the environment to evolve one way one pace and it's in a noticeably distinct way in the other case, in other words, to move into two different regions of configuration space, depending on whether the measurement the measurement beat is up or down. So in other words, an environment coupled to your measurement device. Act like an enhanced measurement device, yeah, automatic. That's, that's decoherence effectively, and that's the effect that makes coupling to the environment, enhance separation of lungs. And what that means is two important things. One is it's good if you want to do a sharp measurement. Yeah, right. I mean that you don't have to isolate your system to do a sharp measurement. On the contrary, you want to entangle your measurement device with the rest of the world in order to make your measurement really sharp. But what it means is that if we ever want to undo a splitting of the wavefunction into separate lumps, and in quantum computing, we do this all the time, the essence of quantum computing is finding a clever way to repeatedly split and then rejoin lumps of wavefunction fluid in an appropriately clever way. If we want to do this, then decoherence is our enemy. Because decoherence means not only that, these two lumps are going to get graded much further apart than distance to but they're also gonna get separated in a way that we can't really control. Because we don't actually know in detail what the two different time evolutions of the environment are corresponding to the upper downstate. We know they're different, but they're like, effectively identical with respect to temperature and pressure. And all the stuff we can easily measure. Yeah, and so no information that we would need in order to bring these two back together. Yeah, information about where the two lumps are in configuration space. That's what we would need to make the navigation of bringing them back together happened, that information is effectively lost. In order to get that information you would have to somehow measure you know the positions of all the air molecules in the room photons, obviously, and photons and everything else. Yes, absolutely. And, and gravity automatically makes everything jiko here, you know through any barrier, right, the gravitational depending on whether the beat is up or down. So gravitational effects will cause decoherence at lightspeed out from from wherever you start, lots and lots of interactions, everything that causes things to interact with things, causes decoherence. It's unbelievably difficult to avoid and in particular, decoherence is essentially the fundamental, irreversible process. In nature, this splitting of wavefunctions into pieces, never to come back again. Because the effect of the environment is to make things so high dimensional, that even small initial separations lead to really large separate.
+
+Mackenzie Dion  39:31
+So that's our
+
+Unknown Speaker  39:33
+first look, I think at decoherence. And this is why just doing this experiment just so hard, when we can't isolate a pair of qubits for beginners friend and the particle effect nurse friend isn't just an isolated qubit but in fact, a conglomerate of moles and moles have different degrees of freedom. The idea is that as soon as vigorous friends consciousness changes, even if that does somehow correspond to a single qubit in the highly idealized case, that change will immediately propagate into a change of the mental state of their physiological state and so on. And if we want to undo the splitting of the wavefunction into lumps, that were supposed to in order to in order to make the interference experiment happen, we have to be able to somehow track and undo those that like spreading web of changes, depending on this one binary variable we want to measure but spin up or spin down for a qubit. So that's the sense in which we have to undo some unitary evolution to make this particular kind of measurement. Because we're looking to bring having done measurements to then bring the corresponding lumps of wavefunction fluid back together. And it's the way that they interfere when you bring them back together that provides the evidence for the splitting in first place. That's what we're looking for. We're looking for evidence that there was splitting. That's because it really consciousness causes collapse, and there is no splitting, then like one lump of wavefunction just sort of disappears, and we don't have to separate legs. But the problem is, how do you tell if you have two separate limbs? Of wavefunction fluid you live in one of them? By definition, you can't see the other because it's like it instantiates configurations different from the one that you are. So the only way to tell that there are two lumps of fluid, which is the evidence that no collapse happens is to bring them back together and look for Telltale signatures. Of two lumps being brought back together. These are these are things I've been thinking about in the past couple of weeks to try to sharpen my understanding of beginner's mind experiment. I hope that I don't expect you to make sense of all of this immediately. But I think that these ideas are helping you orient yourself and pointing you towards a better understanding of this
+
+Mackenzie Dion  41:52
+you know, it's a lot so, one of the first times the nurse friend experiment was explained to me it was with in the context of a quantum computer, and the woman giving a presentation on this she said something like, Oh, if we did this in a quantum computer, we would only need to reverse the unitary evolution of the logical qubits and not the error correcting qubits. And I don't understand why that's true. Like,
+
+Unknown Speaker  42:31
+I don't think I can answer that in the time we have remaining you know, error correction in a quantum computer is different from the stuff we've been
+
+Mackenzie Dion  42:39
+talking right. But I guess I would just assume that they're, like physically entangled in some way in the same way that like, the internal measurement devices.
+
+Unknown Speaker  42:48
+I don't I don't know enough about how error correction in quantum computers works to be able to answer this question right now. I want to think about it. I'm really intrigued by that claim. Yeah. Let's say upon hearing it, it's neither obvious to me that it's right nor obvious that it's wrong. It seems like a plausible claim, but it would need like a substantial difference. It's no no, I'm skeptical of it. I suspect that the person said it and it makes sense to me, but I would have to really think about how to actually show that so it's,
+
+Mackenzie Dion  43:15
+I can put the paper where they talk about it a bit more in in our weekly doc. That sounds great. It is it is the paper that I suggested that we read at some point though, I've just been having other stuff that I'm more like, feel more urgency around come up, but this is also the one that I thought you wouldn't like and then you reacted in a way that made me also think you don't like it.
+
+Unknown Speaker  43:40
+Well, that's okay. I want to try to evaluate it just for this. Oh,
+
+Mackenzie Dion  43:44
+yeah. I mean, I'm mostly just interested in that claim. Because then I asked her something like, oh, well, would that apply to like a conscious observer where you'd only need to reverse the purse up strictly relevant to measurement and not like any other things going on in the brain? And she said, Yes. And like, I've since talked about that with Andrea. And he's like, Yeah, I don't believe that. I don't believe
+
+Unknown Speaker  44:05
+that either. That doesn't make any sense to me. I feel like there has to be something really special about the error correcting codes that comes into play there. And I don't think unless there's some, you know, totally new neurophysiological stuff that we're going to learn about that those that there are, you know, quantum error correcting codes built into how consciousness makes use of quantum mechanics or whatever, which is, I guess possible, but wildly speculative. In the absence of something of a strong argument to that effect. I would side with Andreas on that one. I don't, I don't, I guess I don't see what she could mean by that. That would be right. But I'm very intrigued. And I want to learn a little bit more about error correction, because to see if I can at least make sense of the claim in its original context. So sure. Reference.
+
+Mackenzie Dion  44:53
+Yeah, I just put it in. I just linked to at the top, because I'm also meeting with one of the authors, I think next week.
+
+Unknown Speaker  45:02
+This is of central importance. The the issue of what exactly does it take to bring these two lumps back together? Yeah. Is is in fact, the core of the thing you're asking you like your overarching goal of understanding the practical issues involved in doing this experiment. So I think with this setup, we're a lot closer to being able to model what's supposed to happen than than we were before. This may be more insight into measurement. But yeah, yeah, I'm intrigued. If there is some way to make sense of that, then that sounds really important. So I want to look into it. Yeah,
+
+Mackenzie Dion  45:37
+I mean, the this paper probably be a good place to start, but I don't know if they go into a lot of detail about that specific claim. Oh,
+
+Unknown Speaker  45:46
+and also look at who the which of the authors is the one that made the
+
+Mackenzie Dion  45:50
+claim. So the woman who presented it is named Eleanor rifle, but I don't know if like she originated the claim. She was just the person presenting the paper. But all of the authors were present. And when she said this, like it was in front of a bunch of like physicists and like, theoretical like quantum computing people and it didn't seem like highly disputed.
+
+Unknown Speaker  46:13
+Cool, that's, that's great. Like I said, I am not saying I think she's wrong. Yeah. Missing the evidence for that. Yeah, I
+
+Mackenzie Dion  46:20
+just didn't understand it. And I was like, not sure how like, accepted that claim was or like, where it sat in like the kind of discourse of the field,
+
+Unknown Speaker  46:31
+I would have some reading to do about exactly how quantum error correcting codes are implemented, and the relationship between the logical and physical qubits to see how that might work. I'm definitely intrigued. So I'm glad you brought it up.
+
+Mackenzie Dion  46:44
+Cool. Yeah, and I guess on a similar note, so Adrienne, put a new paper on archive today. And it's actually response to this paper that I just mentioned. So this paper that talks about the like, you'll need to reverse the logical qubits have. He respond? He's like, basically like refuting some of the stuff they say about consciousness in this paper. And I can, but I would love to I've read it, but I'd love to like definitely as I read it, I'd love to like read it together and discuss it because I don't think like, I think they still have a lot of stuff I want to understand about it. Let's find
+
+Unknown Speaker  47:40
+it but I feel like we are making good progress. And I think the journal club idea is really effective.
+
+Mackenzie Dion  47:47
+Yeah, I was I was really excited actually. Because so I had talked to him about this paper when we met in Cambridge, and then he gave me like, he included me in the acknowledgments at the end. Oh, it's nice. Yeah, I felt happy. And then like I so I'm interested in like EM field theories of consciousness. And I sent him several papers about it that he ended up citing in this but
+
+Unknown Speaker  48:16
+I'm excited to take a look at that this week.
+
+Mackenzie Dion  48:18
+Okay, so I just linked to that below the other paper and in a okay, sorry, I'll just be it he talks about like the basically one of the only papers of his that he references is which is linked to the bottom, I can put it back at the top called a quantum reality via late time photodetection. And he kind of uses that to motivate some of the claims he makes about consciousness in this new paper.
+
+Unknown Speaker  48:52
+It's helpful I'll use that as an accompanying
+
+Mackenzie Dion  48:54
+Yeah, and they're not obviously related to me, and I was like, Oh, this is like a whole kind of new like space of things I don't understand. And that one's quantum reality via late time. photodetection and I kind of wanted to talk about like, what would I need to do to understand this paper? Okay, and I thought that would be like a cool kind of, like, obviously, I haven't, like wrapped up the Wagner's friends stuff, but like, I feel like I've like completed my first pass of it or something. And so I thought maybe this could be like an exciting new like challenge is to like understand this paper and then reconnect it to Wagner's friend or like reconnect it to the paper he just put on archive.
+
+Unknown Speaker  49:42
+Okay, looks like this photo detection thing will take us pretty far field technically because it's about quantum field theory. To me interesting. Yeah, I think it makes sense to turn to another topic in the same fields, at least temporarily. Sounds good to me. Yeah,
+
+Mackenzie Dion  49:58
+let me find something from I was just reading this and took some notes but. So I think like his, his like main kind of are like I think in this he kind of like pokes at like what he says his like kind of theory of consciousnesses. Because I was what ADRIAN Adrian, he says, it made to be consistent with the hypothesis can't 2017 and can 2017 Is the photodetection paper which like doesn't mention consciousness once in it. He said it may it may to be consistent with the hypothesis can't 2017 that the conscious mind states we think of as associated with the brain, at approximate position x at time t are correlated. With a subset of field states that propagate to future and infinity outside the future light cone of x t.
+
+Unknown Speaker  51:30
+Well, when I look at these people's comments, I can understand as you say, what's going on with this paper there seem to mention consciousness, but it's cited as if it does.
+
+Mackenzie Dion  51:40
+Yeah, he does. He does that a couple times in this paper and I was like, I don't know what he's trying to say.
+
+Unknown Speaker  51:49
+But cool, I mean, no, I will I will try to explicate that
+
+Mackenzie Dion  51:53
+Okay. Um, I know, I just threw a lot of information at you like what I'm trying to think about, like, what a good approach would be like, I mean, I think like reading the newspaper would be exciting, talking about the, like, error correcting qubit thing would be exciting, but I'm just like trying to kind of figure out like next steps or like how, like what we should talk about next.
+
+Unknown Speaker  52:18
+I think we should should keep reading papers. And as we read papers will accumulate like lists of what were your technical debt is and as that builds up, we'll we'll be able to plan around. I think that's, that might make sense at this point. Because I feel like you know, at this point, many papers that you would like to be able to read, we can at least read together once and see what you're missing from to be able to get any more detail.
+
+Mackenzie Dion  52:43
+I mean, maybe next we could then talk about like the paper he just put online.
+
+Unknown Speaker  52:49
+Okay, yeah, What's that one called?
+
+Mackenzie Dion  52:51
+It's linked. It's the second bullet point and our doc for today. And it's a response to the paper that I also linked called friendly thoughts on thoughtful friendliness. And not all of this paper matters that much to me, like, because I don't think I care that much about the paper he's talking to. But um, like in this paper, he like takes the chance he like takes us an opportunity to talk a lot about his views on consciousness and like, that's what I was interested in. Cool. So I haven't even read the paper and like, I've only read a little bit of the paper that he's responding to, and I was still I felt like able to read this.
+
+Unknown Speaker  53:34
+Okay, that sounds good.
+
+Mackenzie Dion  53:37
+And it's like a pretty it's like a decently like, easy read. I'm wondering for talking about this paper together, like how much advance time do you need to be able to look at it?
+
+Unknown Speaker  53:48
+Um, not not any significant amount probably. It sounds like there's some difficult technical things that I'm supposed to teach you from it. I think that I can see it tonight or tomorrow, but I don't really need to, in this context, our time I don't think.
+
+Mackenzie Dion  54:05
+Okay, yeah, I would agree with that. I mean, because like, we have a time scheduled Wednesday, so I wasn't sure if that would be too soon. Oh,
+
+Unknown Speaker  54:11
+that's right. No, that's not Tuesday, and I'm excited to talk about this Wednesday. This looks really interesting. i There's no way I'm gonna be able to wait until Wednesday to read it. I'm already excited to read it.
+
+Mackenzie Dion  54:20
+Oh, cool. Yeah, I will. I haven't I realized I have a meeting that overlaps with our session so I probably need to move it till later in the day, but other than that, I'm excited to talk Wednesday. Sounds good. And then like, it probably be good for us to I like especially after we talked about hidden variable stuff last week, like I want to better understand that so like, maybe scheduling another session to do to like talk about the NorSon like pilot wave chapter.
+
+Unknown Speaker  54:49
+It sounds good. I think that would be really productive. I wanted to if we had a little bit of time left to talk through what the different interpretations say what happens here?
+
+Mackenzie Dion  55:00
+Yeah, that would probably be
+
+Unknown Speaker  55:03
+the epilogue I wanted to give and I wanted to appear out just a few words to talk about first but if we if you have time, I would like to.
+
+Mackenzie Dion  55:11
+Oh yeah, I have time. As long as you don't have to go. Yeah,
+
+Unknown Speaker  55:15
+it won't take long anyway. So ignoring the issue that we're actually doing another measurements over here. I want to I want to talk about this measurement. In many worlds, just take what quantum mechanics says at face value. We start with one local fluid we end up with two lumps of fluid in parallel. If I as an observer, were to look at what was happening here, I would get sucked into one or the other of the two lumps effectively. And so from my perspective, the other lumps just are invisible or don't exist because I live in one of them and the others are really far away. So that's the many worlds explanation for how the measurement problem gets gets resolved. Here, both of the measurement outcomes occur, but when I look I get split into two copies, each of which belongs to one lab or the other. The pilot wave theory says that the points in this space really are configurations. We sort of had to say they were anyway to like set this whole thing up. But normally, in quantum mechanics, we don't take those points of this space seriously as configurations. There's sort of imaginary classical configurations. There's no such thing as a quantum configuration where a particle is at a particular location. So we we just sort of say that it's like a class configuration space, but it's not. But in bohmian mechanics, we just say, Well, what if it was and why should we give that up? Each point in this three dimensional space corresponds to an actual configuration, the way classical mechanics works, when we think about it on configuration spaces, we have some point that is the configuration of the whole system we care about. And we have some law that tells us how that one point moves around in configuration space. And that can always be translated into particles moving in three dimensional ordinary space. Well, as long as we know that we have on our hands a configuration space. What we need now is a way to first of all types of initial condition. Well an initial condition has to be some initial configuration. That's extra initial conditions on top of what quantum mechanics asks for. But if we on top of the initial wavefunction also say the initial actual configuration is some particular actual configuration. Then, remember I said quantum mechanics gives us this like fluid dynamics equation that has this probability fluid sloshing around in configuration space. Well, like any fluid flow, it has streamlines, and we can ask, what what did this where did the streamlines go? In other words, if we like put a tiny little pebble in this flow where would the flow take it? Yeah. And that's our answer to the dynamical question. We have some actual position in configuration space. That is the action tells us the actual initial positions of all the particles involved those days, and all it does is travel along the streamlines that the ordinary Schrodinger equation already describes. Not some new dynamical equation, really the simplest thing it possibly could be, it just flows in that way. And so what that means is that the true configuration of the world really will go through one slit or the other and really will end up in one lump of fluid or the other. And then there's just some matter of fact, which depends on the details of the initial condition here as to which outcome actually occurs in the real world. And that's, that's all there is to it. We don't have to imagine that there are multiple copies of ourselves. We don't have to bring consciousness or experience into the picture at all, unlike many world, were in many worlds to even say that we have this like slitting process we have to say where are we in it? But bohmian mechanics we can do this externally just like we normally do physics without involving ourselves and in the process. We have some initial probability distribution over these initial conditions. And that's just a regular t about the state of our system, ordinary probability theory. And that translates into a probability distribution over which point in configuration space we end up at, and the board that's consistent with the board rule. So that's that's what the pilot wave theory looks like. There's some actual configuration at each time and all it does is follow the slope these flow lines that the fluid already on the other hand, the lapse interpretations would say that after this happens, either one one or the other just sort of disappears. And the non disappeared lump goes on to evolve as usual. So those are all supposed to be answers to the question of, if reality splits into two lumps of wavefunction fluid. How can we never see two lumps of reality? How can we only ever see one reality? So many worlds? People say well, it's because the other lumps of wavefunction fluid are really far away, and they effectively cause no interference with my lump of wavefunction floating, so they might as well not exist dynamically. But they do. The pilot wave theory says there's only one real configuration anyway. Not every place where the wave function has nonzero density and configuration space corresponds to reality somehow, there's just one world that evolves in time. Like you normally does in classical physics. Nothing wonky happens except that the law according to which the configuration point moves around configuration space is a little different. And then the collapse theories, and so in particular, the other lumps exist, but reality is attached to one particular configuration. In fact, there is one particular configuration of reality that is real, as long as we assume that and the other ones don't bother us. They're not like parallel realities that are out there somehow, any more than any scenario I can imagine. fictionally is a parallel reality. There they only have like a mathematical significance, just like again, anything I make up. And then the collapse theory says the other lumps really don't exist. The ones that are not in truly have disappeared somehow. Those are the three basic approaches to answering this question. Why does it feel like we live in one reality or look like we live in one reality when the physics seems to describe something like the splitting into multiple realities or something like that? Yeah, those are those are the basic the basic options. And this is really the setting in which this measurement question is best understood. If we try to take this down to the finite dimensional setting, there's, it becomes much harder to make sense of this like splitting approach. And it's impossible to visualize because everything's discrete. If we tried to extend this to the field theoretic side, no one knows what's going on anymore. And we can only make sense of things by idealizing. Back to this approximation. So this is the setting of like nonrelativistic mechanics of a finite number of particles, because that's where we're talking about measurement is tractable. And no again, no one has a really sophisticated theory of how this is supposed to work in a relativistic quantum field theory. Like generally speaking, the thing the the physics we kind of understand, but we don't know how to like, give a description and tell a story like this that we can agree on in the sense of, so again, that's why books like norrison, focus on nonrelativistic mechanics instead of field theory of relativity or anything else. These issues make things more complicated, and it's not clear that they make things more complicated in an interesting way, and they definitely make it harder to discuss all of these questions. On the other hand, simplifying the discussion any further, I think also makes the distinction. I think it's possible to read and master everything and Mike and I, and still not have this splitting of lumps picture of measurement. That I think is the fundamental key to understanding what measurement means in quantum mechanics. Okay, this is all the stuff that we wanted to show you and talk about today. I think that this should help a lot with all your thinking about quantum mechanics, but also with in particular the interference and undoing unitary evolution steps. You can see that that's another way of saying bringing the two separated lumps back together. That's what we need to do. Because what we want to do is test whether there really were two lumps to begin with. If we're going to collapse theory, then one of the lumps just disappears, and then we won't see the telltale signs of interference when we bring the lumps back together. Okay, again, I think that's a good place to stop. I'm excited to look at these. These papers next time. Let me know anything in particular you want to focus on if you want to do anything different,
+
+Mackenzie Dion  1:03:04
+um, I recall sections like 1.2 through 1.4 I think being the most interesting to me, but
+
+Unknown Speaker  1:03:13
+friendly thoughts on thoughtful friendliness. Great,
+
+Mackenzie Dion  1:03:17
+but I think I just want I'm looking at my notes. That's where I had the most notes, but
+
+Unknown Speaker  1:03:24
+I want to know where you have notes and
+
+Mackenzie Dion  1:03:26
+questions. Okay, awesome. Cool. But also,
+
+Unknown Speaker  1:03:29
+please let me know if you see anything like this. I don't know why but I don't know. We're in school and I don't know where anyone who's done like a 3d model of this actually happening. But I feel like this is the most this is the thing that helped measure me clicked for me was when I figured this out for myself,
+
+Mackenzie Dion  1:03:45
+would you so because I record our sessions, I do it in Otter the auto transcripts them so if you want, like I could put your explanation into like a written form. If you just like want to have that as a resource or something. I would really like that.
+
+Unknown Speaker  1:04:01
+That's really thoughtful. I appreciate it. I really struggle to write sometimes I find it easier to talk.
+
+Mackenzie Dion  1:04:08
+Like in general if there are concepts that you think aren't well explained in quantum mechanics or other disciplines. I've done this for friends before like I would happily like talk to you while you explain it and then all like produce like a well formatted like written version of it or something.
+
+Unknown Speaker  1:04:26
+That's really cool. I will definitely think
+
+Mackenzie Dion  1:04:28
+about that. Yeah, if there's like
+
+Unknown Speaker  1:04:31
+this is just one of those few cases. Cool. Yeah. Okay,
+
+Mackenzie Dion  1:04:35
+I'll see you Bye.
+
+
+Transcribed by https://otter.ai

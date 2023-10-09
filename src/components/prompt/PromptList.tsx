@@ -1,4 +1,5 @@
 import React, { useCallback, useEffect, useMemo, useState } from "react";
+import { startReviewForInlineReviewModule } from "../../app/modalReviewSlice";
 import {
   savePrompt,
   unsavePrompt,
@@ -9,6 +10,7 @@ import { useAppDispatch, useAppSelector } from "../../app/store";
 import { useLayoutDependentValue } from "../../hooks/useLayoutDependentValue";
 import Check from "../../static/images/Icons/Check.png";
 import { PromptLocation } from "../../util/resolvePromptLocations";
+import { viewportToRoot } from "../../util/viewportToRoot";
 import Button from "../Button";
 import zIndices from "../common/zIndices";
 import { LabelColor, LabelSmall } from "../Type";
@@ -75,14 +77,12 @@ export interface PromptListProps {
   // Very much a hack. To make prompt lists appear to be "in" the main flow of the text, without adding N different React roots, we add an empty placeholder <div> to the body of the article. This component uses that <div>s width and y position to define its own, then lays out an absolutely-positioned *overlay* in the floating prototype root node. Then it syncs the height of that laid-out component *back* to the placeholder <div> in the main flow of the article, so that content below is repositioned accordingly.
   targetElementID: string;
   promptLocations: { [id: string]: PromptLocation };
-  onStartReview: (onReviewExit: (reviewAreaID: string) => void) => void;
 }
 
 export function PromptList({
   promptIDs,
   targetElementID,
   inlineReviewID,
-  onStartReview,
   promptLocations,
 }: PromptListProps) {
   const promptEntries = useAppSelector((state) =>
@@ -99,7 +99,8 @@ export function PromptList({
   const [left, top, width] = useLayoutDependentValue(
     useCallback(() => {
       const rect = targetElement.getBoundingClientRect();
-      return [rect.x + window.scrollX, rect.y + window.scrollY, rect.width];
+      const offset = viewportToRoot();
+      return [rect.x + offset.x, rect.y + offset.y, rect.width];
     }, [targetElement]),
   );
 
@@ -119,27 +120,25 @@ export function PromptList({
 
   const dispatch = useAppDispatch();
 
-  const [completedModalReviewID, setCompletedModalReviewID] = useState<
-    string | null
-  >(null);
-  const mostRecentReviewID = completedModalReviewID ?? inlineReviewID;
-  function onReviewComplete(reviewAreaID: string) {
-    setCompletedModalReviewID(reviewAreaID);
-  }
+  const [mostRecentReviewID, setMostRecentReviewID] = useState(
+    inlineReviewID ?? null,
+  );
 
   const autosavedPromptIDs = useMemo(() => {
-    return mostRecentReviewID
-      ? promptEntries
-          .filter(
-            ([id, prompt]) => prompt.sourceReviewAreaID === mostRecentReviewID,
-          )
-          .map(([id]) => id)
-      : [];
+    return promptEntries
+      .filter(([, prompt]) => prompt.sourceReviewAreaID === mostRecentReviewID)
+      .map(([id]) => id);
   }, [promptEntries, mostRecentReviewID]);
 
   function onUndoAutosave() {
-    setCompletedModalReviewID(null);
+    setMostRecentReviewID(null);
     autosavedPromptIDs.forEach((id) => dispatch(unsavePrompt(id)));
+  }
+
+  function onStartReview() {
+    const modalReviewID = `${mostRecentReviewID ?? targetElementID}-modal`;
+    dispatch(startReviewForInlineReviewModule({ promptIDs, modalReviewID }));
+    setMostRecentReviewID(modalReviewID);
   }
 
   const PromptListColumn = ({
@@ -242,7 +241,7 @@ export function PromptList({
         </div>
         <div css={{ flexGrow: 0 }}>
           <Button
-            onClick={() => onStartReview(onReviewComplete)}
+            onClick={onStartReview}
             icon="rightArrow"
             disabled={promptEntries.every(
               ([_, { isSaved, isDue }]) => isSaved && !isDue,

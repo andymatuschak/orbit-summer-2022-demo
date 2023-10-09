@@ -1,11 +1,6 @@
-import React, {
-  ReactNode,
-  useCallback,
-  useEffect,
-  useRef,
-  useState,
-} from "react";
-import { forceLocalMode, openLoginPopup } from "../app/orbitSyncMiddleware";
+import React, { useCallback, useEffect, useRef, useState } from "react";
+import { startReviewForAllDuePrompts } from "../app/modalReviewSlice";
+import { openLoginPopup } from "../app/orbitSyncMiddleware";
 import { setPromptVisibility } from "../app/promptVisibilitySlice";
 import { useAppDispatch, useAppSelector } from "../app/store";
 import X from "../static/images/Icons/X.png";
@@ -162,11 +157,9 @@ function PromptVisibilityMenuItem() {
   );
 }
 
-export interface OrbitMenuProps {
-  onStartReview: () => void;
-}
+export function OrbitMenu() {
+  const dispatch = useAppDispatch();
 
-export function OrbitMenu(props: OrbitMenuProps) {
   const [isOpen, setOpen] = useState(false);
   const duePromptCount = useAppSelector(
     ({ prompts }) =>
@@ -232,7 +225,7 @@ export function OrbitMenu(props: OrbitMenuProps) {
         title="Start Review"
         subtitle={userEmail ?? undefined}
         onClick={() => {
-          props.onStartReview();
+          dispatch(startReviewForAllDuePrompts());
           setOpen(false);
         }}
         disabled={duePromptCount === 0}
@@ -254,37 +247,6 @@ export function OrbitMenu(props: OrbitMenuProps) {
       )}
     </div>
   );
-
-  let items: ReactNode;
-  if (forceLocalMode) {
-    items = (
-      <>
-        <PromptVisibilityMenuItem />
-        <MenuItem
-          title="Export as Anki Deck"
-          onClick={() => downloadAnkiDeck()}
-          disabled={!anyPromptsSaved}
-        />
-        {startReviewMenuItem}
-      </>
-    );
-  } else {
-    if (userEmail) {
-      items = (
-        <>
-          <PromptVisibilityMenuItem />
-          {startReviewMenuItem}
-        </>
-      );
-    } else {
-      items = (
-        <>
-          <PromptVisibilityMenuItem />
-          <MenuItem title="Sign in" onClick={openLoginPopup} />
-        </>
-      );
-    }
-  }
 
   return (
     <div ref={containerRef}>
@@ -317,7 +279,16 @@ export function OrbitMenu(props: OrbitMenuProps) {
             "clip-path 0.3s var(--expoTiming), opacity 0s 0.3s linear",
         }}
       >
-        {items}
+        {/*<PromptVisibilityMenuItem />*/}
+        <MenuItem
+          title="Export Saved Prompts to Anki"
+          onClick={() => downloadAnkiDeck()}
+          disabled={!anyPromptsSaved}
+        />
+        {startReviewMenuItem}
+        {!userEmail && (
+          <MenuItem title="Sign In to Orbit" onClick={openLoginPopup} />
+        )}
 
         {/* Bottom bar */}
         <div

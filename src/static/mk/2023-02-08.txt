@@ -1,0 +1,763 @@
+Unknown Speaker  0:00  
+going on. So my messages today help you in any way.
+
+Mackenzie Dion  0:06  
+I think by the time I got it I was at work and had to do workI things and so I didn't really I was looking at it this morning. So I talked with Mark yesterday. And I was starting to think maybe this was we did like, we walked through the vectors for an experiment but in the context of a quantum circuit and the the he was trying to make a point with applying the hadamard gate and then what is the name of the C NOT gate and then like doing that. Again, I think I'd like a set of intuitions about what you're trying to say but I never got to the actual answer. Okay. And so no, I have not resolved it. But I was looking at like, I don't know if I hold this up to the screen whether you can see it. Probably. It was looking at I drew this.
+
+Unknown Speaker  1:15  
+Yeah. Yeah.
+
+Mackenzie Dion  1:19  
+And I was like, maybe this is the answer to his question. If, if we're right here, where you ask the question and then you do this under? I thought I was just thinking that might be the answer to your question. But
+
+Unknown Speaker  1:36  
+yeah, that's basically it. Okay. So
+
+Mackenzie Dion  1:42  
+I just like I don't think I really understand it. I just had I just had a feeling. I think based off of the conversations I've had with you and mark that this is the answer. Right.
+
+Unknown Speaker  1:54  
+Right. So basically the point, the point being Okay, in this von Neumann measurement schema, you get your apparatus entangled with your system. And then you look at the local apparatus to learn about the system. And this is directly parallel to what happens in the bigger spreads scenario where the friend gets entangled with the system. And then within asks the friend Hey, what's up and he learns about the system right? Yeah. So this is the computer parallel thing now if you want to do the, if you want to do the like if the point is that if you're if you just have those two things and tangled say that once you're so this, basically this is just a pattern happens all the time, all over space, and like we build systems, right? It's like, it's this idea is precisely this idea that remember who was telling you about this, but it's really important that entanglement is basically the same as measurement.
+
+Mackenzie Dion  3:07  
+The was telling me this,
+
+who was telling me this other member was telling you this, Oh Mark, Mark is often the other person that I reference
+
+Unknown Speaker  3:17  
+okay. Yeah. So Mark, Miko Celica this tutorial. So basically, if, you know if your system gets entangled with something that you don't control, then your system basically has the same state for you as the same state as it as it had collapsed. Because if it was, you know, the distribution is gone. Now you're the state of the system is a mixed state. Right, do you remember the two states that we had at the beginning right let's let's actually let's actually go back you sent me an email with the with that thing.
+
+Mackenzie Dion  3:54  
+You're saying like if something is entangled, it's as if it had collapsed because the state of what's your thing is entangled with updates to the state. Like if if A is in a state, and then B becomes entangled with it b updates to the state of a and that's why it's like the same as measurement. But
+
+Unknown Speaker  4:15  
+like, if you look at if you only if you lose B than a is the same, the same set of A is the same as what it would have been if the state just collapsed. So let's let's let's get the board from last time. Make it pure Okay. Copy Link something into
+
+Unknown Speaker  4:39  
+the chat so I'm just bored Yep.
+
+Unknown Speaker  4:56  
+Can you see the board Yeah. So. So this this was the state after after actual collapse, so say But typically if your system collapse later no in which they did collapse?
+
+Mackenzie Dion  5:09  
+Where are you? What side are you on? Sorry,
+
+Unknown Speaker  5:12  
+you didn't see me going on? Oh, sorry. He's like one side one.
+
+Mackenzie Dion  5:15  
+Okay. I didn't see your cursor. But yeah.
+
+Unknown Speaker  5:18  
+So here Oh, yep.
+
+Unknown Speaker  5:21  
+This state is the state that just so you start with the superposition of being zero and one. And then the state collapse, but you don't, it's collapses but you don't know where it collapsed. It does collapse in zero or one. And the result is this state, the first state I circled right, right, that makes this makes stage B zero a projector on zero plus b1 projector on one. But now
+
+Mackenzie Dion  5:48  
+that you have, I think this is like a I realized I don't I think I get kind of confused about mixed states. Like I didn't realize that a mixed state was something that occurred after a measurement because I I think my conception of a post measurement state would be merely like it would only be kind of 01 in this context, and that this mix state after measurement has occurred. doesn't really count. It's like the information hasn't been revealed or something.
+
+Unknown Speaker  6:18  
+Right, well, like say that. So the so the let's the matrices can represent many things, but in general, any quantum state is used to predict the results of future observations. Okay, right. And if you have a situation in which your status certainly zero, or certainly one, but you don't know which one it is, and you have only some chance of being either one or the other. So it's like a coin flip an actual coin flip. Yeah. So when I flip a coin, and it lands on my hand, it's certainly either up or down. But the way I predict the future has to be based, I need to input my uncertainty in there, which is my uncertainty. It's not like fundamental quantum uncertainty. And this is one thing that density matrices can do. Okay, so this and symmetries here that I that I circled can represent a situation where the state is certainly it's really, really in the zero or really, really in the one or not. Okay, it certainly can definitely represent this. And in fact, this is how they are introduced. For example, they weren't to this to me like this, like say that to other physics according to statistical mixture. Like you could be like, okay, my, my source of photons is producing photons polarized this way or that way. And actually, sometimes it's just noisy and sometimes it's that way and sometimes there's other way. This is what your it will treat your apparatus as producing the state
+
+Unknown Speaker  8:00  
+Okay. Okay. Then
+
+Unknown Speaker  8:10  
+in the first like decide the last year yesterday we, yep, yes, time. So the second page was to compute the reduced density matrix for this state here on page two that circled on top. Yep, yeah. So it's like, you see what, what the state is, and you do this computation? Yeah.
+
+Mackenzie Dion  8:41  
+It's in the it's an untitled one that I sent you, but I got for the reduced density matrix. I got off a squared. Okay. So I guess add it together. It would be alpha squared beta squared I but I wrote it I can circle in this
+
+Unknown Speaker  9:02  
+is you know, this is not our different words. Okay. So two workbooks and three bears don't make like six up six apps
+
+Mackenzie Dion  9:16  
+topples.
+
+Unknown Speaker  9:18  
+Can you see like this is I mean, like, this is about you should get comfortable with the basic rules for manipulating vectors, or matrices, whatever. Like, right. I'm not gonna go through this again, but like, but look at this first equation here. We just we were just looking at something very similar.
+
+Mackenzie Dion  9:41  
+When you say here, are you pointing If I can't,
+
+Unknown Speaker  9:44  
+the first formula is correct. Like the first one equal sign is correct. The second sign not
+
+Mackenzie Dion  9:51  
+Oh, this one.
+
+Unknown Speaker  9:55  
+Cannot see where you're pointing. Yeah, okay. That's the first one is correct. Yeah. Okay, great. So that's data. Yeah. We were just looking at something very similar.
+
+Mackenzie Dion  10:08  
+Yes.
+
+And from looking at this, do I, when I think of like, I feel like my proxies for seeing if a state is mixed, is if, like, I don't know if I understand the hard rules of it. I'm like, oh, a mix state is like a sum of the probabilities of pure states. And so if I see this squared, like alpha and beta squared, I'm like, oh, that's like the form that a probability is in and then I see zero like, the, the outer product of zero and the outer product of one and I know those are like my possible measurement. outcomes. So I'm just kind of like, okay, this is mixed, but is there is there like a difference? Is that what I need to determine that it's mixed? Or is that?
+
+Unknown Speaker  10:55  
+No, I'm sorry. There's a there's a very simple test for seeing if something is mixed or not, is what it was. It's definitely in the in the book by by Michael Smith. A triangle? Yep. So
+
+Mackenzie Dion  11:13  
+the trace is less than one almost less than or equal to one.
+
+Unknown Speaker  11:24  
+Not so much. So that for any state normalized state, the trace is equal to one. Okay. But if it's pure, then the trace of the squared of the matrices of the matrix squared is one. Okay. And if it's mixed, there's less than one. Okay. It's, it's very simple, in a sense, it's kind of it's weird. Seems like very weird abstract. But come back to the board to the other board the second fabric one Yeah. So. So a pure state is always the form so wrote pure is always of the form site site for some site. Your site so it's like, it's literally you remember, like you create a density matrix from a state is like the captain and the bra that's how you build it. So if it's if you can be brought back to a single doctor. Yeah, it's that and then it's very simple to see that rho squared is sy sy sy. Sy this by normalization this is equal to one Yeah, so you just get say, say yeah, equals zero. So yeah, ropey so rho p is equal to rho p squared, okay. And so trace of rho p squared is equal to trace, pro B because repeat squared, the rookie the same thing and then you get this is equal to one, okay. So for pure state, you see that immediately trace is equal to one so, if the trace is equal to 123 squared, the trace of the density matrix squared is also one. Right sorry, if it's if two three squared is one, then it cannot be mixed. Now for a mixed state
+
+Unknown Speaker  13:50  
+do you see that that makes sense it always has to be less than one.
+
+Unknown Speaker  13:58  
+I don't think
+
+Unknown Speaker  14:04  
+so. For example, I miss state. We'd be able to form like Rob mixta books what would it be? Well, say for example, it's, it's like as we said, is like probability of being in one state. Probability of state of being in one state like side. So it's a certain probably it will be there and a certain probably it will be a different state by then if you try to take the square of this thing, you got the first one with the first one. So you know what the square of this is. It's gonna write out the passages. I just switched that out. So this is p squared, Cy, Cy, CY. side, and then you have the cross term, side by side. Okay. And this will be Sci Fi hi. Hi.
+
+Mackenzie Dion  15:20  
+Why why is it not? P of size? I see that you're squaring psi with itself. But why are you not scoring? Five with itself rather than multiple?
+
+Unknown Speaker  15:38  
+Well, you have to, you have to do them all. So it's like so a plus b squared. Okay. Is a squared plus
+
+Mackenzie Dion  15:46  
+a b? Oh, sorry. I just Yeah, I just didn't
+
+Unknown Speaker  15:51  
+have to do them all eventually. Yeah, but this is not going to actually I can actually show this like you won't be clear that this was going on. Okay, there's, there's a faster way to do this. We just got it forever. The other reason is that so any, that's the matrix. That's the matrix is so. So any state in the matrix
+
+Unknown Speaker  16:26  
+is self adjoint. Yeah. So it means that the Eigen vectors are orthogonal and the Eigen values are the Eigen vectors are orthogonal and the Eigen values are real So, if this is So, technically you're not interested in a proof,
+
+Mackenzie Dion  16:54  
+this is fine this is fine. Okay. So,
+
+Unknown Speaker  16:58  
+equally self adjoint it means like, it means that you can write it as in some basis you can write it as sum over p of some states.
+
+Unknown Speaker  17:12  
+Right, where
+
+Unknown Speaker  17:16  
+n is equal to zero if n is different from N and otherwise is equal to one. So, this is this is the
+
+Mackenzie Dion  17:26  
+left this left, this is an n on the left of the inner product.
+
+Unknown Speaker  17:30  
+This is n and this is different number of X. Yeah sorry, I think America is like this. Like more than it's okay, I
+
+Mackenzie Dion  17:44  
+got it. Yeah.
+
+Unknown Speaker  17:48  
+Anyway, so this is the diagonalization theorem. They were talking about, like, maybe three sessions ago or something. Yeah. This is just a theorem. Now if you do rho squared, you have to you have to do some over N of p n, n. And then you have to do some polar
+
+Unknown Speaker  18:17  
+okay, you have to multiply these two things together. I mean, this is just a rule of how you how you multiply sums together. You distribute really nicely that you can convince yourself by doing it with only two cases, for example. So this is this is just how to go from here. From here to here. It's like you have to it's basically while it's this sort of this, going from here to here is the same as going from here to here, just with more elements. I don't know if you can see it. Yeah, you can.
+
+Unknown Speaker  19:02  
+You can try it but
+
+Unknown Speaker  19:04  
+but now we have this formula. This is equal to zero if n or m are different and it's equal to one. So this is this. Yep. So if n and m are different, is equal to zero. And if they're the same, it's equal to one. So the sum that is summing both over and now just becomes the sum over and only and it's p squared p n squared
+
+Unknown Speaker  19:36  
+now
+
+Unknown Speaker  19:41  
+now because this is the diagonal, because these guys so this is a diagonal matrix, because only the things that are only the things that are so so this would be this matrix is p 01200000000. In some basis, in the end basis, is like this. And because this is the diagonal, the trace is just the sum of the elements over the diagonal. So it means that the trace of rho squared is equal to sum over n of p n squared. And this is n, p n squared. Yes, p n squared is n and this is plus this is less or equal to one. And you have to convince yourself by this by this is like now we're going like back to like high school stuff like
+
+Unknown Speaker  20:55  
+because
+
+Unknown Speaker  20:58  
+So sum over n or just p n is equal to one because these are probabilities. But because P probabilities are between zero and one, you have this formula that this is equal to this arrangement
+
+Unknown Speaker  21:26  
+because
+
+Unknown Speaker  21:27  
+the number between zero and one is crazy because the smaller reporter seems to becomes a board and so the sum of the squares is less than the sum of the linear things, which is one, so some of these squares was one, okay. So this was the proof that so for instance, the matrix, the trace, squared, those are some of the square is less than the trace of the thing. And it's one only if the thing is pure. Okay, this was very long winded. But this is how you see fancy matrix. This is pure mixed.
+
+Unknown Speaker  22:12  
+Like in general, you need to obviously remember the proofs, but you need to so basically the, the answer to this is, this means pure. And trace rho squared less than trace on bro equals to one.
+
+Unknown Speaker  22:34  
+This mix mixed
+
+Unknown Speaker  22:39  
+is the best. Okay, so now we went on a tangent, but basically, let's go back to this. So you saw you did this. So let's go to page two of this jam board, whatever it's called. So you check that this row. So this row S is equal to
+
+Unknown Speaker  23:06  
+something happened to my jam board
+
+Unknown Speaker  23:09  
+is equal to rho s is equal to alpha squared, zero plus beta squared 01.
+
+Unknown Speaker  23:21  
+Okay, so is this a mistake? Yes. Okay.
+
+Unknown Speaker  23:33  
+Yes, it's a mistake. And as long as alpha one of alpha and beta is different from zero so otherwise you wouldn't read it like this. So this state is exactly the same state as on page one.
+
+Unknown Speaker  23:53  
+You would get if the state had like if the functioning of the system itself actually collapsed. Hmm, right. So let's sort of take a step back. So in page two, we have a situation where your system has interacted with another system
+
+Unknown Speaker  24:17  
+and but the system disk disk composite system is still in a superposition. Right? It's no actual collapse that has happened. But because you don't have access, but if you if you don't have access to the system to which your system is coupled and you only look at your state and you only have this reduced state. The state is exactly the same as if your system had collapsed
+
+Mackenzie Dion  24:48  
+okay.
+
+Unknown Speaker  24:54  
+And this is like this is the main reason why it's hard to do quantum experiments is because as soon as you create a big superposition, so they say I take a molecule and I send it back this way. And with that way, as soon as I do that, there's going to be something that interacts with the molecule. So like, some light bounces off of it or some some like molecule of gas or something like that, that somehow reads the state and gets entangled with their with their system. But because you don't have access to this to this stuff, flying around the photons and everything, when you will look at your system that you can control. The observations that you have are exactly the same as if the state had collapsed and you are in this projective measurement scenario
+
+Mackenzie Dion  25:49  
+but then you trade euro but my question is, but in that context, you know that this Yeah, this question feels wrong. I was gonna say but you know that it hasn't actually collapsed or something but if like you're getting but it hasn't a sense if like mathematically it's in this mixed state. I don't know if
+
+Unknown Speaker  26:13  
+so, yeah. So so the theory so for example, if you if you believe that they are in this in this situation here on the on this page to where your system is really just entangled with something else that you don't see that your theory is telling you that your system hasn't collapsed, but your theory is also telling you that the observations that you will have from that system are exactly the same as if it does collapse. Okay, the question is do you believe Do you believe like, so what's the point like what do you believe because if you if your theory like your your parents are telling you Santa Claus is going around the world that presents presents, like, is that because there's Santa Claus, or is there another theory that explains what's going on? Right and like to believe in Santa Claus, you would want to see Santa Claus at one point, or see at least I don't know the reindeer or something. Right? And this is the point of like, testing quantum mechanics further and further because, like the theory predicts that when I look at a spin I'm going elsewhere position. And from your point of view, I'm also like, you know, superposition to interact with me. But because of this light scattering of me and everything, the theory predicts that they will behave as if I saw a different result. Yeah, and you just don't know what it is.
+
+Mackenzie Dion  27:49  
+Okay, and this is this is part of thickness friend, as well, right?
+
+Unknown Speaker  27:54  
+Yeah. This is the this is the whole the whole chaos around the measurement problem. Yeah, this is the whole kit resulting around the measurement problem. Okay. It's like, okay, like the theory doesn't tell you when collapse happens. But the theory tells you that if you look at only parts of the system, that your system is not well as related or whatever, then the system behaves as if it actually had collapse. It doesn't tell you when it collapsed or whatever, but it tells you that your future observations are completely compatible with the fact that the system actually collapsed and we are in this exercise one scenario, two page one scenario. But you could but the theory is telling you no, actually, you are in this page to scenario
+
+Unknown Speaker  28:41  
+but you cannot see it.
+
+Unknown Speaker  28:44  
+And this is where we came. This is why we came up with this question to it, it's like, Well, one way to see it would be to take this state here that's on the top this pure state and include sports the system and apparatus or whatever. And some I'll do something to this whole thing. So then my system comes back to the opposition.
+
+Mackenzie Dion  29:10  
+We say comes back to a superposition is a Yeah, so that's, that's, uh, I guess I'm looking at like, how can I make it pure or using those terms interchangeably?
+
+Unknown Speaker  29:25  
+Yes. So yeah. So this bit not very precise speaking but yes. So you you start running state and you want to go back to Tokyo state. And because normally like you will talk about the superposition as opposed to a mixture. So if you come to page page four, I guess now. So if you're so we were considering an initial state that is of the form Alpha zero plus beta one. This is the kind of superposition and the computational basis. Yeah, the density matrix of this thing is alpha 00. So alpha squared is 00 plus beta squared, one one and then there are these two additional terms which are offered by conjugate 01 plus alpha conjugate beta one zero. And this is this is the this is the mixture sorry. So this is the pure state that was requisition. Then, if I delete these two terms, or the backup, if we're back to our complete mixture scenario from before you see, these first two terms are the next state. Yeah. These two terms are the first mixed data and these are these two terms. When these two terms or these other two terms are here, then you have the superposition. So you go so this row M here is a set of a mixture and the row m plus these two terms is that is the state of the superposition.
+
+Mackenzie Dion  31:20  
+Okay,
+
+so I think when I was trying to imagine how to get it back to a pure state, I was just looking at oh, I want to in Okay, that's cool. One of these two states, so zero or one or I want to try to get rid of these probabilities somehow. I wasn't considering the these two other terms.
+
+Unknown Speaker  31:46  
+Right to not sorry. Yeah, I mean, the My question was a bit too vague, I guess. So but the point was, found the answer without seeing. The point is, if you so you're looking back to page two. Actually, I'll come back to page one. So here we have this. We have this evolution Euro that does this thing that untangles your system with others, right and sends you from the state where your your state is pure at the beginning to when the stage is entangled with the parameters and if you trace the process out, your study is mixed.
+
+Unknown Speaker  32:35  
+Right this is what happened on okay. But if you were to apply to this final state, the inverse operation you right, so you do so you you start with your systems, not entangled with apparatus. Then you untangles the system and a part of this then you perform the inverse operation. You dagger. Then this is untangles your system from the products. Now your now appears. Now the state of the system, the partial trace is again characteristic is what I had in mind.
+
+Mackenzie Dion  33:14  
+That's kind of what I was thinking but I think maybe I just didn't have a understanding. I think I misunderstood what a pure state was. And so then
+
+Unknown Speaker  33:24  
+yeah, I mean, if you were to get rid of, so if you have a state like P zero projector on zero plus b one projector one and you get rid of projector on one, somehow. This isn't again at your stage but projector on zero is a pure state. Like this was not the man with the mind. He was like somehow, you know, going back to your initial state where you still have the superposition right? At all this was to say this was the point about like it was like a sketch to connect to this idea that you have to reverse the evolution to be able to perform the experiment you wanted to experiment to do
+
+Mackenzie Dion  34:10  
+Can we maybe talk about where that actually falls in the order of the experiment?
+
+Unknown Speaker  34:18  
+Yeah, sure.
+
+Mackenzie Dion  34:23  
+So, I mean, we could do this on for, like four I guess we could do it in the context of like, a quantum circuit.
+
+Unknown Speaker  34:38  
+Yeah, actually, let's start by first sketching the the extender, we're going to spend scenario quickly.
+
+Mackenzie Dion  34:48  
+Okay, does it need to be extended or do we not want to do
+
+Unknown Speaker  34:54  
+let's just do it. Let's do it. The not extended. Okay.
+
+Mackenzie Dion  35:02  
+Could you leave that actually I did. You can undo it. You stop. Okay. Like we just got to
+
+okay yeah, okay, perfect. Okay,
+
+so here's Bob or maybe it's Bob is in the box. I don't know if that distinction really matters. But whatever. You know, I know it doesn't matter. I just for other things that are
+
+Unknown Speaker  35:37  
+consistent. Every time we can make connections.
+
+Mackenzie Dion  35:41  
+Yep. I know. Okay, so LS outside the lab, Bob in the isolated lab, with this little box that contains some particle in a superposition of two states. And Bob wants at some point, Bob decides whether or not to measure the system. So and then receive like a definite state, if it's like in the computational basis, and it's a qubits. 01 and Alice is outside the box and she has no idea whether Bob has made this measurement or not already. And so she has to do something to determine. So I guess it's like, this is actually where I start to get confused. So basically, it's it's Bob, I think how I read it was that if Bob has not made the measurement, Alice will do some kind of measurement from outside the box and get a result that tells her that the Bob and the box are entangled. And then if I'll if Bob has made the measurement, Alice will do some measurement from outside the box. And fine, I guess it's like the partial is that the partial trace in this context? Like in the in the previous thing you should meet? I'll just like speak kind of and then yeah. And then and then and then if she finds like that, it isn't in the state that the like initial state or some like, like, basically, it's like a statistical thing. So like, they would have to run this experiment like a bunch of times or something. And like, if Bob's outcome is variable, then like Bob had made the measurement. But I don't really understand like, I think you're thinking
+
+Unknown Speaker  37:35  
+of like some limits like this. Reminds me a lot of the David Deutsch version of this. So Tesla Bruckner's talk about the weakness brand is like some some extra thing. On top of it. Oh, okay. Because, yeah, mathematically mathematically, Alice can perform an operation on Bob and the box to verify the Bob is entangled with the box without learning anything about sorry, Bob. Let's put the system in the box. So to say let's give names to everything. So Alice can perform. Allison can perform automatically, there exists a thing that Alice can do to verify that Bob and the system are entangled.
+
+Mackenzie Dion  38:16  
+entangled, meaning measurement is not. This is where it get confused because it's like, entangled. It's a measurement has happened has happened.
+
+Unknown Speaker  38:24  
+Yes. Because this is the Von Neumann scenario, right. The one on the measurement scenario, the apparatus gets entangled with the system case Bob gets entangled in the system. Yeah. Right. And then Alice can collapse either or either one or the tool. So but the first part is sometimes called the pre measurements from Alice's point of view, or like the system hasn't collapsed but they're entangled. Bob's state knows about system state.
+
+Mackenzie Dion  38:55  
+So how could that Bob knows the system state how could that not have been like
+
+that they've collapsed? So
+
+if I'm just also thinking about this, like, Bob as like a human observer or something? Yeah.
+
+Unknown Speaker  39:11  
+Right, very good. This is this is again, this is like this is, you know, generations of pieces that been bothered by this, like this is a this is the meat.
+
+Unknown Speaker  39:21  
+Okay. Okay. So
+
+Unknown Speaker  39:26  
+let's, let's do a time zero. I don't know. I don't know if it's a time zero. We have a state both both Bob and Alice. agree that the state of the system is alpha. Something is wrong with this alpha 00 plus beta. Sorry
+
+Unknown Speaker  39:52  
+Alpha zero plus one, pure simple system. Okay. Is your system okay? Now
+
+Unknown Speaker  40:11  
+Alice also describes Bob. Okay. And Alice describes both the system and Bob as being in a separable state where Bob's state is some state Bob ready This was from last time you don't lose discussion. No human chatter GPT 40 would know what the state of Bobby But quantum mechanics tells you well, you should have a state and it is some state
+
+Unknown Speaker  40:48  
+Yeah, then attempt to one.
+
+Unknown Speaker  40:53  
+So now, but Bob and Alice agree that Bob at one point is between zero and two one Bob will open the box.
+
+Mackenzie Dion  41:01  
+Okay, so measurement has occurred. Between these?
+
+Unknown Speaker  41:06  
+Well, depends. So from Alice's point of view, what happened is that Alice and Bob and the system got entangled.
+
+Mackenzie Dion  41:16  
+I'm just gonna add that opens Yes, very good. And then this is from Alice's perspective at T one.
+
+Unknown Speaker  41:32  
+Yeah, I'm just running everything from my my pattern is doesn't work. Can you don't finish writing? The you have to put Bob right I'm gonna open a different browser. Okay. I think it's something about the browser.
+
+Mackenzie Dion  41:48  
+So I finish I think I'm good
+
+Unknown Speaker  42:01  
+So Firefox
+
+Unknown Speaker  42:11  
+okay, this is exactly the same thing as the one on the scripture of the measurement. Yeah. On page one. Yeah. Yeah. So
+
+Unknown Speaker  42:26  
+and why do we why do we do this description because if the if the system really was in zero but we'll do something like seeing that the state is in zero. Right. And that will be a new state where somehow some parts of Bob know that the city zero there's some entanglement within? I don't know, some coordination between this, the state of the qubit and Bob's behavior right. And so there's some state B zero, where it would go. Conversely, if the system was in the in the state one, definitely. But somehow would Bob's behavior would reflect that so the system in state one and by linearity, we have this thing that
+
+Mackenzie Dion  43:21  
+was actually faster you're saying that they'll ask a question,
+
+Unknown Speaker  43:25  
+but linearity is the state start if the system starts as Proposition then both of these evolution happen in parallel, and you get this state of T one.
+
+Unknown Speaker  43:40  
+This is this is again, the same story. I'm not saying anything new. I'm saying the same thing I said on page one last time about the banana measurement. Whatever this you on page one was doing was somehow like okay, the system is in a certain state zero, the apparatus will reflect that. And if it wasn't state one, the apparatus will reflect that. Okay. So if you start seeing where position by linearity you end up with this entangled state.
+
+Mackenzie Dion  44:06  
+Right? And is Alice from outside the box just does she do anything in between these two states or she just kind of knows that like she she know that Bob open the box or like you said, this is his perspective.
+
+Unknown Speaker  44:22  
+They agreed they agreed there was an open Okay, okay. Or she presumes that he's done it or she has full control to the quantum level of Bob and knows exactly the Bob is critical this okay, I know the scenarios are these scenarios can be and everything statements to be this, okay. Okay. Now that now there are two possible scenarios. There's many things that can happen now for example, say for example, that Alice agreed with the what's interesting about what we like this is the thing that connects pastors to what we were talking about. Instead that Alice agreed with Bob that after Bob looked at the system,
+
+Unknown Speaker  45:06  
+Bob would just pass the system to her.
+
+Unknown Speaker  45:13  
+Okay.
+
+Unknown Speaker  45:18  
+So Alice, just human, she doesn't have any special abilities with Barbara on Bob, but she just received this, this qubit from him
+
+Unknown Speaker  45:35  
+okay. I will do find the state to set up this qubit.
+
+Mackenzie Dion  45:43  
+So, Bob, measured Bob gives Alice the qubit.
+
+Unknown Speaker  45:48  
+Yeah, so Alice just or Alice just picks up the qubit just receives a qubit somehow can Bob can give it to her to her, or she can just push a button and just the button sends the qubit but what is the state of the qubit for Alice if Alice does not have access to Bob
+
+Mackenzie Dion  46:11  
+is it what it is t
+
+Unknown Speaker  46:12  
+121. That's a set of both Bob and the system.
+
+Mackenzie Dion  46:17  
+Oh, sorry. Okay.
+
+And then Bob sends the qubit to Alice, would it?
+
+I feel like I might, in my answer. I feel like I'm missing something because I just want to say it's like alpha times zero plus beta times one. But that's what I feel like that's not right.
+
+Unknown Speaker  46:47  
+So what is so if you have a given state of a composite system? Yeah. How do you find the state of only part of the system?
+
+Mackenzie Dion  46:58  
+This is the partial trace. Yes, precisely. Because I kind of thought that was like, the conclusion you're leading me to but I couldn't see it for myself. So then I was like, I'm just gonna say the wrong answer. Or like, that's like what I can see.
+
+Unknown Speaker  47:11  
+So this is probably just working from the conditions right so if you ever see chemists, if you have a composite system Yeah. You're you cannot complete system to get to the system, only one part of it, you will trace out the rest. Okay, so what is the state? So if Alice receives just the Q beta? Yeah.
+
+Unknown Speaker  47:35  
+What is the state of the qubit
+
+Mackenzie Dion  47:38  
+alpha squared times the outer product of zero plus beta squared times outer product of one? Perfect.
+
+Unknown Speaker  47:50  
+So at the tool, what we get is alpha squared 00 plus beta squared.
+
+Unknown Speaker  47:59  
+One okay. So,
+
+Unknown Speaker  48:04  
+if Alice receives this data, so if I let's see, this is what's going on, and Alice wants to do like a, like an experiment with this cube into this cube it is not for her in this original state superposition of zero and one. For her this qubit is what it would be if you just received either one or zero and she doesn't know. Yeah, right. Yeah. Okay. So this is one scenario. So this is like in the interaction of the qubit. With Bob is poised to superposition on the qubit
+
+Mackenzie Dion  48:41  
+right, I see it one
+
+Unknown Speaker  48:44  
+to one Exactly. Yeah.
+
+Unknown Speaker  48:48  
+Now, consider this one scenario. Scenario One. Scenario two. Could be so this was scenario one.
+
+Mackenzie Dion  49:02  
+Right but when you say spoil the super position where Bob opens the box, no, no, I think I think I got it actually. Nevermind. And then oh, I was just gonna say I was asking again like, but when you say Bob opens the box and spoils the superposition, but since it to Alice, wouldn't Bob have already collapsed? Like the state if like Bob is updating to the state of the system and sends it to that Alice? But but this is like, the like, this is what Alice can infer about what the qubit will be without looking at it because guess how I'm feeling about this is like, Bob opens the box sees that the qubit is in state one is like okay, cool, sends it to Alice. Alice opens it sees that the qubits in state one and so I don't I'm not and I get that like if Alice hasn't yet looked at it, what's AT T two could like be indicative of how to describe it before yet looking at it or something. Right.
+
+Unknown Speaker  50:08  
+So so the point is, we don't know is the state collapse around? 81. So the 71 That's not the state of Obama has certainly seen zero or certainly seen one. Okay. This is a very different state. This is a state of being a superposition. Okay, having seen zero or one. Okay. Right. And this is precisely what this is precisely what Wigner was saying is impossible. We're going to we're saying you know, my friend cannot be in this suspended state of animation of neither having seen neither zero nor one until I measure. Yeah. Therefore, Bob has Bob's consciousness has collapsed to a function of the qubit because I don't I cannot accept the state you want to be the case.
+
+Mackenzie Dion  50:56  
+Yeah.
+
+Unknown Speaker  50:58  
+But then nothing in quantum mechanics tells you when the state collapses, like Alice can tweet and decide to treat Bob as a quantum system. directly in the theory, the theory nothing in the theory, nothing prevents Alice to treat Bob as a quantum system and have the state one where Bob is in the superposition state and tangled with a qubit. The question is, how do we verify if it's true that if it's the case that Bob got entangled, right, rather than actually having collapse to a function on the qubit? Well, one way one way not to do it is for Bob to pass you the qubits because if Bob passes in a qubit, what you get is this mixture but one way to do it would be to have quantum control on Bob and somehow undo this notion from t zero to one
+
+Unknown Speaker  52:02  
+because so So at t one,
+
+Unknown Speaker  52:09  
+the state above and above and the system is the state, Foursquare, the zero Bob 00. Book zero law that's gonna be to go on to write it but.
+
+Unknown Speaker  52:51  
+Okay, this is the state according to quantum mechanics, like according to the fact that this thing didn't collapse and this thing will behave very differently from the state in which there was actual collapse within Bob in the system. Which would be
+
+Unknown Speaker  53:11  
+to just this first part
+
+Unknown Speaker  53:27  
+let's call this no collapse, collapse.
+
+Unknown Speaker  53:36  
+Like these two states behave very differently. So, for example, if we call this evolution that goes from zero to one, we call it you if you apply the symmetry to the first to this first data you get back this initial state here. But if you applied to the state of Utah, you get something very different.
+
+Mackenzie Dion  54:11  
+If you apply you to the collapse
+
+Unknown Speaker  54:14  
+you this year, yeah.
+
+Unknown Speaker  54:19  
+So, this will be for example, one way to verify that, that this evolution is actually unitary and there's this, there is this superposition because if you if you can somehow undo it, you can come back to a state that is zero. And then you have the qubit back into position you can do stuff to it and you can verify it actually, the superposition never collapse. But if the state really is this one at the bottom, then if you try to undo it you can to get something else
+
+Unknown Speaker  55:08  
+okay, so
+
+Unknown Speaker  55:13  
+now, I see this is not clicking.
+
+Mackenzie Dion  55:16  
+It's kind of clicking but I like it. I feel like I can get there but I just need to spend more time with it or something.
+
+Unknown Speaker  55:25  
+Yeah, makes sense.
+
+Unknown Speaker  55:28  
+I can say that is useful.
+
+Unknown Speaker  55:35  
+We have two minutes before the end of the collapse of this call.
+
+Mackenzie Dion  55:38  
+Yeah, I'll just start a new Yeah, do it now. So I don't know if I can open two at the same time. I'll just is it okay? If I just got a minute Yeah. I'll log off Sorry.
+
+Unknown Speaker  56:52  
+Okay, you're back. Welcome back.
+
+Unknown Speaker  56:57  
+So actually had something in mind so let's take a step back. Let's go to page five basics. So we had we had the box so with Bob inside we had another box with the system inside and that is okay. And we said a T one. We had the system so zero. I'm going to Randall we had this Alpha zero plus beta one times the state of Bob whatever Bob was read, and then we attend to one after this, this unitary evolution you that is still the one on the first page. We have. We have Alpha zero, Bob zero plus beta one, one. Okay. Now, let's forget that Alice so in the weekend scenario we have Alice's control bottom and whatever, okay. But in general, Alice doesn't control everything in the universe, right? And she doesn't have like this. This lab is not actually sealed, right? It's as a window as a door. There's air in the room. There's like stuff like floating around and so on, right. So there is in this site, this box there is Bob there's a system but it's also what we want in physics. We'll just call the environment everything else. Right, all the all the molecules in the room all the light flying around all the stuff coming out of boxing, holsters and so on, right. It's all these are all system, they all have their own use cases, right? This whole thing as a base base, and this whole thing itself authentic zero, is in some state, environmental to zero.
+
+Unknown Speaker  58:43  
+Okay. Okay.
+
+Unknown Speaker  58:48  
+So what happens in reality in normal situations, when Bob opens the box, see something on the screen, his brain, you know, updates and learns that the qubit was zero or one. What's happening is that this light from the screen is also bouncing off from the screen is going everywhere. Is like reflecting in different ways in different coordinates the screen said zero or one Yeah, right. So, actually, here we have another system which is environment. Right. And the environment itself are either seen zero or a scene one
+
+Unknown Speaker  59:25  
+or something. Start. Yeah, yeah. Okay.
+
+Unknown Speaker  59:34  
+Now, this is effectively why we think of humans as collapsing the wavefunction in general, because Alice never sees this, like the full details of the euro crisis part sees part of the light actually, Alice only sees Bob to the light going around, right, but I still didn't see like the infrared radiation that came out of Bob. And like, where the gas molecules are going when I'm moving my hand right. I'm moving my hand like all this stuff is moving. And it's moving different to them. And if I didn't move my hand, right, so early is really a T one when Alice says only Bob and the system. She will describe this actually, as this mixture again, is alpha squared 0.000 plus, but a squared, one, Bob one, one. If it turns out the environment, you get this state for Bob and the system right? And so in normal situations, when you have a guy in a lab, interacting with start a quantum system, and there's somebody outside the lab that somebody doesn't think about. Alice doesn't think of Bob inside the lab was going into a position because whenever Alice actually steps into the room, she interacts only with Bob and the system and not with the whole thing of the environment. And so she only sees whatever is described by distancing matrix okay, you see, like we're doing this is that is always the same game. There's something at the end of tangled with something else. And the fact that there is an entanglement with that, something else that you don't see is making your thing behave as if it was collapsed.
+
+Unknown Speaker  1:01:35  
+This way, like when people talk about doing this extended weekend scenario, they don't talk just about this, about this pain and Charlie's lab or whatever, Bob's lab, we don't care about this. Beam. Bob's lab is talking about spin. And Bob and Bob's lab and everything inside Bob's lab, everything has to be under control. That's why this policy is called Super observer. Because she needs to have this sort of full picture of the situation, including these tiny degrees of freedom that we normally don't consider. But these all play a role. Because as soon as you are entangled with even one thing, your superposition is gone. I don't think that makes sense. I think it's like, yeah, it's just it's like it's it's always the same. It's always this thing whenever you get entangled whenever your system is getting entangled with something else and you don't have you don't see this something else you don't have control with it. It's as if your system actually collapsed.
+
+Unknown Speaker  1:02:58  
+And so but the thing is, for example, to violate these local transiency inequalities for to violate even double inequalities you need when you when you perform measurements on the system that you're using to buy these inequalities, you need the system to be in a position like if the system is not to reposition and is in this mix states that you can check the mathematics and it tells you that no mix state can give you the valuation you want. And so there is this game that you have to control every aspect of the experiment because if you if anything gets entangled with your system and you don't have control on this thing, then you can do anything you want to do.
+
+Unknown Speaker  1:03:51  
+For example, in control might mean that this one when your environment is entangled, Bob, it might mean do something so that they can disentangled which normally requires distribution to be undone for example.
+
+Mackenzie Dion  1:04:14  
+And so, in the like time series that we're looking at, yeah, which part is kind of the quote, hard part like the undoing is the is the hard part because you need to maintain a superposition or like where's like,
+
+Unknown Speaker  1:04:31  
+the hard part is preventing decoherence
+
+Unknown Speaker  1:04:35  
+the E.
+
+Unknown Speaker  1:04:38  
+present environment is preventing the environmental getting from getting entangled with your system whereby environment will mean anything that is not under control.
+
+Unknown Speaker  1:04:50  
+That's the hard part. Like this is always the hard part, you know, quantum experiments.
+
+Unknown Speaker  1:04:58  
+And this is what this is called. It's called decoherence. This is the this is the limit of quantum experiments. Like for example, like for the kinds of experiments I studied, that will lead to create this big superpositions of like heavy objects into a position there. The problem is that even if you go to Calvin which is like two degrees above absolute zero, you can have a photon just appearing from somewhere on your apparatus flying to it getting entangled with your mass and then just That's it, the photon is get absorbed again by like it gets emitted randomly by your process gets absorbed again by your crowd. This is where pollution is gone. And like one photon is enough, so you have to go like to miracle bins to make sure that there is a very low probability for this photon to cross
+
+Unknown Speaker  1:05:54  
+the apparatus for example.
+
+Unknown Speaker  1:06:01  
+This is like same way like you have to make super barbecue on because you don't know where all the gas molecules are. So you have to make sure that this media is not inside the apparatus. And stuff like that. That's the hard part.
+
+Unknown Speaker  1:06:23  
+And this is why we still like the quantum mechanics predicts that no matter how many systems get involved with the superposition right, like maybe you're without now you have system E and maybe you have a system F because they get so involved, they also get entangled and so on. You're talking about the mechanics tells you that no matter how many systems gotten tangled your thing, if you could still kind of gather them all and control them in a certain way. You could like disentangle them again and you could recover the enforcement position and and then that was its interpretation, so you're not okay, at what point when the thing becomes too big. It has to collapse.
+
+Mackenzie Dion  1:07:11  
+Is this like the mass induced collapse theory?
+
+Unknown Speaker  1:07:15  
+For example, there's the messengers collapse theory. Penrose, there is the spontaneous collapse of the Gr W model givony. Remember the surnames allowed by the jet out of the impediments m&a, so your dad so you have various things because at some point, like quantum mechanics just tells you things get tangled and untangle, untangle, untangle, untangle, and like there's just this superposition just spreads to all the systems with no limits. This is the this is the question. Like principle also, at least when Alex opens the box, if you imagine yourself thinking about the scenario, so you're stepping outside, we're not talking about Alice anymore. We're talking about Wigner or somebody else. We're gonna we'll have to describe Alice as getting entangled with the with Bob and the system rather than Alice collapsing population.
+
+Unknown Speaker  1:08:16  
+I guess, spreads.
+
+Mackenzie Dion  1:08:18  
+I have a question that I think I asked maybe last session as well, or maybe two sessions ago, which was around if you have some measurement apparatus, like a, you know a box that has a screen, it isn't that the entire box becomes entangled with the quantum system, but rather you could reduce it to just the the pixels that are involved in producing the measurement outcome that you read, like there's like some like minimum actual thing that's entangled and is that can you also do that with like, be able to do this experiment in a way that that accounts for decoherence if there is actually kind of just this thing that cuts like, like if it's only like a very, very small thing that's actually entangled? And the rest, like doesn't matter does that? Like that seems like you'd also have to be less worried about decoherence or something. Do you know what I'm asking?
+
+Unknown Speaker  1:09:30  
+Yeah, yeah. So those smaller so the fewer systems are involved, the easier adulting is to control. Like, that's for sure. Right? Like, it's so now it's different. If there's a single pixel on the screen, that's an angle to the cubed, as opposed to like, you know, after the country of Mexico being involved, right. But so it's, you can imagine, it's easier to control them, but the thing is, even losing one qubit will kill your superposition. So no matter how small the system that gets involved, if you don't control it that will still spoilers operation completely.
+
+Unknown Speaker  1:10:14  
+That's one part of it. Okay.
+
+Unknown Speaker  1:10:17  
+The other part of it is the story of like, we want Bob to be so in the witness friend scenario. We want the friend to be actually a friend. This was the wonder what the discussion was on the workshop. That's what we were discussing a lot like what would be like, like a
+
+Unknown Speaker  1:10:37  
+convincing
+
+Unknown Speaker  1:10:40  
+kind of system that we will treat as a friend. Yeah. Right. It's like the I guess you went through this period to doll paper a couple days ago. You call it something?
+
+Mackenzie Dion  1:10:53  
+Yes. I've read. It's not that easy. Really. It's he's not the first author. I know what you're talking about. So.
+
+Unknown Speaker  1:10:59  
+So that one is that one the role of bobbins experiment? is played by a single photon or something. And like, nobody gave a shit about the paper because everyone is like, yeah, of course supporting there's never like a photo on a bench lab but never causes a collapse. Unless you really want it to like you have to kind of by the time you create your experiment, you're a doofus. If you're expected that photon crazy will collapse because you control everything. And it's your choice to lose that photon. And so nobody took that experiment serious. Like nobody I mean, like nobody outside the control conditions are actually interested in these questions. So the question is, okay, yes, you can make these entanglement with like, you can make your system and your, your experiment or like your friends really small and you can control them and Kimberly's inequalities has created all data's Bogatell did. But somehow that's not convincing. To me. It doesn't tell you that you didn't tell you anything new because you knew you could put a fourth preposition so the local offenders inequalities for now certify that your friend was in a square position. That's a very loose way of looking at the theorem. But anyway, so you could say that yeah, but then we already knew we could put a position in question is can we put in a humongous solution?
+
+Mackenzie Dion  1:12:57  
+But again, wouldn't have to be the whole human. But that doesn't matter. I think you're still saying, Yeah, humans.
+
+Unknown Speaker  1:13:07  
+It's never going to be a full human. Like, if you're just interested in the question. What parts of the system get entangled with that is like, very depends a lot on the physics of stuff. Like, you know, Roger Penrose, for example, believes that there's something in our brain that is actually an actual superposition that he has for a while. The content of this microtubules or whatever, yeah. Right. And it's certainly possible, right? Like, I don't know, like the screen of an electron that is inside an atom in my face. Probably doesn't get entangled with anything, but I do. Yeah. Okay, but this is a very detailed question. Of course, like if you were to build if you wanted to build an apartment, you'd have to study this in detail. Yeah, for sure. Like it's not the fact that I move my hand was I mean that every single out I mean, my bodies and tangled with you know, the movement of my hand. Is not a given.
+
+Unknown Speaker  1:14:05  
+But
+
+Unknown Speaker  1:14:07  
+many, many things are and that's what matters. I guess.
+
+Unknown Speaker  1:14:23  
+Like,
+
+Mackenzie Dion  1:14:25  
+this was going to be a slight change of subjects and if you something to build on that,
+
+Unknown Speaker  1:14:29  
+just just the last thing so like the state
+
+Unknown Speaker  1:14:38  
+the state 00 plus one one has the same amount of entanglement. So this is a competitive tangled state between the first qubit and the second qubit. This data
+
+Unknown Speaker  1:15:07  
+right, so now we have instead of two systems, we have the first qubit. And then we have all the other qubits. Yeah. Right. The entanglement between the two systems in the first state is the same amount of entanglement in the qubit in the two systems in the second state, like all you need is one of the qubits of the second system to know about the first system that is still full entanglement. Okay. Yep.
+
+Mackenzie Dion  1:15:41  
+That makes sense. Because then it like at that point, it becomes no longer separable or something like
+
+Unknown Speaker  1:15:46  
+yeah, sorry, no separable anymore. And yeah, yeah, exactly. And if you lose the first qubit, your second system is collapsed, or vice versa. If you lose the old if you lose all these qubits to the right, then you still have collapsed the first qubit
+
+Mackenzie Dion  1:16:06  
+What do you think of this is like a really abstract question. Yeah. What do you think of doing something like an experiment? How do you make sense of doing an experiment like this, like inside of a dream or something?
+
+Unknown Speaker  1:16:23  
+You also got stuck.
+
+Mackenzie Dion  1:16:24  
+Oh, sorry. I like what? Yeah, what do you think about doing this experiment inside of like a dream?
+
+Unknown Speaker  1:16:34  
+What do you mean instead of the dream?
+
+Mackenzie Dion  1:16:36  
+I'm not sure.
+
+Unknown Speaker  1:16:40  
+Can you restart your your video because you got stuck?
+
+Mackenzie Dion  1:16:43  
+Okay.
+
+Unknown Speaker  1:16:50  
+Okay, I see. Okay.
+
+Mackenzie Dion  1:16:52  
+I'm actually not sure what I'm asking but I guess I guess I could just imagine having some
+
+I have to think about this question. But I think I'm trying to get something that I don't understand what this meant, and I don't know how to articulate it yet.
+
+Unknown Speaker  1:17:17  
+So, if you think of, it is like a bit like like, you say, metaphorically, but like if you think of you know when when you hear Buddhists talk like that, you know you do this dreaming so you can wake up in this life, right? And so yeah, this like the normal life is a dream and real life is whatever it is when you're awakened.
+
+Unknown Speaker  1:17:40  
+Right? And so
+
+Unknown Speaker  1:17:41  
+you're training your dreams, to pay attention to your dreams so that you can train to pay attention in your life. And if you think of men, if you think also about the simulation about this, or whatever, like, we are all everything is a simulation. We're all like, then I guess like doing this experiment in a simulation. Right? What Bobby's actually like antigen. Intelligence is a bit like doing the laundry like this, like, we're simulating a reality. That reality has its own rules. And that would be one way to do this experiment to do it in a simulation rather than doing anything.
+
+Mackenzie Dion  1:18:20  
+Right like with the local friendliness or friendly something thoughtful this paper Yeah.
+
+Unknown Speaker  1:18:32  
+But the point being that the simulation was the same. It's actually running on the same physics as a real world. Right? That's the big difference with the field with a quantum with quantum simulations.
+
+Mackenzie Dion  1:18:44  
+Yeah, I guess there's just this thing I think I told you about that. And now I think I might have enough of the background to understand that. Eleanor rifle said, right. So you know what I'm talking about with
+
+Unknown Speaker  1:18:59  
+the single box, but you don't have to do it with all the encoders for only the logical qubits to be reversible.
+
+Mackenzie Dion  1:19:04  
+Yeah, yeah. And then she was like, Oh, if my human like observer or mammal or whatever had a thought was hungry, I wouldn't need to reverse that thought I'd only need to reverse kind of like the purse UPS involved in making a measurement. And I just don't know how to make sense of that. Because like Yeah,
+
+Unknown Speaker  1:19:31  
+yeah, I mean, this would have like to be able to say that with certainty would have to have like, complete knowledge of the psychology of this similar being is like say that so that you read the you apply for a job and you get an email and the email either says that you got the job or not. Right, it really similar to man as a 12 You will still be hungry, somewhat hungry, right. So the fact that you are hungry at 12 is independent. Whether you got this job or not. But you're your your experience of being hungry will be very different, right? I don't know if you're like, if you're so excited about getting a job, maybe you're hungry, but you are like fluttering so you don't really want to eat or whatever. So still, I guess. Like if the decision of the job was was a measurement of a cubit you will still actually be in like your photo being hungry will be part of your entanglement with cubed. So I don't know what she was saying though. Like, I think she was talking a bit colourful
+
+Unknown Speaker  1:20:37  
+Yeah, yeah.
+
+Unknown Speaker  1:20:42  
+Like for example, your hair was about to change our pasta gross for example. Right so that maybe there's some things are truly independent from what you think. But I think very few things are for a human. Yeah.
+
+Unknown Speaker  1:20:57  
+Right, like Yeah.
+
+Mackenzie Dion  1:21:05  
+And what do you think of? Yeah, sorry. No, it's gonna ask about the shoulders and McQueen claim and your thoughts on it.
+
+Unknown Speaker  1:21:17  
+Your claim was it was just what it was more like a proposal, right?
+
+Mackenzie Dion  1:21:21  
+Sure. Sure. But like, yeah, what they talked about in their paper.
+
+Unknown Speaker  1:21:27  
+Yeah, remember? Was it something like okay, at any moment, in time you compute lib C or whatever. And if that C is B gun, a superposition then the this revolution should collapse.
+
+Mackenzie Dion  1:21:40  
+Consciousness is super resistant.
+
+Unknown Speaker  1:21:43  
+Right to limitations. Yeah.
+
+Unknown Speaker  1:21:46  
+Yeah, I mean, I think that would be like, definitely, like, if we had reasons to believe that it is correct. And even more we have reasons to believe that Qi it is correct. Whatever Qi it is, because we don't have control, quantum information, integrated theory, whatever. Then that would be a good way. To fit, you know, consciousness induced collapse inside quantum mechanics. If you know if all these things were to, like, you know, a future where actually we all believe that it is correct,
+
+Mackenzie Dion  1:22:26  
+yeah, but it wouldn't have to be that necessarily it right. It could be like any measure of
+
+Unknown Speaker  1:22:33  
+Yeah, I need to, if we had an accepted theory of consciousness, then there would be things like for example, now, we have an accepted theory of gravity. Right gyro theory.
+
+Unknown Speaker  1:22:45  
+Very few people. Say it's wrong.
+
+Unknown Speaker  1:22:49  
+Or think it's long. But we don't have a quantum theory called generativity, we don't know how to make sense of quantum superpositions of spacetimes. I mean, more or less. Okay. Penrose at least good idea. To say okay, well, we don't understand how to absolute positions or spacetime. So maybe spacetimes are super resistant to those super positions, and they cause collapse of the wavefunction. That would be a way to fit, you know, gravity collapse, growth and use collapse. into quantum mechanics. Similarly, if we had this like parallel situation, where we have a agreed upon theory of consciousness, right, but we could not make sense of quantum superposition. So consciousness is like Wigner. Then the proposal by by a guy and the Queen would be would be another way to do it.
+
+Unknown Speaker  1:23:55  
+In fact,
+
+Unknown Speaker  1:23:58  
+in a way if somebody could come up with a general argument for which consciousness cannot be in a superposition, then then you could test if things are conscious by trying to put them into positions
+
+Unknown Speaker  1:24:11  
+and check.
+
+Mackenzie Dion  1:24:26  
+Yeah, there's this other set of questions that when I say Sam, do you know who I'm referring to?
+
+Unknown Speaker  1:24:33  
+Yes. Is your boss is not the boss of the boss of the place where we're at?
+
+Mackenzie Dion  1:24:43  
+He's at the crack he wrote the can we build a consciousness measuring machine? Yes,
+
+Unknown Speaker  1:24:47  
+yes. Yes.
+
+Unknown Speaker  1:24:50  
+It was the blog tour, right? Yeah. He
+
+Mackenzie Dion  1:24:56  
+had sent me some things I could work on. And one was here, I can put it in the chat.
+
+This is already shared with you. Prove the quantum Zeno paradox and what systems it applies to and doesn't apply to.
+
+You and he said he thought that had been proven before but it could just be an exercise
+
+Unknown Speaker  1:25:46  
+so have you read the statement on the quantum zero paradox?
+
+Mackenzie Dion  1:25:52  
+I know like, I don't know mathematically what what it is. But I know it's like if you're just in words, if you're continually measuring a system, it can't evolve like so. This idea that a quantum system would stay the same if you're continually memory.
+
+Unknown Speaker  1:26:10  
+Yes, good, good. It's not it's not
+
+Unknown Speaker  1:26:14  
+a factor. I think it's called because zero paradox is and then you can move on to zero. Anyway. So yeah, it's very good. I don't know what Charles meant chelmer and King are saying.
+
+Unknown Speaker  1:26:33  
+I because I don't know what they're talking about.
+
+Unknown Speaker  1:26:42  
+Yeah, this might be something of this sort. That, why would it even start going into opposition in this conscious?
+
+Mackenzie Dion  1:27:09  
+Okay.
+
+Unknown Speaker  1:27:13  
+Yeah, I mean, this is a very open question around the question. I would say. I don't come to some of the conflicts where besides well.
+
+Mackenzie Dion  1:27:23  
+Yeah, I can ask him for more content.
+
+Transcribed by https://otter.ai

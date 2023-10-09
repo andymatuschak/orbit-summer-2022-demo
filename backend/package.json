@@ -10,8 +10,10 @@
     "start": "vercel dev --listen 0.0.0.0:3010"
   },
   "dependencies": {
+    "@google-cloud/storage": "^6.11.0",
     "@steve2955/anki-apkg-export": "^5.0.0",
-    "node-fetch": "^3.2.10"
+    "node-fetch": "^3.2.10",
+    "uuid": "^9.0.0"
   },
   "devDependencies": {
     "vercel": "^28.4.1"

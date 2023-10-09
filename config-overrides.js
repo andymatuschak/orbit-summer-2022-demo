@@ -43,6 +43,16 @@ const multipleEntry = require("react-app-rewire-multiple-entry")([
     template: `public/sh/da/${c}.html`,
     outPath: `/sh/da/${c}.html`,
   })),
+  {
+    entry: "src/index.tsx",
+    template: "public/pdfjs/web/viewer.html",
+    outPath: "/pdfjs/web/viewer.html",
+  },
+  {
+    entry: "src/index.tsx",
+    template: "public/pdf.html",
+    outPath: "/pdf/index.html",
+  },
 ]);
 const overrides = override(
   addBabelPreset("@emotion/babel-preset-css-prop"),
