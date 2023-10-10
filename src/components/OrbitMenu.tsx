@@ -281,14 +281,10 @@ export function OrbitMenu() {
       >
         {/*<PromptVisibilityMenuItem />*/}
         <MenuItem
-          title="Export Saved Prompts to Anki"
+          title="Export Anki Deck"
           onClick={() => downloadAnkiDeck()}
           disabled={!anyPromptsSaved}
         />
-        {startReviewMenuItem}
-        {!userEmail && (
-          <MenuItem title="Sign In to Orbit" onClick={openLoginPopup} />
-        )}
 
         {/* Bottom bar */}
         <div
