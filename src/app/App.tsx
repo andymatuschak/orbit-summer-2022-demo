@@ -98,7 +98,7 @@ export default function App({ marginX, textRoot, promptLists }: AppProps) {
       selectors: describe(textRoot, range),
       isByAuthor: false,
       isSaved: true,
-      isDue: true,
+      isDue: false,
       showAnchors: true,
       creationTimestampMillis: Date.now(),
     };
