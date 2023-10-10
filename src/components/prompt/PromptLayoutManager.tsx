@@ -346,6 +346,7 @@ export function PromptLayoutManager({
                     }
                     isViewingAsSource={id === viewingSourceID}
                     forceHover={suggestedPromptIDs.includes(id)}
+                    forceHideBack={true} // HACK
                     context={
                       collapsedDirection && !prompts[id].isSaved
                         ? PromptContext.FloatingCollapsed
@@ -483,9 +484,7 @@ const ShadowPrompts = React.memo(function ({
               context={PromptContext.Floating}
               savePrompt={() => null}
               forceHover={prompts[id].isSaved}
-              forceHideBack={
-                !prompts[id].isSaved && collapsedDirection !== undefined
-              }
+              forceHideBack={true} // HACK
               updatePromptFront={(newPrompt) => null}
               updatePromptBack={(newPrompt) => null}
               isNew={id === newPromptId}

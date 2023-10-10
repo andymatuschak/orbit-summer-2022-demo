@@ -87,7 +87,6 @@ const Container = styled.div<
         context === PromptContext.BulkCollapsed)
         ? "13px"
         : "9px"};
-  gap: 8px;
   cursor: ${(props) => (!props.isSaved ? "pointer" : "auto")};
   position: relative;
   border-left: ${(props) => {
@@ -342,14 +341,14 @@ const PromptBox = forwardRef(function (
   // Set up context menu items
   const contextMenuItems = [
     {
-      title: prompt.isByAuthor ? "Unsave Prompt" : "Delete Prompt",
+      title: "Remove Highlight",
       onClick: () => {
         setContextMenuOpen(false);
         setIsHovered(false);
         if (onMouseLeave) onMouseLeave();
         if (unsavePrompt) unsavePrompt();
       },
-      shortcutKey: prompt.isByAuthor ? "U" : "D",
+      shortcutKey: "R",
       isEnabled: contextMenuOpen,
     },
   ];
@@ -478,7 +477,7 @@ const PromptBox = forwardRef(function (
         </>
       ) : (
         <>
-          {createInlineIcon()}
+          <div style={{ width: 4 }} />
           {createPromptText()}
         </>
       )}
