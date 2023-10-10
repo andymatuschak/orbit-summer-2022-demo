@@ -44,8 +44,8 @@ const reducer = persistReducer(
 
 export const store = configureStore({
   reducer,
-  middleware: (getDefaultMiddleware) =>
-    getDefaultMiddleware().prepend(orbitSyncMiddleware.middleware),
+  // middleware: (getDefaultMiddleware) =>
+  //   getDefaultMiddleware().prepend(orbitSyncMiddleware.middleware),
 });
 
 export const persistor = persistStore(store);
