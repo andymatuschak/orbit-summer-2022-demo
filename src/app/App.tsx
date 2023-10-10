@@ -13,20 +13,12 @@ import { LabelColor } from "../components/Type";
 import { usePromptLocations } from "../hooks/usePromptLocations";
 import { useReviewAreaIntegration } from "../hooks/useReviewAreaIntegration";
 import { useSelectionBounds } from "../hooks/useSelectionBounds";
-import { PromptLocation } from "../util/resolvePromptLocations";
 import { getScrollingContainer, viewportToRoot } from "../util/viewportToRoot";
 import { describe } from "../vendor/hypothesis-annotator/html";
 import { InlineReviewModuleState } from "./inlineReviewModuleSlice";
 import { resumeReview, startReviewForAllDuePrompts } from "./modalReviewSlice";
-import {
-  createNewPrompt,
-  deletePrompt,
-  Prompt,
-  PromptID,
-  PromptsState,
-  savePrompt,
-} from "./promptSlice";
-import { store, useAppDispatch, useAppSelector } from "./store";
+import { createNewPrompt, Prompt, PromptID, PromptsState } from "./promptSlice";
+import { useAppDispatch, useAppSelector } from "./store";
 
 export interface AppProps {
   marginX: number;
@@ -59,15 +51,7 @@ export default function App({ marginX, textRoot, promptLists }: AppProps) {
 
   const { selectionPosition, selectionRange, clearSelectionPosition } =
     useSelectionBounds(textRoot);
-  const selectedPromptIDs = useMemo(() => {
-    return selectionRange && promptLocations
-      ? findIntersectingPrompts(selectionRange, promptLocations)
-      : [];
-  }, [selectionRange, promptLocations]);
-  const suggestedPromptIDs = useMemo(
-    () => selectedPromptIDs.filter((id) => !prompts[id].isSaved),
-    [prompts, selectedPromptIDs],
-  );
+  const suggestedPromptIDs = useMemo(() => [], []); // disabled this functionality...
 
   const [newPromptId, setNewPromptId] = useState<string | undefined>();
   const mousePosition = useRef<{ x: number; y: number }>();
@@ -147,33 +131,16 @@ export default function App({ marginX, textRoot, promptLists }: AppProps) {
           <ContextualMenu
             items={[
               {
-                title: "New Prompt",
+                title: "Highlight",
                 onClick: () => {
                   clearSelectionPosition();
                   if (selectionRange) {
                     onNewPrompt(selectionRange);
                   }
                 },
-                shortcutKey: "N",
+                shortcutKey: "H",
                 isEnabled: !!selectionPosition,
               },
-              ...(suggestedPromptIDs.length > 0
-                ? [
-                    {
-                      title: `Save Suggested Prompt${
-                        suggestedPromptIDs.length > 1 ? "s" : ""
-                      }`,
-                      onClick: () => {
-                        clearSelectionPosition();
-                        suggestedPromptIDs.forEach((id) =>
-                          dispatch(savePrompt(id)),
-                        );
-                      },
-                      shortcutKey: "S",
-                      isEnabled: true,
-                    },
-                  ]
-                : []),
             ]}
           />
         </div>
@@ -182,16 +149,9 @@ export default function App({ marginX, textRoot, promptLists }: AppProps) {
           promptLocations={promptLocations}
           marginX={marginX}
           newPromptId={newPromptId}
-          clearNewPrompt={() => {
-            if (newPromptId) {
-              const prompt = store.getState().prompts[newPromptId];
-              if (prompt.content.front === "" && prompt.content.back === "") {
-                dispatch(deletePrompt(newPromptId));
-              }
-            }
-            setNewPromptId(undefined);
-          }}
+          clearNewPrompt={() => setNewPromptId(undefined)}
           suggestedPromptIDs={suggestedPromptIDs}
+          onAddComment={(id) => setNewPromptId(id)}
         />
         {modalReviewState?.viewingSourceID && <ContinueModalReviewButton />}
         <>
@@ -279,21 +239,6 @@ function computePromptListData(
         inlineReviewID: id,
       })),
   ];
-}
-
-function findIntersectingPrompts(
-  range: Range,
-  locations: { [promptID: string]: PromptLocation },
-) {
-  if (range.collapsed) return [];
-  return Object.keys(locations).filter((id) => {
-    const promptRange = locations[id].range;
-    // A prompt intersects the range if its start point is before the range's end point, and its end point is after the range's start point
-    return (
-      promptRange.compareBoundaryPoints(Range.END_TO_START, range) <= 0 &&
-      promptRange.compareBoundaryPoints(Range.START_TO_END, range) >= 0
-    );
-  });
 }
 
 function ContinueModalReviewButton() {
