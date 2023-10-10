@@ -20,7 +20,6 @@ export function useAuthorSaveDataFeature(basename: string) {
           type: "application/json",
         });
         saveAs(blob, `${basename}.json`);
-        dispatch(reloadPromptsFromJSON(json));
         event.stopPropagation();
         event.preventDefault();
       }
