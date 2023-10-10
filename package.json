@@ -49,7 +49,7 @@
     "@withorbit/store-shared": "file:../orbit/packages/store-shared"
   },
   "engines": {
-    "node": "^14.20.0"
+    "node": "18"
   },
   "eslintConfig": {
     "extends": [

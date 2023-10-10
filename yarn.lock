@@ -4022,9 +4022,6 @@
 
 "@withorbit/core@0.0.1", "@withorbit/core@file:../orbit/packages/core":
   version "0.0.1"
-  dependencies:
-    base64-js "^1.5.1"
-    uuid "^8.3.2"
 
 "@withorbit/sample-data@0.0.1", "@withorbit/sample-data@file:../orbit/packages/sample-data":
   version "0.0.1"
@@ -5231,9 +5228,9 @@ caniuse-api@^3.0.0:
     lodash.uniq "^4.5.0"
 
 caniuse-lite@^1.0.0, caniuse-lite@^1.0.30001109, caniuse-lite@^1.0.30001370, caniuse-lite@^1.0.30001373:
-  version "1.0.30001390"
-  resolved "https://registry.yarnpkg.com/caniuse-lite/-/caniuse-lite-1.0.30001390.tgz#158a43011e7068ef7fc73590e9fd91a7cece5e7f"
-  integrity sha512-sS4CaUM+/+vqQUlCvCJ2WtDlV81aWtHhqeEVkLokVJJa3ViN4zDxAGfq9R8i1m90uGHxo99cy10Od+lvn3hf0g==
+  version "1.0.30001547"
+  resolved "https://registry.npmjs.org/caniuse-lite/-/caniuse-lite-1.0.30001547.tgz"
+  integrity sha512-W7CrtIModMAxobGhz8iXmDfuJiiKg1WADMO/9x7/CLNin5cpSbuBjooyoIUVB5eyCc36QuTVlkVa1iB2S5+/eA==
 
 capture-exit@^2.0.0:
   version "2.0.0"
