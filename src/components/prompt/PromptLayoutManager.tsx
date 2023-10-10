@@ -43,6 +43,7 @@ export interface PromptLayoutManagerProps {
   suggestedPromptIDs: PromptID[];
   newPromptId?: PromptID;
   clearNewPrompt?: () => any;
+  onAddComment: (id: PromptID) => unknown;
 }
 
 type PromptAbsoluteLocation = { top: number; bottom: number };
@@ -85,6 +86,7 @@ export function PromptLayoutManager({
   suggestedPromptIDs,
   newPromptId,
   clearNewPrompt,
+  onAddComment,
 }: PromptLayoutManagerProps) {
   const dispatch = useAppDispatch();
   const promptVisibility = useAppSelector((state) => state.promptVisibility);
@@ -297,6 +299,7 @@ export function PromptLayoutManager({
         promptMeasureRefs={promptMeasureRefs}
         marginX={marginX}
         collapsedDirection={collapsedDirection}
+        newPromptId={newPromptId}
       />
       {!delayOneRender &&
         promptRuns.map((ids) => {
@@ -436,6 +439,7 @@ export function PromptLayoutManager({
         }
         editPrompt={currEditPrompt}
         setHoverPrompts={setCurrAnchorHovers}
+        onAddComment={onAddComment}
       />
     </>
   );
@@ -449,6 +453,7 @@ interface ShadowPromptsProps {
   }>;
   promptLocations: { [id: string]: PromptLocation };
   collapsedDirection: CollapsedPromptDirection | undefined;
+  newPromptId: PromptID | undefined;
 }
 
 const ShadowPrompts = React.memo(function ({
@@ -457,6 +462,7 @@ const ShadowPrompts = React.memo(function ({
   promptMeasureRefs,
   promptLocations,
   collapsedDirection,
+  newPromptId,
 }: ShadowPromptsProps) {
   return (
     <ShadowContainer>
@@ -482,6 +488,7 @@ const ShadowPrompts = React.memo(function ({
               }
               updatePromptFront={(newPrompt) => null}
               updatePromptBack={(newPrompt) => null}
+              isNew={id === newPromptId}
             />
           </div>
         );

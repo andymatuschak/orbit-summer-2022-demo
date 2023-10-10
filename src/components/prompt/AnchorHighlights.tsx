@@ -1,6 +1,10 @@
-import { useEffect, useState } from "react";
-import { PromptID, PromptsState } from "../../app/promptSlice";
+import { useEffect, useRef, useState } from "react";
+import { deletePrompt, PromptID, PromptsState } from "../../app/promptSlice";
+import { useAppDispatch } from "../../app/store";
 import { PromptLocation } from "../../util/resolvePromptLocations";
+import { viewportToRoot } from "../../util/viewportToRoot";
+import zIndices from "../common/zIndices";
+import ContextualMenu from "../ContextualMenu";
 import { highlightRange } from "./highlightRange";
 
 const SAVED_COLOR = "#F9EBD9";
@@ -15,6 +19,7 @@ export interface AnchorHighlightProps {
   hoverPrompts: PromptID[] | undefined;
   editPrompt: PromptID | undefined;
   setHoverPrompts: (id: PromptID[] | undefined) => any;
+  onAddComment: (id: PromptID) => unknown;
 }
 
 function areRangesSame(rangeA: Range, rangeB: Range): boolean {
@@ -36,6 +41,13 @@ enum HighlightTypes {
 
 const HighlightColors = [TRANSPARENT, SAVED_COLOR, HOVER_COLOR];
 
+interface HighlightMenuState {
+  promptID: PromptID;
+  // in root coordinate system
+  x: number;
+  y: number;
+}
+
 export function AnchorHighlight({
   prompts,
   promptLocations,
@@ -43,6 +55,7 @@ export function AnchorHighlight({
   hoverPrompts,
   editPrompt,
   setHoverPrompts,
+  onAddComment,
 }: AnchorHighlightProps) {
   // If two prompts share a functional range, then one prompt is the "drawn" prompt and the other does not need to be redrawn
   // A prompt can have itself as the drawn promptId
@@ -55,6 +68,11 @@ export function AnchorHighlight({
   const [existingPromptIds, setExistingPromptIds] = useState<Set<string>>(
     new Set<PromptID>(),
   );
+  const idsToHighlightRemoveFns = useRef<Map<PromptID, () => void>>(new Map());
+  const dispatch = useAppDispatch();
+
+  const [menuState, setMenuState] = useState<HighlightMenuState | null>(null);
+  const menuRef = useRef<HTMLDivElement | null>(null);
 
   // TODO: refactor all instances of this logic to use this instead. It's getting DRY
   function highlightDrawnId(id: string, type: HighlightTypes) {
@@ -70,8 +88,37 @@ export function AnchorHighlight({
     promptIdToDrawnPromptId.forEach((id, drawnId) => {
       const prompt = prompts[id];
       if (!prompt) {
-        highlightDrawnId(drawnId, HighlightTypes.Transparent);
-        // TODO: clean up all state related to deleted prompt
+        setPromptIdToDrawnPromptId((oldPromptIdToDrawnPromptId) => {
+          return new Map(
+            [...oldPromptIdToDrawnPromptId.entries()].filter(
+              ([id2]) => id !== id2,
+            ),
+          );
+        });
+        setDrawnPromptIdToIds((oldDrawnPromptIdToIds) => {
+          // See if the drawn prompt corresponds to any other prompts. If not, we'll remove it.
+          const idsForDrawnId = oldDrawnPromptIdToIds
+            .get(drawnId)
+            ?.filter((id2) => id !== id2);
+          if (idsForDrawnId !== undefined) {
+            if (idsForDrawnId.length === 0) {
+              idsToHighlightRemoveFns.current.get(drawnId)?.();
+              idsToHighlightRemoveFns.current.delete(drawnId);
+            }
+            return new Map(
+              [...oldDrawnPromptIdToIds.entries()].map(([dId, ids]) => [
+                dId,
+                dId === drawnId ? idsForDrawnId : ids,
+              ]),
+            );
+          } else {
+            return oldDrawnPromptIdToIds;
+          }
+        });
+        setExistingPromptIds(
+          (oldPromptIds) =>
+            new Set([...oldPromptIds].filter((id2) => id !== id2)),
+        );
         return;
       }
 
@@ -188,14 +235,17 @@ export function AnchorHighlight({
       ) {
         const copy = promptLocations[idB].range.cloneRange();
         const prompt = prompts[idB];
-        highlightRange(copy, "span", {
+        const removeHighlightFn = highlightRange(copy, "span", {
           class: className,
           style: `background-color:${
             prompt.isSaved && visiblePromptIDs.has(idB)
               ? SAVED_COLOR
               : UNSAVED_COLOR
-          };`,
+          }; cursor: pointer;`,
         });
+        if (removeHighlightFn) {
+          idsToHighlightRemoveFns.current.set(idB, removeHighlightFn);
+        }
         newExistingPromptIds.add(idB);
         updated = true;
       }
@@ -237,16 +287,37 @@ export function AnchorHighlight({
       setHoverPrompts(undefined);
     });
 
-    const callbacks: { [id: PromptID]: (() => void)[] } = {};
+    function onClick(event: MouseEvent, id: PromptID) {
+      const offset = viewportToRoot();
+      setMenuState((menuState) =>
+        menuState
+          ? null
+          : {
+              promptID: id,
+              x: event.clientX + offset.x,
+              y: event.clientY + offset.y,
+            },
+      );
+      event.stopPropagation();
+    }
+
+    const callbacks: { [id: PromptID]: ((e: MouseEvent) => void)[] } = {};
     existingPromptIds.forEach((id) => {
-      callbacks[id] = [() => onMouseEnter(id), () => onMouseLeave(id)];
+      callbacks[id] = [
+        () => onMouseEnter(id),
+        () => onMouseLeave(id),
+        (e: MouseEvent) => onClick(e, id),
+      ];
     });
 
     existingPromptIds.forEach((id) => {
       const els = document.getElementsByClassName(classNameForPromptID(id));
       for (const el of els) {
-        el.addEventListener("mouseenter", callbacks[id][0]);
-        el.addEventListener("mouseleave", callbacks[id][1]);
+        if (el instanceof HTMLElement) {
+          el.addEventListener("mouseenter", callbacks[id][0]);
+          el.addEventListener("mouseleave", callbacks[id][1]);
+          el.addEventListener("click", callbacks[id][2]);
+        }
       }
     });
 
@@ -254,12 +325,74 @@ export function AnchorHighlight({
       existingPromptIds.forEach((id) => {
         const els = document.getElementsByClassName(classNameForPromptID(id));
         for (const el of els) {
-          el.removeEventListener("mouseenter", callbacks[id][0]);
-          el.removeEventListener("mouseleave", callbacks[id][1]);
+          if (el instanceof HTMLElement) {
+            el.removeEventListener("mouseenter", callbacks[id][0]);
+            el.removeEventListener("mouseleave", callbacks[id][1]);
+            el.removeEventListener("click", callbacks[id][2]);
+          }
         }
       });
     };
   }, [prompts, existingPromptIds, drawnPromptIdToIds]);
 
-  return null;
+  // Hide the menu when clicking outside it.
+  useEffect(() => {
+    if (menuState) {
+      function onClick(event: MouseEvent) {
+        if (
+          event.target instanceof Element &&
+          !menuRef.current!.contains(event.target)
+        ) {
+          setMenuState(null);
+          document.removeEventListener("click", onClick);
+        }
+      }
+
+      document.addEventListener("click", onClick);
+      return () => document.removeEventListener("click", onClick);
+    }
+  }, [menuState]);
+
+  return (
+    menuState && (
+      <div
+        style={{
+          position: "absolute",
+          left: menuState.x,
+          top: menuState.y,
+          width: 0,
+          height: 0,
+          zIndex: zIndices.orbitMenu,
+        }}
+        ref={menuRef}
+      >
+        <ContextualMenu
+          items={[
+            ...(prompts[menuState.promptID].content.front === ""
+              ? [
+                  {
+                    title: "Add Comment",
+                    onClick: () => {
+                      onAddComment(menuState.promptID);
+                      setMenuState(null);
+                    },
+                    shortcutKey: "C",
+                    isEnabled: true,
+                  },
+                ]
+              : []),
+            {
+              title: "Remove Highlight",
+              onClick: () => {
+                dispatch(deletePrompt(menuState.promptID));
+                setMenuState(null);
+              },
+              shortcutKey: "R",
+              isEnabled: true,
+            },
+          ]}
+        />
+      </div>
+    )
+  );
 }

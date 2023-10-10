@@ -437,6 +437,10 @@ const PromptBox = forwardRef(function (
     }
   }
 
+  if (!isNew && prompt.content.front === "" && prompt.content.back === "") {
+    return null;
+  }
+
   return (
     <Container
       isHovered={isHovered}
