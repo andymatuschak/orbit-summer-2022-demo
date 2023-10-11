@@ -1,5 +1,11 @@
 import { useEffect, useRef, useState } from "react";
-import { deletePrompt, PromptID, PromptsState } from "../../app/promptSlice";
+import {
+  AnnotationType,
+  deletePrompt,
+  PromptID,
+  PromptsState,
+  setPromptAnnotationType,
+} from "../../app/promptSlice";
 import { useAppDispatch } from "../../app/store";
 import { PromptLocation } from "../../util/resolvePromptLocations";
 import { viewportToRoot } from "../../util/viewportToRoot";
@@ -7,9 +13,16 @@ import zIndices from "../common/zIndices";
 import ContextualMenu from "../ContextualMenu";
 import { highlightRange } from "./highlightRange";
 
-const SAVED_COLOR = "#F9EBD9";
-const UNSAVED_COLOR = "#FFFFFF00";
-const HOVER_COLOR = "#D6090926";
+function colorForAnnotationType(
+  type: AnnotationType,
+): typeof AnchorColors[keyof typeof AnchorColors] {
+  switch (type) {
+    case AnnotationType.ForReview:
+      return AnchorColors.forReview;
+    case AnnotationType.Highlight:
+      return AnchorColors.highlight;
+  }
+}
 
 export interface AnchorHighlightProps {
   prompts: PromptsState;
@@ -32,11 +45,12 @@ function classNameForPromptID(id: PromptID): string {
   return `orbitanchor-${id.replace(/ /g, "-")}`;
 }
 
-const HighlightColors = {
-  unsaved: UNSAVED_COLOR,
-  saved: SAVED_COLOR,
-  hover: HOVER_COLOR,
-};
+const AnchorColors = {
+  unsaved: "#FFFFFF00",
+  highlight: "#fff1de",
+  forReview: "#e2dbff",
+  hover: "#D6090926",
+} as const;
 
 interface HighlightMenuState {
   promptID: PromptID;
@@ -72,8 +86,10 @@ export function AnchorHighlight({
   const menuRef = useRef<HTMLDivElement | null>(null);
 
   // TODO: refactor all instances of this logic to use this instead. It's getting DRY
-  function highlightDrawnId(id: string, type: keyof typeof HighlightColors) {
-    const color = HighlightColors[type];
+  function highlightDrawnId(
+    id: string,
+    color: typeof AnchorColors[keyof typeof AnchorColors],
+  ) {
     const els = document.getElementsByClassName(classNameForPromptID(id));
     for (const el of els) {
       (el as HTMLElement).style.backgroundColor = color;
@@ -120,9 +136,14 @@ export function AnchorHighlight({
       }
 
       if (drawnId) {
+        // TODO will result in fighting for heterogeneous highlight colors
         highlightDrawnId(
           drawnId,
-          prompt.isSaved && visiblePromptIDs.has(id) ? "saved" : "unsaved",
+          prompt.isSaved && visiblePromptIDs.has(id)
+            ? colorForAnnotationType(
+                prompts[drawnId].annotationType ?? AnnotationType.Highlight,
+              )
+            : AnchorColors.unsaved,
         );
 
         // Check if perhaps drawn has a dep that is saved
@@ -133,8 +154,11 @@ export function AnchorHighlight({
 
           var color =
             prompts[drawnId].isSaved || prompts[candidateId]?.isSaved
-              ? HighlightColors.saved
-              : HighlightColors.unsaved;
+              ? colorForAnnotationType(
+                  prompts[candidateId].annotationType ??
+                    AnnotationType.Highlight,
+                ) // TODO: this won't work for heterogeneous highlight colors
+              : AnchorColors.unsaved;
           for (const el of els) {
             el.style.backgroundColor = color;
           }
@@ -157,7 +181,7 @@ export function AnchorHighlight({
           classNameForPromptID(drawnId),
         );
         for (const el of els) {
-          (el as HTMLElement).style.backgroundColor = HOVER_COLOR;
+          (el as HTMLElement).style.backgroundColor = AnchorColors.hover;
         }
       }
     });
@@ -165,7 +189,7 @@ export function AnchorHighlight({
     // Apply edit
     if (editPrompt) {
       const targetId = promptIdToDrawnPromptId.get(editPrompt);
-      if (targetId) highlightDrawnId(targetId, "hover");
+      if (targetId) highlightDrawnId(targetId, AnchorColors.hover);
     }
   }, [
     hoverPrompts,
@@ -234,8 +258,10 @@ export function AnchorHighlight({
           class: className,
           style: `background-color:${
             prompt.isSaved && visiblePromptIDs.has(idB)
-              ? SAVED_COLOR
-              : UNSAVED_COLOR
+              ? colorForAnnotationType(
+                  prompt.annotationType ?? AnnotationType.Highlight,
+                )
+              : AnchorColors.unsaved
           }; cursor: pointer;`,
         });
         if (removeHighlightFn) {
@@ -376,6 +402,43 @@ export function AnchorHighlight({
                   },
                 ]
               : []),
+            ...{
+              [AnnotationType.ForReview]: [
+                {
+                  title: "Switch to Highlight",
+                  onClick: () => {
+                    dispatch(
+                      setPromptAnnotationType([
+                        menuState!.promptID,
+                        AnnotationType.Highlight,
+                      ]),
+                    );
+                    setMenuState(null);
+                  },
+                  shortcutKey: "H",
+                  isEnabled: true,
+                },
+              ],
+              [AnnotationType.Highlight]: [
+                {
+                  title: "Mark for Review",
+                  onClick: () => {
+                    dispatch(
+                      setPromptAnnotationType([
+                        menuState!.promptID,
+                        AnnotationType.ForReview,
+                      ]),
+                    );
+                    setMenuState(null);
+                  },
+                  shortcutKey: "M",
+                  isEnabled: true,
+                },
+              ],
+            }[
+              prompts[menuState.promptID].annotationType ??
+                AnnotationType.Highlight
+            ],
             {
               title: "Remove Highlight",
               onClick: () => {

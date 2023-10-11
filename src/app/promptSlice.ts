@@ -143,6 +143,13 @@ const promptSlice = createSlice({
       // This hacky predicate corresponds to the data we'll see if they marked the prompt as forgotten (i.e. so it's still due).
       prompt.isDue = newInterval === 0 && !wasSkipped;
     },
+    setPromptAnnotationType(
+      state,
+      action: PayloadAction<[PromptID, AnnotationType]>,
+    ) {
+      const prompt = state[action.payload[0]];
+      prompt.annotationType = action.payload[1];
+    },
 
     syncPromptStateFromRemoteTasks(
       state,
@@ -279,6 +286,7 @@ export const {
   syncPromptFromReview,
   syncPromptStateFromRemoteTasks,
   reloadPromptsFromJSON,
+  setPromptAnnotationType,
 } = promptSlice.actions;
 export const promptsReducer = promptSlice.reducer;
 
