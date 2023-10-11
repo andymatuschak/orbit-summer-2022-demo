@@ -17,7 +17,13 @@ import { getScrollingContainer, viewportToRoot } from "../util/viewportToRoot";
 import { describe } from "../vendor/hypothesis-annotator/html";
 import { InlineReviewModuleState } from "./inlineReviewModuleSlice";
 import { resumeReview, startReviewForAllDuePrompts } from "./modalReviewSlice";
-import { createNewPrompt, Prompt, PromptID, PromptsState } from "./promptSlice";
+import {
+  AnnotationType,
+  createNewPrompt,
+  Prompt,
+  PromptID,
+  PromptsState,
+} from "./promptSlice";
 import { useAppDispatch, useAppSelector } from "./store";
 
 export interface AppProps {
@@ -89,18 +95,24 @@ export default function App({ marginX, textRoot, promptLists }: AppProps) {
 
   if (promptLocations === null) return null;
 
-  function onNewPrompt(range: Range) {
+  function onAnnotate(annotationType: AnnotationType) {
+    clearSelectionPosition();
+    if (!selectionRange) {
+      return;
+    }
+
     const newPrompt: Prompt = {
       content: {
         front: "",
         back: "",
       },
-      selectors: describe(textRoot, range),
+      selectors: describe(textRoot, selectionRange),
       isByAuthor: false,
       isSaved: true,
       isDue: false,
       showAnchors: true,
       creationTimestampMillis: Date.now(),
+      annotationType,
     };
     const newId = generateUniqueID();
     dispatch(createNewPrompt({ id: newId, prompt: newPrompt }));
@@ -132,13 +144,14 @@ export default function App({ marginX, textRoot, promptLists }: AppProps) {
             items={[
               {
                 title: "Highlight",
-                onClick: () => {
-                  clearSelectionPosition();
-                  if (selectionRange) {
-                    onNewPrompt(selectionRange);
-                  }
-                },
+                onClick: () => onAnnotate(AnnotationType.Highlight),
                 shortcutKey: "H",
+                isEnabled: !!selectionPosition,
+              },
+              {
+                title: "Mark for Review",
+                onClick: () => onAnnotate(AnnotationType.ForReview),
+                shortcutKey: "M",
                 isEnabled: !!selectionPosition,
               },
             ]}

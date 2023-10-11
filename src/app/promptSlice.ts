@@ -15,6 +15,10 @@ import {
 } from "../util/hypothesisJSON";
 
 export type PromptID = string;
+export enum AnnotationType {
+  Highlight = "highlight",
+  ForReview = "forReview",
+}
 
 export interface Prompt {
   content: {
@@ -28,6 +32,8 @@ export interface Prompt {
   isSaved: boolean;
   isDue: boolean;
   showAnchors: boolean;
+
+  annotationType?: AnnotationType;
 
   // For prompts saved automatically via review, we track the ID of the review area where it came from, so that we can implement the "undo" feature allowing users to *unsave* those auto-saved prompts.
   sourceReviewAreaID?: string;

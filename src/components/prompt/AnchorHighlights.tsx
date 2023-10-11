@@ -8,8 +8,7 @@ import ContextualMenu from "../ContextualMenu";
 import { highlightRange } from "./highlightRange";
 
 const SAVED_COLOR = "#F9EBD9";
-const TRANSPARENT = "#FFFFFF00";
-const UNSAVED_COLOR = TRANSPARENT;
+const UNSAVED_COLOR = "#FFFFFF00";
 const HOVER_COLOR = "#D6090926";
 
 export interface AnchorHighlightProps {
@@ -33,13 +32,11 @@ function classNameForPromptID(id: PromptID): string {
   return `orbitanchor-${id.replace(/ /g, "-")}`;
 }
 
-enum HighlightTypes {
-  Transparent,
-  Saved,
-  Hover,
-}
-
-const HighlightColors = [TRANSPARENT, SAVED_COLOR, HOVER_COLOR];
+const HighlightColors = {
+  unsaved: UNSAVED_COLOR,
+  saved: SAVED_COLOR,
+  hover: HOVER_COLOR,
+};
 
 interface HighlightMenuState {
   promptID: PromptID;
@@ -75,7 +72,7 @@ export function AnchorHighlight({
   const menuRef = useRef<HTMLDivElement | null>(null);
 
   // TODO: refactor all instances of this logic to use this instead. It's getting DRY
-  function highlightDrawnId(id: string, type: HighlightTypes) {
+  function highlightDrawnId(id: string, type: keyof typeof HighlightColors) {
     const color = HighlightColors[type];
     const els = document.getElementsByClassName(classNameForPromptID(id));
     for (const el of els) {
@@ -123,23 +120,21 @@ export function AnchorHighlight({
       }
 
       if (drawnId) {
-        const els = document.getElementsByClassName(
-          classNameForPromptID(drawnId),
-        ) as HTMLCollectionOf<HTMLElement>;
-        for (const el of els) {
-          var color =
-            prompt.isSaved && visiblePromptIDs.has(id)
-              ? SAVED_COLOR
-              : UNSAVED_COLOR;
-          el.style.backgroundColor = color;
-        }
+        highlightDrawnId(
+          drawnId,
+          prompt.isSaved && visiblePromptIDs.has(id) ? "saved" : "unsaved",
+        );
 
         // Check if perhaps drawn has a dep that is saved
         drawnPromptIdToIds.get(drawnId)?.forEach((candidateId) => {
+          const els = document.getElementsByClassName(
+            classNameForPromptID(drawnId),
+          ) as HTMLCollectionOf<HTMLElement>;
+
           var color =
             prompts[drawnId].isSaved || prompts[candidateId]?.isSaved
-              ? SAVED_COLOR
-              : UNSAVED_COLOR;
+              ? HighlightColors.saved
+              : HighlightColors.unsaved;
           for (const el of els) {
             el.style.backgroundColor = color;
           }
@@ -170,7 +165,7 @@ export function AnchorHighlight({
     // Apply edit
     if (editPrompt) {
       const targetId = promptIdToDrawnPromptId.get(editPrompt);
-      if (targetId) highlightDrawnId(targetId, HighlightTypes.Hover);
+      if (targetId) highlightDrawnId(targetId, "hover");
     }
   }, [
     hoverPrompts,
