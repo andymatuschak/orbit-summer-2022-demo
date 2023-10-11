@@ -257,25 +257,16 @@ const PromptBox = forwardRef(function (
   const startEditing = function (editingFront: boolean) {
     setIsEditing(true);
     if (onEditStart) onEditStart();
-
-    // Select all text in prompt
-    const el = editingFront ? promptFrontRef.current : promptBackRef.current;
-    const sel = window.getSelection();
-    const range = document.createRange();
-    if (el && sel && range) {
-      // Replace rendered LaTeX markup with raw text.
-      el.innerText = editingFront ? prompt.content.front : prompt.content.back;
-      range.selectNodeContents(el);
-      sel.removeAllRanges();
-      sel.addRange(range);
-    }
   };
 
   const endEditing = function (editingFront: boolean) {
-    if (editingFront && promptFrontRef.current?.innerText) {
-      updatePromptFront(promptFrontRef.current.innerText);
-    } else if (!editingFront && promptBackRef.current?.innerText) {
-      updatePromptBack(promptBackRef.current.innerText);
+    if (
+      editingFront &&
+      (promptFrontRef.current!.innerText || prompt.content.front)
+    ) {
+      updatePromptFront(promptFrontRef.current!.innerText.trimEnd());
+    } else if (!editingFront && promptBackRef.current!.innerText) {
+      updatePromptBack(promptBackRef.current!.innerText);
     }
     setIsEditing(false);
     savePrompt();
