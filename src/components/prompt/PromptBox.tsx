@@ -521,28 +521,31 @@ const PromptBox = forwardRef(function (
           </div>
         )}
       {/* ------ ellipses menu  ------- */}
-      {prompt.isSaved && (isHovered || isEditing) && !isContextBulk(context) && (
-        <div
-          css={css`
-            position: absolute;
-            top: ${isContextCollapsed(context) &&
-            collapsedDirection === CollapsedPromptDirection.RTL
-              ? "calc(100% - 32px)"
-              : "3px"};
-            right: ${isContextCollapsed(context) &&
-            collapsedDirection === CollapsedPromptDirection.RTL
-              ? 8
-              : 1}px;
-          `}
-        >
-          <PromptEllipses
-            onClick={() => {
-              determineContextLayout();
-              setContextMenuOpen(true);
-            }}
-          />
-        </div>
-      )}
+      {false /*HACK */ &&
+        prompt.isSaved &&
+        (isHovered || isEditing) &&
+        !isContextBulk(context) && (
+          <div
+            css={css`
+              position: absolute;
+              top: ${isContextCollapsed(context) &&
+              collapsedDirection === CollapsedPromptDirection.RTL
+                ? "calc(100% - 32px)"
+                : "3px"};
+              right: ${isContextCollapsed(context) &&
+              collapsedDirection === CollapsedPromptDirection.RTL
+                ? 8
+                : 1}px;
+            `}
+          >
+            <PromptEllipses
+              onClick={() => {
+                determineContextLayout();
+                setContextMenuOpen(true);
+              }}
+            />
+          </div>
+        )}
       {/* ----- context menu ------ */}
       {contextMenuOpen && (
         <div
