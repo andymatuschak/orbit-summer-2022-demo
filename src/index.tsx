@@ -4,15 +4,15 @@ import { Provider } from "react-redux";
 import { PersistGate } from "redux-persist/integration/react";
 import BRApp, { getBoundedRegretChapterName } from "./app/BRApp";
 import DAApp, { getDeltaAcademyChapterName } from "./app/DAApp";
+import { initializeHypothesisMiddleware } from "./app/hypothesisMiddleware";
 import IMSApp from "./app/IMSApp";
-import { autopopulateReviewAreas } from "./app/inlineReviewModuleSlice";
-import { initializeOrbitSyncMiddleware } from "./app/orbitSyncMiddleware";
 import PDFApp from "./app/PDFApp";
 import { loadPrompts } from "./app/promptSlice";
 import ShapeUpApp, { getShapeUpChapterName } from "./app/ShapeUpApp";
 import { persistor, store } from "./app/store";
 import "./static/styles/index.css";
 import { prototypeBackendBaseURL } from "./config";
+import { PDFMetadata } from "./vendor/pdf-metadata";
 
 if (document.location.pathname.includes("shape-up")) {
   window.addEventListener(
@@ -174,8 +174,11 @@ if (document.location.pathname.includes("shape-up")) {
 
 async function loadPageData(page: ReactNode, subpath: string) {
   await store.dispatch(loadPrompts(subpath));
-  // await store.dispatch(autopopulateReviewAreas(store.getState().prompts));
-  await initializeOrbitSyncMiddleware(store);
+  // @ts-ignore
+  const app = PDFViewerApplication;
+  if (app) {
+    initializeHypothesisMiddleware(store, new PDFMetadata(app));
+  }
 
   if (page) {
     const root = ReactDOM.createRoot(document.getElementById("demo-root")!);

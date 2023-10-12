@@ -7,9 +7,9 @@ import {
 } from "react-redux";
 import { persistReducer, persistStore } from "redux-persist";
 import storage from "redux-persist/lib/storage";
+import { hypothesisMiddleware } from "./hypothesisMiddleware";
 import { inlineReviewModuleReducer } from "./inlineReviewModuleSlice";
 import { modalReviewReducer } from "./modalReviewSlice"; // defaults to localStorage for web
-import { orbitSyncMiddleware } from "./orbitSyncMiddleware";
 import { orbitSyncReducer } from "./orbitSyncSlice";
 import { promptsReducer } from "./promptSlice";
 import { promptVisibilityReducer } from "./promptVisibilitySlice";
@@ -44,7 +44,8 @@ const reducer = persistReducer(
 
 export const store = configureStore({
   reducer,
-  // middleware: (getDefaultMiddleware) =>
+  middleware: (getDefaultMiddleware) =>
+    getDefaultMiddleware().prepend(hypothesisMiddleware),
   //   getDefaultMiddleware().prepend(orbitSyncMiddleware.middleware),
 });
 
