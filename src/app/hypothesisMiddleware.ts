@@ -3,13 +3,18 @@ import {
   isAnyOf,
   TypedStartListening,
 } from "@reduxjs/toolkit";
+import { generateUniqueID } from "@withorbit/core";
 import { prototypeBackendBaseURL } from "../config";
 import { PDFMetadata } from "../vendor/pdf-metadata";
 import {
+  AnnotationType,
   createNewPrompt,
   deletePrompt,
   PromptID,
+  PromptSelector,
+  removeMissedHighlights,
   setPromptAnnotationType,
+  syncMissedHighlightsFromRemote,
   updatePromptFront,
 } from "./promptSlice";
 import { AppDispatch, AppStore, RootState } from "./store";
@@ -25,13 +30,26 @@ const startListening =
 const hypothesisGroupID = "J5Ewyzg5";
 const promptIDsToHypothesisIDs = new Map<PromptID, string>();
 
+type PDFMetadataStructure = ReturnType<
+  typeof PDFMetadata.prototype.getMetadata
+> extends Promise<infer M>
+  ? M
+  : never;
+
+let cachedPDFMetadataRecord: PDFMetadataStructure | null = null;
+
 export async function initializeHypothesisMiddleware(
   store: AppStore,
   pdfMetadata: PDFMetadata,
 ) {
+  store.dispatch(removeMissedHighlights());
+
+  const pdfMetadataRecord = await pdfMetadata.getMetadata();
+  cachedPDFMetadataRecord = pdfMetadataRecord;
+
   fetch(
     `${prototypeBackendBaseURL}/h-proxy?uri=${encodeURIComponent(
-      getPDFURN(await pdfMetadata.getMetadata()),
+      getPDFURN(pdfMetadataRecord),
     )}&groupID=${hypothesisGroupID}`,
   ).then(async (response) => {
     const mappingObj = await response.json();
@@ -48,15 +66,14 @@ export async function initializeHypothesisMiddleware(
 
   startListening({
     actionCreator: createNewPrompt,
-    effect: async (action, listenerAPI) => {
+    effect: async (action) => {
       const { id, prompt } = action.payload;
-      const metadata = await pdfMetadata.getMetadata();
       const response = await fetch(`${prototypeBackendBaseURL}/h-proxy`, {
         method: "POST",
         body: JSON.stringify({
           groupID: hypothesisGroupID,
-          metadata: metadata,
-          uri: getPDFURN(metadata),
+          metadata: pdfMetadataRecord,
+          uri: getPDFURN(pdfMetadataRecord),
           data: { id, prompt },
         }),
       });
@@ -75,8 +92,14 @@ export async function initializeHypothesisMiddleware(
   startListening({
     actionCreator: deletePrompt,
     effect: async (action, listenerAPI) => {
-      const promptID = action.payload;
-      const hypothesisID = promptIDsToHypothesisIDs.get(promptID);
+      const id = action.payload;
+      const prompt = listenerAPI.getOriginalState().prompts[id];
+      if (prompt.annotationType === AnnotationType.Missed) {
+        // We don't delete missed highlights from Hyp.is: they live there.
+        return;
+      }
+
+      const hypothesisID = promptIDsToHypothesisIDs.get(id);
       if (hypothesisID) {
         const response = await fetch(
           `${prototypeBackendBaseURL}/h-proxy/${hypothesisID}`,
@@ -88,7 +111,7 @@ export async function initializeHypothesisMiddleware(
           console.error(`Couldn't delete hyp.is ID ${hypothesisID}`);
         }
       } else {
-        console.error("Couldn't find Hypothes.is ID for prompt", promptID);
+        console.error("Couldn't find Hypothes.is ID for prompt", id);
       }
     },
   });
@@ -125,13 +148,7 @@ export async function initializeHypothesisMiddleware(
   });
 }
 
-function getPDFURN(
-  metadata: ReturnType<
-    typeof PDFMetadata.prototype.getMetadata
-  > extends Promise<infer M>
-    ? M
-    : never,
-): string {
+function getPDFURN(metadata: PDFMetadataStructure): string {
   const pdfURNLink = metadata.link.find((uri) =>
     uri.href.startsWith("urn:x-pdf"),
   );
@@ -140,4 +157,57 @@ function getPDFURN(
   } else {
     throw new Error(`Couldn't find PDF URN. Links: ${metadata.link.join(",")}`);
   }
+}
+
+export type MissingHighlightRecord = {
+  id: string;
+  selectors: PromptSelector[];
+};
+export function getMissingHighlights() {
+  return async (dispatch: AppDispatch) => {
+    const response = await fetch(
+      `${prototypeBackendBaseURL}/getMissedAnnotations?groupID=${hypothesisGroupID}&uri=${encodeURIComponent(
+        getPDFURN(cachedPDFMetadataRecord!),
+      )}`,
+    );
+    if (!response.ok) {
+      console.error("Couldn't fetch missing highlights");
+      return;
+    }
+
+    const missingHighlights: MissingHighlightRecord[] = await response.json();
+    dispatch(syncMissedHighlightsFromRemote(missingHighlights));
+  };
+}
+
+export function convertMissingHighlight(
+  id: PromptID,
+  annotationType: AnnotationType,
+) {
+  return async (dispatch: AppDispatch, getState: () => RootState) => {
+    const prompt = getState().prompts[id];
+    if (!prompt) {
+      console.error("Couldn't find prompt for missing prompt ID", id);
+      return;
+    }
+
+    dispatch(deletePrompt(id));
+    const newPromptID = generateUniqueID();
+    dispatch(
+      createNewPrompt({
+        id: newPromptID,
+        prompt: {
+          annotationType,
+          isSaved: true,
+          content: { front: "", back: "" },
+          creationTimestampMillis: Date.now(),
+          isByAuthor: false,
+          isDue: false,
+          selectors: prompt.selectors,
+          showAnchors: true,
+          curationID: prompt.curationID,
+        },
+      }),
+    );
+  };
 }

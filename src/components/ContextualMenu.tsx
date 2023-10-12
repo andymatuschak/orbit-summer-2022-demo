@@ -1,16 +1,26 @@
 import React from "react";
-import styled from '@emotion/styled'
-import MenuItem from './MenuItem';
-interface ContextualMenuItemProps {
+import styled from "@emotion/styled";
+import MenuItem from "./MenuItem";
+export interface ContextualMenuItemProps {
   title: string;
   onClick: () => void;
   shortcutKey: string;
   isEnabled: boolean;
 }
 
-function ContextualMenuItem({ title, onClick, shortcutKey, isEnabled }: ContextualMenuItemProps) {
+function ContextualMenuItem({
+  title,
+  onClick,
+  shortcutKey,
+  isEnabled,
+}: ContextualMenuItemProps) {
   return (
-    <MenuItem title={title} onClick={onClick} shortcutKey={shortcutKey} isEnabled={isEnabled}/>
+    <MenuItem
+      title={title}
+      onClick={onClick}
+      shortcutKey={shortcutKey}
+      isEnabled={isEnabled}
+    />
   );
 }
 
@@ -29,9 +39,7 @@ export interface ContextualMenuProps {
   items: ContextualMenuItemProps[];
 }
 
-export default function ContextualMenu({
-  items,
-}: ContextualMenuProps) {
+export default function ContextualMenu({ items }: ContextualMenuProps) {
   return (
     <ContextMenuContainer>
       {items.map((item, i) => (
