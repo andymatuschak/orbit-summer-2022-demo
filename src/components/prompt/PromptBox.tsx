@@ -87,7 +87,7 @@ const Container = styled.div<
         context === PromptContext.BulkCollapsed)
         ? "13px"
         : "9px"};
-  cursor: ${(props) => (!props.isSaved ? "pointer" : "auto")};
+  cursor: ${(props) => (!props.isSaved ? "pointer" : "text")};
   position: relative;
   border-left: ${(props) => {
     if (

@@ -392,12 +392,12 @@ export function AnchorHighlight({
             ...(prompts[menuState.promptID].content.front === ""
               ? [
                   {
-                    title: "Add Comment",
+                    title: "Add Note",
                     onClick: () => {
                       onAddComment(menuState.promptID);
                       setMenuState(null);
                     },
-                    shortcutKey: "C",
+                    shortcutKey: "N",
                     isEnabled: true,
                   },
                 ]
@@ -440,7 +440,7 @@ export function AnchorHighlight({
                 AnnotationType.Highlight
             ],
             {
-              title: "Remove Highlight",
+              title: "Remove",
               onClick: () => {
                 dispatch(deletePrompt(menuState.promptID));
                 setMenuState(null);

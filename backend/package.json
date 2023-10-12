@@ -4,7 +4,7 @@
   "license": "MIT",
   "type": "module",
   "engines": {
-    "node": "^14.20.0"
+    "node": "18"
   },
   "scripts": {
     "start": "vercel dev --listen 0.0.0.0:3010"
@@ -12,6 +12,7 @@
   "dependencies": {
     "@google-cloud/storage": "^6.11.0",
     "@steve2955/anki-apkg-export": "^5.0.0",
+    "hypothesis-api-client": "^0.1.14",
     "node-fetch": "^3.2.10",
     "uuid": "^9.0.0"
   },
