@@ -13,3 +13,5 @@ export function promptDataToAnnotationText(promptData) {
     annotationType: promptData.prompt.annotationType,
   });
 }
+
+export const userCreatedAnnotationTag = "orbit-prototype-user-created";

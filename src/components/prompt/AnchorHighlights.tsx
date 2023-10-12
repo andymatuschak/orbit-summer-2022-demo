@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from "react";
+import { convertMissingHighlight } from "../../app/hypothesisMiddleware";
 import {
   AnnotationType,
   deletePrompt,
@@ -10,7 +11,7 @@ import { useAppDispatch } from "../../app/store";
 import { PromptLocation } from "../../util/resolvePromptLocations";
 import { viewportToRoot } from "../../util/viewportToRoot";
 import zIndices from "../common/zIndices";
-import ContextualMenu from "../ContextualMenu";
+import ContextualMenu, { ContextualMenuItemProps } from "../ContextualMenu";
 import { highlightRange } from "./highlightRange";
 
 function colorForAnnotationType(
@@ -21,6 +22,8 @@ function colorForAnnotationType(
       return AnchorColors.forReview;
     case AnnotationType.Highlight:
       return AnchorColors.highlight;
+    case AnnotationType.Missed:
+      return AnchorColors.missed;
   }
 }
 
@@ -47,9 +50,10 @@ function classNameForPromptID(id: PromptID): string {
 
 const AnchorColors = {
   unsaved: "#FFFFFF00",
-  highlight: "#fff1de",
+  highlight: "#fcf4c6",
   forReview: "#e2dbff",
   hover: "#D6090926",
+  missed: "rgb(252,219,202)",
 } as const;
 
 interface HighlightMenuState {
@@ -249,8 +253,9 @@ export function AnchorHighlight({
       // we haven't drawn this before
       const className = classNameForPromptID(idB);
       if (
-        !newExistingPromptIds.has(idB) ||
-        document.getElementsByClassName(className).length === 0
+        promptLocations[idB] &&
+        (!newExistingPromptIds.has(idB) ||
+          document.getElementsByClassName(className).length === 0)
       ) {
         const copy = promptLocations[idB].range.cloneRange();
         const prompt = prompts[idB];
@@ -388,58 +393,17 @@ export function AnchorHighlight({
         ref={menuRef}
       >
         <ContextualMenu
-          items={[
-            ...(prompts[menuState.promptID].content.front === ""
-              ? [
-                  {
-                    title: "Add Note",
-                    onClick: () => {
-                      onAddComment(menuState.promptID);
-                      setMenuState(null);
-                    },
-                    shortcutKey: "N",
-                    isEnabled: true,
-                  },
-                ]
-              : []),
-            ...{
-              [AnnotationType.ForReview]: [
-                {
-                  title: "Switch to Highlight",
-                  onClick: () => {
-                    dispatch(
-                      setPromptAnnotationType([
-                        menuState!.promptID,
-                        AnnotationType.Highlight,
-                      ]),
-                    );
-                    setMenuState(null);
-                  },
-                  shortcutKey: "H",
-                  isEnabled: true,
-                },
-              ],
-              [AnnotationType.Highlight]: [
-                {
-                  title: "Mark for Review",
-                  onClick: () => {
-                    dispatch(
-                      setPromptAnnotationType([
-                        menuState!.promptID,
-                        AnnotationType.ForReview,
-                      ]),
-                    );
-                    setMenuState(null);
-                  },
-                  shortcutKey: "M",
-                  isEnabled: true,
-                },
-              ],
-            }[
-              prompts[menuState.promptID].annotationType ??
-                AnnotationType.Highlight
-            ],
-            {
+          items={(() => {
+            const addNoteItem: ContextualMenuItemProps = {
+              title: "Add Note",
+              onClick: () => {
+                onAddComment(menuState.promptID);
+                setMenuState(null);
+              },
+              shortcutKey: "N",
+              isEnabled: true,
+            };
+            const removeItem: ContextualMenuItemProps = {
               title: "Remove",
               onClick: () => {
                 dispatch(deletePrompt(menuState.promptID));
@@ -447,8 +411,90 @@ export function AnchorHighlight({
               },
               shortcutKey: "R",
               isEnabled: true,
-            },
-          ]}
+            };
+
+            const promptHasNote =
+              prompts[menuState.promptID].content.front !== "";
+            switch (
+              prompts[menuState.promptID].annotationType ??
+              AnnotationType.Highlight
+            ) {
+              case AnnotationType.ForReview: {
+                const items: ContextualMenuItemProps[] = [
+                  {
+                    title: "Switch to Highlight",
+                    onClick: () => {
+                      dispatch(
+                        setPromptAnnotationType([
+                          menuState!.promptID,
+                          AnnotationType.Highlight,
+                        ]),
+                      );
+                      setMenuState(null);
+                    },
+                    shortcutKey: "H",
+                    isEnabled: true,
+                  },
+                  removeItem,
+                ];
+                return promptHasNote ? items : [addNoteItem, ...items];
+              }
+
+              case AnnotationType.Highlight: {
+                const items: ContextualMenuItemProps[] = [
+                  {
+                    title: "Mark for Review",
+                    onClick: () => {
+                      dispatch(
+                        setPromptAnnotationType([
+                          menuState!.promptID,
+                          AnnotationType.ForReview,
+                        ]),
+                      );
+                      setMenuState(null);
+                    },
+                    shortcutKey: "M",
+                    isEnabled: true,
+                  },
+                  removeItem,
+                ];
+                return promptHasNote ? items : [addNoteItem, ...items];
+              }
+
+              case AnnotationType.Missed: {
+                return [
+                  {
+                    title: "Highlight",
+                    onClick: () => {
+                      dispatch(
+                        convertMissingHighlight(
+                          menuState!.promptID,
+                          AnnotationType.Highlight,
+                        ),
+                      );
+                      setMenuState(null);
+                    },
+                    shortcutKey: "H",
+                    isEnabled: true,
+                  },
+                  {
+                    title: "Mark for Review",
+                    onClick: () => {
+                      dispatch(
+                        convertMissingHighlight(
+                          menuState!.promptID,
+                          AnnotationType.ForReview,
+                        ),
+                      );
+                      setMenuState(null);
+                    },
+                    shortcutKey: "M",
+                    isEnabled: true,
+                  },
+                ];
+              }
+            }
+          })()}
         />
       </div>
     )

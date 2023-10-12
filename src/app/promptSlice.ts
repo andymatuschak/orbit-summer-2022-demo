@@ -9,15 +9,18 @@ import {
   TaskProvenanceSelectorType,
 } from "@withorbit/core";
 import { prototypeBackendBaseURL } from "../config";
+import { generateOrbitIDForString } from "../util/generateOrbitIDForString";
 import {
   HypothesisJSONData,
   readPromptsFromHypothesisJSON,
 } from "../util/hypothesisJSON";
+import { MissingHighlightRecord } from "./hypothesisMiddleware";
 
 export type PromptID = string;
 export enum AnnotationType {
   Highlight = "highlight",
   ForReview = "forReview",
+  Missed = "missed",
 }
 
 export interface Prompt {
@@ -34,6 +37,7 @@ export interface Prompt {
   showAnchors: boolean;
 
   annotationType?: AnnotationType;
+  curationID?: string; // i.e. the curated hypothes.is ID which this prompt represents
 
   // For prompts saved automatically via review, we track the ID of the review area where it came from, so that we can implement the "undo" feature allowing users to *unsave* those auto-saved prompts.
   sourceReviewAreaID?: string;
@@ -191,12 +195,47 @@ const promptSlice = createSlice({
       }
     },
 
+    syncMissedHighlightsFromRemote(
+      state,
+      action: PayloadAction<MissingHighlightRecord[]>,
+    ) {
+      for (const [id, prompt] of Object.entries(state)) {
+        if (prompt.annotationType === AnnotationType.Missed) {
+          delete state[id];
+        }
+      }
+      for (const { id: remoteID, selectors } of action.payload) {
+        const localID = generateOrbitIDForString(remoteID);
+        if (state[localID]) continue;
+        state[localID] = {
+          content: { front: "", back: "" },
+          isSaved: true,
+          isDue: false,
+          isByAuthor: false,
+          showAnchors: true,
+          selectors,
+          creationTimestampMillis: Date.now(), // HACK
+          annotationType: AnnotationType.Missed,
+          curationID: remoteID,
+        };
+      }
+    },
+
+    removeMissedHighlights(state) {
+      for (const [id, prompt] of Object.entries(state)) {
+        if (prompt.annotationType === AnnotationType.Missed) {
+          delete state[id];
+        }
+      }
+    },
+
     // Used by the Ctrl+D author shortcut to "reset" the page state after serializing prompt JSON.
     // Also used when the user signs out.
     reloadPromptsFromJSON(state, action: PayloadAction<HypothesisJSONData>) {
       return readPromptsFromHypothesisJSON(action.payload);
     },
   },
+
   extraReducers(builder) {
     builder.addCase(loadPrompts.fulfilled, (_state, action) => {
       // Merge the loaded prompts with any persisted prompts.
@@ -285,6 +324,8 @@ export const {
   createNewPrompt,
   syncPromptFromReview,
   syncPromptStateFromRemoteTasks,
+  syncMissedHighlightsFromRemote,
+  removeMissedHighlights,
   reloadPromptsFromJSON,
   setPromptAnnotationType,
 } = promptSlice.actions;

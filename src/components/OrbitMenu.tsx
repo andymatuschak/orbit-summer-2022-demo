@@ -1,4 +1,5 @@
 import React, { useCallback, useEffect, useRef, useState } from "react";
+import { getMissingHighlights } from "../app/hypothesisMiddleware";
 import { startReviewForAllDuePrompts } from "../app/modalReviewSlice";
 import { openLoginPopup } from "../app/orbitSyncMiddleware";
 import { setPromptVisibility } from "../app/promptVisibilitySlice";
@@ -284,6 +285,10 @@ export function OrbitMenu() {
           title="Export Anki Deck"
           onClick={() => downloadAnkiDeck()}
           disabled={!anyPromptsSaved}
+        />
+        <MenuItem
+          title="Get missing highlights"
+          onClick={() => dispatch(getMissingHighlights())}
         />
 
         {/* Bottom bar */}

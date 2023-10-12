@@ -17,15 +17,29 @@ export default async function handler(req, res) {
       return;
     }
     console.log(`DELETE /h-proxy/${hypothesisID}`);
-    hypothesisClient.deleteAnnotation(hypothesisID, (error) => {
-      if (error) {
-        console.error(error);
-        res.status(500).end();
-      } else {
-        console.debug("Deleted.");
-        res.status(200).end();
-      }
-    });
+    hypothesisClient.searchAnnotations(
+      { references: hypothesisID },
+      (error, annotations) => {
+        if (error) {
+          console.error(error);
+          res.status(500).end();
+          return;
+        }
+
+        hypothesisClient.deleteAnnotations(
+          [hypothesisID, ...annotations.map((a) => a.id)],
+          (error) => {
+            if (error) {
+              console.error(error);
+              res.status(500).end();
+            } else {
+              console.debug("Deleted.");
+              res.status(200).end();
+            }
+          },
+        );
+      },
+    );
   } else if (req.method === "PATCH") {
     const hypothesisID = req.query["hypothesisID"];
     if (!hypothesisID) {

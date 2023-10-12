@@ -1,9 +1,9 @@
 import {
   hypothesisClient,
   promptDataToAnnotationText,
+  userCreatedAnnotationTag,
 } from "./_hypothesisClient.js";
 
-const userCreatedAnnotationTag = "orbit-prototype-user-created";
 export default async function handler(req, res) {
   res.setHeader("Access-Control-Allow-Origin", "*");
   res.setHeader("Access-Control-Allow-Headers", "*");
@@ -69,16 +69,55 @@ export default async function handler(req, res) {
           },
           text: promptDataToAnnotationText(data),
           target: [{ selector: data.prompt.selectors }],
-          tags: [userCreatedAnnotationTag],
+          tags: [
+            userCreatedAnnotationTag,
+            ...(data.prompt.curationID ? ["orbit-prototype-from-curated"] : []),
+          ],
         },
         (error, responseData) => {
           if (error) {
             console.error(error);
             res.status(500).end();
+            return;
+          }
+          console.log("Success.");
+          console.debug(responseData);
+
+          const newHypothesisID = responseData.id;
+          function sendResponseData() {
+            res.status(200).send(newHypothesisID);
+          }
+          if (data.prompt.curationID) {
+            hypothesisClient.createNewAnnotation(
+              {
+                uri,
+                group: groupID,
+                document: {
+                  title: [metadata.title],
+                  link: metadata.link,
+                },
+                text: `https://hypothes.is/a/${data.prompt.curationID}`, // HACK
+                tags: ["orbit-prototype-from-curated"],
+                references: [newHypothesisID],
+              },
+              (error, commentResponseData) => {
+                if (error) {
+                  console.error(
+                    "Error posting comment to associate new annotation with its curated ID",
+                    error,
+                  );
+                  res.status(500).end();
+                } else {
+                  console.log(
+                    "Wrote comment associating new annotation with its curated ID.",
+                  );
+                  console.debug(commentResponseData);
+                  sendResponseData();
+                }
+              },
+            );
           } else {
-            console.log("Success.");
-            console.debug(responseData);
-            res.status(200).send(responseData.id);
+            sendResponseData();
           }
         },
       );
