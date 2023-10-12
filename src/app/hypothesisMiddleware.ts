@@ -27,7 +27,8 @@ const startListening =
     AppDispatch
   >;
 
-const hypothesisGroupID = "J5Ewyzg5";
+const userHypothesisGroupID = "J5Ewyzg5";
+const curatedHypothesisGroupID = "ArwAPxdE";
 const promptIDsToHypothesisIDs = new Map<PromptID, string>();
 
 type PDFMetadataStructure = ReturnType<
@@ -50,7 +51,7 @@ export async function initializeHypothesisMiddleware(
   fetch(
     `${prototypeBackendBaseURL}/h-proxy?uri=${encodeURIComponent(
       getPDFURN(pdfMetadataRecord),
-    )}&groupID=${hypothesisGroupID}`,
+    )}&groupID=${userHypothesisGroupID}`,
   ).then(async (response) => {
     const mappingObj = await response.json();
     console.log("Got OrbitID -> hyp.is ID map", mappingObj);
@@ -71,7 +72,7 @@ export async function initializeHypothesisMiddleware(
       const response = await fetch(`${prototypeBackendBaseURL}/h-proxy`, {
         method: "POST",
         body: JSON.stringify({
-          groupID: hypothesisGroupID,
+          groupID: userHypothesisGroupID,
           metadata: pdfMetadataRecord,
           uri: getPDFURN(pdfMetadataRecord),
           data: { id, prompt },
@@ -166,7 +167,7 @@ export type MissingHighlightRecord = {
 export function getMissingHighlights() {
   return async (dispatch: AppDispatch) => {
     const response = await fetch(
-      `${prototypeBackendBaseURL}/getMissedAnnotations?groupID=${hypothesisGroupID}&uri=${encodeURIComponent(
+      `${prototypeBackendBaseURL}/getMissedAnnotations?groupID=${userHypothesisGroupID}&curatedGroupID=${curatedHypothesisGroupID}&uri=${encodeURIComponent(
         getPDFURN(cachedPDFMetadataRecord!),
       )}`,
     );
