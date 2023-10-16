@@ -46,7 +46,10 @@ export function usePromptLocations(prompts: { [id: string]: Prompt }): {
       const origin = viewportToRoot();
       for (const id of addedIDs) {
         try {
-          const range = await resolvePromptRange(document.body, prompts[id]);
+          const range = await resolvePromptRange(
+            document.body,
+            prompts[id].selectors,
+          );
           ranges.current[id] = range;
           newLocations[id] = resolvePromptLocation(origin, range);
         } catch (e) {
@@ -135,7 +138,7 @@ export function usePromptLocations(prompts: { [id: string]: Prompt }): {
         try {
           ranges.current[id] = await resolvePromptRange(
             document.body,
-            prompts[id],
+            prompts[id].selectors,
           );
         } catch (e) {
           console.error(

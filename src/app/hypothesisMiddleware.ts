@@ -5,6 +5,11 @@ import {
 } from "@reduxjs/toolkit";
 import { generateUniqueID } from "@withorbit/core";
 import { prototypeBackendBaseURL } from "../config";
+import {
+  resolvePromptLocation,
+  resolvePromptRange,
+} from "../util/resolvePromptLocations";
+import { getScrollingContainer, viewportToRoot } from "../util/viewportToRoot";
 import { PDFMetadata } from "../vendor/pdf-metadata";
 import {
   AnnotationType,
@@ -179,6 +184,24 @@ export function fetchMissingHighlights() {
     const missingHighlights: MissingHighlightRecord[] = await response.json();
     if (missingHighlights.length === 0) {
       alert("(no suggested highlights)");
+    } else {
+      // Bit of a back to duplicate this, but I'm having trouble gracefully shoving this effectful behavior into the top-level prompt location stuff.
+      const origin = viewportToRoot();
+      let highestPromptY: number | null = null;
+      for (const h of missingHighlights) {
+        const range = await resolvePromptRange(document.body, h.selectors);
+        const location = resolvePromptLocation(origin, range);
+        if (highestPromptY === null || location.top < highestPromptY) {
+          highestPromptY = location.top;
+        }
+      }
+      if (highestPromptY) {
+        getScrollingContainer().scrollTo({
+          left: window.scrollX,
+          top: highestPromptY - window.innerHeight / 4,
+          behavior: "smooth",
+        });
+      }
     }
 
     dispatch(syncMissedHighlightsFromRemote(missingHighlights));
