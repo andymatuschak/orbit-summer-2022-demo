@@ -1,4 +1,4 @@
-import { Prompt } from "../app/promptSlice";
+import { Prompt, PromptSelector } from "../app/promptSlice";
 import { anchor as anchorHTML } from "../vendor/hypothesis-annotator/html";
 import {
   anchor as anchorPDF,
@@ -26,9 +26,9 @@ function anchor(
 
 export async function resolvePromptRange(
   root: HTMLElement,
-  prompt: Prompt,
+  selectors: PromptSelector[],
 ): Promise<Range> {
-  return await anchor(root, prompt.selectors);
+  return await anchor(root, selectors);
 }
 
 export function resolvePromptLocation(
