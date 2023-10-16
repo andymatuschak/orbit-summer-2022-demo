@@ -164,7 +164,7 @@ export type MissingHighlightRecord = {
   id: string;
   selectors: PromptSelector[];
 };
-export function getMissingHighlights() {
+export function fetchMissingHighlights() {
   return async (dispatch: AppDispatch) => {
     const response = await fetch(
       `${prototypeBackendBaseURL}/getMissedAnnotations?groupID=${userHypothesisGroupID}&curatedGroupID=${curatedHypothesisGroupID}&uri=${encodeURIComponent(
@@ -177,6 +177,10 @@ export function getMissingHighlights() {
     }
 
     const missingHighlights: MissingHighlightRecord[] = await response.json();
+    if (missingHighlights.length === 0) {
+      alert("(no suggested highlights)");
+    }
+
     dispatch(syncMissedHighlightsFromRemote(missingHighlights));
   };
 }

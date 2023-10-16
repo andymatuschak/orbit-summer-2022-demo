@@ -1,6 +1,5 @@
 import styled from "@emotion/styled";
 import { motion } from "framer-motion";
-import shuffle from "knuth-shuffle-seeded";
 import React, {
   useCallback,
   useEffect,
@@ -9,10 +8,10 @@ import React, {
   useRef,
   useState,
 } from "react";
-import { startReviewForInlineReviewModule } from "../../app/modalReviewSlice";
+import { fetchMissingHighlights } from "../../app/hypothesisMiddleware";
 import {
   deletePrompt,
-  isPromptSectionReviewButton,
+  isShowMissedPromptsButton,
   Prompt,
   PromptID,
   PromptsState,
@@ -32,8 +31,8 @@ import BulkPromptBox from "./BulkPromptBox";
 import PromptBox from "./PromptBox";
 import {
   CollapsedPromptDirection,
+  MissedPromptsButton,
   PromptContext,
-  SectionReview,
 } from "./PromptComponents";
 
 export interface PromptLayoutManagerProps {
@@ -266,28 +265,13 @@ export function PromptLayoutManager({
     setDelayOneRender(false);
   }, []);
 
-  function onStartSectionReview(id: PromptID) {
-    const orderedPromptIDs = promptRuns.flat().reverse();
+  const [usedMissedPromptButtonIDs, setUsedMissedPromptButtonIDs] = useState<
+    PromptID[]
+  >([]);
 
-    const reviewPromptIDs: PromptID[] = [];
-    for (
-      let sectionReviewIndex = orderedPromptIDs.indexOf(id) - 1;
-      sectionReviewIndex >= 0 &&
-      !isPromptSectionReviewButton(
-        prompts[orderedPromptIDs[sectionReviewIndex]],
-      );
-      sectionReviewIndex--
-    ) {
-      reviewPromptIDs.push(orderedPromptIDs[sectionReviewIndex]);
-    }
-    shuffle(reviewPromptIDs, 314159);
-
-    dispatch(
-      startReviewForInlineReviewModule({
-        promptIDs: reviewPromptIDs,
-        modalReviewID: `${id}-modal`,
-      }),
-    );
+  function onShowMissedPrompts(buttonID: PromptID) {
+    setUsedMissedPromptButtonIDs((ids) => [...ids, buttonID]);
+    dispatch(fetchMissingHighlights());
   }
 
   return (
@@ -331,10 +315,12 @@ export function PromptLayoutManager({
                 }}
                 transition={TRANSITION}
               >
-                {isPromptSectionReviewButton(prompts[id]) ? (
-                  <SectionReview
-                    onStartSectionReview={() => onStartSectionReview(id)}
-                  />
+                {isShowMissedPromptsButton(prompts[id]) ? (
+                  usedMissedPromptButtonIDs.includes(id) ? null : (
+                    <MissedPromptsButton
+                      onToggleMissedPrompts={() => onShowMissedPrompts(id)}
+                    />
+                  )
                 ) : (
                   <PromptBoxMemo
                     prompt={prompts[id]}
