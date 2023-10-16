@@ -104,7 +104,7 @@ const promptSlice = createSlice({
   reducers: {
     savePrompt(state, action: IdAction) {
       const prompt = state[action.payload];
-      if (!prompt.isSaved && !isPromptSectionReviewButton(prompt)) {
+      if (!prompt.isSaved && !isShowMissedPromptsButton(prompt)) {
         prompt.isDue = true;
       }
       prompt.isSaved = true;
@@ -121,7 +121,8 @@ const promptSlice = createSlice({
     updatePromptFront(state, action: UpdatePromptText) {
       const prompt = state[action.payload[0]];
       prompt.content.front = action.payload[1];
-      if (isPromptSectionReviewButton(prompt)) {
+      if (isShowMissedPromptsButton(prompt)) {
+        prompt.showAnchors = false;
         prompt.isDue = false;
       }
     },
@@ -311,7 +312,7 @@ function getHypothesisSelectors(provenance: TaskProvenance): PromptSelector[] {
   });
 }
 
-export function isPromptSectionReviewButton(prompt: Prompt) {
+export function isShowMissedPromptsButton(prompt: Prompt) {
   return prompt.content.front.startsWith("SECTION REVIEW");
 }
 

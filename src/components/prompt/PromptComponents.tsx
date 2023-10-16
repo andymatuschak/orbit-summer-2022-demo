@@ -298,12 +298,12 @@ export function promptPlaintextToHTML(plaintext: string) {
   return plaintext.replace(/\n\n/g, "<br /><br />");
 }
 
-export interface SectionReviewProps {
-  onStartSectionReview: () => void;
+export interface MissedPromptsButtonProps {
+  onToggleMissedPrompts: () => void;
 }
 
-export const SectionReview = forwardRef(
-  (props: SectionReviewProps, ref: ForwardedRef<HTMLDivElement>) => (
+export const MissedPromptsButton = forwardRef(
+  (props: MissedPromptsButtonProps, ref: ForwardedRef<HTMLDivElement>) => (
     <div
       ref={ref}
       css={css`
@@ -314,10 +314,10 @@ export const SectionReview = forwardRef(
     >
       <Button
         backgroundColor="var(--bgPrimary)"
-        onClick={props.onStartSectionReview}
+        onClick={props.onToggleMissedPrompts}
         icon="rightArrow"
       >
-        Start section review
+        Show Suggested Highlights
       </Button>
     </div>
   ),
