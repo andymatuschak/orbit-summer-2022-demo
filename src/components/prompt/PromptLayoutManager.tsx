@@ -271,7 +271,26 @@ export function PromptLayoutManager({
 
   function onShowMissedPrompts(buttonID: PromptID) {
     setUsedMissedPromptButtonIDs((ids) => [...ids, buttonID]);
-    dispatch(fetchMissingHighlights());
+    const orderedPrompts: PromptID[] = promptRuns.flat().reverse();
+    const sectionRange = new Range();
+    sectionRange.setEnd(
+      promptLocations[buttonID].range.startContainer,
+      promptLocations[buttonID].range.startOffset,
+    );
+    for (let i = orderedPrompts.indexOf(buttonID) - 1; i >= 0; i--) {
+      const promptID = orderedPrompts[i];
+      if (isShowMissedPromptsButton(prompts[promptID])) {
+        console.log("Found previous button");
+        // We must be into the previous section.
+        const previousButtonRange = promptLocations[promptID].range;
+        sectionRange.setStart(
+          previousButtonRange.endContainer,
+          previousButtonRange.endOffset,
+        );
+        break;
+      }
+    }
+    dispatch(fetchMissingHighlights(sectionRange));
   }
 
   return (
@@ -471,8 +490,8 @@ const ShadowPrompts = React.memo(function ({
               savePrompt={() => null}
               forceHover={prompts[id].isSaved}
               forceHideBack={true} // HACK
-              updatePromptFront={(newPrompt) => null}
-              updatePromptBack={(newPrompt) => null}
+              updatePromptFront={() => null}
+              updatePromptBack={() => null}
               isNew={id === newPromptId}
             />
           </div>

@@ -1,5 +1,4 @@
 import React, { useCallback, useEffect, useMemo, useState } from "react";
-import { startReviewForInlineReviewModule } from "../../app/modalReviewSlice";
 import {
   savePrompt,
   unsavePrompt,
@@ -137,7 +136,7 @@ export function PromptList({
 
   function onStartReview() {
     const modalReviewID = `${mostRecentReviewID ?? targetElementID}-modal`;
-    dispatch(startReviewForInlineReviewModule({ promptIDs, modalReviewID }));
+    // HACK NEEDS FIXING
     setMostRecentReviewID(modalReviewID);
   }
 
