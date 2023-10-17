@@ -1,11 +1,13 @@
 import React, { useCallback, useEffect, useRef, useState } from "react";
-import { fetchReviewPromptsAndStartReview } from "../app/hypothesisMiddleware";
+import {
+  downloadAnkiDeck,
+  fetchReviewPromptsAndStartReview,
+} from "../app/hypothesisMiddleware";
 import { AnnotationType } from "../app/promptSlice";
 import { useAppDispatch, useAppSelector } from "../app/store";
 import X from "../static/images/Icons/X.png";
 import Logo from "../static/images/Logo.png";
 import Starburst from "../static/images/Starburst-48.png";
-import { downloadAnkiDeck } from "../util/downloadAnkiDeck";
 import { hoverAndActiveStyles } from "./common/hoverAndActiveStyles";
 import MenuItem from "./MenuItem";
 
@@ -224,7 +226,7 @@ export function OrbitMenu() {
         {/*<PromptVisibilityMenuItem />*/}
         <MenuItem
           title="Export Anki Deck"
-          onClick={() => downloadAnkiDeck()}
+          onClick={() => dispatch(downloadAnkiDeck())}
           disabled={!anyPromptsSaved}
         />
         <MenuItem
