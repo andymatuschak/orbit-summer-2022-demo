@@ -4,6 +4,7 @@ import {
   TypedStartListening,
 } from "@reduxjs/toolkit";
 import { generateUniqueID } from "@withorbit/core";
+import { saveAs } from "file-saver";
 import { prototypeBackendBaseURL } from "../config";
 import { generateOrbitIDForString } from "../util/generateOrbitIDForString";
 import { readPromptContentFromHypothesisText } from "../util/hypothesisJSON";
@@ -11,6 +12,7 @@ import {
   resolvePromptLocation,
   resolvePromptRange,
 } from "../util/resolvePromptLocations";
+import { getDocumentTitle, getSiteName } from "../util/siteMetadata";
 import { getScrollingContainer, viewportToRoot } from "../util/viewportToRoot";
 import { PDFMetadata } from "../vendor/pdf-metadata";
 import { startReviewForPrompts } from "./modalReviewSlice";
@@ -18,9 +20,9 @@ import {
   AnnotationType,
   createNewPrompt,
   deletePrompt,
-  Prompt,
   PromptID,
   PromptSelector,
+  PromptsState,
   removeMissedHighlights,
   setPromptAnnotationType,
   syncMissedHighlightsFromRemote,
@@ -251,51 +253,85 @@ export function convertMissingHighlight(
   };
 }
 
+async function fetchReviewPrompts(prompts: PromptsState) {
+  const response = await fetch(
+    `${prototypeBackendBaseURL}/getReviewPrompts?groupID=${userHypothesisGroupID}&curatedGroupID=${curatedHypothesisGroupID}&uri=${encodeURIComponent(
+      getPDFURN(cachedPDFMetadataRecord!),
+    )}`,
+  );
+  if (!response.ok) {
+    throw new Error("Couldn't fetch review prompts");
+  }
+
+  const reviewPromptEntries: { promptID: PromptID; promptText: string }[] =
+    await response.json();
+  const reviewPrompts: PromptsState = {};
+  for (const entry of reviewPromptEntries) {
+    for (const promptContent of readPromptContentFromHypothesisText(
+      entry.promptText,
+    )) {
+      const userPrompt = prompts[entry.promptID];
+      if (!userPrompt) {
+        console.error("Couldn't find user prompt for review prompt", entry);
+        continue;
+      }
+      const id = generateOrbitIDForString(promptContent.front);
+      reviewPrompts[id] = {
+        content: promptContent,
+        selectors: userPrompt.selectors,
+        isByAuthor: true,
+        isSaved: true,
+        isDue: false,
+        showAnchors: false,
+        creationTimestampMillis: Date.now(),
+        showSourceOverrideID: entry.promptID,
+      };
+    }
+  }
+  console.log("Got review prompts", reviewPrompts);
+  return reviewPrompts;
+}
+
 export function fetchReviewPromptsAndStartReview() {
   return async (dispatch: AppDispatch, getState: () => RootState) => {
-    const response = await fetch(
-      `${prototypeBackendBaseURL}/getReviewPrompts?groupID=${userHypothesisGroupID}&curatedGroupID=${curatedHypothesisGroupID}&uri=${encodeURIComponent(
-        getPDFURN(cachedPDFMetadataRecord!),
-      )}`,
-    );
-    if (!response.ok) {
-      console.error("Couldn't fetch review prompts");
-      return;
-    }
-
-    const reviewPromptEntries: { promptID: PromptID; promptText: string }[] =
-      await response.json();
-    const reviewPrompts: { [id: string]: Prompt } = {};
-    const prompts = getState().prompts;
-    for (const entry of reviewPromptEntries) {
-      for (const promptContent of readPromptContentFromHypothesisText(
-        entry.promptText,
-      )) {
-        const userPrompt = prompts[entry.promptID];
-        if (!userPrompt) {
-          console.error("Couldn't find user prompt for review prompt", entry);
-          continue;
-        }
-        const id = generateOrbitIDForString(promptContent.front);
-        reviewPrompts[id] = {
-          content: promptContent,
-          selectors: userPrompt.selectors,
-          isByAuthor: true,
-          isSaved: false,
-          isDue: false,
-          showAnchors: false,
-          creationTimestampMillis: Date.now(),
-          showSourceOverrideID: entry.promptID,
-        };
-      }
-    }
-    console.log("Got review prompts", reviewPrompts);
-
+    const reviewPrompts = await fetchReviewPrompts(getState().prompts);
     dispatch(
       startReviewForPrompts({
         promptIDs: Object.keys(reviewPrompts),
         extraPrompts: reviewPrompts,
       }),
     );
+  };
+}
+
+export function downloadAnkiDeck() {
+  return async (dispatch: AppDispatch, getState: () => RootState) => {
+    const siteName = getSiteName();
+    const documentTitle = getDocumentTitle();
+    const sourceLabel = siteName
+      ? `${siteName} - ${documentTitle}`
+      : documentTitle;
+    const sitePrompts: any = {
+      sourceLabel,
+      deckName: siteName ? `${siteName}::${documentTitle}` : documentTitle,
+      prompts: {
+        [document.location.pathname]: await fetchReviewPrompts(
+          getState().prompts,
+        ),
+      },
+      baseURI: document.location.href,
+    };
+
+    const response = await fetch(prototypeBackendBaseURL + "/exportAnkiDeck", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(sitePrompts),
+    });
+    if (response.ok) {
+      const blob = await response.blob();
+      saveAs(blob, `${sourceLabel}.apkg`);
+    } else {
+      alert(await response.text());
+    }
   };
 }

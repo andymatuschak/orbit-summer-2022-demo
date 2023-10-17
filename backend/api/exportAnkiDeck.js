@@ -64,7 +64,7 @@ margin-top: 3em;
         if (url) {
           sourceString = `<a style="color:inherit" href="${url}">${sourceLabel}</a>`;
         } else {
-          sourceString = sourceLabel;
+          sourceString = `<a style="color:inherit" href="${incomingData.baseURI}">${sourceLabel}</a>`;
         }
       }
 
