@@ -35,6 +35,7 @@ export default function MenuItem({
     const onShortcutKey = function (e: KeyboardEvent) {
       if (shortcutKey && e.key === shortcutKey.toLowerCase() && isEnabled) {
         e.preventDefault();
+        e.stopImmediatePropagation();
         onClick();
       }
     };
