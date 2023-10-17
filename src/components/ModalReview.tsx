@@ -1,16 +1,15 @@
+import shuffle from "knuth-shuffle-seeded";
 import React, { DOMAttributes, useState } from "react";
 import ScrollLock from "react-scrolllock";
 import { getOrbitPromptProps } from "../app/inlineReviewModuleSlice";
 import {
   endModalReview,
   ModalReviewState,
-  startReviewForAllDuePrompts,
   viewSourceForPromptID,
 } from "../app/modalReviewSlice";
 import { useAppDispatch, useAppSelector } from "../app/store";
 import zIndices from "./common/zIndices";
 import { CompletedReviewOverlay } from "./CompletedReviewOverlay";
-import shuffle from "knuth-shuffle-seeded";
 
 type CustomElement<T> = Partial<T & DOMAttributes<T> & { children: any }>;
 
@@ -39,24 +38,22 @@ declare global {
 export function ModalReview(props: NonNullable<ModalReviewState>) {
   const dispatch = useAppDispatch();
   const prompts = useAppSelector((state) => state.prompts);
-  const duePromptIDs = useAppSelector((state) =>
-    Object.keys(state.prompts).filter((id) => state.prompts[id].isDue),
-  );
   const [reviewAreaID] = useState(() => `reviewArea-${Date.now()}`);
 
   const [isReviewComplete, setReviewComplete] = useState(false);
 
   // A bit of a hack: we tee up the review queue when this component is mounted.
-  const [queuedPromptIDs] = useState<string[]>(() =>
-    props.mode === "list" ? props.promptIDs : shuffle(duePromptIDs, 314159265),
-  );
+  const [queuedPromptIDs] = useState<string[]>(() => {
+    return shuffle(props.promptIDs.slice(), 314159265);
+  });
 
   function onExitReview() {
     dispatch(endModalReview());
   }
 
   function onViewSource(taskID: string) {
-    dispatch(viewSourceForPromptID(taskID));
+    const prompt = props.extraPrompts[taskID] ?? prompts[taskID];
+    dispatch(viewSourceForPromptID(prompt.showSourceOverrideID ?? taskID));
   }
 
   return (
@@ -97,7 +94,7 @@ export function ModalReview(props: NonNullable<ModalReviewState>) {
         >
           {queuedPromptIDs.map((id) => (
             <orbit-prompt
-              {...getOrbitPromptProps(prompts[id])}
+              {...getOrbitPromptProps(props.extraPrompts[id] ?? prompts[id])}
               id={id}
               key={id}
             ></orbit-prompt>
@@ -105,11 +102,9 @@ export function ModalReview(props: NonNullable<ModalReviewState>) {
         </orbit-reviewarea>
 
         <CompletedReviewOverlay
-          mode={props.mode}
           context="modal"
           isVisible={isReviewComplete}
           onClose={onExitReview}
-          onContinueReview={() => dispatch(startReviewForAllDuePrompts())}
         />
       </div>
     </ScrollLock>

@@ -11,7 +11,7 @@ import {
 import { prototypeBackendBaseURL } from "../config";
 import { generateOrbitIDForString } from "../util/generateOrbitIDForString";
 import {
-  HypothesisJSONData,
+  HypothesisJSON,
   readPromptsFromHypothesisJSON,
 } from "../util/hypothesisJSON";
 import { MissingHighlightRecord } from "./hypothesisMiddleware";
@@ -23,11 +23,13 @@ export enum AnnotationType {
   Missed = "missed",
 }
 
+export interface PromptContent {
+  front: string;
+  back: string;
+}
+
 export interface Prompt {
-  content: {
-    front: string;
-    back: string;
-  };
+  content: PromptContent;
   selectors: PromptSelector[];
 
   creationTimestampMillis: number;
@@ -38,6 +40,9 @@ export interface Prompt {
 
   annotationType?: AnnotationType;
   curationID?: string; // i.e. the curated hypothes.is ID which this prompt represents
+
+  // When the user presses the Show Source button in review for this prompt, this prompt ID should be shown instead.
+  showSourceOverrideID?: PromptID;
 
   // For prompts saved automatically via review, we track the ID of the review area where it came from, so that we can implement the "undo" feature allowing users to *unsave* those auto-saved prompts.
   sourceReviewAreaID?: string;
@@ -232,7 +237,7 @@ const promptSlice = createSlice({
 
     // Used by the Ctrl+D author shortcut to "reset" the page state after serializing prompt JSON.
     // Also used when the user signs out.
-    reloadPromptsFromJSON(state, action: PayloadAction<HypothesisJSONData>) {
+    reloadPromptsFromJSON(state, action: PayloadAction<HypothesisJSON>) {
       return readPromptsFromHypothesisJSON(action.payload);
     },
   },

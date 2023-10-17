@@ -5,16 +5,20 @@ import {
 } from "@reduxjs/toolkit";
 import { generateUniqueID } from "@withorbit/core";
 import { prototypeBackendBaseURL } from "../config";
+import { generateOrbitIDForString } from "../util/generateOrbitIDForString";
+import { readPromptContentFromHypothesisText } from "../util/hypothesisJSON";
 import {
   resolvePromptLocation,
   resolvePromptRange,
 } from "../util/resolvePromptLocations";
 import { getScrollingContainer, viewportToRoot } from "../util/viewportToRoot";
 import { PDFMetadata } from "../vendor/pdf-metadata";
+import { startReviewForPrompts } from "./modalReviewSlice";
 import {
   AnnotationType,
   createNewPrompt,
   deletePrompt,
+  Prompt,
   PromptID,
   PromptSelector,
   removeMissedHighlights,
@@ -169,7 +173,7 @@ export type MissingHighlightRecord = {
   id: string;
   selectors: PromptSelector[];
 };
-export function fetchMissingHighlights() {
+export function fetchMissingHighlights(sectionRange: Range) {
   return async (dispatch: AppDispatch) => {
     const response = await fetch(
       `${prototypeBackendBaseURL}/getMissedAnnotations?groupID=${userHypothesisGroupID}&curatedGroupID=${curatedHypothesisGroupID}&uri=${encodeURIComponent(
@@ -184,27 +188,34 @@ export function fetchMissingHighlights() {
     const missingHighlights: MissingHighlightRecord[] = await response.json();
     if (missingHighlights.length === 0) {
       alert("(no suggested highlights)");
-    } else {
-      // Bit of a back to duplicate this, but I'm having trouble gracefully shoving this effectful behavior into the top-level prompt location stuff.
-      const origin = viewportToRoot();
-      let highestPromptY: number | null = null;
-      for (const h of missingHighlights) {
-        const range = await resolvePromptRange(document.body, h.selectors);
+      return;
+    }
+    // Bit of a back to do this layout stuff here, but I'm having trouble gracefully shoving this effectful behavior into the top-level prompt location stuff.
+    const origin = viewportToRoot();
+    let highestPromptY: number | null = null;
+    const missingSectionHighlights: MissingHighlightRecord[] = [];
+    for (const h of missingHighlights) {
+      const range = await resolvePromptRange(document.body, h.selectors);
+      if (
+        range.compareBoundaryPoints(Range.START_TO_START, sectionRange) === 1 &&
+        range.compareBoundaryPoints(Range.END_TO_END, sectionRange) === -1
+      ) {
+        missingSectionHighlights.push(h);
         const location = resolvePromptLocation(origin, range);
         if (highestPromptY === null || location.top < highestPromptY) {
           highestPromptY = location.top;
         }
       }
-      if (highestPromptY) {
-        getScrollingContainer().scrollTo({
-          left: window.scrollX,
-          top: highestPromptY - window.innerHeight / 4,
-          behavior: "smooth",
-        });
-      }
+    }
+    if (highestPromptY) {
+      getScrollingContainer().scrollTo({
+        left: window.scrollX,
+        top: highestPromptY - window.innerHeight / 2,
+        behavior: "smooth",
+      });
     }
 
-    dispatch(syncMissedHighlightsFromRemote(missingHighlights));
+    dispatch(syncMissedHighlightsFromRemote(missingSectionHighlights));
   };
 }
 
@@ -235,6 +246,55 @@ export function convertMissingHighlight(
           showAnchors: true,
           curationID: prompt.curationID,
         },
+      }),
+    );
+  };
+}
+
+export function fetchReviewPromptsAndStartReview() {
+  return async (dispatch: AppDispatch, getState: () => RootState) => {
+    const response = await fetch(
+      `${prototypeBackendBaseURL}/getReviewPrompts?groupID=${userHypothesisGroupID}&curatedGroupID=${curatedHypothesisGroupID}&uri=${encodeURIComponent(
+        getPDFURN(cachedPDFMetadataRecord!),
+      )}`,
+    );
+    if (!response.ok) {
+      console.error("Couldn't fetch review prompts");
+      return;
+    }
+
+    const reviewPromptEntries: { promptID: PromptID; promptText: string }[] =
+      await response.json();
+    const reviewPrompts: { [id: string]: Prompt } = {};
+    const prompts = getState().prompts;
+    for (const entry of reviewPromptEntries) {
+      for (const promptContent of readPromptContentFromHypothesisText(
+        entry.promptText,
+      )) {
+        const userPrompt = prompts[entry.promptID];
+        if (!userPrompt) {
+          console.error("Couldn't find user prompt for review prompt", entry);
+          continue;
+        }
+        const id = generateOrbitIDForString(promptContent.front);
+        reviewPrompts[id] = {
+          content: promptContent,
+          selectors: userPrompt.selectors,
+          isByAuthor: true,
+          isSaved: false,
+          isDue: false,
+          showAnchors: false,
+          creationTimestampMillis: Date.now(),
+          showSourceOverrideID: entry.promptID,
+        };
+      }
+    }
+    console.log("Got review prompts", reviewPrompts);
+
+    dispatch(
+      startReviewForPrompts({
+        promptIDs: Object.keys(reviewPrompts),
+        extraPrompts: reviewPrompts,
       }),
     );
   };

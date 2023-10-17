@@ -94,7 +94,7 @@
     "@storybook/testing-library": "0.0.13",
     "@types/file-saver": "^2.0.5",
     "@types/knuth-shuffle-seeded": "^1.0.0",
-    "@types/node": "~14",
+    "@types/node": "~18",
     "@types/react": "^18.0.12",
     "@types/react-dom": "^18.0.5",
     "@types/uuid": "^8.3.4",

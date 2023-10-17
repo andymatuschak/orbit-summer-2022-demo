@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect, useRef, useState } from "react";
-import { startReviewForAllDuePrompts } from "../app/modalReviewSlice";
-import { setPromptVisibility } from "../app/promptVisibilitySlice";
+import { fetchReviewPromptsAndStartReview } from "../app/hypothesisMiddleware";
+import { AnnotationType } from "../app/promptSlice";
 import { useAppDispatch, useAppSelector } from "../app/store";
 import X from "../static/images/Icons/X.png";
 import Logo from "../static/images/Logo.png";
@@ -8,8 +8,6 @@ import Starburst from "../static/images/Starburst-48.png";
 import { downloadAnkiDeck } from "../util/downloadAnkiDeck";
 import { hoverAndActiveStyles } from "./common/hoverAndActiveStyles";
 import MenuItem from "./MenuItem";
-import { OrbitMenuPromptVisibilityControl } from "./OrbitMenuPromptVisibilityControl";
-import { Label, LabelColor, labelSmallStyle } from "./Type";
 
 function OrbitMenuButton({
   onClick,
@@ -134,35 +132,15 @@ function OrbitMenuLogo() {
   );
 }
 
-function PromptVisibilityMenuItem() {
-  const dispatch = useAppDispatch();
-  const value = useAppSelector((state) => state.promptVisibility);
-
-  return (
-    <div
-      css={{
-        display: "flex",
-        flexDirection: "column",
-        padding: "12px 12px 8px 12px",
-      }}
-    >
-      <Label text="Show floating prompts:" color={LabelColor.FGPrimary} />
-      <div css={{ height: 8 }} />
-      <OrbitMenuPromptVisibilityControl
-        value={value}
-        onChange={(value) => dispatch(setPromptVisibility(value))}
-      />
-    </div>
-  );
-}
-
 export function OrbitMenu() {
   const dispatch = useAppDispatch();
 
   const [isOpen, setOpen] = useState(false);
-  const duePromptCount = useAppSelector(
+  const forReviewPromptCount = useAppSelector(
     ({ prompts }) =>
-      Object.keys(prompts).filter((id) => prompts[id].isDue).length,
+      Object.keys(prompts).filter(
+        (id) => prompts[id].annotationType === AnnotationType.ForReview,
+      ).length,
   );
   const anyPromptsSaved = useAppSelector(
     ({ prompts }) =>
@@ -212,41 +190,6 @@ export function OrbitMenu() {
     }
   }, [isOpen]);
 
-  const startReviewMenuItem = (
-    <div
-      css={{
-        position: "relative",
-        display: "flex",
-        flexDirection: "column",
-      }}
-    >
-      <MenuItem
-        title="Start Review"
-        subtitle={userEmail ?? undefined}
-        onClick={() => {
-          dispatch(startReviewForAllDuePrompts());
-          setOpen(false);
-        }}
-        disabled={duePromptCount === 0}
-      />
-      {duePromptCount > 0 && (
-        <div
-          css={{
-            position: "absolute",
-            top: 8,
-            right: 10, // sorry, grid!!!
-          }}
-        >
-          <DueCount
-            count={duePromptCount}
-            menuIsOpen={isOpen}
-            context="menuItem"
-          />
-        </div>
-      )}
-    </div>
-  );
-
   return (
     <div ref={containerRef}>
       {contentsSize && (
@@ -284,6 +227,15 @@ export function OrbitMenu() {
           onClick={() => downloadAnkiDeck()}
           disabled={!anyPromptsSaved}
         />
+        <MenuItem
+          title="Start Review"
+          subtitle={userEmail ?? undefined}
+          onClick={() => {
+            dispatch(fetchReviewPromptsAndStartReview());
+            setOpen(false);
+          }}
+          disabled={forReviewPromptCount === 0}
+        />
 
         {/* Bottom bar */}
         <div
@@ -305,66 +257,6 @@ export function OrbitMenu() {
         </div>
       </div>
       <OrbitMenuButton onClick={() => setOpen((o) => !o)} menuIsOpen={isOpen} />
-      {duePromptCount > 0 && (
-        <div
-          css={{
-            position: "absolute",
-            bottom: 30,
-            right: -10,
-          }}
-        >
-          <DueCount
-            count={duePromptCount}
-            menuIsOpen={isOpen}
-            context="orbitButton"
-          />
-        </div>
-      )}
-    </div>
-  );
-}
-
-function DueCount({
-  count,
-  menuIsOpen,
-  context,
-}: {
-  count: number;
-  menuIsOpen: boolean;
-  context: "orbitButton" | "menuItem";
-}) {
-  return (
-    <div
-      css={{
-        width: 20,
-        height: 20,
-        borderRadius: "50%",
-        display: "flex",
-        alignItems: "center",
-        paddingBottom: 3,
-        backgroundColor: "var(--accentPrimary)",
-        filter:
-          context === "orbitButton"
-            ? "drop-shadow(0px 3px 5px rgba(0, 0, 0, 0.15)) drop-shadow(0px 1px 3px rgba(77, 51, 8, 0.4))"
-            : undefined,
-        opacity: context === "orbitButton" ? (menuIsOpen ? 0 : 1) : 1,
-        transition:
-          context === "orbitButton" ? "var(--fadeTransition)" : undefined,
-        transitionDuration: "83ms",
-      }}
-    >
-      <div
-        css={[
-          labelSmallStyle,
-          {
-            color: "white",
-            textAlign: "center",
-            flexGrow: 1,
-          },
-        ]}
-      >
-        {count}
-      </div>
     </div>
   );
 }

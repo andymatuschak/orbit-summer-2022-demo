@@ -4,19 +4,17 @@ import React, { useEffect, useMemo, useRef, useState } from "react";
 import Button from "../components/Button";
 import zIndices from "../components/common/zIndices";
 import ContextualMenu from "../components/ContextualMenu";
-import { InlineReviewOverlay } from "../components/InlineReviewOverlay";
 import { ModalReview } from "../components/ModalReview";
 import { OrbitMenu } from "../components/OrbitMenu";
 import { PromptLayoutManager } from "../components/prompt/PromptLayoutManager";
 import { PromptList } from "../components/prompt/PromptList";
 import { LabelColor } from "../components/Type";
 import { usePromptLocations } from "../hooks/usePromptLocations";
-import { useReviewAreaIntegration } from "../hooks/useReviewAreaIntegration";
 import { useSelectionBounds } from "../hooks/useSelectionBounds";
 import { getScrollingContainer, viewportToRoot } from "../util/viewportToRoot";
 import { describe } from "../vendor/hypothesis-annotator/html";
 import { InlineReviewModuleState } from "./inlineReviewModuleSlice";
-import { resumeReview, startReviewForAllDuePrompts } from "./modalReviewSlice";
+import { resumeReview } from "./modalReviewSlice";
 import {
   AnnotationType,
   createNewPrompt,
@@ -42,7 +40,6 @@ export default function App({ marginX, textRoot, promptLists }: AppProps) {
     (state) => state.inlineReviewModules,
   );
   const modalReviewState = useAppSelector((state) => state.modalReview);
-  useReviewAreaIntegration();
   const { locations: promptLocations, updateLocations } =
     usePromptLocations(prompts);
 
@@ -167,25 +164,6 @@ export default function App({ marginX, textRoot, promptLists }: AppProps) {
           onAddComment={(id) => setNewPromptId(id)}
         />
         {modalReviewState?.viewingSourceID && <ContinueModalReviewButton />}
-        <>
-          {Object.entries(inlineReviewModules).map(([id, reviewModule]) => (
-            <div
-              key={id}
-              css={{
-                position: "absolute",
-                zIndex: zIndices.displayOverContent,
-                pointerEvents: "none",
-                ...reviewModule.frame,
-              }}
-            >
-              <InlineReviewOverlay
-                reviewModuleID={id}
-                promptIDs={reviewModule.promptIDs}
-                onContinueReview={() => dispatch(startReviewForAllDuePrompts())}
-              />
-            </div>
-          ))}
-        </>
       </div>
       <div
         css={{
@@ -198,12 +176,7 @@ export default function App({ marginX, textRoot, promptLists }: AppProps) {
       >
         <OrbitMenu />
       </div>
-      {modalReviewState && (
-        <ModalReview
-          key={modalReviewState.mode} /* remount when mode changes */
-          {...modalReviewState}
-        />
-      )}
+      {modalReviewState && <ModalReview {...modalReviewState} />}
       {promptListData.map((promptList) => (
         <PromptList
           key={`promptList-${promptList.promptListID}`}

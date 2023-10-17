@@ -1,42 +1,27 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { PromptID } from "./promptSlice";
+import { Prompt, PromptID } from "./promptSlice";
 
-export type ModalReviewState =
-  | {
-      // i.e. we're reviewing a list of prompts specified by the author
-      mode: "list";
-      promptIDs: string[];
-      modalReviewID: string;
-      viewingSourceID: PromptID | null;
-    }
-  | {
-      // i.e. we're reviewing all the due prompts the user has saved
-      mode: "user";
-      viewingSourceID: PromptID | null;
-    }
-  | null;
+export type ModalReviewState = {
+  promptIDs: PromptID[];
+  viewingSourceID: PromptID | null;
+  extraPrompts: { [promptID: string]: Prompt };
+} | null;
 
 const modalReviewSlice = createSlice({
   name: "modalReview",
   initialState: null as ModalReviewState,
   reducers: {
-    startReviewForAllDuePrompts() {
-      return {
-        mode: "user",
-        viewingSourceID: null,
-      };
-    },
-
-    startReviewForInlineReviewModule(
+    startReviewForPrompts(
       state,
-      action: PayloadAction<{ promptIDs: PromptID[]; modalReviewID: string }>,
+      action: PayloadAction<{
+        promptIDs: PromptID[];
+        extraPrompts: { [promptID: string]: Prompt };
+      }>,
     ) {
-      const { modalReviewID, promptIDs } = action.payload;
       return {
-        mode: "list",
-        promptIDs,
-        modalReviewID,
+        promptIDs: action.payload.promptIDs,
         viewingSourceID: null,
+        extraPrompts: action.payload.extraPrompts,
       };
     },
 
@@ -64,8 +49,7 @@ const modalReviewSlice = createSlice({
 });
 
 export const {
-  startReviewForAllDuePrompts,
-  startReviewForInlineReviewModule,
+  startReviewForPrompts,
   endModalReview,
   viewSourceForPromptID,
   resumeReview,
