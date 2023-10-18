@@ -96,7 +96,15 @@ export function AnchorHighlight({
   ) {
     const els = document.getElementsByClassName(classNameForPromptID(id));
     for (const el of els) {
-      (el as HTMLElement).style.backgroundColor = color;
+      if (el instanceof HTMLElement) {
+        el.style.backgroundColor = color;
+
+        // HACK probably doesn't deal with overlapping prompts appropriately
+        el.style.borderBottom =
+          hoverPrompts?.includes(id) || editPrompt === id
+            ? `1px solid red`
+            : "none";
+      }
     }
   }
 
@@ -169,32 +177,6 @@ export function AnchorHighlight({
         });
       }
     });
-
-    // Apply hover if eligible
-    hoverPrompts?.forEach((hoverPrompt) => {
-      var targetId: string | undefined;
-      if (hoverPrompt && visiblePromptIDs.has(hoverPrompt)) {
-        targetId = hoverPrompt;
-      }
-      if (editPrompt) {
-        targetId = editPrompt;
-      }
-      const drawnId = promptIdToDrawnPromptId.get(targetId ?? "");
-      if (drawnId) {
-        const els = document.getElementsByClassName(
-          classNameForPromptID(drawnId),
-        );
-        for (const el of els) {
-          (el as HTMLElement).style.backgroundColor = AnchorColors.hover;
-        }
-      }
-    });
-
-    // Apply edit
-    if (editPrompt) {
-      const targetId = promptIdToDrawnPromptId.get(editPrompt);
-      if (targetId) highlightDrawnId(targetId, AnchorColors.hover);
-    }
   }, [
     hoverPrompts,
     editPrompt,
