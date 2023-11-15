@@ -386,7 +386,7 @@ const PromptBox = forwardRef(function (
             onBlur={() => endEditing(true)}
             onPaste={(e) => onPaste(e, true)}
             ref={promptFrontRef}
-            placeholder="Type a prompt here."
+            placeholder="Type a note here."
           >
             {prompt.content.front}
           </PromptText>
