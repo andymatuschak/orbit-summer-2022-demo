@@ -1,1 +1,94 @@
-[[{"text":"Q. SECTION REVIEW One.I.1\nA. ","tags":["no-anchor"],"target":[{"selector":[{"type":"RangeSelector","startContainer":"/div[19]/div[2]/span[155]","startOffset":0,"endContainer":"/div[19]/div[2]/span[155]","endOffset":9},{"type":"TextPositionSelector","start":12914,"end":12923},{"type":"TextQuoteSelector","exact":"Exercises","prefix":"showing that no solution exists.","suffix":"X 1.17 Use Gauss’s Method to fin"}]}]}]]
+[
+  [
+    {
+      "text": "Q. SECTION REVIEW One.I.1\nA. ",
+      "tags": [
+        "no-anchor"
+      ],
+      "target": [
+        {
+          "selector": [
+            {
+              "type": "RangeSelector",
+              "startContainer": "/div[19]/div[2]/span[155]",
+              "startOffset": 0,
+              "endContainer": "/div[19]/div[2]/span[155]",
+              "endOffset": 9
+            },
+            {
+              "type": "TextPositionSelector",
+              "start": 12914,
+              "end": 12923
+            },
+            {
+              "type": "TextQuoteSelector",
+              "exact": "Exercises",
+              "prefix": "showing that no solution exists.",
+              "suffix": "X 1.17 Use Gauss’s Method to fin"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "text": "Q. SECTION REVIEW One.I.2\nA. ",
+      "tags": [
+        "no-anchor"
+      ],
+      "target": [
+        {
+          "selector": [
+            {
+              "type": "RangeSelector",
+              "startContainer": "/div[30]/div[2]/span[34]",
+              "startOffset": 0,
+              "endContainer": "/div[30]/div[2]/span[34]",
+              "endOffset": 9
+            },
+            {
+              "type": "TextPositionSelector",
+              "start": 12402,
+              "end": 12411
+            },
+            {
+              "type": "TextQuoteSelector",
+              "exact": "Exercises",
+              "prefix": "nd cannot happen in a reduction.",
+              "suffix": "X 2.15 Find the indicated entry "
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "tags": [
+        "no-anchor"
+      ],
+      "target": [
+        {
+          "selector": [
+            {
+              "endContainer": "/div[43]/div[2]/span[4]",
+              "endOffset": 9,
+              "startContainer": "/div[43]/div[2]/span[4]",
+              "startOffset": 0,
+              "type": "RangeSelector"
+            },
+            {
+              "end": 15387,
+              "start": 15378,
+              "type": "TextPositionSelector"
+            },
+            {
+              "exact": "Exercises",
+              "prefix": "ion I. Solving Linear Systems 33",
+              "suffix": "3.14 Solve this system. Then sol",
+              "type": "TextQuoteSelector"
+            }
+          ]
+        }
+      ],
+      "text": "Q. SECTION REVIEW One.I.3\nA. "
+    }
+  ]
+]
