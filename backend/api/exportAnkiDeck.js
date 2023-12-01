@@ -2,7 +2,7 @@ import AnkiExport from "@steve2955/anki-apkg-export";
 import { parse as uuidParse, v5 as uuidV5 } from "uuid";
 import fetch from "node-fetch";
 
-async function convertData(incomingData, host) {
+export async function prepareAnkiDeck(incomingData) {
   const sourceLabel = incomingData.sourceLabel;
   const deckName = incomingData.deckName;
   const apkg = new AnkiExport(deckName, {
@@ -100,7 +100,7 @@ export default async function handler(req, res) {
   res.setHeader("Access-Control-Allow-Headers", "*");
   res.setHeader("Access-Control-Allow-Methods", "POST, OPTIONS");
   if (req.body) {
-    const result = await convertData(req.body, req.headers.host);
+    const result = await prepareAnkiDeck(req.body);
     res.setHeader(
       "Content-Disposition",
       `attachment; filename="${result.filename}"`,

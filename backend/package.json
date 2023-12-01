@@ -7,7 +7,8 @@
     "node": "18"
   },
   "scripts": {
-    "start": "vercel dev --listen 0.0.0.0:3010"
+    "start": "vercel dev --listen 0.0.0.0:3010",
+    "exportAnkiDeck": "node ./bin/exportAnkiDeck.js"
   },
   "dependencies": {
     "@google-cloud/storage": "^6.11.0",
