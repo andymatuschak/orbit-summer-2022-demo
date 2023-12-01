@@ -38,7 +38,7 @@ const startListening =
     AppDispatch
   >;
 
-const userHypothesisGroupID = "J5Ewyzg5";
+const userHypothesisGroupID = "iik92N5y";
 const curatedHypothesisGroupID = "ArwAPxdE";
 const promptIDsToHypothesisIDs = new Map<PromptID, string>();
 
