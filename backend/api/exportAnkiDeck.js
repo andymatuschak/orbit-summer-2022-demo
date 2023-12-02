@@ -2,7 +2,7 @@ import AnkiExport from "@steve2955/anki-apkg-export";
 import { parse as uuidParse, v5 as uuidV5 } from "uuid";
 import fetch from "node-fetch";
 
-export async function prepareAnkiDeck(incomingData) {
+export async function prepareAnkiDeck(incomingData, latexTagsStyle) {
   const sourceLabel = incomingData.sourceLabel;
   const deckName = incomingData.deckName;
   const apkg = new AnkiExport(deckName, {
@@ -72,9 +72,19 @@ margin-top: 3em;
         return text.replace(/\$(.+?)\$/g, "\\($1\\)");
       }
 
+      function orbitToMnemosyne(text) {
+        text = text.replace(/\$\$([^$]+?)\$\$/g, "<$$$$>$1</$$$$>");
+        return text.replace(/\$([^$>]+?)\$/g, "<$$>$1</$$>");
+      }
+
+      let latexTagsConverter = {
+        "anki": orbitToAnki,
+        "mnemosyne": orbitToMnemosyne,
+      }[latexTagsStyle];
+
       function prepareBack(text) {
         const ps = text.split("\n\n");
-        return orbitToAnki(
+        return latexTagsConverter(
           [ps[0], ...ps.slice(1).map((s) => `<p class="extra">${s}</p>`)].join(
             "\n",
           ),
@@ -82,7 +92,7 @@ margin-top: 3em;
       }
 
       apkg.addCard(
-        orbitToAnki(front),
+        latexTagsConverter(front),
         `${prepareBack(back)}
 <br /><br />
 <span style="font-size: 80%; opacity: 60%">(${sourceString})</span>`,
