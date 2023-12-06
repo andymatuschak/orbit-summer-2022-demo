@@ -304,7 +304,7 @@ export function fetchReviewPromptsAndStartReview() {
   };
 }
 
-export function downloadAnkiDeck() {
+export function downloadAnkiDeck(format: "anki" | "mnemosyne" = "anki") {
   return async (dispatch: AppDispatch, getState: () => RootState) => {
     const siteName = getSiteName();
     const documentTitle = getDocumentTitle();
@@ -322,11 +322,14 @@ export function downloadAnkiDeck() {
       baseURI: document.location.href,
     };
 
-    const response = await fetch(prototypeBackendBaseURL + "/exportAnkiDeck", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(sitePrompts),
-    });
+    const response = await fetch(
+      `${prototypeBackendBaseURL}/exportAnkiDeck?format=${format}`,
+      {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(sitePrompts),
+      },
+    );
     if (response.ok) {
       const blob = await response.blob();
       saveAs(blob, `${sourceLabel}.apkg`);

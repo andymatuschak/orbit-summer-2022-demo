@@ -77,9 +77,9 @@ margin-top: 3em;
         return text.replace(/\$([^$>]+?)\$/g, "<$$>$1</$$>");
       }
 
-      let latexTagsConverter = {
-        "anki": orbitToAnki,
-        "mnemosyne": orbitToMnemosyne,
+      const latexTagsConverter = {
+        anki: orbitToAnki,
+        mnemosyne: orbitToMnemosyne,
       }[latexTagsStyle];
 
       function prepareBack(text) {
@@ -110,7 +110,11 @@ export default async function handler(req, res) {
   res.setHeader("Access-Control-Allow-Headers", "*");
   res.setHeader("Access-Control-Allow-Methods", "POST, OPTIONS");
   if (req.body) {
-    const result = await prepareAnkiDeck(req.body);
+    const params = new URLSearchParams(req.query);
+    const result = await prepareAnkiDeck(
+      req.body,
+      params.get("format") ?? "anki",
+    );
     res.setHeader(
       "Content-Disposition",
       `attachment; filename="${result.filename}"`,
