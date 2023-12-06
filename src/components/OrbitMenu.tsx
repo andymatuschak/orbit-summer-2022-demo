@@ -226,7 +226,12 @@ export function OrbitMenu() {
         {/*<PromptVisibilityMenuItem />*/}
         <MenuItem
           title="Export Anki Deck"
-          onClick={() => dispatch(downloadAnkiDeck())}
+          onClick={() => dispatch(downloadAnkiDeck("anki"))}
+          disabled={!anyPromptsSaved}
+        />
+        <MenuItem
+          title="Export Mnemosyne Deck"
+          onClick={() => dispatch(downloadAnkiDeck("mnemosyne"))}
           disabled={!anyPromptsSaved}
         />
         <MenuItem
