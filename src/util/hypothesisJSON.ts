@@ -6,8 +6,10 @@ import {
 } from "../app/promptSlice";
 import { generateOrbitIDForString } from "./generateOrbitIDForString";
 
-interface HypothesisEntryJSON {
+export interface HypothesisEntryJSON {
+  id: string;
   text: string;
+  tags: string[];
   target: { selector: PromptSelector[] }[];
 }
 
@@ -66,6 +68,7 @@ export function writePromptsToHypothesisJSON(
 ): HypothesisJSON {
   return [
     Object.values(prompts).map((prompt) => ({
+      id: prompt.curationID!,
       text: `Q. ${prompt.content.front}\nA. ${prompt.content.back}`,
       tags: prompt.showAnchors ? [] : ["no-anchor"],
       target: [{ selector: prompt.selectors }],

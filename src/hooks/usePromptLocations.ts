@@ -55,7 +55,7 @@ export function usePromptLocations(prompts: { [id: string]: Prompt }): {
         } catch (e) {
           console.error(
             `Prompt resolution error: ${e}\n${JSON.stringify(
-              prompt,
+              prompts[id],
               null,
               "\t",
             )}`,

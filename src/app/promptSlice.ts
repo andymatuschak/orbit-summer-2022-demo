@@ -11,6 +11,7 @@ import {
 import { prototypeBackendBaseURL } from "../config";
 import { generateOrbitIDForString } from "../util/generateOrbitIDForString";
 import {
+  HypothesisEntryJSON,
   HypothesisJSON,
   readPromptsFromHypothesisJSON,
 } from "../util/hypothesisJSON";
@@ -159,6 +160,39 @@ const promptSlice = createSlice({
     ) {
       const prompt = state[action.payload[0]];
       prompt.annotationType = action.payload[1];
+    },
+
+    syncPromptStateFromHypothesis(
+      state,
+      action: PayloadAction<HypothesisEntryJSON[]>,
+    ) {
+      for (const highlight of action.payload) {
+        const data: {
+          id: string;
+          comment: string;
+          annotationType: AnnotationType;
+        } = JSON.parse(highlight.text);
+        if (!data.id) {
+          console.warn("Ignoring highlight with no prompt ID", highlight);
+          continue;
+        }
+        const prompt = state[data.id];
+        if (prompt) {
+          prompt.annotationType = data.annotationType;
+          prompt.content.front = data.comment;
+        } else {
+          state[data.id] = {
+            content: { front: data.comment, back: "" },
+            isSaved: true,
+            isDue: false,
+            isByAuthor: false,
+            showAnchors: true,
+            selectors: highlight.target[0].selector,
+            creationTimestampMillis: Date.now(), // HACK
+            annotationType: data.annotationType,
+          };
+        }
+      }
     },
 
     syncPromptStateFromRemoteTasks(
@@ -331,6 +365,7 @@ export const {
   syncPromptFromReview,
   syncPromptStateFromRemoteTasks,
   syncMissedHighlightsFromRemote,
+  syncPromptStateFromHypothesis,
   removeMissedHighlights,
   reloadPromptsFromJSON,
   setPromptAnnotationType,
