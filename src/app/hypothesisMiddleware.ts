@@ -222,6 +222,9 @@ export function fetchMissingHighlights(sectionRange: Range) {
         top: highestPromptY - window.innerHeight / 2,
         behavior: "smooth",
       });
+    } else {
+      alert("(no suggested highlights)");
+      return;
     }
 
     dispatch(syncMissedHighlightsFromRemote(missingSectionHighlights));
