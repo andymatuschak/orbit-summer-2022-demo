@@ -271,24 +271,36 @@ export function PromptLayoutManager({
 
   function onShowMissedPrompts(buttonID: PromptID) {
     setUsedMissedPromptButtonIDs((ids) => [...ids, buttonID]);
-    const orderedPrompts: PromptID[] = promptRuns.flat().reverse();
     const sectionRange = new Range();
     sectionRange.setEnd(
       promptLocations[buttonID].range.startContainer,
       promptLocations[buttonID].range.startOffset,
     );
-    for (let i = orderedPrompts.indexOf(buttonID) - 1; i >= 0; i--) {
-      const promptID = orderedPrompts[i];
-      if (isShowMissedPromptsButton(prompts[promptID])) {
-        console.log("Found previous button");
-        // We must be into the previous section.
-        const previousButtonRange = promptLocations[promptID].range;
-        sectionRange.setStart(
-          previousButtonRange.endContainer,
-          previousButtonRange.endOffset,
-        );
-        break;
+
+    const pressedY = promptLocations[buttonID].top;
+    // Find the missed prompts button with the closest value less than pressedY
+    let closestID: PromptID | null = null;
+    let closestY: number | null = null;
+    for (const [id, prompt] of Object.entries(prompts)) {
+      const location = promptLocations[id];
+      if (!location) {
+        console.warn("Skipping prompt with no location", id, prompt);
+        continue;
       }
+      if (isShowMissedPromptsButton(prompt)) {
+        if (location.top < pressedY) {
+          if (closestY === null || location.top > closestY) {
+            closestID = id;
+            closestY = location.top;
+          }
+        }
+      }
+    }
+
+    if (closestID !== null) {
+      console.log("Found previous button", prompts[closestID]);
+      const range = promptLocations[closestID].range;
+      sectionRange.setStart(range.endContainer, range.endOffset);
     }
     dispatch(fetchMissingHighlights(sectionRange));
   }
