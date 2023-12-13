@@ -7,7 +7,10 @@ import { generateUniqueID } from "@withorbit/core";
 import { saveAs } from "file-saver";
 import { prototypeBackendBaseURL } from "../config";
 import { generateOrbitIDForString } from "../util/generateOrbitIDForString";
-import { readPromptContentFromHypothesisText } from "../util/hypothesisJSON";
+import {
+  HypothesisEntryJSON,
+  readPromptContentFromHypothesisText,
+} from "../util/hypothesisJSON";
 import {
   resolvePromptLocation,
   resolvePromptRange,
@@ -26,6 +29,7 @@ import {
   removeMissedHighlights,
   setPromptAnnotationType,
   syncMissedHighlightsFromRemote,
+  syncPromptStateFromHypothesis,
   updatePromptFront,
 } from "./promptSlice";
 import { AppDispatch, AppStore, RootState } from "./store";
@@ -64,12 +68,15 @@ export async function initializeHypothesisMiddleware(
       getPDFURN(pdfMetadataRecord),
     )}&groupID=${userHypothesisGroupID}`,
   ).then(async (response) => {
-    const mappingObj = await response.json();
-    console.log("Got OrbitID -> hyp.is ID map", mappingObj);
+    const highlights: HypothesisEntryJSON[] = await response.json();
+    console.log("Got OrbitID -> hyp.is map", highlights);
     if (response.ok) {
-      for (const [promptID, hypothesisID] of Object.entries(mappingObj)) {
-        promptIDsToHypothesisIDs.set(promptID, hypothesisID as string);
+      for (const highlight of highlights) {
+        const id = JSON.parse(highlight.text).id;
+        // probably should just put this in the prompt slice
+        promptIDsToHypothesisIDs.set(id, highlight.id);
       }
+      store.dispatch(syncPromptStateFromHypothesis(highlights));
     } else {
       console.error("Couldn't fetch Hypothes.is annotations", response);
       return;

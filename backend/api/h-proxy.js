@@ -38,14 +38,7 @@ export default async function handler(req, res) {
         } else {
           console.log("Success.");
           console.debug(annotations);
-          const orbitIDsToHypothesisIDs = Object.fromEntries(
-            annotations.map((annotation) => {
-              const orbitID = JSON.parse(annotation.text).id;
-              return [orbitID, annotation.id];
-            }),
-          );
-          console.debug(orbitIDsToHypothesisIDs);
-          res.status(200).send(orbitIDsToHypothesisIDs);
+          res.status(200).send(annotations);
         }
       },
     );
