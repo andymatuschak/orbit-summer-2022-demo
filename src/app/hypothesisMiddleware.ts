@@ -23,6 +23,7 @@ import {
   AnnotationType,
   createNewPrompt,
   deletePrompt,
+  Prompt,
   PromptID,
   PromptSelector,
   PromptsState,
@@ -302,9 +303,26 @@ async function fetchReviewPrompts(prompts: PromptsState) {
   return reviewPrompts;
 }
 
-export function fetchReviewPromptsAndStartReview() {
+export function fetchReviewPromptsAndStartReview(
+  filter?: (id: PromptID, prompt: Prompt) => Promise<boolean>,
+) {
   return async (dispatch: AppDispatch, getState: () => RootState) => {
-    const reviewPrompts = await fetchReviewPrompts(getState().prompts);
+    let prompts = getState().prompts;
+    if (filter) {
+      const newPrompts: typeof prompts = {};
+      for (const [id, prompt] of Object.entries(prompts)) {
+        if (await filter(id, prompt)) {
+          newPrompts[id] = prompt;
+        }
+      }
+      prompts = newPrompts;
+    }
+    if (Object.keys(prompts).length === 0) {
+      alert("No prompts to export!");
+      return;
+    }
+
+    const reviewPrompts = await fetchReviewPrompts(prompts);
     dispatch(
       startReviewForPrompts({
         promptIDs: Object.keys(reviewPrompts),
@@ -314,20 +332,37 @@ export function fetchReviewPromptsAndStartReview() {
   };
 }
 
-export function downloadAnkiDeck(format: "anki" | "mnemosyne" = "anki") {
+export function downloadAnkiDeck(
+  format: "anki" | "mnemosyne" = "anki",
+  filter?: (id: PromptID, prompt: Prompt) => Promise<boolean>,
+) {
   return async (dispatch: AppDispatch, getState: () => RootState) => {
     const siteName = getSiteName();
     const documentTitle = getDocumentTitle();
     const sourceLabel = siteName
       ? `${siteName} - ${documentTitle}`
       : documentTitle;
+
+    let prompts = getState().prompts;
+    if (filter) {
+      const newPrompts: typeof prompts = {};
+      for (const [id, prompt] of Object.entries(prompts)) {
+        if (await filter(id, prompt)) {
+          newPrompts[id] = prompt;
+        }
+      }
+      prompts = newPrompts;
+    }
+    if (Object.keys(prompts).length === 0) {
+      alert("No prompts to export!");
+      return;
+    }
+
     const sitePrompts: any = {
       sourceLabel,
       deckName: siteName ? `${siteName}::${documentTitle}` : documentTitle,
       prompts: {
-        [document.location.pathname]: await fetchReviewPrompts(
-          getState().prompts,
-        ),
+        [document.location.pathname]: await fetchReviewPrompts(prompts),
       },
       baseURI: document.location.href,
     };
