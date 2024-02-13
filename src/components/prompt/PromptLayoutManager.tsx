@@ -8,7 +8,11 @@ import React, {
   useRef,
   useState,
 } from "react";
-import { fetchMissingHighlights } from "../../app/hypothesisMiddleware";
+import {
+  downloadAnkiDeck,
+  fetchMissingHighlights,
+  fetchReviewPromptsAndStartReview,
+} from "../../app/hypothesisMiddleware";
 import {
   deletePrompt,
   isShowMissedPromptsButton,
@@ -22,7 +26,10 @@ import {
 } from "../../app/promptSlice";
 import { useAppDispatch, useAppSelector } from "../../app/store";
 import { useLayoutDependentValue } from "../../hooks/useLayoutDependentValue";
-import { PromptLocation } from "../../util/resolvePromptLocations";
+import {
+  PromptLocation,
+  resolvePromptRange,
+} from "../../util/resolvePromptLocations";
 import { viewportToRoot } from "../../util/viewportToRoot";
 import zIndices from "../common/zIndices";
 import { PromptVisibilitySetting } from "../OrbitMenuPromptVisibilityControl";
@@ -269,15 +276,14 @@ export function PromptLayoutManager({
     PromptID[]
   >([]);
 
-  function onShowMissedPrompts(buttonID: PromptID) {
-    setUsedMissedPromptButtonIDs((ids) => [...ids, buttonID]);
+  function getSectionRange(endOfSectionButtonID: string) {
     const sectionRange = new Range();
     sectionRange.setEnd(
-      promptLocations[buttonID].range.startContainer,
-      promptLocations[buttonID].range.startOffset,
+      promptLocations[endOfSectionButtonID].range.startContainer,
+      promptLocations[endOfSectionButtonID].range.startOffset,
     );
 
-    const pressedY = promptLocations[buttonID].top;
+    const pressedY = promptLocations[endOfSectionButtonID].top;
     // Find the missed prompts button with the closest value less than pressedY
     let closestID: PromptID | null = null;
     let closestY: number | null = null;
@@ -302,7 +308,41 @@ export function PromptLayoutManager({
       const range = promptLocations[closestID].range;
       sectionRange.setStart(range.endContainer, range.endOffset);
     }
+    return sectionRange;
+  }
+
+  function onShowMissedPrompts(buttonID: PromptID) {
+    setUsedMissedPromptButtonIDs((ids) => [...ids, buttonID]);
+    const sectionRange = getSectionRange(buttonID);
     dispatch(fetchMissingHighlights(sectionRange));
+  }
+
+  function filterPrompts(
+    sectionRange: Range,
+  ): (id: PromptID, prompt: Prompt) => Promise<boolean> {
+    return async (id, prompt) => {
+      try {
+        const range = await resolvePromptRange(document.body, prompt.selectors);
+        return (
+          range.compareBoundaryPoints(Range.START_TO_START, sectionRange) ===
+            1 &&
+          range.compareBoundaryPoints(Range.END_TO_END, sectionRange) === -1
+        );
+      } catch (e) {
+        console.warn(`Couldn't find range for prompt`, prompt, e);
+        return false;
+      }
+    };
+  }
+
+  function onExportMnemosyneDeck(buttonID: PromptID) {
+    const sectionRange = getSectionRange(buttonID);
+    dispatch(downloadAnkiDeck("mnemosyne", filterPrompts(sectionRange)));
+  }
+
+  function onStartReview(buttonID: PromptID) {
+    const sectionRange = getSectionRange(buttonID);
+    dispatch(fetchReviewPromptsAndStartReview(filterPrompts(sectionRange)));
   }
 
   return (
@@ -347,11 +387,14 @@ export function PromptLayoutManager({
                 transition={TRANSITION}
               >
                 {isShowMissedPromptsButton(prompts[id]) ? (
-                  usedMissedPromptButtonIDs.includes(id) ? null : (
-                    <MissedPromptsButton
-                      onToggleMissedPrompts={() => onShowMissedPrompts(id)}
-                    />
-                  )
+                  <MissedPromptsButton
+                    isShowSuggestedHighlightsDisabled={usedMissedPromptButtonIDs.includes(
+                      id,
+                    )}
+                    onToggleMissedPrompts={() => onShowMissedPrompts(id)}
+                    onExportMnemosyneDeck={() => onExportMnemosyneDeck(id)}
+                    onStartReview={() => onStartReview(id)}
+                  />
                 ) : (
                   <PromptBoxMemo
                     prompt={prompts[id]}

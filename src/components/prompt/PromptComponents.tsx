@@ -299,7 +299,10 @@ export function promptPlaintextToHTML(plaintext: string) {
 }
 
 export interface MissedPromptsButtonProps {
+  isShowSuggestedHighlightsDisabled: boolean;
   onToggleMissedPrompts: () => void;
+  onExportMnemosyneDeck: () => void;
+  onStartReview: () => void;
 }
 
 export const MissedPromptsButton = forwardRef(
@@ -315,9 +318,18 @@ export const MissedPromptsButton = forwardRef(
       <Button
         backgroundColor="var(--bgPrimary)"
         onClick={props.onToggleMissedPrompts}
-        icon="rightArrow"
+        disabled={props.isShowSuggestedHighlightsDisabled}
       >
         Show Suggested Highlights
+      </Button>
+      <Button
+        backgroundColor="var(--bgPrimary)"
+        onClick={props.onExportMnemosyneDeck}
+      >
+        Export Mnemosyne Deck
+      </Button>
+      <Button backgroundColor="var(--bgPrimary)" onClick={props.onStartReview}>
+        Start Review
       </Button>
     </div>
   ),
